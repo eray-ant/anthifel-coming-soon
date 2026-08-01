@@ -288,6 +288,14 @@ textarea{width:100%;background:var(--surface-2);border:1px solid var(--ring);bor
 .drop.over{border-color:var(--gold);background:var(--gold-dim)}
 .wact{display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap}
 </style>
+<style id="anc-embed-fix"></style>
+<script>
+if (window.self !== window.top){
+  document.getElementById('anc-embed-fix').textContent =
+    '.side .brand,.side .bd{display:none !important}' +
+    '.side nav,.side #nav{padding-top:14px}';
+}
+</script>
 </head>
 <body>
 <div class="shell">
