@@ -12,8 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --lime:#F5F1EA;--lime2:#FAF7F1;--card:#FCFAF5;--basalt:#0F0F0E;--terra:#B84C2E;--terra-d:#A03F24;
-  --olive:#5C6B4A;--kekova:#2B4C5C;--stone:#7A756C;--line:rgba(15,15,14,.14);--line2:rgba(15,15,14,.08);
+  --lime:#F1F0EC;--lime2:#F7F7F5;--card:#FFFFFF;--basalt:#1A1815;--terra:#B84C2E;--terra-d:#A03F24;
+  --olive:#0F8A63;--kekova:#2B4C5C;--stone:#87837C;--line:#CBC9C3;--line2:#E9E8E4;
   --serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',-apple-system,'Helvetica Neue',Arial,sans-serif;
   --bar:61px;
 }
@@ -255,15 +255,24 @@ function copyText(id, btn){
 </section>
 
 <section class="view" id="v-sirada">
-  <div class="panel"><h2>Sırada ne var</h2>
-    <ul class="ck">
-      <li><input type="checkbox" id="n1"><label for="n1">LinkedIn export'unu talep et <span class="hint">Settings → Data privacy → Get a copy of your data → Connections (2 dk, tek bekleme gerektiren adım)</span></label></li>
-      <li><input type="checkbox" id="n2"><label for="n2">Notion tablolarını kur, export gelince triyaja başla <span class="hint">CRM sayfasındaki uygulama ile</span></label></li>
-      <li><input type="checkbox" id="n3"><label for="n3">Calendly hesabını aç, sitedeki 3 "Book a call" linkini doğrula</label></li>
-      <li><input type="checkbox" id="n4"><label for="n4">Google Analytics'i kur <span class="hint">Analytics sayfasındaki 4 adım</span></label></li>
-      <li><input type="checkbox" id="n5"><label for="n5">Sözleşme sayfalarını hazırlat (Privacy, Terms, Cookie)</label></li>
-      <li><input type="checkbox" id="n6"><label for="n6">Blog yapısını kur ve ilk yazıyı yayınla <span class="hint">Content OS'ta 5 yazı planlı</span></label></li>
-    </ul>
+  <p class="lead">Yapılacakları buradan yönet. Her maddenin bir kategorisi ve tarihi var; tarihi geçmiş ve
+  tamamlanmamış olanlar kırmızı görünür. Kayıtlar bu tarayıcıda saklanır.</p>
+  <div class="panel">
+    <h2>Yeni madde</h2>
+    <div class="frow">
+      <div class="f"><label>Ne yapılacak</label><input type="text" id="t-title" placeholder="ör. Calendly hesabını aç"></div>
+      <div class="f" style="max-width:190px"><label>Kategori</label><select id="t-cat">
+        <option>Website</option><option>SEO</option><option>Analytics</option><option>Content</option>
+        <option>CRM</option><option>Finance</option><option>Hukuk</option><option>Diğer</option></select></div>
+      <div class="f" style="max-width:160px"><label>Tarih</label><input type="date" id="t-date"></div>
+      <button class="btn terra" onclick="todoAdd()">+ Ekle</button>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Sırada ne var <span class="cnt" id="t-count"></span></h2>
+    <table id="t-table">
+      <tr><th style="width:34px"></th><th>Madde</th><th style="width:130px">Kategori</th><th style="width:120px">Tarih</th><th style="width:60px"></th></tr>
+    </table>
   </div>
 </section>
 
@@ -281,7 +290,60 @@ function copyText(id, btn){
 <script>
 var dt=document.getElementById('dt'); if(dt) dt.textContent=today();
 initViews('overview','durum');
-var d=daysTo('2026-08-20'); document.getElementById('k-days').textContent=d>0?d:'Bugün'; ckInit('overview');
+
+var d=daysTo('2026-08-20'); document.getElementById('k-days').textContent=d>0?d:'Bugün';
+
+var SEED=[
+ {t:"LinkedIn export'unu talep et", c:"CRM", d:"2026-08-03", done:false},
+ {t:"Notion tablolarını kur, export gelince triyaja başla", c:"CRM", d:"2026-08-06", done:false},
+ {t:"Calendly hesabını aç, sitedeki 3 Book a call linkini doğrula", c:"Website", d:"2026-08-05", done:false},
+ {t:"Google Analytics'i kur", c:"Analytics", d:"2026-08-07", done:false},
+ {t:"Sözleşme sayfalarını hazırlat (Privacy, Terms, Cookie)", c:"Hukuk", d:"2026-08-12", done:false},
+ {t:"Blog yapısını kur ve ilk yazıyı yayınla", c:"Content", d:"2026-08-12", done:false}
+];
+function todoGet(){
+  var st=store();
+  try{ var r=st&&st.getItem('anc_todo'); if(r) return JSON.parse(r); }catch(e){}
+  return SEED.slice();
+}
+function todoSet(r){ var st=store(); if(st) st.setItem('anc_todo', JSON.stringify(r)); }
+function todoRender(){
+  var rows=todoGet().slice().sort(function(a,b){
+    if(a.done!==b.done) return a.done?1:-1;
+    return (a.d||'9999').localeCompare(b.d||'9999');
+  });
+  todoSet(rows);
+  var t=document.getElementById('t-table');
+  t.querySelectorAll('tr:not(:first-child)').forEach(function(r){ r.remove(); });
+  var todayIso=new Date().toISOString().slice(0,10), open=0;
+  rows.forEach(function(r,i){
+    if(!r.done) open++;
+    var late = !r.done && r.d && r.d < todayIso;
+    var tr=document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="checkbox" '+(r.done?'checked':'')+' onchange="todoToggle('+i+')" style="accent-color:var(--terra);width:15px;height:15px;cursor:pointer"></td>'+
+      '<td style="'+(r.done?'color:var(--stone);text-decoration:line-through':'')+'">'+r.t+'</td>'+
+      '<td><span style="display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);background:rgba(184,76,46,.08);padding:3px 8px;border-radius:2px">'+r.c+'</span></td>'+
+      '<td style="'+(late?'color:var(--terra);font-weight:500':'color:var(--stone)')+'">'+(r.d?r.d.split('-').reverse().join('.'):'—')+(late?' · gecikti':'')+'</td>'+
+      '<td class="num"><button class="btn ghost" style="padding:4px 9px;font-size:11px" onclick="todoDel('+i+')">Sil</button></td>';
+    t.appendChild(tr);
+  });
+  if(!rows.length){ var e=document.createElement('tr'); e.innerHTML='<td colspan="5" style="color:var(--stone)">Henüz madde yok. Yukarıdan ekleyebilirsin.</td>'; t.appendChild(e); }
+  document.getElementById('t-count').textContent = open+' açık · '+rows.length+' madde';
+  window._todo=rows;
+}
+function todoAdd(){
+  var ti=document.getElementById('t-title').value.trim();
+  if(!ti){ alert('Bir başlık yaz.'); return; }
+  var rows=todoGet();
+  rows.push({t:ti, c:document.getElementById('t-cat').value, d:document.getElementById('t-date').value, done:false});
+  todoSet(rows); document.getElementById('t-title').value=''; todoRender();
+}
+function todoToggle(i){ var r=window._todo||todoGet(); r[i].done=!r[i].done; todoSet(r); todoRender(); }
+function todoDel(i){ var r=window._todo||todoGet(); r.splice(i,1); todoSet(r); todoRender(); }
+document.getElementById('t-date').valueAsDate=new Date();
+todoRender();
+
 </script>
 </body>
 </html>
