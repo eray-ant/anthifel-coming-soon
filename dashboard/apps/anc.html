@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANC — Anthifel Network Center</title>
+<style>
+/* ============================================================
+   Marka paleti — Anthifel logosundan türetildi.
+   Logo altını #906320, harf mürekkebi #1c1a16.
+   Altın MARKA ve FAVORİ için ayrılmıştır; liste renkleri
+   bilerek başka hue'lardan seçildi ki altın anlam taşımaya
+   devam etsin.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+  --plane:#121110; --surface:#1b1916; --surface-2:#232019; --surface-3:#2a261e;
+  --ink:#f6f2e9; --ink-2:#c2b9a6; --muted:#8e877a;
+  --line:#2b2721; --rule:#3a352c; --ring:rgba(246,242,233,.10);
+  --gold:#c9a15a; --gold-soft:#e0bd7e; --gold-dim:rgba(201,161,90,.14);
+  --yakin:#5a9ef0; --hedef:#35b98a; --izleme:#9d8ce8; --pas:#8e877a;
+  --good:#2eb82e; --crit:#e06060;
+  --shadow:0 10px 34px rgba(0,0,0,.45);
+  --font:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --nav:238px; --r:11px;
+  --wm:url("data:image/png;base64,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");
+}
+/* Açık tema bilerek nötr: sıcaklık sadece zeminde ve altın vurgularda
+   kalıyor. Liste yüzeyleri saf beyaz — uzun triyaj oturumlarında
+   krem zemin gözü yoruyor. */
+:root[data-theme="light"]{
+  color-scheme: light;
+  --plane:#f1f0ec; --surface:#ffffff; --surface-2:#f7f7f5; --surface-3:#eeedea;
+  --ink:#1a1815; --ink-2:#55504a; --muted:#87837c;
+  --line:#e9e8e4; --rule:#cbc9c3; --ring:rgba(26,24,21,.09);
+  --gold:#8a6420; --gold-soft:#6f4f16; --gold-dim:rgba(138,100,32,.10);
+  --yakin:#2a6fcb; --hedef:#0f8a63; --izleme:#5847b0; --pas:#8a8378;
+  --good:#0a7d0a; --crit:#c23434;
+  --shadow:0 10px 30px rgba(60,48,24,.13);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{background:var(--plane);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--gold)}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:99px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- kabuk ---------- */
+.shell{display:grid;grid-template-columns:var(--nav) 1fr;height:100vh;overflow:hidden}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.side{display:none}}
+
+/* ---------- sol menü ---------- */
+.side{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden}
+.brand{padding:26px 22px 20px;border-bottom:1px solid var(--line)}
+.wordmark{
+  width:158px;height:15px;
+  background:var(--gold);
+  -webkit-mask-image:var(--wm);mask-image:var(--wm);
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+}
+.brand .sub{margin-top:11px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+.nav{flex:1;overflow-y:auto;padding:14px 12px 8px}
+.nav h5{margin:16px 10px 7px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.nav h5:first-child{margin-top:2px}
+.nav a{
+  display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:8px;
+  color:var(--ink-2);text-decoration:none;font-size:13.5px;cursor:pointer;
+  border:1px solid transparent;
+}
+.nav a:hover{background:var(--surface-2);color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--gold-dim);color:var(--ink);border-color:color-mix(in srgb,var(--gold) 34%,transparent)}
+.nav a .dot{width:7px;height:7px;border-radius:99px;flex:0 0 7px;background:var(--rule)}
+.nav a .ico{width:16px;flex:0 0 16px;text-align:center;font-size:13px;color:var(--muted)}
+.nav a[aria-current="page"] .ico{color:var(--gold)}
+.nav a .lbl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav a .cnt{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nav a[aria-current="page"] .cnt{color:var(--ink-2)}
+.dot.yakin{background:var(--yakin)}.dot.hedef{background:var(--hedef)}
+.dot.izleme{background:var(--izleme)}.dot.pas{background:var(--pas)}
+.dot.fav{background:var(--gold)}
+
+.sidefoot{border-top:1px solid var(--line);padding:12px}
+.status{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);padding:4px 6px 10px}
+.status .led{width:7px;height:7px;border-radius:99px;background:var(--good);flex:0 0 7px}
+.status .led.dirty{background:var(--gold);box-shadow:0 0 0 3px var(--gold-dim)}
+.sidefoot .row{display:flex;gap:7px}
+
+/* ---------- düğmeler ---------- */
+.btn{background:var(--surface-2);border:1px solid var(--ring);border-radius:9px;padding:7px 13px;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
+.btn:hover{background:var(--surface-3);border-color:var(--rule)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.gold{background:var(--gold);border-color:transparent;color:#17140f;font-weight:600}
+:root[data-theme="light"] .btn.gold{color:#fffdf7}
+.btn.gold:hover{filter:brightness(1.07);background:var(--gold)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:8px}
+.btn.icon{padding:6px 9px}
+.btn.yakin{color:var(--yakin);border-color:color-mix(in srgb,var(--yakin) 45%,transparent)}
+.btn.hedef{color:var(--hedef);border-color:color-mix(in srgb,var(--hedef) 45%,transparent)}
+.btn.izleme{color:var(--izleme);border-color:color-mix(in srgb,var(--izleme) 45%,transparent)}
+.btn.fav{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+
+/* ---------- ana alan ---------- */
+.main{display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.top{
+  display:flex;align-items:center;gap:14px;padding:16px 26px;border-bottom:1px solid var(--line);
+  background:var(--surface);flex-wrap:wrap;
+}
+.top h1{margin:0;font-size:18px;font-weight:640;letter-spacing:-.015em}
+.top .desc{font-size:12.5px;color:var(--muted);margin-top:2px}
+.spacer{flex:1}
+.search{position:relative}
+.search input{
+  width:280px;padding:8px 13px 8px 32px;background:var(--surface-2);border:1px solid var(--ring);
+  border-radius:9px;font-size:13px;
+}
+.search .mag{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
+input:focus,select:focus,textarea:focus,.btn:focus-visible,.nav a:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+.page{flex:1;overflow-y:auto;padding:22px 26px 60px}
+.page.flush{padding:0}
+
+/* ---------- kartlar ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.card>.hd{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase}
+.card>.bd{padding:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+@media(max-width:1080px){.g2{grid-template-columns:1fr}}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px}
+.kpi .lab{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px}
+.kpi .val{font-size:27px;font-weight:620;letter-spacing:-.025em;line-height:1.05}
+.kpi .val small{font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0}
+.kpi .sub{font-size:11.5px;color:var(--muted);margin-top:5px}
+.kpi.gold .val{color:var(--gold)}
+.kpi.yakin .val{color:var(--yakin)}
+.kpi.hedef .val{color:var(--hedef)}
+
+/* ---------- grafikler ---------- */
+.stack{display:flex;height:15px;border-radius:5px;overflow:hidden;gap:2px;background:transparent}
+.stack i{display:block;height:100%;border-radius:2px}
+.stack i:first-child{border-radius:5px 2px 2px 5px}
+.stack i:last-child{border-radius:2px 5px 5px 2px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:13px}
+.legend span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2)}
+.legend b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.legend .sw{width:9px;height:9px;border-radius:3px;flex:0 0 9px}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:flex;align-items:center;gap:11px;font-size:12.5px}
+.bar .nm{flex:0 0 132px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tr{flex:1;height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:0}
+.bar .tr i{display:block;height:100%;background:var(--gold);border-radius:99px}
+.bar .vl{flex:0 0 48px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.progress{height:7px;background:var(--surface-2);border-radius:99px;overflow:hidden;border:1px solid var(--ring)}
+.progress i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+
+/* ---------- filtre çubuğu ---------- */
+.fbar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap;background:var(--surface)}
+.fdrop{position:relative}
+.fdrop>button{display:flex;align-items:center;gap:7px}
+.fdrop>button .cap{font-size:11px;background:var(--gold);color:#17140f;border-radius:99px;padding:0 6px;font-weight:700;line-height:16px}
+:root[data-theme="light"] .fdrop>button .cap{color:#fffdf7}
+.fpop{position:absolute;left:0;top:calc(100% + 6px);z-index:30;background:var(--surface);border:1px solid var(--rule);border-radius:11px;box-shadow:var(--shadow);padding:8px;min-width:230px;max-height:330px;overflow:auto}
+.fpop label{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:7px;cursor:pointer;font-size:13px}
+.fpop label:hover{background:var(--surface-2)}
+.fpop label input{accent-color:var(--gold);width:14px;height:14px}
+.fpop label .n{margin-left:auto;color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
+.chip{border:1px solid var(--ring);background:transparent;border-radius:99px;padding:5px 12px;font-size:12.5px;cursor:pointer;color:var(--ink-2)}
+.chip:hover{border-color:var(--rule)}
+.chip[aria-pressed="true"]{background:var(--gold-dim);color:var(--gold);border-color:color-mix(in srgb,var(--gold) 45%,transparent);font-weight:600}
+.factive{display:flex;gap:7px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.ftag{display:flex;align-items:center;gap:7px;font-size:12px;background:var(--surface);border:1px solid var(--ring);border-radius:99px;padding:3px 6px 3px 11px;color:var(--ink-2)}
+.ftag b{color:var(--ink);font-weight:600}
+.ftag button{background:transparent;border:0;cursor:pointer;color:var(--muted);font-size:14px;line-height:1;padding:0 4px;border-radius:99px}
+.ftag button:hover{color:var(--crit)}
+
+/* ---------- toplu aksiyon ---------- */
+.bulk{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--gold-dim);flex-wrap:wrap}
+.bulk .n{font-weight:640}
+
+/* ---------- sanal tablo ---------- */
+.thead{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--rule);background:var(--surface-2);user-select:none}
+/* Hücre genişlik sınıfları gövde satırlarıyla paylaşılıyor; tipografi
+   burada TEK yerden eziliyor, yoksa başlıklar gövdenin font boyutunu
+   miras alıp birbirinden farklı çıkıyor. */
+.thead span,.thead .c-nm,.thead .c-co,.thead .c-po,.thead .c-se,.thead .c-sc,.thead .c-ls{
+  font-size:10.5px;font-weight:600;line-height:1.3;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;cursor:pointer;
+}
+.thead span:hover{color:var(--ink-2)}
+.vlist{position:relative;overflow:auto;background:var(--surface)}
+.vsp{position:relative;width:100%}
+.trow{position:absolute;left:0;right:0;display:flex;align-items:center;gap:12px;padding:0 16px;height:40px;border-bottom:1px solid var(--line);font-size:13px}
+.trow:hover{background:var(--surface-2)}
+.trow.sel{background:var(--gold-dim)}
+.c-chk{flex:0 0 16px}
+.c-chk input{accent-color:var(--gold);width:14px;height:14px;cursor:pointer}
+.c-star{flex:0 0 18px;text-align:center;cursor:pointer;color:var(--rule);font-size:14px;user-select:none}
+.c-star.on{color:var(--gold)}
+.c-nm{flex:0 0 168px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-nm a{color:inherit;text-decoration:none}
+.c-nm a:hover{color:var(--gold)}
+.c-co{flex:0 0 176px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-po{flex:1;min-width:0;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-se{flex:0 0 100px;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-sc{flex:0 0 56px;text-align:right;color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.c-ls{flex:0 0 132px}
+.c-ls select{width:100%;background:var(--surface);border:1px solid var(--ring);border-radius:7px;padding:4px 6px;font-size:11.5px;cursor:pointer}
+.listwrap{background:var(--surface);border-top:1px solid var(--line)}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:2.5px 10px;border-radius:99px;border:1px solid var(--ring);color:var(--ink-2);white-space:nowrap}
+.pill .sw{width:7px;height:7px;border-radius:99px}
+.pill.yakin{color:var(--yakin);border-color:color-mix(in srgb,var(--yakin) 42%,transparent)}
+.pill.hedef{color:var(--hedef);border-color:color-mix(in srgb,var(--hedef) 42%,transparent)}
+.pill.izleme{color:var(--izleme);border-color:color-mix(in srgb,var(--izleme) 42%,transparent)}
+.pill.pas{color:var(--muted)}
+.pill.gold{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 42%,transparent)}
+
+/* ---------- triyaj ---------- */
+.subtabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:10px;border:1px solid var(--ring)}
+.subtabs button{background:transparent;border:0;border-radius:7px;padding:6px 14px;cursor:pointer;font-size:12.5px;color:var(--ink-2);font-weight:500}
+.subtabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.28)}
+.bigcard{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:32px 34px}
+.bigcard h2{margin:0;font-size:30px;font-weight:640;letter-spacing:-.03em}
+.bigcard .role{font-size:16px;color:var(--ink-2);margin-top:6px}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:17px}
+.tag{font-size:12px;padding:4px 11px;border-radius:99px;border:1px solid var(--ring);color:var(--ink-2);background:var(--surface-2)}
+.tag.hot{color:var(--crit);border-color:color-mix(in srgb,var(--crit) 38%,transparent)}
+.tag.warm{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 38%,transparent)}
+.keys{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+.keybtn{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--ring);border-radius:10px;padding:10px 16px;cursor:pointer;font-size:13.5px;font-weight:550}
+.keybtn:hover{background:var(--surface-3)}
+.keybtn kbd{font-size:10px;border:1px solid var(--rule);border-radius:4px;padding:1px 6px;color:var(--muted);background:var(--surface);font-family:var(--font)}
+.keybtn.yakin{color:var(--yakin);border-color:color-mix(in srgb,var(--yakin) 45%,transparent)}
+.keybtn.hedef{color:var(--hedef);border-color:color-mix(in srgb,var(--hedef) 45%,transparent)}
+.keybtn.izleme{color:var(--izleme);border-color:color-mix(in srgb,var(--izleme) 45%,transparent)}
+.keybtn.fav{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+.recent{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+.recent h4{margin:0 0 9px;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.recent .r{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:12.5px;color:var(--ink-2)}
+.recent .r b{font-weight:550;color:var(--ink)}
+.recent .r button{background:transparent;border:0;color:var(--gold);cursor:pointer;font-size:12px;padding:0}
+
+/* ---------- DM ---------- */
+textarea{width:100%;background:var(--surface-2);border:1px solid var(--ring);border-radius:9px;padding:13px 14px;resize:vertical;font-size:13.5px;line-height:1.62}
+.inp{width:100%;padding:8px 12px;background:var(--surface-2);border:1px solid var(--ring);border-radius:9px;font-size:13px}
+.dmlist{max-height:calc(100vh - 300px);overflow:auto}
+.dmrow{display:flex;gap:10px;align-items:center;padding:9px 16px;cursor:pointer;border-bottom:1px solid var(--line)}
+.dmrow:hover{background:var(--surface-2)}
+.dmrow[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--gold)}
+.dmrow.done{opacity:.42}
+.dmrow .g{width:21px;height:21px;flex:0 0 21px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#17140f}
+:root[data-theme="light"] .dmrow .g{color:#fffdf7}
+.g.A{background:var(--gold)}.g.B{background:var(--yakin)}.g.C{background:var(--pas)}
+.dmrow .who{min-width:0;flex:1}
+.dmrow .nm{font-size:13px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dmrow .cm{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- yardımcı ---------- */
+.empty{padding:56px 24px;text-align:center;color:var(--muted);font-size:13.5px}
+.empty h3{color:var(--ink);font-size:16px;font-weight:600;margin:0 0 8px}
+.empty p{max-width:480px;margin:0 auto}
+.hidden{display:none !important}
+.menu{position:relative}
+.menu .pop{position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:6px;min-width:300px;z-index:40;box-shadow:var(--shadow)}
+.menu .pop.up{top:auto;bottom:calc(100% + 6px)}
+.menu .pop button{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:8px;padding:9px 11px;cursor:pointer;font-size:13px;font-weight:550}
+.menu .pop button:hover{background:var(--surface-2)}
+.menu .pop small{display:block;color:var(--muted);font-size:11.5px;margin-top:3px;line-height:1.45;font-weight:400}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:var(--plane);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.18s;z-index:80;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6}
+
+/* ---------- açılış ---------- */
+.welcome{display:grid;place-items:center;height:100%;padding:40px}
+.wbox{max-width:620px;text-align:center}
+.wbox .wordmark{width:250px;height:24px;margin:0 auto 20px}
+.wbox h2{font-size:20px;font-weight:620;margin:0 0 10px;letter-spacing:-.02em}
+.wbox p{color:var(--ink-2);font-size:14px;margin:0 auto 26px;line-height:1.65}
+.drop{border:1.5px dashed var(--rule);border-radius:16px;padding:38px 30px;background:var(--surface);transition:.15s}
+.drop.over{border-color:var(--gold);background:var(--gold-dim)}
+.wact{display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <div class="wordmark"></div>
+      <div class="sub">Network Center</div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidefoot">
+      <div class="status" id="status"></div>
+      <div class="row">
+        <span class="menu" style="flex:1">
+          <button class="btn gold sm" id="saveBtn" style="width:100%" disabled>İndir ▾</button>
+          <div class="pop up hidden" id="savePop"></div>
+        </span>
+        <button class="btn sm icon" id="loadBtn" title="Havuz yükle">↑</button>
+        <button class="btn sm icon" id="themeBtn" title="Tema">◐</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="top" id="top"></div>
+    <div class="page" id="page"></div>
+  </div>
+</div>
+
+<input type="file" id="file" accept=".csv,text/csv" class="hidden">
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ============================================================
+   Sabitler
+   ============================================================ */
+const TODAY = new Date().toISOString().slice(0,10);
+const LISTELER = ["Yakın Network","Hedef Müşteri","İzleme","Pas"];
+const CLS = {"Yakın Network":"yakin","Hedef Müşteri":"hedef","İzleme":"izleme","Pas":"pas"};
+const VAR = {"Yakın Network":"--yakin","Hedef Müşteri":"--hedef","İzleme":"--izleme","Pas":"--pas"};
+
+const ROUNDS = [
+  {id:"r1", label:"Ön-bilgilendirme", tarih:"18 Ağustos, Salı",
+   field:"Ön-bilgilendirme atıldı", hint:"Lansmandan iki gün önce — haber verme turu."},
+  {id:"r2", label:"Lansman DM", tarih:"20 Ağustos, Perşembe",
+   field:"Lansman DM'i atıldı", hint:"Duyuru turu — site linki paylaşılıyor."},
+  {id:"r3", label:"Assessment daveti", tarih:"21 Ağustos sonrası",
+   field:"Assessment daveti atıldı", hint:"Sadece müşteri potansiyeli işaretli kişilere."},
+];
+
+const NAV = [
+  {grup:null, items:[{id:"ozet", ico:"◈", lbl:"Genel Bakış"}]},
+  {grup:"LinkedIn Ağı", items:[
+    {id:"havuz", ico:"▤", lbl:"Havuz", count:()=>S.people.length},
+    {id:"favori", ico:"★", lbl:"Favoriler", dot:"fav", count:()=>cnt(p=>isYes(p["Favori"]))},
+    {id:"l-yakin", ico:"", dot:"yakin", lbl:"Yakın Network", liste:"Yakın Network", count:()=>cnt(p=>p["Liste"]==="Yakın Network")},
+    {id:"l-hedef", ico:"", dot:"hedef", lbl:"Hedef Müşteri", liste:"Hedef Müşteri", count:()=>cnt(p=>p["Liste"]==="Hedef Müşteri")},
+    {id:"l-izleme", ico:"", dot:"izleme", lbl:"İzleme", liste:"İzleme", count:()=>cnt(p=>p["Liste"]==="İzleme")},
+    {id:"l-pas", ico:"", dot:"pas", lbl:"Pas", liste:"Pas", count:()=>cnt(p=>p["Liste"]==="Pas")},
+  ]},
+  {grup:"Çalışma", items:[
+    {id:"yol", ico:"◎", lbl:"Yol Haritası", count:()=>oneriler().filter(o=>o.sev!=="tamam").length},
+    {id:"triyaj", ico:"⚡", lbl:"Triyaj", count:()=>cnt(p=>!p["Liste"])},
+    {id:"dm", ico:"✉", lbl:"DM Turları"},
+  ]},
+];
+
+/* Lansman takvimi — spec'ten. Öneri motoru aciliyeti buradan okuyor. */
+const TAKVIM = {onbilgi:"2026-08-18", lansman:"2026-08-20", otomasyon:"2026-08-17"};
+const SEV = {
+  kritik:{lbl:"Kritik", renk:"var(--crit)", sira:0},
+  onemli:{lbl:"Önemli", renk:"var(--gold)", sira:1},
+  firsat:{lbl:"Fırsat", renk:"var(--yakin)", sira:2},
+  tamam:{lbl:"Tamam", renk:"var(--good)", sira:3},
+};
+/* Filtre çubuğunda ifade edilemeyen, öneriye özel süzgeçler.
+   Öneri "şu 12 kişiye bak" dediğinde tıklayınca tam o 12 kişi açılsın diye. */
+const OZEL = {
+  danisman:{lbl:"Danışmanlık şirketi", f:p=>p["Danışmanlık şirketi"]==="Yes"},
+  sirketsiz:{lbl:"Şirketi boş", f:p=>!p["Şirket"]},
+  urlsiz:{lbl:"LinkedIn URL yok", f:p=>!p["LinkedIn URL"]},
+  kidemsiz:{lbl:"Kıdemi tanınmadı", f:p=>!p["Kıdem"]},
+  notsuz:{lbl:"Cevap geldi, not yok", f:p=>isYes(p["Cevap geldi"])&&!p["Notlar"]},
+  agrubu:{lbl:"A grubu", f:p=>p["Lansman DM grubu"]==="A"},
+};
+
+/* ============================================================
+   Mesaj şablonları
+   ============================================================ */
+const DEFAULT_TPL = {
+  r1:{
+    A:`Merhaba {ilkAd},
+
+Uzun süredir kafamda olan şeyi nihayet yapıyorum: 20 Ağustos'ta Anthifel'i kuruyorum — şirketlerin AI dönüşümünü baştan sona tasarlayan butik bir danışmanlık.
+
+[BURAYA 2 CÜMLE KİŞİYE ÖZEL: nerede/nasıl tanıştığınız, son konuştuğunuz konu ya da {sirket} tarafında şu an gördüğün bir mesele]
+
+Perşembe akşamı duyuruyu yapacağım. Senin gözünle bir bakmanı istedim — çıkmadan önce görüşün varsa çok kıymetli olur.
+
+Eray`,
+    B:`Merhaba {ilkAd},
+
+[İLK CÜMLE KİŞİYE ÖZEL — {sirket}'te olan bir şey ya da son etkileşiminiz]
+
+Kısa bir haber: 20 Ağustos'ta Anthifel'i kuruyorum. Şirketlerin AI dönüşümünü tasarlayan butik bir danışmanlık — son 15 yılda medya ve teknoloji tarafında yaptığım işin doğal devamı.
+
+Perşembe akşamı duyuru çıkıyor, önceden haberin olsun istedim.
+
+Eray`,
+    C:`Merhaba {ilkAd},
+
+Kısa bir haber vermek istedim: 20 Ağustos'ta Anthifel'i kuruyorum — şirketlerin AI dönüşümünü tasarlayan butik bir danışmanlık.
+
+Perşembe akşamı duyuruyu yapacağım. Önceden senin haberin olsun istedim; yoluna denk gelen bir şey olursa çok memnun olurum.
+
+Eray`},
+  r2:{
+    A:`{ilkAd}, bugün resmî oldu — Anthifel yayında.
+
+[BURAYA 1-2 CÜMLE KİŞİYE ÖZEL: neden özellikle ona yazdığın, {sirket} veya {sektor} tarafındaki bağlantı]
+
+Sitede 10 dakikalık ücretsiz bir AI Readiness Assessment var; şirketin AI'a ne kadar hazır olduğunu ölçüyor ve sonunda kişiye özel bir rapor çıkarıyor:
+anthifel.com
+
+Bir bakarsan ve dürüst geri bildirim verirsen çok kıymetli olur.
+
+Eray`,
+    B:`{ilkAd}, bugün Anthifel yayında.
+
+[İLK CÜMLE KİŞİYE ÖZEL]
+
+Şirketlerin AI dönüşümünü tasarlıyoruz — strateji, uygulama ve ekibin kendi kendine yürüyebilir hale gelmesi. Sitede ücretsiz bir AI Readiness Assessment var, 10 dakika sürüyor:
+anthifel.com
+
+Görüşün olursa yazmaktan çekinme.
+
+Eray`,
+    C:`Merhaba {ilkAd},
+
+Bugün Anthifel yayında — şirketlerin AI dönüşümünü tasarlayan butik bir danışmanlık.
+
+Sitede 10 dakikalık ücretsiz bir AI Readiness Assessment var; şirketin nerede durduğunu gösteren kişiye özel bir rapor çıkarıyor:
+anthifel.com
+
+Denersen ve ne düşündüğünü yazarsan çok memnun olurum.
+
+Eray`},
+  r3:{
+    A:`{ilkAd}, geçen konuştuğumuzda [KONU] tarafından bahsetmiştin.
+
+[BURAYA: o konunun AI ile kesiştiği yeri 1-2 cümlede yaz — {sirket} özelinde]
+
+Tam bunun için bir şey hazırladım: 10 dakikalık bir AI Readiness Assessment. Şirketin hazırlık seviyesini ölçüp nereden başlanacağını gösteren bir rapor çıkarıyor, ücretsiz:
+anthifel.com
+
+Doldurursan sonucu birlikte konuşalım — 30 dakika ayırırım.
+
+Eray`,
+    B:`Merhaba {ilkAd},
+
+[İLK CÜMLE KİŞİYE ÖZEL — {sirket} veya {sektor} tarafında gördüğün bir şey]
+
+{sektor} tarafında AI'ı nereden başlatacağını çözmeye çalışan çok şirket var. Bunun için 10 dakikalık ücretsiz bir Readiness Assessment hazırladım; sonunda şirkete özel bir yol haritası çıkıyor:
+anthifel.com
+
+Bir bakmak ister misin?
+
+Eray`,
+    C:`Merhaba {ilkAd},
+
+Anthifel'de şirketlere özel 10 dakikalık ücretsiz bir AI Readiness Assessment hazırladık — hazırlık seviyeni ölçüp nereden başlaman gerektiğini gösteren bir rapor çıkarıyor:
+anthifel.com
+
+{sirket} tarafında işine yarayacağını düşündüm. Doldurursan sonucu birlikte konuşmak isterim.
+
+Eray`}
+};
+
+/* ============================================================
+   Yardımcılar
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const el = (t,p={},...kids) => {
+  const n=document.createElement(t);
+  for(const [k,v] of Object.entries(p)){
+    if(k==="class") n.className=v;
+    else if(k==="html") n.innerHTML=v;
+    else if(k.startsWith("on")) n.addEventListener(k.slice(2),v);
+    else if(v!==null&&v!==undefined&&v!==false) n.setAttribute(k,v);
+  }
+  for(const c of kids.flat()) if(c!=null&&c!==false) n.append(c.nodeType?c:document.createTextNode(c));
+  return n;
+};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");
+  clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),1800);}
+const norm = s => String(s||"").trim().toLowerCase()
+  .replace(/ı/g,"i").replace(/İ/g,"i").replace(/ş/g,"s").replace(/ğ/g,"g")
+  .replace(/ü/g,"u").replace(/ö/g,"o").replace(/ç/g,"c").replace(/\s+/g," ");
+const isYes = v => /^(yes|evet|true|x|✓|★|1)$/i.test(String(v||"").trim());
+const num = v => {const n=parseFloat(String(v||"").replace(",",".")); return isNaN(n)?0:n;};
+const tr = n => Number(n||0).toLocaleString("tr");
+const cnt = f => S.people.filter(f).length;
+const firstName = f => String(f||"").trim().split(/\s+/)[0]||"";
+
+function parseCSV(text){
+  text=text.replace(/^﻿/,"");
+  const rows=[];let row=[],cell="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
+    else { if(c==='"')q=true; else if(c===','){row.push(cell);cell="";}
+      else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell="";}
+      else if(c!=='\r')cell+=c; }
+  }
+  if(cell.length||row.length){row.push(cell);rows.push(row);}
+  return rows.filter(r=>r.some(v=>String(v).trim()!==""));
+}
+function toCSV(cols,rows){
+  const esc=v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  return "﻿"+[cols.map(esc).join(",")].concat(rows.map(r=>cols.map(c=>esc(r[c])).join(","))).join("\r\n");
+}
+function download(name,text){
+  const b=new Blob([text],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+function copyText(txt,quiet){
+  const ok=()=>{if(!quiet)toast("Mesaj kopyalandı.");};
+  const fb=()=>{const t=document.createElement("textarea");t.value=txt;
+    t.style.cssText="position:fixed;opacity:0";document.body.append(t);t.select();
+    try{document.execCommand("copy");ok();}catch(e){toast("Kopyalanamadı.");}t.remove();};
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(txt).then(ok,fb);
+  else fb();
+}
+
+const ALIAS = {
+  "isim":"İsim","name":"İsim","ad soyad":"İsim",
+  "linkedin url":"LinkedIn URL","url":"LinkedIn URL","linkedin":"LinkedIn URL","public profile url":"LinkedIn URL",
+  "sirket":"Şirket","company":"Şirket","pozisyon":"Pozisyon","position":"Pozisyon","title":"Pozisyon",
+  "sektor":"Sektör","kaynak":"Kaynak","iliski":"İlişki","kidem":"Kıdem",
+  "e-posta":"E-posta","email":"E-posta","email address":"E-posta",
+  "baglanma tarihi":"Bağlanma tarihi","connected on":"Bağlanma tarihi",
+  "danismanlik sirketi":"Danışmanlık şirketi","hedef uygun":"Hedef uygun",
+  "yakin puan":"Yakın puan","hedef puan":"Hedef puan",
+  "liste":"Liste","secildi":"Liste","favori":"Favori","triyaj notu":"Triyaj notu",
+  "lansman dm grubu":"Lansman DM grubu","dm grubu":"Lansman DM grubu","grup":"Lansman DM grubu",
+  "on-bilgilendirme atildi":"Ön-bilgilendirme atıldı","on bilgilendirme atildi":"Ön-bilgilendirme atıldı",
+  "lansman dm'i atildi":"Lansman DM'i atıldı","lansman dmi atildi":"Lansman DM'i atıldı",
+  "assessment daveti atildi":"Assessment daveti atıldı","cevap geldi":"Cevap geldi",
+  "son temas":"Son temas","musteri potansiyeli var mi":"Müşteri potansiyeli var mı",
+  "notlar":"Notlar","notes":"Notlar",
+};
+const CORE = ["İsim","LinkedIn URL","Şirket","Pozisyon","Sektör","Kaynak","İlişki","Kıdem",
+  "E-posta","Bağlanma tarihi","Danışmanlık şirketi","Hedef uygun","Yakın puan","Hedef puan",
+  "Liste","Favori","Triyaj notu","Lansman DM grubu","Ön-bilgilendirme atıldı",
+  "Lansman DM'i atıldı","Assessment daveti atıldı","Cevap geldi","Son temas",
+  "Müşteri potansiyeli var mı","Notlar"];
+
+/* ============================================================
+   Durum
+   ============================================================ */
+const S = {
+  cols:[], people:[], view:"ozet", sub:"toplu", dirty:false,
+  f:{ q:"", sektor:new Set(), kaynak:new Set(), kidem:new Set(), iliski:new Set(),
+      liste:new Set(), fav:false, kararsiz:false, ozel:null },
+  sort:{key:"Yakın puan",dir:-1},
+  sel:new Set(), lastRow:null, acikOneri:null,
+  undo:[], rapidIdx:0,
+  round:"r1", dmSel:null, dmGroup:"hepsi", dmState:"kalan",
+  tpl:JSON.parse(JSON.stringify(DEFAULT_TPL)), edits:{},
+};
+
+/* ============================================================
+   Veri yükleme
+   ============================================================ */
+function ingest(text){
+  const rows=parseCSV(text);
+  if(rows.length<2) return toast("Dosyada satır yok.");
+  const header=rows[0].map(h=>{const t=String(h).replace(/^﻿/,"").trim();return ALIAS[norm(t)]||t;});
+  const people=rows.slice(1).map(r=>{const o={};header.forEach((h,i)=>o[h]=(r[i]??"").trim());return o;})
+    .filter(p=>(p["İsim"]||"").trim() && !/^ÖRNEK/i.test(p["İsim"]));
+  if(!people.length) return toast("Geçerli kayıt yok — 'İsim' kolonu dolu mu?");
+
+  const cols=header.slice();
+  CORE.forEach(c=>{if(!cols.includes(c))cols.push(c);});
+  people.forEach((p,i)=>{
+    for(const c of cols) if(p[c]===undefined) p[c]="";
+    const l=(p["Liste"]||"").trim();
+    p["Liste"]= /yak/i.test(l)?"Yakın Network" : /hedef/i.test(l)?"Hedef Müşteri"
+      : /izle/i.test(l)?"İzleme" : /pas/i.test(l)?"Pas" : (LISTELER.includes(l)?l:"");
+    p["Favori"]=isYes(p["Favori"])?"Yes":"";
+    const g=(p["Lansman DM grubu"]||"").toUpperCase().trim();
+    p["Lansman DM grubu"]=["A","B","C"].includes(g)?g:"";
+    p._i=i;
+  });
+  S.cols=cols;S.people=people;S.undo=[];S.sel.clear();S.dirty=false;S.rapidIdx=0;
+  if(!people.some(p=>p["Lansman DM grubu"])) assignDM(true);
+  $("#saveBtn").disabled=false;
+  S.view="ozet";
+  render();
+  toast(`${tr(people.length)} kişi yüklendi.`);
+}
+
+/* Yakın Network listesine %20/%40/%40 oranıyla A/B/C ata.
+   Favoriler A'ya öncelikli — yıldız "liste ne olursa olsun önemli" demek. */
+function assignDM(sessiz){
+  const sel=S.people.filter(p=>p["Liste"]==="Yakın Network")
+    .sort((a,b)=>(isYes(b["Favori"])-isYes(a["Favori"]))||(num(b["Yakın puan"])-num(a["Yakın puan"])));
+  if(!sel.length){ if(!sessiz) toast("Yakın Network listesi boş."); return; }
+  const n=sel.length, aS=Math.max(1,Math.round(n*0.20)), bS=aS+Math.max(1,Math.round(n*0.40));
+  if(!sessiz){
+    const snap=sel.map(p=>({p,prev:p["Lansman DM grubu"]}));
+    S.undo.push({field:"Lansman DM grubu",snap,label:`${n} kişi · DM grupları yeniden atandı`});
+  }
+  sel.forEach((p,i)=>p["Lansman DM grubu"]= i<aS?"A":(i<bS?"B":"C"));
+  S.people.filter(p=>p["Liste"]!=="Yakın Network").forEach(p=>p["Lansman DM grubu"]="");
+  if(!sessiz){ S.dirty=true; toast(`A=${aS} · B=${bS-aS} · C=${n-bS}`); }
+}
+
+/* ============================================================
+   Filtre
+   ============================================================ */
+function baseSet(){
+  const it=navItem(S.view);
+  if(it&&it.liste) return S.people.filter(p=>p["Liste"]===it.liste);
+  if(S.view==="favori") return S.people.filter(p=>isYes(p["Favori"]));
+  return S.people;
+}
+function matches(p){
+  const f=S.f;
+  if(f.sektor.size&&!f.sektor.has(p["Sektör"]||"—"))return false;
+  if(f.kaynak.size&&!f.kaynak.has(p["Kaynak"]||"—"))return false;
+  if(f.kidem.size&&!f.kidem.has(p["Kıdem"]||"—"))return false;
+  if(f.iliski.size&&!f.iliski.has(p["İlişki"]||"—"))return false;
+  if(f.liste.size&&!f.liste.has(p["Liste"]||"—"))return false;
+  if(f.fav&&!isYes(p["Favori"]))return false;
+  if(f.kararsiz&&p["Liste"])return false;
+  if(f.ozel&&OZEL[f.ozel]&&!OZEL[f.ozel].f(p))return false;
+  if(f.q){const h=norm([p["İsim"],p["Şirket"],p["Pozisyon"],p["Sektör"],p["Kaynak"]].join(" "));
+    if(!h.includes(norm(f.q)))return false;}
+  return true;
+}
+function filtered(){
+  const out=baseSet().filter(matches);
+  const k=S.sort.key,d=S.sort.dir,nm=(k==="Yakın puan"||k==="Hedef puan");
+  out.sort((a,b)=>{const va=nm?num(a[k]):norm(a[k]),vb=nm?num(b[k]):norm(b[k]);
+    return va<vb?-d:va>vb?d:a._i-b._i;});
+  return out;
+}
+function facet(field){
+  const c=new Map();
+  for(const p of baseSet()){const v=p[field]||"—";c.set(v,(c.get(v)||0)+1);}
+  return [...c.entries()].sort((a,b)=>b[1]-a[1]);
+}
+function filtreAktif(){
+  const f=S.f;
+  return !!(f.q||f.fav||f.kararsiz||f.ozel||f.sektor.size||f.kaynak.size||f.kidem.size||f.iliski.size||f.liste.size);
+}
+function filtreTemizle(){
+  S.f={q:"",sektor:new Set(),kaynak:new Set(),kidem:new Set(),iliski:new Set(),
+       liste:new Set(),fav:false,kararsiz:false,ozel:null};
+}
+
+/* ============================================================
+   Mutasyon + geri alma
+   ============================================================ */
+function apply(people,field,value){
+  if(!people.length)return;
+  S.undo.push({field,snap:people.map(p=>({p,prev:p[field]})),
+    label:`${people.length} kişi · ${field}=${value||"(boş)"}`});
+  if(S.undo.length>80)S.undo.shift();
+  people.forEach(p=>p[field]=value);
+  S.dirty=true;
+}
+function undo(){
+  const u=S.undo.pop();
+  if(!u)return toast("Geri alınacak işlem yok.");
+  u.snap.forEach(({p,prev})=>p[u.field]=prev);
+  S.dirty=true;render();toast("Geri alındı: "+u.label);
+}
+
+/* ============================================================
+   Sol menü
+   ============================================================ */
+function navItem(id){
+  for(const g of NAV) for(const it of g.items) if(it.id===id) return it;
+  return null;
+}
+function renderNav(){
+  const n=$("#nav");n.innerHTML="";
+  const yuklu=S.people.length>0;
+  NAV.forEach(g=>{
+    if(g.grup)n.append(el("h5",{},g.grup));
+    g.items.forEach(it=>{
+      const c=it.count?it.count():null;
+      n.append(el("a",{href:"#","aria-current":S.view===it.id?"page":null,
+        onclick:e=>{e.preventDefault(); if(!yuklu&&it.id!=="ozet")return toast("Önce havuz dosyasını yükle.");
+          S.view=it.id;S.sel.clear();filtreTemizle();S.rapidIdx=0;render();}},
+        it.dot?el("span",{class:"dot "+it.dot}):el("span",{class:"ico"},it.ico||"·"),
+        el("span",{class:"lbl"},it.lbl),
+        c!==null?el("span",{class:"cnt"},tr(c)):null));
+    });
+  });
+}
+function renderStatus(){
+  const s=$("#status");s.innerHTML="";
+  if(!S.people.length){ s.append(el("span",{class:"led",style:"background:var(--rule)"}),"Veri yüklenmedi"); return; }
+  s.append(el("span",{class:"led"+(S.dirty?" dirty":"")}),
+    el("span",{}, `${tr(S.people.length)} kişi · ${S.dirty?"kaydedilmedi":"kayıtlı"}`));
+}
+
+/* ============================================================
+   Üst çubuk
+   ============================================================ */
+function renderTop(){
+  const t=$("#top");t.innerHTML="";
+  if(!S.people.length){
+    t.append(el("div",{},el("h1",{},"Anthifel Network Center"),
+      el("div",{class:"desc"},"LinkedIn ağını çalışılabilir bir CRM'e çeviren tek dosyalık arayüz")));
+    return;
+  }
+  const it=navItem(S.view);
+  const META={
+    ozet:["Genel Bakış","Ağın nerede duruyor, sırada ne var"],
+    havuz:["Havuz","Tüm bağlantıların — ara, filtrele, işaretle"],
+    favori:["★ Favoriler","Liste ne olursa olsun öne çıkardıkların"],
+    "l-yakin":["Yakın Network","Lansman günü haberdar olacak çekirdek"],
+    "l-hedef":["Hedef Müşteri","Satış hunisine girecek karar vericiler"],
+    "l-izleme":["İzleme","Elenmedi ama ilk turda da değil"],
+    "l-pas":["Pas","Bu dönem için kapsam dışı"],
+    yol:["Yol Haritası","Verinin söylediği sıradaki işler, gerekçeleriyle"],
+    triyaj:["Triyaj","Havuzu eleyip listelere dağıt"],
+    dm:["DM Turları","Mesajı üret, kopyala, işaretle"],
+  };
+  const [h,d]=META[S.view]||[it?it.lbl:"",""];
+  t.append(el("div",{},el("h1",{},h),el("div",{class:"desc"},d)));
+  t.append(el("div",{class:"spacer"}));
+
+  if(S.view==="triyaj"){
+    const st=el("div",{class:"subtabs"});
+    [["toplu","Toplu işaretleme"],["hizli","Hızlı triyaj"]].forEach(([k,l])=>
+      st.append(el("button",{"aria-selected":String(S.sub===k),
+        onclick:()=>{S.sub=k;S.rapidIdx=0;render();}},l)));
+    t.append(st);
+  }
+  if(S.view==="dm"){
+    const st=el("div",{class:"subtabs"});
+    ROUNDS.forEach(r=>st.append(el("button",{"aria-selected":String(S.round===r.id),title:r.hint,
+      onclick:()=>{S.round=r.id;S.dmSel=null;render();}},r.label)));
+    t.append(st);
+    t.append(el("button",{class:"btn sm",onclick:()=>assignDM(false),
+      title:"Yakın Network listesine %20/%40/%40 oranıyla A/B/C ata"},"DM gruplarını hesapla"));
+  }
+  if(["havuz","favori","l-yakin","l-hedef","l-izleme","l-pas"].includes(S.view)){
+    const w=el("div",{class:"search"},el("span",{class:"mag"},"⌕"));
+    const i=el("input",{placeholder:"İsim, şirket, pozisyon ara…",value:S.f.q,
+      oninput:e=>{S.f.q=e.target.value;schedule();}});
+    w.append(i);t.append(w);
+  }
+  t.append(el("button",{class:"btn sm ghost",disabled:!S.undo.length,onclick:undo,
+    title:S.undo.length?"Geri al: "+S.undo[S.undo.length-1].label:"Geri alınacak işlem yok"},"↺"));
+}
+
+/* ============================================================
+   Filtre çubuğu
+   ============================================================ */
+let openPop=null;
+function fdrop(label,field,key){
+  const opts=facet(field);
+  const box=el("div",{class:"fdrop"});
+  const b=el("button",{class:"btn sm",onclick:e=>{
+    e.stopPropagation();
+    const was=pop.classList.contains("hidden");
+    document.querySelectorAll(".fpop").forEach(x=>x.classList.add("hidden"));
+    pop.classList.toggle("hidden",!was);
+  }}, label, S.f[key].size?el("span",{class:"cap"},String(S.f[key].size)):null, " ▾");
+  const pop=el("div",{class:"fpop hidden",onclick:e=>e.stopPropagation()});
+  opts.forEach(([v,n])=>{
+    const inp=el("input",{type:"checkbox",onchange:()=>{
+      S.f[key].has(v)?S.f[key].delete(v):S.f[key].add(v);render();}});
+    inp.checked=S.f[key].has(v);
+    pop.append(el("label",{},inp,el("span",{},v),el("span",{class:"n"},tr(n))));
+  });
+  if(!opts.length)pop.append(el("div",{style:"padding:8px;color:var(--muted);font-size:12.5px"},"Seçenek yok"));
+  box.append(b,pop);return box;
+}
+function filterBar(){
+  const bar=el("div",{class:"fbar"},
+    fdrop("Sektör","Sektör","sektor"),
+    fdrop("Kaynak","Kaynak","kaynak"),
+    fdrop("Kıdem","Kıdem","kidem"),
+    fdrop("İlişki","İlişki","iliski"),
+    S.view==="havuz"||S.view==="favori"?fdrop("Liste","Liste","liste"):null,
+    el("button",{class:"chip","aria-pressed":String(S.f.fav),
+      onclick:()=>{S.f.fav=!S.f.fav;render();}},"★ Favori"),
+    el("button",{class:"chip","aria-pressed":String(S.f.kararsiz),
+      onclick:()=>{S.f.kararsiz=!S.f.kararsiz;render();}},"Kararsız"),
+    el("span",{class:"spacer"}),
+    el("span",{style:"font-size:12.5px;color:var(--muted)"},
+      `${tr(filtered().length)} / ${tr(baseSet().length)} kişi`));
+  return bar;
+}
+function activeTags(){
+  if(!filtreAktif())return null;
+  const box=el("div",{class:"factive"});
+  const tag=(lab,val,rm)=>box.append(el("span",{class:"ftag"},
+    el("span",{},lab+": "),el("b",{},val),el("button",{onclick:()=>{rm();render();},title:"Kaldır"},"×")));
+  if(S.f.q)tag("Arama",S.f.q,()=>S.f.q="");
+  if(S.f.fav)tag("İşaret","★ Favori",()=>S.f.fav=false);
+  if(S.f.kararsiz)tag("Durum","Kararsız",()=>S.f.kararsiz=false);
+  if(S.f.ozel&&OZEL[S.f.ozel])tag("Öneri",OZEL[S.f.ozel].lbl,()=>S.f.ozel=null);
+  [["Sektör","sektor"],["Kaynak","kaynak"],["Kıdem","kidem"],["İlişki","iliski"],["Liste","liste"]]
+    .forEach(([lab,key])=>S.f[key].forEach(v=>tag(lab,v,()=>S.f[key].delete(v))));
+  box.append(el("span",{class:"spacer"}),
+    el("button",{class:"btn sm ghost",onclick:()=>{filtreTemizle();render();}},"Tümünü temizle"));
+  return box;
+}
+
+/* ============================================================
+   Toplu aksiyon çubuğu
+   ============================================================ */
+function bulkBar(vis){
+  const secili=S.sel.size?S.people.filter(p=>S.sel.has(p._i)):null;
+  const hedef=secili||vis;
+  if(!secili&&!filtreAktif())return null;
+  const act=(cls,lab,val,field)=>el("button",{class:"btn sm "+cls,onclick:()=>{
+    if(!hedef.length)return toast("Kimse seçili değil.");
+    if(hedef.length>400&&!confirm(`${tr(hedef.length)} kişiye uygulanacak. Emin misin? (Geri alınabilir)`))return;
+    apply(hedef,field||"Liste",val);S.sel.clear();render();
+    toast(`${tr(hedef.length)} kişi güncellendi.`);
+  }},lab);
+  return el("div",{class:"bulk"},
+    el("span",{class:"n"},secili?`${tr(secili.length)} kişi seçili`:`Filtreye uyan ${tr(vis.length)} kişi`),
+    secili?el("button",{class:"btn sm ghost",onclick:()=>{S.sel.clear();render();}},"Seçimi bırak")
+      :el("button",{class:"btn sm ghost",onclick:()=>{vis.forEach(p=>S.sel.add(p._i));render();}},"Hepsini seç"),
+    el("span",{class:"spacer"}),
+    act("yakin","→ Yakın Network","Yakın Network"),
+    act("hedef","→ Hedef Müşteri","Hedef Müşteri"),
+    act("izleme","→ İzleme","İzleme"),
+    act("","→ Pas","Pas"),
+    act("ghost","Kararı temizle",""),
+    act("fav","★ Favori","Yes","Favori"),
+    act("ghost","☆ Kaldır","","Favori"));
+}
+
+/* ============================================================
+   Sanal tablo
+   ============================================================ */
+const RH=40;
+function tableHead(){
+  const h=(k,lab,cls)=>el("span",{class:cls,onclick:()=>{
+    if(S.sort.key===k)S.sort.dir*=-1;
+    else{S.sort.key=k;S.sort.dir=(k==="Yakın puan"||k==="Hedef puan")?-1:1;}
+    render();}},lab+(S.sort.key===k?(S.sort.dir>0?" ↑":" ↓"):""));
+  return el("div",{class:"thead"},
+    el("span",{class:"c-chk"}),el("span",{class:"c-star"},"★"),
+    h("İsim","İsim","c-nm"),h("Şirket","Şirket","c-co"),h("Pozisyon","Pozisyon","c-po"),
+    h("Sektör","Sektör","c-se"),h("Yakın puan","Puan","c-sc"),h("Liste","Liste","c-ls"));
+}
+function virtualTable(items,height){
+  const box=el("div",{class:"vlist",style:`max-height:${height}`});
+  const sp=el("div",{class:"vsp"});box.append(sp);
+  const draw=()=>{
+    sp.style.height=(items.length*RH)+"px";
+    const top=box.scrollTop,h=box.clientHeight||520;
+    const a=Math.max(0,Math.floor(top/RH)-6), b=Math.min(items.length,Math.ceil((top+h)/RH)+6);
+    sp.innerHTML="";
+    for(let i=a;i<b;i++){
+      const p=items[i];
+      const chk=el("input",{type:"checkbox",onclick:e=>{
+        e.stopPropagation();
+        if(e.shiftKey&&S.lastRow!==null){
+          const lo=Math.min(S.lastRow,i),hi=Math.max(S.lastRow,i);
+          for(let j=lo;j<=hi;j++)S.sel.add(items[j]._i);
+        } else { S.sel.has(p._i)?S.sel.delete(p._i):S.sel.add(p._i); }
+        S.lastRow=i;render();}});
+      chk.checked=S.sel.has(p._i);
+      const sel=el("select",{onchange:e=>{apply([p],"Liste",e.target.value);render();},
+        onclick:e=>e.stopPropagation()});
+      sel.append(el("option",{value:""},"— karar yok"));
+      LISTELER.forEach(l=>sel.append(el("option",{value:l},l)));
+      sel.value=p["Liste"]||"";
+      sp.append(el("div",{class:"trow"+(S.sel.has(p._i)?" sel":""),style:`top:${i*RH}px`},
+        el("div",{class:"c-chk"},chk),
+        el("div",{class:"c-star"+(isYes(p["Favori"])?" on":""),title:"Favori",
+          onclick:()=>{apply([p],"Favori",isYes(p["Favori"])?"":"Yes");render();}},
+          isYes(p["Favori"])?"★":"☆"),
+        el("div",{class:"c-nm"}, p["LinkedIn URL"]
+          ? el("a",{href:p["LinkedIn URL"],target:"_blank",rel:"noopener"},p["İsim"]) : p["İsim"]),
+        el("div",{class:"c-co"},p["Şirket"]||"—"),
+        el("div",{class:"c-po"},p["Pozisyon"]||"—"),
+        el("div",{class:"c-se"},p["Sektör"]||"—"),
+        el("div",{class:"c-sc"},String(p["Yakın puan"]||"")),
+        el("div",{class:"c-ls"},sel)));
+    }
+  };
+  box.addEventListener("scroll",draw);
+  requestAnimationFrame(draw);
+  return box;
+}
+
+/* ============================================================
+   Görünüm: liste sayfaları
+   ============================================================ */
+function viewList(){
+  const page=$("#page");page.className="page flush";
+  const vis=filtered();
+  const card=el("div",{style:"height:100%;display:flex;flex-direction:column"});
+  card.append(filterBar());
+  const at=activeTags();if(at)card.append(at);
+  const bb=bulkBar(vis);if(bb)card.append(bb);
+  if(!vis.length){
+    card.append(el("div",{class:"empty"},
+      el("h3",{},"Bu görünümde kimse yok"),
+      el("p",{},filtreAktif()?"Filtreyi gevşetmeyi dene — üstteki rozetlerden tek tek kaldırabilirsin."
+        :"Triyaj bölümünden bu listeye kişi ekleyebilirsin.")));
+  } else {
+    card.append(el("div",{class:"listwrap"},tableHead(),virtualTable(vis,"calc(100vh - 260px)")));
+  }
+  page.append(card);
+}
+
+/* ============================================================
+   Öneri motoru
+
+   Veriye bakıp "sırada ne var" sorusunu cevaplıyor. Her öneri
+   somut: kaç kişi, neden önemli, hangi adımlar, ve tıklayınca
+   tam o kişilerin açıldığı bir hedef. Aciliyet lansman takvimine
+   göre yükseliyor — 20 Ağustos'a yaklaştıkça eksikler kritikleşiyor.
+   ============================================================ */
+function gunKaldi(iso){
+  return Math.round((new Date(iso+"T00:00:00")-new Date(TODAY+"T00:00:00"))/86400000);
+}
+function git(view,kur){
+  return ()=>{ filtreTemizle(); S.sel.clear(); S.rapidIdx=0;
+    if(kur)kur(); S.view=view; render();
+    $("#page").scrollTop=0; };
+}
+function oneriler(){
+  if(!S.people.length)return [];
+  const O=[];
+  const tot=S.people.length;
+  const kararsiz=cnt(p=>!p["Liste"]);
+  const yak=cnt(p=>p["Liste"]==="Yakın Network");
+  const hed=cnt(p=>p["Liste"]==="Hedef Müşteri");
+  const fav=cnt(p=>isYes(p["Favori"]));
+  const gunLansman=gunKaldi(TAKVIM.lansman);
+  const gunOnbilgi=gunKaldi(TAKVIM.onbilgi);
+  const acil=gunLansman<=10;
+
+  const ek=(o)=>O.push(o);
+
+  /* --- 1. Triyaj --- */
+  if(kararsiz>0){
+    const oran=kararsiz/tot;
+    ek({id:"triyaj",sev:oran>0.4?(acil?"kritik":"onemli"):"onemli",
+      baslik:"Havuzu ele",
+      ozet:`${tr(kararsiz)} kişi henüz hiçbir listeye atanmadı.`,
+      neden:"Kararsız kalan her kişi, ne lansman DM'i alacak ne de satış hunisine girecek demek. "+
+        "Triyaj bitmeden Notion'a aktaracak sağlam bir liste çıkmıyor.",
+      adimlar:["Toplu işaretlemede filtreyle büyük kümeleri hallet — kararların yaklaşık %70'i burada biter.",
+        "Kalan belirsiz grup için Hızlı triyaja geç, klavyeyle saniyede bir kişi.",
+        "En yüksek puandan başla; getiri düşünce dur, alttaki binlerce kişiyi görmen gerekmiyor."],
+      metrik:{simdi:tot-kararsiz,hedef:tot,birim:"kişi elendi"},
+      buton:"Triyaja git", git:git("triyaj",()=>{S.sub="toplu";S.f.kararsiz=true;})});
+  } else {
+    ek({id:"triyaj",sev:"tamam",baslik:"Havuz tamamen elendi",
+      ozet:`${tr(tot)} kişinin hepsi bir listeye atanmış.`,
+      neden:"Triyaj bitti. Bundan sonrası listelerin kalitesini yükseltmek.",
+      adimlar:["Yakın Network ve Hedef Müşteri listelerini gözden geçir.",
+        "İndir menüsünden Notion tablolarını çıkar."],
+      metrik:{simdi:tot,hedef:tot,birim:"kişi elendi"},
+      buton:"Listelere bak", git:git("l-yakin")});
+  }
+
+  /* --- 2 ve 3. Liste hedefleri --- */
+  const hedefOnerisi=(ad,view,liste,simdi,hedef,puanAlan)=>{
+    if(simdi===hedef){
+      ek({id:"h-"+view,sev:"tamam",baslik:`${ad} hedefi tuttu`,
+        ozet:`${tr(hedef)} kişi — spec hedefiyle birebir.`,
+        neden:"Liste doğru boyutta. Şimdi içeriğin kalitesine bak.",
+        adimlar:["Listeyi puana göre sırala ve en alttakileri gözden geçir."],
+        metrik:{simdi,hedef,birim:"kişi"},buton:"Listeyi aç",git:git(view)});
+    } else if(simdi<hedef){
+      const eksik=hedef-simdi;
+      ek({id:"h-"+view,sev:acil?"kritik":"onemli",baslik:`${ad} listesi eksik`,
+        ozet:`${tr(eksik)} kişi daha lazım — şu an ${tr(simdi)} / ${tr(hedef)}.`,
+        neden:`Spec bu listeyi ${tr(hedef)} kişi olarak tanımlıyor. Altında kalmak `+
+          (liste==="Yakın Network"
+            ? "lansman gününde organik yayılmanın zayıf kalması demek."
+            : "hunide yeterli hacim olmaması, yani ilk aylarda boş takvim demek."),
+        adimlar:["Triyajda kararsızları puana göre sırala, tepeden aşağı bu listeye ekle.",
+          "Yetmezse İzleme listesini gözden geçir — oradan yukarı çekebileceklerin olabilir.",
+          liste==="Hedef Müşteri"
+            ? "Hâlâ yetmezse Sales Navigator'dan 2. derece bağlantı çıkar."
+            : "Hâlâ yetmezse LinkedIn dışındaki tanıdıklarını elle ekle."],
+        metrik:{simdi,hedef,birim:"kişi"},
+        buton:"Aday bul",git:git("triyaj",()=>{S.sub="toplu";S.f.kararsiz=true;
+          S.sort={key:puanAlan,dir:-1};})});
+    } else {
+      const fazla=simdi-hedef;
+      ek({id:"h-"+view,sev:"firsat",baslik:`${ad} listesi şişmiş`,
+        ozet:`${tr(fazla)} kişi fazla — şu an ${tr(simdi)} / ${tr(hedef)}.`,
+        neden:"Spec'in uyarısı tam da bu: liste şişerse işe yaramaz hale gelir. "+
+          (liste==="Yakın Network"
+            ? "100 kişiye kişiselleştirilmiş DM atmak zaten iki gün sürüyor; 300 kişiye atamazsın."
+            : "Karar verici olmayan isimler pipeline'ı okunmaz hale getirir."),
+        adimlar:["Listeyi puana göre ARTAN sırala — en zayıflar üste gelsin.",
+          `En alttaki ${tr(fazla)} kişiyi seç ve İzleme listesine taşı.`,
+          "★ Favori işaretlediklerin listede kalsın; yıldız tam bu iş için var."],
+        metrik:{simdi,hedef,birim:"kişi"},
+        buton:"Zayıfları gör",git:git(view,()=>{S.sort={key:puanAlan,dir:1};})});
+    }
+  };
+  hedefOnerisi("Yakın Network","l-yakin","Yakın Network",yak,100,"Yakın puan");
+  hedefOnerisi("Hedef Müşteri","l-hedef","Hedef Müşteri",hed,180,"Hedef puan");
+
+  /* --- 4. Veri kalitesi: sektörü tanınmayan yüksek puanlılar --- */
+  const digerYuksek=S.people.filter(p=>p["Liste"]&&p["Liste"]!=="Pas"&&
+    (p["Sektör"]==="Diğer"||!p["Sektör"]));
+  if(digerYuksek.length){
+    ek({id:"sektor",sev:"firsat",baslik:"Sektörü tanınmayanlar",
+      ozet:`${tr(digerYuksek.length)} kişide sektör "Diğer" kaldı.`,
+      neden:"Sektör alanı mesajı kişiselleştirmenin en ucuz yolu; script şirket adından "+
+        "tahmin ediyor ama tanımadığı şirketleri boş bırakıyor. Bunlar A ve B grubundaysa "+
+        "mesaj genel kalır.",
+      adimlar:["Listeyi aç ve şirket adına bakarak sektörü elle düzelt.",
+        "Tekrar eden şirketler varsa anc_enrich.py'ye --config ile ekle, bir dahaki export'ta otomatik gelsin."],
+      metrik:{simdi:digerYuksek.length,hedef:0,birim:"kişi",tersYon:true},
+      buton:"Listele",git:git("havuz",()=>{S.f.sektor=new Set(["Diğer"]);
+        S.sort={key:"Yakın puan",dir:-1};})});
+  }
+
+  /* --- 5. Hedef Müşteri'de kıdemsizler --- */
+  const kidemsizHedef=S.people.filter(p=>p["Liste"]==="Hedef Müşteri"&&!p["Kıdem"]);
+  if(kidemsizHedef.length){
+    ek({id:"kidemsiz",sev:kidemsizHedef.length>hed*0.15?"onemli":"firsat",
+      baslik:"Hedef listesinde karar verici olmayanlar",
+      ozet:`${tr(kidemsizHedef.length)} kişinin kıdemi tanınamadı.`,
+      neden:"Hedef Müşteri listesinin tamamı karar verici olmalı — CEO, CTO, CDO, COO, VP, "+
+        "Direktör, Board. Kıdemi tanınmayan biri ya orta kademe ya da profili güncel değil. "+
+        "İkisi de aynı sonucu doğuruyor: cevapsız mesaj.",
+      adimlar:["Listeyi aç, pozisyon metnine bak.",
+        "Gerçekten karar vericiyse Kıdem alanını elle düzelt.",
+        "Değilse İzleme'ye taşı — şirket doğru olabilir, kişi yanlış."],
+      metrik:{simdi:kidemsizHedef.length,hedef:0,birim:"kişi",tersYon:true},
+      buton:"Gözden geçir",git:git("l-hedef",()=>{S.f.ozel="kidemsiz";})});
+  }
+
+  /* --- 6. Danışmanlık şirketleri hedef listesinde --- */
+  const rakip=S.people.filter(p=>p["Liste"]==="Hedef Müşteri"&&p["Danışmanlık şirketi"]==="Yes");
+  if(rakip.length){
+    ek({id:"rakip",sev:"onemli",baslik:"Hedef listesinde rakipler var",
+      ozet:`${tr(rakip.length)} kişi danışmanlık şirketinde çalışıyor.`,
+      neden:"McKinsey, Deloitte, Accenture ve benzerleri müşteri değil rakip. "+
+        "Onlara satış mesajı gitmesi hem boşa gider hem konumlanmanı zayıflatır. "+
+        "Network olarak değerliler — ama Hedef Müşteri listesinde değil.",
+      adimlar:["Listeyi aç ve tek tek bak.",
+        "İş getirme ihtimali olanları İzleme'ye taşı.",
+        "Gerçekten kurumsal bir alıcı rolündeyse listede bırak."],
+      metrik:{simdi:rakip.length,hedef:0,birim:"kişi",tersYon:true},
+      buton:"Ayıkla",git:git("l-hedef",()=>{S.f.ozel="danisman";})});
+  }
+
+  /* --- 7. Favori yokluğu --- */
+  if(fav===0&&yak>0){
+    ek({id:"favori",sev:"firsat",baslik:"Hiç favori işaretlenmemiş",
+      ozet:"★ Favori listesi boş.",
+      neden:"Yıldız, DM grubu A'yı şekillendiren şey. İşaretlemezsen A grubu sadece "+
+        "puana göre oluşur — ama puan, script'in tahmini. Kimin gerçekten önemli olduğunu "+
+        "sadece sen biliyorsun.",
+      adimlar:["Yakın Network listesini aç.",
+        "Lansman günü senin için gerçekten fark yaratacak isimleri yıldızla.",
+        "DM Turları'nda 'DM gruplarını hesapla'ya bas — favoriler A'ya çekilir."],
+      metrik:{simdi:0,hedef:20,birim:"favori"},
+      buton:"Yıldızlamaya başla",git:git("l-yakin")});
+  }
+
+  /* --- 8. DM grupları atanmamış --- */
+  const grupsuz=S.people.filter(p=>p["Liste"]==="Yakın Network"&&!p["Lansman DM grubu"]);
+  if(grupsuz.length&&yak>0){
+    ek({id:"dmgrup",sev:"onemli",baslik:"DM grupları atanmamış",
+      ozet:`${tr(grupsuz.length)} kişinin A/B/C grubu boş.`,
+      neden:"Grup atanmayan herkes C muamelesi görüyor, yani ortak metin alıyor. "+
+        "100 kişiye tek tip mesaj atmak etkiyi öldürür — A/B/C ayrımı spec'in "+
+        "en önemli tasarım kararlarından biri.",
+      adimlar:["DM Turları'na git.",
+        "'DM gruplarını hesapla' butonuna bas — %20/%40/%40 oranıyla dağıtılır.",
+        "Favoriler otomatik olarak A'ya çekilir."],
+      metrik:{simdi:yak-grupsuz.length,hedef:yak,birim:"kişi gruplanmış"},
+      buton:"DM Turları'na git",git:git("dm")});
+  }
+
+  /* --- 9. Takvim: turlar --- */
+  ROUNDS.forEach(r=>{
+    const sc=r.id==="r3"?S.people.filter(p=>isYes(p["Müşteri potansiyeli var mı"]))
+                        :S.people.filter(p=>p["Liste"]==="Yakın Network");
+    if(!sc.length)return;
+    const d=sc.filter(p=>isYes(p[r.field])).length;
+    if(d===sc.length){
+      ek({id:"tur-"+r.id,sev:"tamam",baslik:r.label+" turu bitti",
+        ozet:`${tr(sc.length)} kişinin hepsine gönderildi.`,
+        neden:"Bu tur tamamlandı. Gelen cevapları işaretlemeyi unutma.",
+        adimlar:["Cevap gelenleri DM Turları'nda işaretle.","Havuzu indirip Notion'a aktar."],
+        metrik:{simdi:d,hedef:sc.length,birim:"mesaj"},
+        buton:"Tura bak",git:git("dm",()=>{S.round=r.id;})});
+      return;
+    }
+    const hedefGun=r.id==="r1"?gunOnbilgi:(r.id==="r2"?gunLansman:gunLansman-1);
+    let sev="firsat";
+    if(d>0) sev="onemli";
+    if(hedefGun<=2) sev="kritik";
+    else if(hedefGun<=7) sev="onemli";
+    const zaman = hedefGun>0 ? `${hedefGun} gün kaldı` : (hedefGun===0?"BUGÜN":`${Math.abs(hedefGun)} gün gecikti`);
+    if(hedefGun<0&&d===0) sev="kritik";
+    ek({id:"tur-"+r.id,sev,baslik:`${r.label} turu — ${zaman}`,
+      ozet:d?`${tr(sc.length-d)} kişi kaldı (${tr(d)} / ${tr(sc.length)} gönderildi).`
+           :`${r.tarih} · ${tr(sc.length)} kişilik tur henüz başlamadı.`,
+      neden:r.hint+" "+(r.id==="r1"
+        ? "Ön-bilgilendirme, lansman günü paylaşım yapacak kişileri hazırlıyor; atlanırsa duyuru sessiz kalır."
+        : r.id==="r2" ? "Lansmanın organik erişimi büyük ölçüde bu turdan geliyor."
+        : "Assessment daveti, ilk ücretli işin en olası kaynağı."),
+      adimlar:["Şablonları aç ve kendi sesinle bir tur geçir — metinler taslak.",
+        "A grubuyla başla; en çok emek isteyen ama en değerli 20 mesaj orada.",
+        "Her mesajdan sonra 'Gönderildi işaretle' — uygulama sıradakine geçer."],
+      metrik:{simdi:d,hedef:sc.length,birim:"mesaj"},
+      buton:"Turu aç",git:git("dm",()=>{S.round=r.id;S.dmState="kalan";})});
+  });
+
+  /* --- 10. A grubu doğrulama --- */
+  const agrubu=cnt(p=>p["Lansman DM grubu"]==="A");
+  if(agrubu){
+    ek({id:"agrubu",sev:"onemli",baslik:"A grubunu tek tek doğrula",
+      ozet:`${tr(agrubu)} kişilik A grubu elle kontrol edilmeli.`,
+      neden:"Script kıdem ve sektörü kalıp eşlemesiyle tahmin ediyor, yaklaşık %85 isabetle. "+
+        "A grubu lansmanın en değerli mesajları — orada yanlış bir şirket ya da sektör "+
+        "etiketi doğrudan mesaja yansır ve ilişkiye zarar verir.",
+      adimlar:["A grubunu aç, her satırdaki şirket ve pozisyonu LinkedIn profiliyle karşılaştır.",
+        "İsimlerin yazımını kontrol et — export bazen büyük harfle geliyor.",
+        "Yanlış olanları düzelt, listeye ait olmayanları B'ye indir."],
+      metrik:{simdi:agrubu,hedef:agrubu,birim:"kişi",sadeceSayi:true},
+      buton:"A grubunu aç",git:git("havuz",()=>{S.f.ozel="agrubu";})});
+  }
+
+  /* --- 11. Cevap geldi ama not yok --- */
+  const notsuz=S.people.filter(OZEL.notsuz.f);
+  if(notsuz.length){
+    ek({id:"notsuz",sev:"onemli",baslik:"Cevap geldi ama not düşülmemiş",
+      ozet:`${tr(notsuz.length)} kişiden cevap var, karşılığında not yok.`,
+      neden:"LinkedIn gelen kutusunu okuyamıyoruz; cevabın içeriği sadece senin notunda kalıyor. "+
+        "Not düşülmezse iki hafta sonra o konuşmanın ne olduğunu hatırlamazsın ve "+
+        "takip mesajı genel çıkar.",
+      adimlar:["DM Turları'nda 'Cevap' filtresine geç.",
+        "Her biri için tek cümlelik not yaz — ne dedi, ne istiyor.",
+        "Müşteri potansiyeli varsa Hedef Müşteri listesine de al."],
+      metrik:{simdi:notsuz.length,hedef:0,birim:"kişi",tersYon:true},
+      buton:"Cevapları aç",git:git("dm",()=>{S.dmState="cevap";})});
+  }
+
+  /* --- 12. Eksik veri --- */
+  const urlsiz=S.people.filter(p=>p["Liste"]&&p["Liste"]!=="Pas"&&!p["LinkedIn URL"]);
+  if(urlsiz.length){
+    ek({id:"urlsiz",sev:"firsat",baslik:"LinkedIn linki olmayanlar",
+      ozet:`${tr(urlsiz.length)} kişide profil URL'i boş.`,
+      neden:"Profil linki olmadan DM turunda 'Kopyala + profili aç' çalışmıyor; "+
+        "o kişileri elle aramak zorunda kalırsın ve tur yavaşlar.",
+      adimlar:["Listeyi aç, LinkedIn'de isimlerini arayıp profil linkini elle ekle.",
+        "Bulamadıklarını Pas'a al — ulaşamayacağın kişi listede yer kaplamasın."],
+      metrik:{simdi:urlsiz.length,hedef:0,birim:"kişi",tersYon:true},
+      buton:"Listele",git:git("havuz",()=>{S.f.ozel="urlsiz";})});
+  }
+
+  /* --- 13. Notion aktarımı --- */
+  if(yak>0&&hed>0&&kararsiz===0){
+    ek({id:"notion",sev:"firsat",baslik:"Notion'a aktarmaya hazır",
+      ozet:`${tr(yak)} + ${tr(hed)} kişi iki tabloya çıkmaya hazır.`,
+      neden:"Triyaj bitti ve listeler doldu. Notion'a aktarınca kayıt kalıcı hale gelir "+
+        "ve telefondan da erişebilirsin.",
+      adimlar:["Sol alttaki İndir menüsünden Tablo 1 ve Tablo 2'yi al.",
+        "Notion'da import et, property tiplerini rehberdeki tabloya göre ayarla.",
+        "Havuz dosyasını da indir — bu uygulamanın çalışma dosyası o."],
+      metrik:{simdi:yak+hed,hedef:280,birim:"kişi"},
+      buton:"İndir menüsünü aç",git:()=>{ $("#savePop").classList.remove("hidden");
+        toast("İndir menüsü açıldı."); }});
+  }
+
+  /* --- 14. Kaydedilmemiş iş --- */
+  if(S.dirty){
+    ek({id:"kaydet",sev:"kritik",baslik:"Kaydedilmemiş işin var",
+      ozet:"Uygulama veriyi saklamıyor — sekme kapanırsa bu oturumun işi gider.",
+      neden:"Tarayıcı depolaması bilerek kullanılmıyor: veri hep senin elindeki dosyada kalsın "+
+        "diye. Bunun bedeli, kaydetmeyi senin hatırlaman.",
+      adimlar:["Sol alttaki İndir → Havuz'a bas.",
+        "Dosyayı sabit bir yere kaydet, üzerine yazarak devam et.",
+        "Geri döndüğünde aynı dosyayı yükle, kaldığın yerden devam edersin."],
+      buton:"Şimdi kaydet",git:()=>{ exportHavuz(); render(); }});
+  }
+
+  O.sort((a,b)=>SEV[a.sev].sira-SEV[b.sev].sira);
+  return O;
+}
+
+/* ============================================================
+   Görünüm: Yol Haritası
+   ============================================================ */
+/* Metrik rozeti. "40 / 0" gibi bir oran anlamsız — hedefi sıfır olan
+   işlerde (rakip ayıklama, eksik veri) sadece kalan sayıyı göster. */
+function metrikRozet(m){
+  if(!m)return null;
+  if(m.tersYon||m.sadeceSayi)return `${tr(m.simdi)} ${m.birim||"kişi"}`;
+  return `${tr(m.simdi)} / ${tr(m.hedef)}`;
+}
+function oneriKarti(o,acik){
+  const s=SEV[o.sev];
+  const bas=el("div",{style:"display:flex;align-items:center;gap:11px;cursor:pointer",
+    onclick:()=>{S.acikOneri=S.acikOneri===o.id?null:o.id;render();}},
+    el("span",{style:`width:8px;height:8px;border-radius:99px;flex:0 0 8px;background:${s.renk}`}),
+    el("div",{style:"flex:1;min-width:0"},
+      el("div",{style:"font-weight:620;font-size:14.5px"},o.baslik),
+      el("div",{class:"note",style:"margin-top:2px"},o.ozet)),
+    o.metrik?el("span",{class:"pill"},metrikRozet(o.metrik)):null,
+    el("span",{style:"color:var(--muted);font-size:12px"},acik?"▴":"▾"));
+  const kart=el("div",{class:"card",style:"padding:15px 17px"},bas);
+  if(acik){
+    const gov=el("div",{style:"margin-top:14px;padding-top:14px;border-top:1px solid var(--line)"});
+    gov.append(el("div",{style:"font-size:13.5px;line-height:1.65;color:var(--ink-2)"},o.neden));
+    if(o.metrik){
+      const m=o.metrik;
+      /* İlerleme çubuğu sadece "hedefe doğru gidiyorum" durumunda anlamlı.
+         Hedefi aşmışsa ya da hedef sıfırsa çubuk yanıltıcı olur — %100 dolu
+         bir çubuk "bitti" gibi okunur, oysa fazlalık elenecek demek. */
+      let satir, sag=null, oran=null;
+      if(m.tersYon){ satir=`${tr(m.simdi)} ${m.birim} kaldı`; sag="hedef: sıfır"; }
+      else if(m.sadeceSayi){ satir=`${tr(m.simdi)} ${m.birim}`; sag="elle kontrol"; }
+      else if(m.simdi>m.hedef){ satir=`${tr(m.simdi)} / ${tr(m.hedef)} ${m.birim}`;
+        sag=`${tr(m.simdi-m.hedef)} fazla`; }
+      else { oran=m.hedef?Math.round(m.simdi/m.hedef*100):100;
+        satir=`${tr(m.simdi)} / ${tr(m.hedef)} ${m.birim}`; sag=`%${oran}`; }
+      const blok=el("div",{style:"margin-top:14px"},
+        el("div",{style:"display:flex;justify-content:space-between;font-size:12px;color:var(--muted)"+(oran===null?"":";margin-bottom:6px")},
+          el("span",{},satir),el("span",{},sag)));
+      if(oran!==null)blok.append(el("div",{class:"progress"},
+        el("i",{style:`width:${oran}%;background:${s.renk}`})));
+      gov.append(blok);
+    }
+    if(o.adimlar&&o.adimlar.length){
+      const ol=el("ol",{style:"margin:14px 0 0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--ink-2)"});
+      o.adimlar.forEach(a=>ol.append(el("li",{},a)));
+      gov.append(ol);
+    }
+    gov.append(el("div",{style:"margin-top:15px"},
+      el("button",{class:"btn gold sm",onclick:o.git},o.buton||"Git →")));
+    kart.append(gov);
+  }
+  return kart;
+}
+function viewYol(){
+  const page=$("#page");page.className="page";
+  const O=oneriler();
+  const acikOl=O.filter(o=>o.sev!=="tamam"), bitti=O.filter(o=>o.sev==="tamam");
+  const gun=gunKaldi(TAKVIM.lansman);
+
+  page.append(el("div",{class:"kpis"},
+    el("div",{class:"kpi gold"},el("div",{class:"lab"},"Lansmana"),
+      el("div",{class:"val"},gun>0?tr(gun):(gun===0?"BUGÜN":tr(Math.abs(gun))),
+        el("small",{}," "+(gun>0?"gün":(gun===0?"":"gün geçti")))),
+      el("div",{class:"sub"},"20 Ağustos 2026, Perşembe")),
+    el("div",{class:"kpi"},el("div",{class:"lab"},"Açık iş"),
+      el("div",{class:"val"},tr(acikOl.length)),
+      el("div",{class:"sub"},`${acikOl.filter(o=>o.sev==="kritik").length} kritik · ${acikOl.filter(o=>o.sev==="onemli").length} önemli`)),
+    el("div",{class:"kpi"},el("div",{class:"lab"},"Tamamlanan"),
+      el("div",{class:"val"},tr(bitti.length)),
+      el("div",{class:"sub"},"kontrol edildi, sorun yok"))));
+
+  if(!acikOl.length){
+    page.append(el("div",{class:"card",style:"margin-top:14px"},el("div",{class:"empty"},
+      el("h3",{},"Açık iş yok"),el("p",{},"Her şey yerinde. Lansmana kadar listeleri taze tut."))));
+  }
+  ["kritik","onemli","firsat"].forEach(sev=>{
+    const grup=acikOl.filter(o=>o.sev===sev);
+    if(!grup.length)return;
+    page.append(el("h3",{style:`margin:20px 0 10px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:${SEV[sev].renk};font-weight:700`},
+      SEV[sev].lbl+` · ${grup.length}`));
+    const w=el("div",{class:"grid",style:"gap:10px"});
+    grup.forEach(o=>w.append(oneriKarti(o,S.acikOneri===o.id)));
+    page.append(w);
+  });
+  if(bitti.length){
+    page.append(el("h3",{style:`margin:24px 0 10px;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700`},
+      `Tamamlandı · ${bitti.length}`));
+    const w=el("div",{class:"grid",style:"gap:10px;opacity:.72"});
+    bitti.forEach(o=>w.append(oneriKarti(o,S.acikOneri===o.id)));
+    page.append(w);
+  }
+}
+
+/* ============================================================
+   Görünüm: genel bakış
+   ============================================================ */
+function segBar(data,total){
+  const st=el("div",{class:"stack"});
+  data.forEach(([lab,n])=>{ if(!n)return;
+    st.append(el("i",{style:`width:${(n/total*100).toFixed(2)}%;background:var(${VAR[lab]||"--rule"})`,title:`${lab}: ${tr(n)}`}));});
+  const lg=el("div",{class:"legend"});
+  data.forEach(([lab,n])=>lg.append(el("span",{},
+    el("span",{class:"sw",style:`background:var(${VAR[lab]||"--rule"})`}),lab,el("b",{},tr(n)))));
+  return el("div",{},st,lg);
+}
+function barList(rows,max){
+  const b=el("div",{class:"bars"});
+  rows.forEach(([lab,n])=>b.append(el("div",{class:"bar"},
+    el("span",{class:"nm",title:lab},lab),
+    el("span",{class:"tr"},el("i",{style:`width:${max?(n/max*100).toFixed(1):0}%`})),
+    el("span",{class:"vl"},tr(n)))));
+  return b;
+}
+function viewOzet(){
+  const page=$("#page");page.className="page";
+  const tot=S.people.length;
+  const karar=cnt(p=>p["Liste"]), fav=cnt(p=>isYes(p["Favori"]));
+  const yak=cnt(p=>p["Liste"]==="Yakın Network"), hed=cnt(p=>p["Liste"]==="Hedef Müşteri");
+  const pct=tot?Math.round(karar/tot*100):0;
+
+  /* --- SIRADA NE VAR: sayfanın en üstünde. Öneri motorunun ilk beş
+         maddesi; tıklayınca Çalışma altındaki Yol Haritası'nda açılır. --- */
+  const O=oneriler(), acikOl=O.filter(o=>o.sev!=="tamam");
+  const gun=gunKaldi(TAKVIM.lansman);
+  const basSat=el("div",{class:"hd"},"Sırada ne var",
+    el("span",{class:"spacer"}),
+    el("span",{style:"text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted)"},
+      gun>0?`Lansmana ${tr(gun)} gün`:(gun===0?"Lansman bugün":`Lansmandan ${tr(Math.abs(gun))} gün sonra`)),
+    el("button",{class:"btn sm ghost",style:"text-transform:none;letter-spacing:0",
+      onclick:()=>{S.view="yol";S.acikOneri=null;render();}},`Tümü (${acikOl.length}) →`));
+  const govde=el("div",{style:"display:flex;flex-direction:column"});
+  if(!acikOl.length){
+    govde.append(el("div",{class:"bd note"},"Açık iş yok — her şey yerinde."));
+  } else {
+    acikOl.slice(0,5).forEach((o,i)=>{
+      const s=SEV[o.sev];
+      govde.append(el("div",{style:`display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;${i?"border-top:1px solid var(--line)":""}`,
+        onclick:()=>{S.acikOneri=o.id;S.view="yol";render();}},
+        el("span",{style:`width:8px;height:8px;border-radius:99px;flex:0 0 8px;background:${s.renk}`}),
+        el("div",{style:"flex:1;min-width:0"},
+          el("div",{style:"font-weight:600;font-size:13.5px"},o.baslik),
+          el("div",{class:"note"},o.ozet)),
+        o.metrik?el("span",{class:"pill"},metrikRozet(o.metrik)):null,
+        el("span",{style:"color:var(--muted);font-size:12px;white-space:nowrap"},"Detay →")));
+    });
+  }
+  page.append(el("div",{class:"card",style:"margin-bottom:16px"},basSat,govde));
+
+  const kpi=(cls,lab,val,sub)=>el("div",{class:"kpi "+cls},
+    el("div",{class:"lab"},lab),el("div",{class:"val"},val),sub?el("div",{class:"sub"},sub):null);
+  page.append(el("div",{class:"kpis"},
+    kpi("","Havuz",tr(tot),"LinkedIn bağlantısı"),
+    kpi("","Karar verildi",`${tr(karar)} `,`havuzun %${pct}'ı · ${tr(tot-karar)} kararsız`),
+    kpi("yakin","Yakın Network",tr(yak),hedefNotu(yak,100)),
+    kpi("hedef","Hedef Müşteri",tr(hed),hedefNotu(hed,180)),
+    kpi("gold","★ Favori",tr(fav),"öne çıkardıkların")));
+
+  const dagilim=[...LISTELER.map(l=>[l,cnt(p=>p["Liste"]===l)])];
+  const kararsiz=tot-karar;
+
+  page.append(el("div",{class:"grid g2"},
+    el("div",{class:"card"},el("div",{class:"hd"},"Liste dağılımı"),
+      el("div",{class:"bd"},
+        segBar(dagilim.concat(kararsiz?[["Kararsız",kararsiz]]:[]),tot||1),
+        el("div",{class:"note",style:"margin-top:14px"},
+          kararsiz? `${tr(kararsiz)} kişi henüz elenmedi. Triyaj bölümünde toplu işaretlemeyle başla — kararların çoğu orada biter.`
+                  : "Havuzun tamamı elendi. Yakın Network ve Hedef Müşteri listelerini Notion'a aktarabilirsin."))),
+    el("div",{class:"card"},el("div",{class:"hd"},"DM turları"),
+      el("div",{class:"bd"},
+        (()=>{const w=el("div",{style:"display:flex;flex-direction:column;gap:15px"});
+          ROUNDS.forEach(r=>{
+            const sc=r.id==="r3"?S.people.filter(p=>isYes(p["Müşteri potansiyeli var mı"]))
+                               :S.people.filter(p=>p["Liste"]==="Yakın Network");
+            const d=sc.filter(p=>isYes(p[r.field])).length;
+            const q=sc.length?Math.round(d/sc.length*100):0;
+            w.append(el("div",{},
+              el("div",{style:"display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"},
+                el("span",{},el("b",{style:"font-weight:600"},r.label),
+                  el("span",{style:"color:var(--muted)"}," · "+r.tarih)),
+                el("span",{style:"color:var(--muted);font-variant-numeric:tabular-nums"},`${tr(d)} / ${tr(sc.length)}`)),
+              el("div",{class:"progress"},el("i",{style:`width:${q}%`}))));
+          });
+          const cev=cnt(p=>isYes(p["Cevap geldi"]));
+          w.append(el("div",{class:"note"},`${tr(cev)} kişiden cevap geldi. LinkedIn gelen kutusu okunamadığı için bu sayı senin işaretlemelerinden geliyor.`));
+          return w;})()))));
+
+  const sekt=facetAll("Sektör").slice(0,8), kayn=facetAll("Kaynak").slice(0,8);
+  page.append(el("div",{class:"grid g2",style:"margin-top:14px"},
+    el("div",{class:"card"},el("div",{class:"hd"},"Sektör dağılımı"),
+      el("div",{class:"bd"},barList(sekt,sekt[0]?sekt[0][1]:1))),
+    el("div",{class:"card"},el("div",{class:"hd"},"Kaynak havuzu"),
+      el("div",{class:"bd"},barList(kayn,kayn[0]?kayn[0][1]:1)))));
+
+}
+/* Spec hedefine göre okuma: altındaysa kaç kişi eksik, üstündeyse kaç fazla.
+   Hedefi aşınca "%316" gibi anlamsız bir yüzde göstermek yerine
+   fazlalığı söylemek daha kullanışlı — o fazlalık elenecek demek. */
+function hedefNotu(n,hedef){
+  if(n===hedef) return `hedef ${hedef} · tam`;
+  if(n<hedef) return `hedef ${hedef} · ${tr(hedef-n)} kişi eksik`;
+  return `hedef ${hedef} · ${tr(n-hedef)} fazla, elenmeli`;
+}
+function facetAll(field){
+  const c=new Map();
+  for(const p of S.people){const v=p[field]||"—";c.set(v,(c.get(v)||0)+1);}
+  return [...c.entries()].sort((a,b)=>b[1]-a[1]);
+}
+
+/* ============================================================
+   Görünüm: triyaj
+   ============================================================ */
+function recentStrip(){
+  const tek=S.undo.filter(u=>u.snap.length===1).slice(-6).reverse();
+  if(!tek.length)return null;
+  const box=el("div",{class:"recent"},el("h4",{},"Son kararlar"));
+  tek.forEach(u=>{
+    const p=u.snap[0].p,yeni=p[u.field];
+    box.append(el("div",{class:"r"},el("b",{},p["İsim"]),el("span",{},"→"),
+      u.field==="Favori"?el("span",{class:"pill gold"},yeni?"★ Favori":"☆ kaldırıldı")
+        :el("span",{class:"pill "+(CLS[yeni]||"")},yeni||"karar temizlendi"),
+      el("span",{class:"spacer"}),
+      el("button",{onclick:()=>{const i=S.undo.indexOf(u);if(i<0)return;
+        S.undo.splice(i,1);u.snap.forEach(({p,prev})=>p[u.field]=prev);
+        S.dirty=true;render();toast("Geri alındı: "+p["İsim"]);}},"geri al")));
+  });
+  return box;
+}
+function viewTriyaj(){
+  const page=$("#page");
+  if(S.sub==="toplu"){
+    page.className="page flush";
+    const vis=filtered();
+    const w=el("div",{});
+    w.append(filterBar());
+    const at=activeTags();if(at)w.append(at);
+    w.append(bulkBar(vis)||el("div",{class:"bulk"},
+      el("span",{class:"n"},`Havuzda ${tr(vis.length)} kişi`),
+      el("span",{class:"spacer"}),
+      el("span",{style:"font-size:12.5px;color:var(--muted)"},
+        "Bir filtre seç ya da satırları işaretle — toplu aksiyonlar burada açılır")));
+    w.append(el("div",{class:"listwrap"},tableHead(),virtualTable(vis,"calc(100vh - 300px)")));
+    page.append(w);
+    return;
+  }
+  page.className="page";
+  const q=filtered();
+  if(!q.length){
+    page.append(el("div",{class:"card"},el("div",{class:"empty"},
+      el("h3",{},"Kuyruk boş"),el("p",{},"Toplu işaretleme sekmesinden filtreyi gevşet."))));
+    return;
+  }
+  S.rapidIdx=Math.max(0,Math.min(S.rapidIdx,q.length-1));
+  const p=q[S.rapidIdx], iliski=(p["İlişki"]||"").trim();
+  const next=()=>{S.rapidIdx++;if(S.rapidIdx>=q.length){S.rapidIdx=q.length-1;render();toast("Kuyruğun sonu.");}else render();};
+  const set=(v,f)=>{apply([p],f||"Liste",v);next();};
+
+  page.append(el("div",{style:"display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-bottom:12px;flex-wrap:wrap;gap:10px"},
+    el("span",{},`${tr(S.rapidIdx+1)} / ${tr(q.length)} · filtreye uyan kuyruk`),
+    el("span",{},"1 Yakın · 2 Hedef · 3 İzleme · X Pas · F Favori · Z geri al · → atla")));
+  page.append(el("div",{class:"bigcard"},
+    el("div",{style:"display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap"},
+      el("div",{style:"min-width:0"},
+        el("h2",{},isYes(p["Favori"])?"★ ":"",p["İsim"]),
+        el("div",{class:"role"},[p["Pozisyon"],p["Şirket"]].filter(Boolean).join(" · ")||"—")),
+      el("div",{class:"spacer"}),
+      p["LinkedIn URL"]?el("a",{class:"btn",href:p["LinkedIn URL"],target:"_blank",rel:"noopener"},"Profili aç ↗"):null),
+    el("div",{class:"tags"},
+      p["Sektör"]?el("span",{class:"tag"},p["Sektör"]):null,
+      p["Kaynak"]?el("span",{class:"tag"},p["Kaynak"]):null,
+      p["Kıdem"]?el("span",{class:"tag"},"Kıdem: "+p["Kıdem"]):null,
+      iliski?el("span",{class:"tag "+(iliski==="Sıcak"?"hot":iliski==="Ilık"?"warm":"")},iliski):null,
+      el("span",{class:"tag"},"Yakın puan "+(p["Yakın puan"]||"0")),
+      el("span",{class:"tag"},"Hedef puan "+(p["Hedef puan"]||"0")),
+      p["Bağlanma tarihi"]?el("span",{class:"tag"},"Bağlantı: "+p["Bağlanma tarihi"]):null,
+      p["Liste"]?el("span",{class:"pill "+CLS[p["Liste"]]},"Mevcut: "+p["Liste"]):null),
+    el("div",{class:"keys"},
+      el("button",{class:"keybtn yakin",onclick:()=>set("Yakın Network")},"Yakın Network",el("kbd",{},"1")),
+      el("button",{class:"keybtn hedef",onclick:()=>set("Hedef Müşteri")},"Hedef Müşteri",el("kbd",{},"2")),
+      el("button",{class:"keybtn izleme",onclick:()=>set("İzleme")},"İzleme",el("kbd",{},"3")),
+      el("button",{class:"keybtn",onclick:()=>set("Pas")},"Pas",el("kbd",{},"X")),
+      el("button",{class:"keybtn fav",onclick:()=>{apply([p],"Favori",isYes(p["Favori"])?"":"Yes");render();}},
+        isYes(p["Favori"])?"★ Favoriden çıkar":"☆ Favori",el("kbd",{},"F")),
+      el("button",{class:"keybtn",onclick:next},"Atla",el("kbd",{},"→"))),
+    el("div",{style:"margin-top:18px"},
+      el("input",{class:"inp",placeholder:"Triyaj notu — Enter'a bas",value:p["Triyaj notu"]||"",
+        onkeydown:e=>{if(e.key==="Enter"){apply([p],"Triyaj notu",e.target.value.trim());toast("Not kaydedildi.");next();}}})),
+    recentStrip()));
+}
+
+/* ============================================================
+   Görünüm: DM turları
+   ============================================================ */
+const rnd=()=>ROUNDS.find(r=>r.id===S.round);
+function fill(t,p){
+  const m={"{ilkAd}":firstName(p["İsim"]),"{isim}":p["İsim"]||"","{sirket}":p["Şirket"]||"şirketiniz",
+    "{pozisyon}":p["Pozisyon"]||"","{sektor}":p["Sektör"]||"","{kaynak}":p["Kaynak"]||"","{ilisky}":p["İlişki"]||""};
+  return String(t).replace(/\{(ilkAd|isim|sirket|pozisyon|sektor|kaynak|ilisky)\}/g,x=>m[x]??x);
+}
+const ekey=i=>`${S.round}::${i}`;
+function msgFor(p){
+  const k=ekey(p._i);
+  if(S.edits[k]!==undefined)return S.edits[k];
+  return fill(S.tpl[S.round][p["Lansman DM grubu"]||"C"]||"",p);
+}
+function dmScope(){
+  const f=rnd().field;
+  return S.people.filter(p=> S.round==="r3" ? isYes(p["Müşteri potansiyeli var mı"])
+                                            : p["Liste"]==="Yakın Network");
+}
+function dmVisible(){
+  const f=rnd().field;
+  return dmScope().filter(p=>{
+    if(S.dmGroup!=="hepsi"&&(p["Lansman DM grubu"]||"C")!==S.dmGroup)return false;
+    const done=isYes(p[f]);
+    if(S.dmState==="kalan"&&done)return false;
+    if(S.dmState==="gonderildi"&&!done)return false;
+    if(S.dmState==="cevap"&&!isYes(p["Cevap geldi"]))return false;
+    return true;
+  }).sort((a,b)=>{
+    const o={A:0,B:1,C:2};
+    return (o[a["Lansman DM grubu"]||"C"]-o[b["Lansman DM grubu"]||"C"])||(num(b["Yakın puan"])-num(a["Yakın puan"]));
+  });
+}
+function viewDM(){
+  const page=$("#page");page.className="page";
+  const r=rnd(), f=r.field, sc=dmScope();
+  if(!sc.length){
+    page.append(el("div",{class:"card"},el("div",{class:"empty"},
+      el("h3",{},"Bu turda kimse yok"),
+      el("p",{},S.round==="r3"
+        ? "Assessment turu sadece 'Müşteri potansiyeli var mı' işaretli kişileri gösteriyor."
+        : "Önce Triyaj bölümünde kişileri Yakın Network listesine al."))));
+    return;
+  }
+  const vis=dmVisible();
+  const done=sc.filter(p=>isYes(p[f])).length, pct=Math.round(done/sc.length*100);
+  page.append(el("div",{class:"kpis"},
+    (()=>{const t=el("div",{class:"kpi"},el("div",{class:"lab"},r.tarih),
+      el("div",{class:"val"},`${tr(done)} `,el("small",{},"/ "+tr(sc.length))),
+      el("div",{class:"sub"},r.hint));
+      t.append(el("div",{class:"progress",style:"margin-top:9px"},el("i",{style:`width:${pct}%`})));return t;})(),
+    el("div",{class:"kpi gold"},el("div",{class:"lab"},"A grubu"),
+      el("div",{class:"val"},tr(sc.filter(p=>p["Lansman DM grubu"]==="A"&&isYes(p[f])).length)+" / "+tr(sc.filter(p=>p["Lansman DM grubu"]==="A").length)),
+      el("div",{class:"sub"},"tek tek kişiselleştirilmiş")),
+    el("div",{class:"kpi"},el("div",{class:"lab"},"B grubu"),
+      el("div",{class:"val"},tr(sc.filter(p=>p["Lansman DM grubu"]==="B"&&isYes(p[f])).length)+" / "+tr(sc.filter(p=>p["Lansman DM grubu"]==="B").length)),
+      el("div",{class:"sub"},"ilk cümle kişiye özel")),
+    el("div",{class:"kpi"},el("div",{class:"lab"},"C grubu"),
+      el("div",{class:"val"},tr(sc.filter(p=>(p["Lansman DM grubu"]||"C")==="C"&&isYes(p[f])).length)+" / "+tr(sc.filter(p=>(p["Lansman DM grubu"]||"C")==="C").length)),
+      el("div",{class:"sub"},"ortak metin")),
+    el("div",{class:"kpi"},el("div",{class:"lab"},"Cevap geldi"),
+      el("div",{class:"val"},tr(sc.filter(p=>isYes(p["Cevap geldi"])).length)),
+      el("div",{class:"sub"},"elle işaretlenen"))));
+
+  if(S.dmSel===null||!vis.some(p=>p._i===S.dmSel)) S.dmSel = vis.length?vis[0]._i:null;
+  const p=S.people.find(x=>x._i===S.dmSel);
+
+  const kuyruk=el("div",{class:"card"},
+    el("div",{class:"fbar",style:"gap:6px"},
+      ...[["hepsi","Hepsi"],["A","A"],["B","B"],["C","C"]].map(([k,l])=>
+        el("button",{class:"chip","aria-pressed":String(S.dmGroup===k),
+          onclick:()=>{S.dmGroup=k;S.dmSel=null;render();}},l)),
+      el("span",{style:"width:1px;height:20px;background:var(--line);margin:0 4px"}),
+      ...[["kalan","Kalan"],["gonderildi","Gönderildi"],["cevap","Cevap"],["hepsi","Tümü"]].map(([k,l])=>
+        el("button",{class:"chip","aria-pressed":String(S.dmState===k),
+          onclick:()=>{S.dmState=k;S.dmSel=null;render();}},l)),
+      el("span",{class:"spacer"}),
+      el("span",{style:"font-size:12.5px;color:var(--muted)"},tr(vis.length)+" kişi")),
+    (()=>{const L=el("div",{class:"dmlist"});
+      if(!vis.length){L.append(el("div",{class:"empty"},el("p",{},"Bu filtrede kimse yok.")));return L;}
+      vis.forEach(x=>L.append(el("div",{class:"dmrow"+(isYes(x[f])?" done":""),
+        "aria-current":String(x._i===S.dmSel),onclick:()=>{S.dmSel=x._i;render();}},
+        el("div",{class:"g "+(x["Lansman DM grubu"]||"C")},x["Lansman DM grubu"]||"C"),
+        el("div",{class:"who"},el("div",{class:"nm"},x["İsim"]),
+          el("div",{class:"cm"},[x["Pozisyon"],x["Şirket"]].filter(Boolean).join(" · ")||"—")),
+        isYes(x["Cevap geldi"])?el("span",{style:"color:var(--gold);font-weight:700"},"↩"):null,
+        isYes(x[f])?el("span",{style:"color:var(--good);font-weight:700"},"✓"):null)));
+      return L;})());
+
+  let calisma;
+  if(!p){
+    calisma=el("div",{class:"card"},el("div",{class:"empty"},el("p",{},"Soldan bir kişi seç.")));
+  } else {
+    const msg=msgFor(p), holes=(msg.match(/\[[^\]]{3,}\]/g)||[]).length;
+    const bosluk=el("span",{style:holes?"color:var(--gold)":""},
+      holes?`⚠ ${holes} doldurulmamış alan`:`${msg.length} karakter`);
+    const ta=el("textarea",{rows:"14",oninput:e=>{
+      S.edits[ekey(p._i)]=e.target.value;S.dirty=true;
+      const h=(e.target.value.match(/\[[^\]]{3,}\]/g)||[]).length;
+      bosluk.textContent=h?`⚠ ${h} doldurulmamış alan`:`${e.target.value.length} karakter`;
+      bosluk.style.color=h?"var(--gold)":"";}});
+    ta.value=msg;
+    const dn=isYes(p[f]);
+    calisma=el("div",{class:"card"},
+      el("div",{class:"bd"},
+        el("div",{style:"display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap"},
+          el("div",{style:"min-width:0"},
+            el("h2",{style:"margin:0;font-size:21px;font-weight:640;letter-spacing:-.02em"},
+              isYes(p["Favori"])?"★ ":"",p["İsim"]),
+            el("div",{style:"color:var(--ink-2);font-size:13.5px;margin-top:3px"},
+              [p["Pozisyon"],p["Şirket"]].filter(Boolean).join(" · ")||"—")),
+          el("div",{class:"spacer"}),
+          p["LinkedIn URL"]?el("a",{class:"btn sm",href:p["LinkedIn URL"],target:"_blank",rel:"noopener"},"LinkedIn'de aç ↗"):null),
+        el("div",{class:"tags"},
+          el("span",{class:"pill "+((p["Lansman DM grubu"]||"C")==="A"?"gold":"")},"Grup "+(p["Lansman DM grubu"]||"C")),
+          p["Sektör"]?el("span",{class:"tag"},p["Sektör"]):null,
+          p["Kaynak"]?el("span",{class:"tag"},p["Kaynak"]):null,
+          p["İlişki"]?el("span",{class:"tag "+(p["İlişki"]==="Sıcak"?"hot":p["İlişki"]==="Ilık"?"warm":"")},p["İlişki"]):null,
+          p["Son temas"]?el("span",{class:"tag"},"Son temas: "+p["Son temas"]):null),
+        el("div",{style:"display:flex;justify-content:space-between;margin:14px 0 7px;font-size:12.5px;color:var(--muted)"},
+          el("span",{},r.hint),bosluk),
+        ta,
+        el("div",{style:"display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"},
+          el("button",{class:"btn gold",onclick:()=>copyText(msgFor(p))},"Kopyala"),
+          el("button",{class:"btn",onclick:()=>{copyText(msgFor(p),true);
+            if(p["LinkedIn URL"])window.open(p["LinkedIn URL"],"_blank","noopener");
+            toast("Kopyalandı, profil açıldı.");}},"Kopyala + profili aç"),
+          el("button",{class:"btn",onclick:()=>{
+            apply([p],f,dn?"":"Yes"); if(!dn)p["Son temas"]=TODAY;
+            if(!dn){const v=dmVisible();const nx=v.find(x=>x._i!==p._i);S.dmSel=nx?nx._i:null;}
+            render();}}, dn?"✓ Gönderildi — geri al":"Gönderildi işaretle"),
+          el("button",{class:"btn ghost",onclick:()=>{
+            apply([p],"Cevap geldi",isYes(p["Cevap geldi"])?"":"Yes");
+            if(isYes(p["Cevap geldi"]))p["Son temas"]=TODAY;render();}},
+            isYes(p["Cevap geldi"])?"↩ Cevap geldi — geri al":"Cevap geldi"),
+          el("button",{class:"btn ghost",onclick:()=>{delete S.edits[ekey(p._i)];render();}},"Şablona dön")),
+        el("div",{style:"margin-top:14px"},
+          el("input",{class:"inp",placeholder:"Not ekle — Enter'a bas, tarih damgasıyla kaydedilir",
+            onkeydown:e=>{if(e.key==="Enter"&&e.target.value.trim()){
+              p["Notlar"]=(p["Notlar"]?p["Notlar"]+" · ":"")+`[${TODAY}] ${e.target.value.trim()}`;
+              e.target.value="";S.dirty=true;toast("Not eklendi.");render();}}}),
+          p["Notlar"]?el("div",{class:"note",style:"margin-top:8px"},p["Notlar"]):null)));
+  }
+
+  page.append(el("div",{class:"grid",style:"grid-template-columns:330px 1fr;margin-top:14px"},kuyruk,calisma));
+
+  const tpl=el("details",{class:"card",style:"margin-top:14px"},
+    el("summary",{style:"padding:13px 16px;cursor:pointer;font-size:12px;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em"},
+      `Mesaj şablonları — ${r.label} turunun A / B / C metinleri`),
+    el("div",{class:"bd",style:"border-top:1px solid var(--line)"},
+      (()=>{const g=el("div",{class:"grid",style:"gap:14px"});
+        ["A","B","C"].forEach(k=>{
+          const t=el("textarea",{rows:"9",oninput:e=>{S.tpl[S.round][k]=e.target.value;S.dirty=true;}});
+          t.value=S.tpl[S.round][k];
+          g.append(el("div",{},el("label",{style:"display:block;font-size:12px;color:var(--muted);margin-bottom:6px"},
+            `${k} grubu — ${k==="A"?"tek tek kişiselleştirilmiş":k==="B"?"ilk cümle kişiye özel":"ortak metin"}`),t));
+        });return g;})(),
+      el("div",{class:"note",style:"margin-top:12px"},
+        "Değişkenler: {ilkAd} {isim} {sirket} {pozisyon} {sektor} {kaynak} — köşeli parantezli [...] kısımları sen doldurursun.")));
+  page.append(tpl);
+}
+
+/* ============================================================
+   Açılış ekranı
+   ============================================================ */
+function viewWelcome(){
+  const page=$("#page");page.className="page flush";
+  const drop=el("div",{class:"drop",id:"drop"},
+    el("h2",{style:"font-size:16px;font-weight:600;margin:0 0 8px"},"Havuz dosyasını buraya sürükle"),
+    el("p",{style:"color:var(--ink-2);font-size:13.5px;margin:0 auto 20px;max-width:520px"},
+      "ANC_Havuz_Tum_Baglantilar.csv — anc_enrich.py çıktısı. Notion'dan aldığın export'lar da olur. "+
+      "Dosya bu sayfadan dışarı çıkmıyor, tamamen tarayıcının içinde işleniyor."),
+    el("div",{class:"wact"},
+      el("button",{class:"btn gold",onclick:()=>$("#file").click()},"Dosya seç"),
+      el("button",{class:"btn ghost",onclick:()=>ingest(demoCSV())},"Örnek veriyle dene")));
+  page.append(el("div",{class:"welcome"},el("div",{class:"wbox"},
+    el("div",{class:"wordmark"}),
+    el("h2",{},"Network Center"),
+    el("p",{},"6.000 LinkedIn bağlantısını çalışılabilir bir listeye indirger, "+
+      "lansman DM turlarını yönetir ve Notion'a hazır tablolar üretir."),
+    drop)));
+  ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
+  ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
+  drop.addEventListener("drop",e=>{const f=e.dataTransfer.files[0];if(!f)return;
+    const r=new FileReader();r.onload=()=>ingest(r.result);r.readAsText(f,"utf-8");});
+}
+
+/* ============================================================
+   Render
+   ============================================================ */
+let _t=null;
+function schedule(){clearTimeout(_t);_t=setTimeout(render,170);}
+function render(){
+  renderNav();renderStatus();renderTop();
+  const page=$("#page");page.innerHTML="";page.className="page";
+  if(!S.people.length){viewWelcome();return;}
+  if(S.view==="ozet")viewOzet();
+  else if(S.view==="yol")viewYol();
+  else if(S.view==="triyaj")viewTriyaj();
+  else if(S.view==="dm")viewDM();
+  else viewList();
+}
+
+/* ============================================================
+   Dışa aktarma
+   ============================================================ */
+const T1_COLS=["İsim","LinkedIn URL","Şirket","Pozisyon","Sektör","Kaynak","İlişki",
+  "Lansman DM grubu","Ön-bilgilendirme atıldı","Lansman DM'i atıldı","Assessment daveti atıldı",
+  "Cevap geldi","Son temas","Müşteri potansiyeli var mı","Notlar"];
+const T2_COLS=["İsim","LinkedIn URL","Şirket","Pozisyon","Sektör","Şirket büyüklüğü","Kaynak",
+  "Aşama","İlgilendiği hizmet","Tahmini değer","Assessment skoru","Öncelik","Son temas",
+  "Sonraki aksiyon","Sonraki aksiyon tarihi","Notlar"];
+const T2_POZ=["CEO","CTO","CDO","COO","VP","Direktör","Board"];
+
+function exportT1(){
+  const sel=S.people.filter(p=>p["Liste"]==="Yakın Network")
+    .sort((a,b)=>(isYes(b["Favori"])-isYes(a["Favori"]))||(num(b["Yakın puan"])-num(a["Yakın puan"])));
+  if(!sel.length)return toast("Yakın Network listesi boş.");
+  const rows=sel.map(p=>{
+    const n=[];
+    if(isYes(p["Favori"]))n.push("★ Favori");
+    if(p["Triyaj notu"])n.push(p["Triyaj notu"]);
+    if(p["Notlar"])n.push(p["Notlar"]);
+    if(p["Bağlanma tarihi"])n.push("LinkedIn bağlantı: "+p["Bağlanma tarihi"]);
+    if(p["E-posta"])n.push("E-posta: "+p["E-posta"]);
+    if(p["Kıdem"])n.push("Kıdem: "+p["Kıdem"]);
+    return {...p,
+      "Lansman DM grubu":p["Lansman DM grubu"]||"C",
+      "Ön-bilgilendirme atıldı":isYes(p["Ön-bilgilendirme atıldı"])?"Yes":"",
+      "Lansman DM'i atıldı":isYes(p["Lansman DM'i atıldı"])?"Yes":"",
+      "Assessment daveti atıldı":isYes(p["Assessment daveti atıldı"])?"Yes":"",
+      "Cevap geldi":isYes(p["Cevap geldi"])?"Yes":"",
+      "Müşteri potansiyeli var mı":(p["Hedef uygun"]==="Yes"||isYes(p["Favori"]))?"Yes":"",
+      "Notlar":n.join(" · ")};
+  });
+  download(`ANC_Tablo1_Yakin_Network_${TODAY}.csv`,toCSV(T1_COLS,rows));
+  const g=k=>sel.filter(p=>(p["Lansman DM grubu"]||"C")===k).length;
+  toast(`${sel.length} kişi · A=${g("A")} B=${g("B")} C=${g("C")}`);
+}
+function exportT2(){
+  const sel=S.people.filter(p=>p["Liste"]==="Hedef Müşteri")
+    .sort((a,b)=>(isYes(b["Favori"])-isYes(a["Favori"]))||(num(b["Hedef puan"])-num(a["Hedef puan"])));
+  if(!sel.length)return toast("Hedef Müşteri listesi boş.");
+  const n=sel.length,aS=Math.max(1,Math.round(n*0.25)),bS=aS+Math.max(1,Math.round(n*0.40));
+  const rows=sel.map((p,i)=>{
+    const nt=[];
+    if(isYes(p["Favori"]))nt.push("★ Favori");
+    if(p["Triyaj notu"])nt.push(p["Triyaj notu"]);
+    if(p["Pozisyon"])nt.push("Ham pozisyon: "+p["Pozisyon"]);
+    if(p["İlişki"]&&p["İlişki"]!=="Soğuk")nt.push(`Zaten bağlantı — ilişki: ${p["İlişki"]} (${p["Kaynak"]||"—"})`);
+    return {...p,
+      "Pozisyon":T2_POZ.includes(p["Kıdem"])?p["Kıdem"]:"Direktör",
+      "Şirket büyüklüğü":"","Kaynak":p["İlişki"]==="Sıcak"?"Referans":"Sales Navigator",
+      "Aşama":"Liste","İlgilendiği hizmet":"","Tahmini değer":"","Assessment skoru":"",
+      "Öncelik":i<aS?"A":(i<bS?"B":"C"),
+      "Son temas":"","Sonraki aksiyon":"","Sonraki aksiyon tarihi":"","Notlar":nt.join(" · ")};
+  });
+  download(`ANC_Tablo2_Hedef_Musteri_${TODAY}.csv`,toCSV(T2_COLS,rows));
+  toast(`${n} kişi · Öncelik A=${aS} B=${bS-aS} C=${n-bS}`);
+}
+function exportHavuz(){
+  download(`ANC_Havuz_${TODAY}.csv`,toCSV(S.cols,S.people));
+  S.dirty=false;renderStatus();toast("Havuz kaydedildi — devam etmek için bunu geri yükle.");
+}
+function exportFav(){
+  const sel=S.people.filter(p=>isYes(p["Favori"]));
+  if(!sel.length)return toast("Favori yok.");
+  download(`ANC_Favoriler_${TODAY}.csv`,toCSV(S.cols,sel));
+  toast(`${sel.length} favori indirildi.`);
+}
+
+/* ============================================================
+   Örnek veri
+   ============================================================ */
+function demoCSV(){
+  const ad=["Ahmet","Mehmet","Ayşe","Zeynep","Mert","Selin","Burak","Deniz","Emre","Ceren","Ozan","İpek","Kaan","Elif","Barış","Gizem","Tolga","Nil","Serkan","Pelin","Umut","Derya","Cem","Aslı","Ege"];
+  const soy=["Yılmaz","Demir","Kaya","Şahin","Çelik","Aydın","Arslan","Doğan","Kılıç","Öztürk","Aksoy","Erdem","Polat","Taş","Güneş"];
+  const co=[["Paribu","Kripto/Web3","Paribu alumni","Sıcak"],["Kriptomeda","Medya","Kriptomeda alumni","Sıcak"],
+    ["Badbaz","Diğer","Badbaz","Sıcak"],["Leo Burnett Istanbul","Ajans","Global ajans (Leo Burnett/Grey/MediaCom)","Sıcak"],
+    ["MediaCom Turkey","Ajans","Global ajans (Leo Burnett/Grey/MediaCom)","Ilık"],["Trendyol","E-ticaret","Sektörel","Soğuk"],
+    ["Getir","E-ticaret","Sektörel","Soğuk"],["Migros","Perakende","Sektörel","Soğuk"],["Iyzico","Fintech","Sektörel","Soğuk"],
+    ["Garanti BBVA","Fintech","Sektörel","Soğuk"],["BtcTurk","Kripto/Web3","Web3 ekosistem","Ilık"],
+    ["Aras Kargo","Lojistik","Sektörel","Soğuk"],["Ekol Lojistik","Lojistik","Sektörel","Soğuk"],
+    ["Webtekno","Medya","Sektörel","Soğuk"],["Deloitte","Diğer","Sektörel","Soğuk"],["","Diğer","Sektörel","Soğuk"]];
+  const poz=[["CEO","CEO"],["Genel Müdür","CEO"],["CTO","CTO"],["Chief Digital Officer","CDO"],["COO","COO"],
+    ["VP of Engineering","VP"],["Chief Marketing Officer","VP"],["Pazarlama Direktörü","Direktör"],
+    ["Head of Growth","Direktör"],["Yönetim Kurulu Üyesi","Board"],["Marketing Manager",""],
+    ["Senior Software Engineer",""],["Data Analyst",""],["Product Owner",""],["Uzman",""],["Stajyer",""]];
+  const cols=["İsim","LinkedIn URL","Şirket","Pozisyon","Sektör","Kaynak","İlişki","Kıdem","E-posta",
+    "Bağlanma tarihi","Danışmanlık şirketi","Hedef uygun","Yakın puan","Hedef puan","Liste","Favori","Triyaj notu"];
+  let s=7;const R=()=>(s=(s*1103515245+12345)&0x7fffffff)/0x7fffffff;
+  const rows=[];
+  for(let i=0;i<6000;i++){
+    const c=co[Math.floor(R()*co.length)],q=poz[Math.floor(R()*poz.length)];
+    const yp=Math.round({"Sıcak":60,"Ilık":30,"Soğuk":0}[c[3]]+(q[1]?8:0)+R()*28);
+    const hp=q[1]?Math.round(60+R()*45):0;
+    rows.push({"İsim":ad[Math.floor(R()*ad.length)]+" "+soy[Math.floor(R()*soy.length)],
+      "LinkedIn URL":`https://www.linkedin.com/in/ornek-${i}`,"Şirket":c[0],"Pozisyon":q[0],
+      "Sektör":c[1],"Kaynak":c[2],"İlişki":c[3],"Kıdem":q[1],"E-posta":"",
+      "Bağlanma tarihi":"2023-05-11","Danışmanlık şirketi":c[0]==="Deloitte"?"Yes":"No",
+      "Hedef uygun":(q[1]&&c[0]&&c[0]!=="Deloitte")?"Yes":"No","Yakın puan":yp,"Hedef puan":hp,
+      "Liste":yp>=88?"Yakın Network":(hp>=95?"Hedef Müşteri":(yp>=45?"İzleme":"")),
+      "Favori":"","Triyaj notu":""});
+  }
+  return toCSV(cols,rows);
+}
+
+/* ============================================================
+   Bağlama
+   ============================================================ */
+$("#loadBtn").onclick=()=>$("#file").click();
+$("#file").onchange=e=>{const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>ingest(r.result);r.readAsText(f,"utf-8");e.target.value="";};
+$("#themeBtn").onclick=()=>{const r=document.documentElement;
+  r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";};
+
+const pop=$("#savePop");
+pop.append(
+  el("button",{onclick:()=>{exportHavuz();pop.classList.add("hidden");}},"Havuz — çalışma dosyası",
+    el("small",{},"Her şey: listeler, favoriler, DM işaretleri. Ara verirken bunu indir, dönünce yükle.")),
+  el("button",{onclick:()=>{exportT1();pop.classList.add("hidden");}},"Tablo 1 — Yakın Network → Notion",
+    el("small",{},"A/B/C grupları atanmış, favoriler A'ya öncelikli.")),
+  el("button",{onclick:()=>{exportT2();pop.classList.add("hidden");}},"Tablo 2 — Hedef Müşteri → Notion",
+    el("small",{},"Aşama 'Liste', öncelik A/B/C otomatik.")),
+  el("button",{onclick:()=>{exportFav();pop.classList.add("hidden");}},"★ Sadece favoriler",
+    el("small",{},"Liste ne olursa olsun yıldızladıklarının hepsi.")));
+$("#saveBtn").onclick=e=>{e.stopPropagation();pop.classList.toggle("hidden");};
+document.addEventListener("click",()=>{pop.classList.add("hidden");
+  document.querySelectorAll(".fpop").forEach(x=>x.classList.add("hidden"));});
+pop.addEventListener("click",e=>e.stopPropagation());
+
+document.addEventListener("keydown",e=>{
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;
+  if((e.key==="z"||e.key==="Z")&&!e.metaKey&&!e.ctrlKey){e.preventDefault();undo();return;}
+  if(S.view!=="triyaj"||S.sub!=="hizli"||!S.people.length)return;
+  const q=filtered();if(!q.length)return;
+  const p=q[Math.min(S.rapidIdx,q.length-1)];
+  const go=v=>{e.preventDefault();apply([p],"Liste",v);S.rapidIdx++;render();};
+  if(e.key==="1")go("Yakın Network");
+  else if(e.key==="2")go("Hedef Müşteri");
+  else if(e.key==="3")go("İzleme");
+  else if(e.key==="x"||e.key==="X")go("Pas");
+  else if(e.key==="f"||e.key==="F"){e.preventDefault();apply([p],"Favori",isYes(p["Favori"])?"":"Yes");render();}
+  else if(e.key==="ArrowRight"||e.key===" "){e.preventDefault();S.rapidIdx++;render();}
+  else if(e.key==="ArrowLeft"){e.preventDefault();S.rapidIdx=Math.max(0,S.rapidIdx-1);render();}
+});
+window.addEventListener("beforeunload",e=>{if(S.dirty){e.preventDefault();e.returnValue="";}});
+
+render();
+})();
+</script>
+</body>
+</html>

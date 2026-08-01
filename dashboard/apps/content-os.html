@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anthifel Content OS</title>
+<style>
+:root{
+  --lime:#F5F1EA;--basalt:#0F0F0E;--terra:#B84C2E;--olive:#5C6B4A;--kekova:#2B4C5C;--stone:#7A756C;
+  --line:#E3DCD0;--line2:#EFEAE1;--card:#FBF9F5;--white:#fff;
+  --sh:0 1px 2px rgba(15,15,14,.04),0 2px 8px rgba(15,15,14,.03);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--lime);color:var(--basalt);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.sf{font-family:Georgia,'Iowan Old Style','Times New Roman',serif;font-weight:400}
+h1,h2,h3{font-family:Georgia,'Iowan Old Style',serif;font-weight:400;letter-spacing:.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+
+/* ── shell ── */
+.app{display:flex;height:100vh;overflow:hidden}
+.side{width:216px;flex:0 0 216px;background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;overflow-y:auto}
+.bd{padding:20px 20px 16px;border-bottom:1px solid var(--line)}
+.bd .wm{font-family:Georgia,serif;font-size:17px;letter-spacing:.2em;text-transform:uppercase}
+.bd .sb{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--stone);margin-top:5px}
+nav{padding:10px 0;flex:1}
+nav a{display:flex;align-items:center;gap:9px;padding:7px 20px;color:var(--basalt);text-decoration:none;font-size:13.5px;cursor:pointer;border-left:2px solid transparent}
+nav a:hover{background:rgba(184,76,46,.05)}
+nav a.on{border-left-color:var(--terra);background:rgba(184,76,46,.08);font-weight:500}
+nav a .ic{width:15px;text-align:center;opacity:.55;font-size:12px}
+nav a .ct{margin-left:auto;font-size:10.5px;color:var(--stone);background:var(--line2);padding:1px 6px;border-radius:8px}
+nav .gp{padding:15px 20px 5px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.sfoot{padding:14px 20px;border-top:1px solid var(--line);font-size:11px;color:var(--stone)}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--stone);margin-right:6px}
+.dot.sv{background:var(--olive)}.dot.un{background:var(--terra)}
+
+.wrap{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{display:flex;align-items:center;gap:10px;padding:12px 26px;border-bottom:1px solid var(--line);background:var(--card);flex-wrap:wrap}
+.top h1{font-size:20px;margin-right:auto}
+.body{flex:1;overflow-y:auto;padding:22px 26px 70px}
+.inner{max-width:1240px}
+
+/* ── controls ── */
+button,.btn{font-size:12.5px;padding:6px 12px;border:1px solid var(--line);background:var(--white);border-radius:3px;cursor:pointer;text-decoration:none;color:var(--basalt);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+button:hover,.btn:hover{border-color:var(--stone)}
+button.p{background:var(--terra);border-color:var(--terra);color:#fff}
+button.p:hover{opacity:.9;border-color:var(--terra)}
+button.on{background:var(--basalt);border-color:var(--basalt);color:var(--lime)}
+button.gh{background:transparent;border-color:transparent}
+button.gh:hover{background:var(--line2);border-color:transparent}
+select,input[type=text],input[type=date],input[type=time],textarea{padding:6px 9px;border:1px solid var(--line);background:var(--white);border-radius:3px;font-size:12.5px;width:100%}
+textarea{resize:vertical;line-height:1.6;font-size:13.5px}
+label.fl{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--stone);margin-bottom:5px}
+.fr{margin-bottom:13px}
+.fg{display:grid;gap:11px}
+.f2{grid-template-columns:1fr 1fr}
+.f3{grid-template-columns:1fr 1fr 1fr}
+
+.bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.sep{width:1px;height:20px;background:var(--line);margin:0 3px}
+.lb{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--stone)}
+
+/* ── stats ── */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:14px 16px;box-shadow:var(--sh)}
+.kpi .n{font-family:Georgia,serif;font-size:27px;line-height:1.05}
+.kpi .n small{font-size:14px;color:var(--stone)}
+.kpi .l{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);margin-top:6px}
+.kpi .d{font-size:11.5px;color:var(--stone);margin-top:4px}
+.trk{height:3px;background:var(--line2);margin-top:10px;border-radius:2px;overflow:hidden}
+.fil{height:100%;background:var(--terra);transition:width .3s}
+.fil.ok{background:var(--olive)}
+
+/* ── cards ── */
+.card{background:var(--card);border:1px solid var(--line);border-radius:3px;box-shadow:var(--sh);margin-bottom:16px}
+.card>h3{padding:12px 17px;border-bottom:1px solid var(--line);font-size:15px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card>h3 .rt{margin-left:auto;display:flex;gap:6px;align-items:center}
+.card .in{padding:15px 17px}
+.card .in.tight{padding:4px 17px 12px}
+
+/* ── post row ── */
+.pr{display:grid;grid-template-columns:64px 22px 1fr auto auto;gap:11px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line2);cursor:pointer}
+.pr:last-child{border-bottom:none}
+.pr:hover{background:var(--white)}
+.pr .dt{font-size:11px;color:var(--stone);line-height:1.35}
+.pr .ti{font-size:13.5px;line-height:1.4;min-width:0}
+.pr .ti .sub{font-size:11.5px;color:var(--stone);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pr.done .ti>span:first-child{opacity:.5}
+.ch{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:600;color:#fff;flex:0 0 22px}
+.ch.blog{background:var(--basalt)}.ch.li-eray{background:var(--kekova)}.ch.li-ant{background:#4a6a7d}
+.ch.x-eray{background:var(--basalt);border:1px solid var(--stone)}.ch.x-ant{background:var(--stone)}
+.ch.nl{background:var(--olive)}
+
+.tg{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);border-radius:2px;color:var(--stone);white-space:nowrap}
+.tg.vaka{border-color:var(--terra);color:var(--terra)}
+.tg.cerceve{border-color:var(--kekova);color:var(--kekova)}
+.tg.sektor{border-color:var(--olive);color:var(--olive)}
+.tg.kisisel,.tg.marka{border-color:var(--stone)}
+.tg.en{background:var(--basalt);color:var(--lime);border-color:var(--basalt)}
+
+.st{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:11px;border:1px solid var(--line);white-space:nowrap;min-width:86px;text-align:center;background:var(--white)}
+.st.s0{color:var(--stone)}
+.st.s1{color:var(--kekova);border-color:#bcd0da;background:#f0f6f9}
+.st.s2{color:#8a6a1f;border-color:#e2d3a8;background:#fbf6e8}
+.st.s3{color:var(--olive);border-color:#c3cfb5;background:#f2f5ee}
+.st.s4{background:var(--basalt);border-color:var(--basalt);color:var(--lime)}
+
+/* ── calendar ── */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.cal .hd{background:var(--card);padding:8px 6px;text-align:center;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+.cel{background:var(--card);min-height:112px;padding:6px 6px 7px;position:relative;min-width:0;overflow:hidden}
+.cel.out{background:#f2eee7}
+.cel.tod{background:#fff;box-shadow:inset 0 0 0 2px var(--terra)}
+.cel .dn{font-size:11px;color:var(--stone);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.cel.out .dn{opacity:.4}
+.cel .add{opacity:0;font-size:13px;line-height:1;padding:1px 4px;border:none;background:none;color:var(--stone);cursor:pointer}
+.cel:hover .add{opacity:1}
+.ev{display:flex;gap:4px;align-items:center;font-size:10.5px;padding:2px 4px;margin-bottom:2px;border-radius:2px;background:var(--white);border-left:2px solid var(--stone);cursor:pointer;line-height:1.3}
+.ev:hover{background:var(--lime)}
+.ev.blog{border-left-color:var(--basalt)}.ev.li-eray{border-left-color:var(--kekova)}
+.ev.li-ant{border-left-color:#4a6a7d}.ev.x-eray,.ev.x-ant{border-left-color:var(--stone)}
+.ev.nl{border-left-color:var(--olive)}
+.ev .t{font-size:9.5px;color:var(--stone);flex:0 0 auto}
+.ev .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev.pub{opacity:.5}
+.sil{background:rgba(184,76,46,.1);border-left:2px solid var(--terra);font-size:9.5px;padding:2px 4px;color:var(--terra);border-radius:2px;margin-bottom:2px}
+
+/* ── board ── */
+.bo{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
+.col{background:var(--card);border:1px solid var(--line);border-radius:3px;min-height:120px}
+.col>h4{padding:9px 12px;border-bottom:1px solid var(--line);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);display:flex;justify-content:space-between}
+.col .cin{padding:8px;min-height:60px}
+.bc{background:var(--white);border:1px solid var(--line);border-radius:3px;padding:8px 9px;margin-bottom:7px;cursor:grab;font-size:12.5px;line-height:1.4}
+.bc:active{cursor:grabbing}
+.bc.drag{opacity:.4}
+.bc .m{display:flex;gap:6px;align-items:center;margin-top:5px;font-size:10.5px;color:var(--stone);flex-wrap:wrap}
+.col.over .cin{background:rgba(184,76,46,.06)}
+
+/* ── composer ── */
+.scrim{position:fixed;inset:0;background:rgba(15,15,14,.42);z-index:60;display:none}
+.scrim.on{display:block}
+.dlg{position:fixed;top:0;right:0;height:100vh;width:min(720px,100%);background:var(--lime);border-left:1px solid var(--line);z-index:70;transform:translateX(102%);transition:transform .24s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.dlg.on{transform:none}
+.dh{padding:15px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:var(--card)}
+.dh h2{font-size:17px;margin-right:auto}
+.dbody{flex:1;overflow-y:auto;padding:20px 24px 40px}
+.dfoot{padding:12px 24px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;background:var(--card)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.tabs button{border:none;background:none;border-bottom:2px solid transparent;border-radius:0;padding:7px 12px;font-size:12.5px;color:var(--stone)}
+.tabs button.on{border-bottom-color:var(--terra);color:var(--basalt);background:none}
+.cnt{font-size:11px;color:var(--stone);text-align:right;margin-top:4px}
+.cnt.over{color:var(--terra)}
+.lint{margin-top:10px;font-size:12px;border:1px solid var(--line);border-radius:3px;padding:9px 11px;background:var(--card)}
+.lint.bad{border-color:var(--terra);background:rgba(184,76,46,.05)}
+.lint.good{border-color:#c3cfb5;background:#f2f5ee}
+.lint b{font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+/* preview */
+.pv{border:1px solid var(--line);border-radius:6px;background:var(--white);padding:14px;max-width:520px}
+.pv .ph{display:flex;gap:9px;align-items:center;margin-bottom:9px}
+.pv .av{width:40px;height:40px;border-radius:50%;background:var(--basalt);color:var(--lime);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:16px}
+.pv .nm{font-size:13.5px;font-weight:600;line-height:1.3}
+.pv .sub{font-size:11.5px;color:var(--stone)}
+.pv .txt{font-size:13.5px;white-space:pre-wrap;line-height:1.55}
+.pv .fold{color:var(--stone);font-size:12px;margin-top:6px}
+.pv.x{border-radius:12px}
+.pv.x .av{border-radius:50%}
+
+/* misc */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line2);vertical-align:top}
+th{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--stone);font-weight:400;background:var(--card)}
+.mut{color:var(--stone)}
+.no{color:var(--terra)}
+.ok{color:var(--olive)}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:4px 0;font-size:13px;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--terra)}
+.chk.k span{opacity:.45;text-decoration:line-through}
+pre.tpl{background:var(--white);border:1px solid var(--line);padding:13px;font-size:12px;white-space:pre-wrap;font-family:ui-monospace,'SF Mono',Menlo,monospace;line-height:1.6;border-radius:3px;margin:7px 0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(90px);background:var(--basalt);color:var(--lime);padding:10px 20px;font-size:12.5px;border-radius:3px;z-index:90;transition:transform .24s}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.hid{display:none!important}
+.empty{padding:36px;text-align:center;color:var(--stone);font-size:13px}
+a.ex{color:var(--kekova);text-decoration:none;border-bottom:1px solid var(--line)}
+a.ex:hover{border-color:var(--kekova)}
+.note{border-left:3px solid var(--terra);background:rgba(184,76,46,.05);padding:11px 14px;font-size:13px;margin-bottom:14px;border-radius:0 3px 3px 0}
+.note.o{border-left-color:var(--olive);background:rgba(92,107,74,.06)}
+@media(max-width:1000px){
+  .app{flex-direction:column;height:auto;overflow:visible}
+  .side{width:100%;flex:none}
+  nav{display:flex;flex-wrap:wrap;padding:6px 12px}
+  nav a{border-left:none;padding:6px 10px}
+  nav a.on{border-left:none;background:var(--line2)}
+  nav .gp,nav a .ct{display:none}
+  .body{overflow:visible;padding:18px 14px 60px}
+  .bo{grid-template-columns:1fr}
+  .cal{font-size:11px}
+  .cel{min-height:74px}
+  .pr{grid-template-columns:1fr;gap:6px}
+  .dlg{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside class="side">
+  <div class="bd"><div class="wm">Anthifel</div><div class="sb">Content OS</div></div>
+  <nav id="nav">
+    <div class="gp">Yönetim</div>
+    <a data-v="dash"><span class="ic">◆</span>Panel</a>
+    <a data-v="cal"><span class="ic">▦</span>Takvim<span class="ct" id="c-cal"></span></a>
+    <a data-v="board"><span class="ic">▤</span>Akış<span class="ct" id="c-brd"></span></a>
+    <a data-v="list"><span class="ic">≡</span>Tüm içerik<span class="ct" id="c-all"></span></a>
+    <div class="gp">Kanallar</div>
+    <a data-v="blog"><span class="ic">◇</span>Blog<span class="ct" id="c-blog"></span></a>
+    <a data-v="social"><span class="ic">◈</span>Sosyal<span class="ct" id="c-soc"></span></a>
+    <a data-v="accounts"><span class="ic">⬡</span>Hesaplar</a>
+    <div class="gp">Plan</div>
+    <a data-v="plans"><span class="ic">▲</span>Aylık ve yıllık</a>
+    <a data-v="analytics"><span class="ic">◐</span>Hedefler</a>
+    <div class="gp">Kütüphane</div>
+    <a data-v="rules"><span class="ic">§</span>Kurallar ve ses</a>
+    <a data-v="types"><span class="ic">◎</span>İçerik tipleri</a>
+    <a data-v="src"><span class="ic">↗</span>Kaynaklar</a>
+    <a data-v="data"><span class="ic">⌸</span>Veri</a>
+  </nav>
+  <div class="sfoot"><span class="dot" id="sdot"></span><span id="stxt">Kaydedilmedi</span></div>
+ </aside>
+
+ <div class="wrap">
+  <div class="top">
+    <h1 id="ttl">Panel</h1>
+    <button onclick="openC()" class="p">+ Yeni içerik</button>
+    <button onclick="saveNow()" id="sbtn">Kaydet</button>
+    <button onclick="loadFile()">Aç</button>
+  </div>
+  <div class="body"><div class="inner" id="main"></div></div>
+ </div>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeC()"></div>
+<aside class="dlg" id="dlg"></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════ SABİTLER ═══════════ */
+const CH={
+ 'blog':{n:'Blog',s:'B',ac:'anthifel.com/blog',lim:0,url:''},
+ 'li-eray':{n:'LinkedIn — Eray',s:'LE',ac:'Eray Dengiz',lim:3000,url:'https://www.linkedin.com/feed/?shareActive=true'},
+ 'li-ant':{n:'LinkedIn — Anthifel',s:'LA',ac:'Anthifel Company Page',lim:3000,url:'https://www.linkedin.com/company/anthifel/admin/'},
+ 'x-eray':{n:'X — Eray',s:'XE',ac:'@eraydengiz',lim:280,url:'https://x.com/compose/post'},
+ 'x-ant':{n:'X — Anthifel',s:'XA',ac:'@anthifel',lim:280,url:'https://x.com/compose/post'},
+ 'nl':{n:'Newsletter',s:'NL',ac:'TR + EN liste',lim:0,url:''}
+};
+const PIL={vaka:'Vaka ve hikaye',cerceve:'Çerçeve ve yöntem',sektor:'Sektör yorumu',kisisel:'Kişisel',marka:'Marka ve duyuru'};
+const PIL_TARGET={vaka:40,cerceve:25,sektor:20,kisisel:15};
+const TYP={blog:'Blog yazısı','blog-turevi':'Blog türevi',thread:'Thread',vaka:'Vaka anlatısı','karsi-gorus':'Karşı görüş',
+ cerceve:'Çerçeve',sektor:'Sektör yorumu',kisisel:'Kişisel an',kaynak:'Kaynak paylaşımı',milestone:'Milestone',
+ duyuru:'Duyuru',sozluk:'Sözlük',veri:'Veri kartı',hizmet:'Hizmet açıklaması',assessment:'Assessment',
+ gozlem:'Gözlem',gorsel:'Görsel / marka anı',alinti:'Alıntı kartı',soru:'Soru postu',newsletter:'Newsletter'};
+const STA=['Fikir','Taslak','İncelemede','Zamanlandı','Yayında'];
+const BAN=['devrim','disruption','hack','growth hack','rockstar','ninja','guru','game changer','next-gen','cutting edge','AI-powered'];
+const GEO=['kaş','antiphellos','likya','antik liman'];
+const FIRMS=['kriptomeda','paribu','badbaz','cointelegraph','coinkolik','btchaber'];
+const SILENT={'2026-08-30':'Zafer Bayramı','2026-10-29':'Cumhuriyet Bayramı','2026-10-30':'Cumhuriyet Bayramı','2026-11-10':'Atatürk\'ü Anma Günü'};
+const DEPS=[
+ {d:'2026-08-21',t:'Assessment formu canlı mı?',w:'Blog 2 buna bağlı. Değilse Blog 3 ile yer değişir.'},
+ {d:'2026-10-13',t:'Türkiye AI harcama verisi doğrulandı mı?',w:'Blog 11 buna bağlı. Yoksa niteliksel açıya çevrilir veya R5 girer.'},
+ {d:'2026-11-13',t:'90 gün metrikleri toplandı mı?',w:'Blog 14 ve 18 Kasım postu buna bağlı. Yetişmezse 24 Kasım\'a kayar.'},
+ {d:'2026-11-24',t:'Blog 16\'nın esnek konusu seçildi mi?',w:'Gündemde ne varsa o okunur.'},
+ {d:'2026-12-01',t:'Blog 18\'in çerçevesi netleşti mi?',w:'Yıl değerlendirmesi — en yüksek trafik potansiyeli.'}
+];
+const SEED=`2026-08-12|09:00|blog|blog|cerceve|tr|AI Dönüşümü Neden Teknoloji Değil, Organizasyon Problemidir?|Manifesto. Lansmandan 8 gün önce yayında olmalı. Salı kuralının tek istisnası. ||EN: 2026-08-14
+2026-08-18|10:00|li-eray|duyuru|marka|tr|Grup A ön-bilgilendirme DM — en yakın 20 bağlantı|Kısa, kişisel, kopyala-yapıştır hissi vermeyen
+2026-08-19|10:00|li-eray|duyuru|marka|tr|Grup B ön-bilgilendirme DM — 30-40 kişi|
+2026-08-20|19:00|li-eray|duyuru|marka|tr|LANSMAN POSTU (TR)|Yılın tek en önemli içeriği. 19:00-21:00 ajanda boş, her yoruma cevap.
+2026-08-20|21:00|x-eray|thread|marka|en|Lansman thread'i (EN)|Kişisel hesabın thread attığı tek gün
+2026-08-20|21:30|x-ant|duyuru|marka|tr|Kısa kuruluş postu|Eray'ın thread'ine alıntı
+2026-08-20|22:00|li-ant|duyuru|marka|tr|Kuruluş duyurusu|Kişisel posttan 3 saat sonra. Sıralama kritik.
+2026-08-21|11:00|li-ant|duyuru|marka|tr|anthifel.com yayında|Tek ekran görüntüsü
+2026-08-24|18:00|li-eray|duyuru|marka|en|LANSMAN POSTU (EN)|Uluslararası ağ. Çeviri değil, yeniden yazım.
+2026-08-25|09:00|blog|blog|cerceve|tr|Bir Şirketin AI'ya Hazır Olduğunu Nasıl Anlarsın? 12 Sinyal|Assessment formunun 12 sorusuyla birebir eşleşiyor. Form canlı olmalı — karar 21 Ağustos. ||EN: 2026-08-27
+2026-08-25|10:30|li-ant|assessment|marka|tr|Assessment açık — ne ölçer, 3 dakika|
+2026-08-25|11:00|x-ant|thread|cerceve|tr|Blog 2 thread'i|
+2026-08-25|18:00|li-eray|blog-turevi|cerceve|tr|Blog 2 türevi — 12 sinyal|
+2026-08-26|08:30|li-eray|vaka|vaka|tr|İlk hafta gözlemi — 3 günde 40 mesaj|
+2026-08-27|10:00|li-ant|sozluk|cerceve|tr|Sözlük #1: Pilot mezarlığı|
+2026-08-27|18:00|li-eray|karsi-gorus|cerceve|tr|Assessment neden 3 dakika sürüyor|
+2026-08-28|08:30|li-eray|kisisel|kisisel|tr|Hafif kişisel post — ilk haftanın ritmi|
+2026-09-01|09:00|blog|blog|marka|tr|Anthropos: Bir AI Danışmanlığının Adı Neden “İnsan” Anlamına Geliyor|Tek kök. Coğrafi referans yok. CTA Hakkımda, assessment değil. ||EN: 2026-09-03
+2026-09-01|10:30|li-ant|blog-turevi|cerceve|tr|Blog 3 türevi — marka hikayesi|
+2026-09-01|11:00|x-ant|thread|cerceve|tr|Blog 3 thread'i|
+2026-09-01|18:00|li-eray|blog-turevi|cerceve|tr|Blog 3 türevi — ilk ağızdan an|
+2026-09-02|08:30|li-eray|vaka|vaka|tr|Kurduğum medya grubundan bir sahne|
+2026-09-03|10:00|li-ant|hizmet|marka|tr|Hizmet #1: Discovery Sprint|
+2026-09-03|18:00|li-eray|karsi-gorus|cerceve|tr|“Uzaktan danışmanlık işe yaramaz” diyene cevap|
+2026-09-04|08:30|li-eray|kisisel|kisisel|tr|Marka hikayesi (EN)|
+2026-09-08|09:00|blog|blog|cerceve|tr|Pilot Mezarlığı: Şirketler AI Projelerini Neden Gömüyor?|Dört ölüm nedeni: sahipsizlik, ölçek planı yokluğu, başarı tanımının değişmesi, ekibin dağıtılması. ||EN: 2026-09-10
+2026-09-08|10:30|li-ant|blog-turevi|cerceve|tr|Blog 4 türevi — pilot mezarlığı|
+2026-09-08|11:00|x-ant|thread|cerceve|tr|Blog 4 thread'i|
+2026-09-08|18:00|li-eray|blog-turevi|cerceve|tr|Blog 4 türevi|
+2026-09-09|08:30|li-eray|vaka|vaka|tr|Sahipsiz kalmış bir pilotun hikayesi|
+2026-09-10|10:00|li-ant|veri|sektor|tr|Veri kartı #1|
+2026-09-10|18:00|li-eray|karsi-gorus|cerceve|tr|“Pilot başarılıydı ama” nüansı|
+2026-09-11|08:30|li-eray|kaynak|sektor|tr|Kaynak paylaşımı #1|
+2026-09-15|09:00|blog|blog|vaka|tr|Bir Markayı Sıfırdan Kurup Satmak: 6 Yılda Öğrendiğim 5 Şey|Anonim anlatım. Sektör ve ölçek verilir, isim verilmez. ||EN: 2026-09-17
+2026-09-15|10:30|li-ant|blog-turevi|cerceve|tr|Blog 5 türevi — bir markayı sıfırdan kurmak|
+2026-09-15|11:00|x-ant|thread|cerceve|tr|Blog 5 thread'i|
+2026-09-15|18:00|li-eray|blog-turevi|cerceve|tr|Blog 5 türevi|
+2026-09-16|08:30|li-eray|vaka|vaka|tr|O şirketin en zor günü (anonim)|
+2026-09-17|10:00|li-ant|sozluk|cerceve|tr|Sözlük #2: Sahipsiz dönüşüm|
+2026-09-17|18:00|li-eray|karsi-gorus|cerceve|tr|“Exit her şeyi çözer” karşı görüşü|
+2026-09-18|08:30|li-eray|gorsel|marka|tr|Görsel + kısa metin|
+2026-09-22|09:00|blog|blog|vaka|tr|“AI'dan Kim Sorumlu?” Sorusunun Cevabı Yoksa Dönüşüm Başlamamıştır|Üç şirket, üç cevap: CTO'da, CMO'da, hiç kimsede. ||EN: 2026-09-24
+2026-09-22|10:30|li-ant|blog-turevi|cerceve|tr|Blog 6 türevi|
+2026-09-22|11:00|x-ant|thread|cerceve|tr|Blog 6 thread'i|
+2026-09-22|18:00|li-eray|blog-turevi|cerceve|tr|Blog 6 türevi — AI'dan kim sorumlu|
+2026-09-23|08:30|li-eray|vaka|vaka|tr|Üç şirket, üç cevap|
+2026-09-24|09:00|nl|newsletter|marka|tr|Newsletter #1|Kuruluş + manifesto. “Neden Anthifel var”
+2026-09-24|10:00|li-ant|kaynak|sektor|tr|Kaynak paylaşımı #1 + Newsletter #1 duyurusu|
+2026-09-24|18:00|li-eray|karsi-gorus|cerceve|tr|CTO'nun sorumlu olmamasının nedeni|
+2026-09-25|08:30|li-eray|duyuru|marka|tr|Newsletter #1 duyurusu|
+2026-09-29|09:00|blog|blog|cerceve|tr|Yönetim Kurulunda AI: Sorulması Gereken 7 Soru|Yazdırılıp toplantıya götürülebilir formatta. ||EN: 2026-10-01
+2026-09-29|10:30|li-ant|blog-turevi|cerceve|tr|Blog 7 türevi — board soruları|
+2026-09-29|11:00|x-ant|thread|cerceve|tr|Blog 7 thread'i|
+2026-09-29|18:00|li-eray|blog-turevi|cerceve|tr|Blog 7 türevi|
+2026-09-30|08:30|li-eray|vaka|vaka|tr|Bir board toplantısı anısı|
+2026-10-01|10:00|li-ant|duyuru|marka|tr|Roundtable duyurusu — davet-only|
+2026-10-01|18:00|li-eray|sektor|sektor|tr|Sektör yorumu|
+2026-10-02|08:30|li-eray|cerceve|cerceve|tr|Board soruları (EN)|
+2026-10-06|09:00|blog|blog|vaka|tr|Bir Birleşmenin İlk 90 Günü: Teknoloji 3 Haftada Bitti, İnsan 9 Ay Sürdü|İzin bağımlılığı kalktı — anonim anlatım. ||EN: 2026-10-08
+2026-10-06|10:30|li-ant|blog-turevi|cerceve|tr|Blog 8 türevi — bir birleşmenin ilk 90 günü|
+2026-10-06|11:00|x-ant|thread|cerceve|tr|Blog 8 thread'i|
+2026-10-06|18:00|li-eray|blog-turevi|cerceve|tr|Blog 8 türevi|
+2026-10-07|08:30|li-eray|vaka|vaka|tr|Entegrasyonun ilk haftası (anonim)|
+2026-10-08|10:00|li-ant|kaynak|sektor|tr|Kaynak paylaşımı #2|
+2026-10-08|18:00|li-eray|karsi-gorus|cerceve|tr|“Birleşmede teknoloji kolay kısımdır”|
+2026-10-09|08:30|li-eray|kaynak|sektor|tr|Kaynak paylaşımı #2|
+2026-10-13|09:00|blog|blog|sektor|tr|AI Ajansı mı, İç Ekip mi, Danışman mı? Hangisi Neyi Çözer|Rakip kötüleme yasak. Kategori kurma yazısı. ||EN: 2026-10-15
+2026-10-13|10:30|li-ant|blog-turevi|cerceve|tr|Blog 9 türevi — ajans/ekip/danışman|
+2026-10-13|11:00|x-ant|thread|cerceve|tr|Blog 9 thread'i|
+2026-10-13|18:00|li-eray|blog-turevi|cerceve|tr|Blog 9 türevi|
+2026-10-14|08:30|li-eray|vaka|vaka|tr|Bir müşterinin yanlış seçimi|
+2026-10-15|10:00|li-ant|sozluk|cerceve|tr|Sözlük #3: Gölge AI|
+2026-10-15|18:00|li-eray|karsi-gorus|cerceve|tr|Ajansları savunan karşı görüş|
+2026-10-16|08:30|li-eray|kisisel|kisisel|tr|Kişisel an|
+2026-10-20|09:00|blog|blog|cerceve|tr|Veri Hazır Değilse AI Hazır Değildir — ama bu bir IT problemi değil|Veri probleminin kendisi organizasyoneldir. ||EN: 2026-10-22
+2026-10-20|10:30|li-ant|blog-turevi|cerceve|tr|Blog 10 türevi — veri|
+2026-10-20|11:00|x-ant|thread|cerceve|tr|Blog 10 thread'i|
+2026-10-20|18:00|li-eray|blog-turevi|cerceve|tr|Blog 10 türevi|
+2026-10-21|08:30|li-eray|vaka|vaka|tr|Veriyi paylaşmayan departman|
+2026-10-22|09:00|nl|newsletter|marka|tr|Newsletter #2|Pilot mezarlığı + veri — bayram nedeniyle bir hafta öne alındı
+2026-10-22|10:00|li-ant|veri|sektor|tr|Veri kartı #2 + Newsletter #2|
+2026-10-22|18:00|li-eray|karsi-gorus|cerceve|tr|“Önce veri” tezine itiraz|
+2026-10-23|08:30|li-eray|duyuru|marka|tr|Newsletter #2 duyurusu|
+2026-10-27|09:00|blog|blog|sektor|tr|Türkiye'de Şirketlerin AI Bütçesi Nereye Gidiyor?|Veri bağımlı — karar 13 Ekim. Kanıtlanamayan rakam yazılmaz. ||EN: 2026-10-29
+2026-10-27|10:30|li-ant|blog-turevi|cerceve|tr|Blog 11 türevi — AI bütçesi|
+2026-10-27|11:00|x-ant|thread|cerceve|tr|Blog 11 thread'i|
+2026-10-27|18:00|li-eray|blog-turevi|cerceve|tr|Blog 11 türevi|
+2026-10-28|08:30|li-eray|vaka|vaka|tr|Roundtable'dan üç sahne — İÇERİK açısı|
+2026-10-29|10:00|li-ant|duyuru|marka|tr|Roundtable çıkarımları — YÖNTEM açısı|
+2026-11-03|09:00|blog|blog|vaka|tr|Çalışanlar AI'dan Korkmuyor, Belirsizlikten Korkuyor|Direnç bir tutum değil, bilgi eksikliğinin rasyonel sonucu. ||EN: 2026-11-05
+2026-11-03|10:30|li-ant|blog-turevi|cerceve|tr|Blog 12 türevi — çalışan korkusu|
+2026-11-03|11:00|x-ant|thread|cerceve|tr|Blog 12 thread'i|
+2026-11-03|18:00|li-eray|blog-turevi|cerceve|tr|Blog 12 türevi|
+2026-11-04|08:30|li-eray|duyuru|marka|tr|Podcast bölüm 1 duyurusu|
+2026-11-05|10:00|li-ant|duyuru|marka|tr|Podcast bölüm 1 + Hizmet #2: Retainer|
+2026-11-05|18:00|li-eray|karsi-gorus|cerceve|tr|“Direnç kötü değildir”|
+2026-11-06|08:30|li-eray|vaka|vaka|tr|Çalışan korkusu (EN)|
+2026-11-10|09:00|blog|blog|vaka|tr|Ajans Dünyasından AI Dönüşümüne Taşınan 3 Şey|10 Kasım anma günü — kasten kısa. Sosyal türetme Çarşamba'ya kayar. ||EN: 2026-11-12
+2026-11-11|08:30|li-eray|blog-turevi|cerceve|tr|Blog 13 türevi (Çarşamba'ya kaydı)|
+2026-11-11|11:00|x-ant|thread|cerceve|tr|Blog 13 thread'i (Çar)|
+2026-11-12|10:00|li-ant|kaynak|sektor|tr|Kaynak paylaşımı #3|
+2026-11-12|18:00|li-eray|vaka|vaka|tr|Ajans yıllarından bir brief hikayesi|
+2026-11-13|08:30|li-eray|kaynak|sektor|tr|Kaynak paylaşımı #3|
+2026-11-17|09:00|blog|blog|vaka|tr|İlk 90 Gün: Anthifel'i Kurarken Ne Öğrendim|90 gün metrikleri 13 Kasım'da toplanmalı. Yetişmezse 24 Kasım'a kayar. ||EN: 2026-11-19
+2026-11-17|10:30|li-ant|milestone|vaka|tr|90 gün — kurumsal kesit (SAYILAR)|
+2026-11-17|11:00|x-ant|thread|cerceve|tr|90 gün thread'i|
+2026-11-17|18:00|li-eray|blog-turevi|cerceve|tr|Blog 14 türevi|
+2026-11-18|08:30|li-eray|milestone|vaka|tr|90 gün: ne öğrendim (ANLATI)|
+2026-11-19|10:00|li-ant|blog-turevi|cerceve|tr|Blog 14 türevi|
+2026-11-19|18:00|li-eray|karsi-gorus|cerceve|tr|Gerçek bir hata itirafı|
+2026-11-20|08:30|li-eray|gozlem|cerceve|tr|Gözlem|
+2026-11-24|09:00|blog|blog|cerceve|tr|Şirket İçi AI Eğitimleri Neden İşe Yaramıyor|Workshop CTA'sı olan tek yazı. ||EN: 2026-11-26
+2026-11-24|10:30|li-ant|blog-turevi|cerceve|tr|Blog 15 türevi|
+2026-11-24|11:00|x-ant|thread|cerceve|tr|Blog 15 thread'i|
+2026-11-24|18:00|li-eray|blog-turevi|cerceve|tr|Blog 15 türevi|
+2026-11-25|08:30|li-eray|vaka|vaka|tr|İşe yaramayan bir eğitim programı|
+2026-11-26|09:00|nl|newsletter|marka|tr|Newsletter #3|90 gün şeffaflığı + podcast
+2026-11-26|10:00|li-ant|hizmet|marka|tr|Newsletter #3 + Hizmet #3: Workshop|
+2026-11-26|18:00|li-eray|karsi-gorus|cerceve|tr|“AI eğitimi vermek çözüm değil”|
+2026-11-27|08:30|li-eray|duyuru|marka|tr|Newsletter #3 duyurusu|
+2026-12-01|09:00|blog|blog|sektor|tr|Bir AI Duyurusu Nasıl Okunur — [güncel örnek]|Esnek slot. Konu 24 Kasım'da seçilir. ||EN: 2026-12-03
+2026-12-01|10:30|li-ant|blog-turevi|cerceve|tr|Blog 16 türevi|
+2026-12-01|11:00|x-ant|thread|cerceve|tr|Blog 16 thread'i|
+2026-12-01|18:00|li-eray|blog-turevi|cerceve|tr|Blog 16 türevi|
+2026-12-02|08:30|li-eray|duyuru|marka|tr|Podcast bölüm 2 duyurusu|
+2026-12-03|10:00|li-ant|duyuru|marka|tr|Podcast bölüm 2|
+2026-12-03|18:00|li-eray|sektor|sektor|tr|Duyurunun altındaki organizasyon kararı|
+2026-12-04|08:30|li-eray|gozlem|cerceve|tr|Gözlem|
+2026-12-08|09:00|blog|blog|cerceve|tr|Dönüşüm Danışmanlığı Nasıl Satın Alınır? Sprint, Retainer, Advisory|“Hiçbiri” seçeneğinin dürüstçe yazılması bu yazının gücü. ||EN: 2026-12-10
+2026-12-08|10:30|li-ant|blog-turevi|cerceve|tr|Blog 17 türevi|
+2026-12-08|11:00|x-ant|thread|cerceve|tr|Blog 17 thread'i|
+2026-12-08|18:00|li-eray|blog-turevi|cerceve|tr|Blog 17 türevi|
+2026-12-09|08:30|li-eray|vaka|vaka|tr|“Size danışman lazım değil” dediğim görüşme|
+2026-12-10|10:00|li-ant|veri|sektor|tr|Veri kartı #3|
+2026-12-10|18:00|li-eray|karsi-gorus|cerceve|tr|Danışmanlığın ne zaman gereksiz olduğu|
+2026-12-11|08:30|li-eray|kaynak|sektor|tr|Kaynak paylaşımı #4|
+2026-12-15|09:00|blog|blog|sektor|tr|2026'da Türkiye'de AI: Ne Konuşuldu, Ne Yapıldı|En yüksek arama trafiği potansiyeli. Çerçeve 1 Aralık'ta netleşir. ||EN: 2026-12-17
+2026-12-15|10:30|li-ant|blog-turevi|cerceve|tr|Blog 18 türevi|
+2026-12-15|11:00|x-ant|thread|cerceve|tr|Yıl değerlendirme thread'i|
+2026-12-15|18:00|li-eray|blog-turevi|cerceve|tr|Blog 18 türevi|
+2026-12-16|08:30|li-eray|vaka|vaka|tr|Yılın en çok yanıldığım tahmini|
+2026-12-17|09:00|nl|newsletter|marka|tr|Newsletter #4|2026 değerlendirmesi + 2027 öngörüsü (EN de) — yılbaşı nedeniyle öne alındı
+2026-12-17|10:00|li-ant|milestone|vaka|tr|2026 yıl değerlendirmesi + Newsletter #4|
+2026-12-17|18:00|li-eray|duyuru|marka|tr|Newsletter #4 duyurusu|
+2026-12-18|08:30|li-eray|sektor|sektor|tr|2026 değerlendirmesi (EN)|
+2026-12-22|09:00|blog|blog|kisisel|tr|Uzaktan Danışmanlık Gerçekten Nasıl İşliyor?|Yılın en hafif yazısı. Konum belirtilmez. CTA yok. ||EN: 2026-12-24
+2026-12-22|10:30|li-ant|blog-turevi|cerceve|tr|Blog 19 türevi — uzaktan danışmanlık|
+2026-12-22|11:00|x-ant|thread|cerceve|tr|Blog 19 thread'i|
+2026-12-22|18:00|li-eray|blog-turevi|cerceve|tr|Blog 19 türevi|
+2026-12-23|08:30|li-eray|kisisel|kisisel|tr|Kişisel yıl kapanışı|
+2026-12-24|10:00|li-ant|gorsel|marka|tr|Görsel / marka anı|
+2026-12-29|09:00|blog|blog|cerceve|tr|2027'de Şirketleri Bekleyen 5 Organizasyon Sorusu|Ocak 2027'nin ilk yazısına köprü. ||EN: 2026-12-31
+2026-12-29|10:30|li-ant|blog-turevi|cerceve|tr|Blog 20 türevi|
+2026-12-29|11:00|x-ant|thread|cerceve|tr|2027 thread'i|
+2026-12-29|18:00|li-eray|blog-turevi|cerceve|tr|Blog 20 türevi — 2027'de 5 soru|
+2026-12-30|08:30|li-eray|cerceve|cerceve|tr|2027'de 5 soru (EN)|
+2026-12-31|10:00|li-ant|duyuru|marka|tr|2027 açılış duyurusu|
+2026-12-31|18:00|li-eray|kisisel|kisisel|tr|Teşekkür postu|`;
+
+const SHELF=[['R1','KPI\'sı Olmayan AI Projesi, Proje Değildir','cerceve','Serbest yedek'],
+['R2','Danışman Ne Zaman “Bize İhtiyacınız Yok” Demeli','kisisel','90 gün metrikleri yetişmezse'],
+['R3','Küçük Şirket, Büyük Şirket: AI Dönüşümü Neden Aynı Değil','cerceve','Yoğun hafta'],
+['R4','Bir Yol Haritası Nasıl Okunur? 30 Sayfalık Raporun Anatomisi','cerceve','Yoğun hafta'],
+['R5','Türkiye\'de AI Yeteneği: Nerede, Ne Kadar, Ne Kadara','sektor','Blog 11 verisi çıkmazsa']];
+
+const TYPES_DOC=[
+['A','Kaynak paylaşımı','Company Page ayda 1 · X ayda 2-3','Dışarıdan bir rapor, makale veya kitap + Anthifel\'in yorumu.','Link atıp geçmek yasak. Üç parça zorunlu: ne diyor · nesi önemli · Türkiye\'deki şirket için ne anlama geliyor. Üçüncü parça yoksa post atılmaz.'],
+['B','Veri kartı','Company Page ayda 1','Tek çarpıcı rakam, marka paletinde görsel kart, altında iki cümle yorum.','Kaynak görselin üzerinde yazılır. Rakamın ters yüzünü göster: “%78\'i kullanıyor, %26\'sı ölçebiliyor — aradaki fark bu işin tamamı.”'],
+['C','Sözlük serisi','Company Page ayda 1','Bir kavramın tek kartta tanımı. Pilot mezarlığı · Gölge AI · Sahipsiz dönüşüm · Araç enflasyonu.','Tanım Anthifel\'in kendi diliyle. İsimlendirilen kavram alıntılanır; alıntılanan kavram markayı taşır.'],
+['D','Alıntı kartı','Ağırlıklı X, ayda 2-3','Blogdan veya konuşmadan çıkan tek cümle.','Cümle 15 kelimeyi geçmez. Geçiyorsa alıntı değil, paragraftır.'],
+['E','Şirket haberi','Ayda 1-2','Anthifel\'in kendi gelişmeleri: kuruluş, site, assessment, podcast, roundtable.','Her haber bir değer cümlesiyle biter. “Podcast yayında” değil, “Podcast yayında — ilk bölümde şunu konuştuk”.'],
+['F','Hizmet açıklaması','Company Page ayda 1','Discovery Sprint, Retainer, Workshop — alıcı diliyle.','Fiyat yazılmaz. “Bize ulaşın” yazılmaz. Ne yaptığı anlatılır, karar okuyucuya bırakılır.'],
+['G','Assessment hatırlatması','Company Page ayda 1 · X ayda 1-2','Ücretsiz AI Readiness Assessment\'a yönlendirme.','Her seferinde farklı kapıdan: bir soru üzerinden, bir istatistik üzerinden, “en çok takılınan soru” üzerinden.'],
+['H','Soru postu','X ayda 2-3 — Company Page\'de kullanılmaz','Kitleye açık uçlu tek soru.','Boş etkileşim avı yasak. Gerçekten merak edilen soru sorulur ve cevaplar okunup cevaplanır.'],
+['I','Sektör yorumu','X haftada 1-2','Güncel gelişmeyi organizasyon merceğinden okuma.','Haber aktarımı yasak. Herkesin gördüğü katman atlanır, altındaki organizasyon kararı gösterilir.'],
+['J','Görsel / marka anı','İki ayda 1','Antik taş dokusu, malzeme detayı, mimari yakın çekim.','Tanınabilir yer belirtilmez, coğrafi etiket kullanılmaz.']];
+
+const SRC=[['Stanford HAI — AI Index','Benimseme, yatırım, yönetişim verisinin altın standardı','Yıllık, ilkbahar','https://hai.stanford.edu/ai-index/2026-ai-index-report'],
+['Microsoft — Global AI Diffusion Report','Ülke bazlı yayılım, Türkiye kesiti var','Yıllık, yaz','https://news.microsoft.com/source/emea/2026/06/microsoftun-2026-global-yapay-zeka-yayilim-raporunun-sonuclari-aciklandi-turkiye-yapay-zeka-kullanimini-en-hizli-artiran-ulkeler-arasinda/?lang=tr'],
+['Digitopia — Türkiye Dijital ve Yapay Zeka Olgunluk Raporu','Doğrudan Türkiye şirketleri, olgunluk skoru','Yıllık','https://digitopia.co/impact-labs/reports/turkiye-dijital-ve-yapay-zeka-olgunluk-raporu-2026/'],
+['McKinsey — The State of AI','Kurumsal benimseme ve değer yakalama anketi','Yıllık',''],
+['MIT Sloan Management Review','Organizasyon ve teknoloji kesişimi — teze en yakın yayın','Sürekli',''],
+['Harvard Business Review','Değişim yönetimi ve liderlik açıları','Sürekli',''],
+['Ethan Mollick — One Useful Thing','Kurumsal AI kullanımının en isabetli gözlemcisi','Sürekli',''],
+['a16z Enterprise','Pazar tarafı, ürün tarafı','Sürekli','']];
+
+const PLAN27=[
+['Ocak','Yeni yıl, yeni çerçeve','2027 sorularının açılımı. Blog 19-20 newsletter\'a taşınır. İlk müşteri vakası hazırlığı.','Blog 4 · LinkedIn 16'],
+['Şubat','İlk müşteri vakası','Şubat hedefi: ilk müşteri referansı yayında. Vaka sütunu %40\'a döner.','Blog 4 · LinkedIn 16'],
+['Mart','Derinleşme','Discovery Sprint metodolojisinin açık anlatımı. Workshop satışı için içerik.','Blog 5 · LinkedIn 20'],
+['Nisan','Sektör dikeyleri','E-ticaret, fintech, medya için ayrı ayrı AI dönüşüm açıları.','Blog 4 · LinkedIn 16'],
+['Mayıs','Uluslararası açılım','MENA odaklı EN içerik payı artar. Dubai/Suudi vakaları.','Blog 4 · LinkedIn 16'],
+['Haziran','Yarıyıl değerlendirmesi','6 ay şeffaflık postu. İkinci Executive Roundtable serisi.','Blog 5 · LinkedIn 20'],
+['Temmuz','Yaz temposu','Düşük tempo. Raf yazıları devreye. Podcast ağırlıklı.','Blog 3 · LinkedIn 12'],
+['Ağustos','Birinci yıl','Anthifel 1 yaşında. Yıl 1 tam şeffaflık raporu — en önemli içerik.','Blog 4 · LinkedIn 16'],
+['Eylül','Analyst dönemi','Ekibe ilk kişi katılıyorsa anlatısı. Kapasite artışı içerikte görünür.','Blog 5 · LinkedIn 20'],
+['Ekim','Ürünleşme','Assessment 2.0, yeni framework\'lerin lansmanı.','Blog 4 · LinkedIn 16'],
+['Kasım','Otorite','Konferans sezonu. Keynote içerikleri bloga dönüşür.','Blog 4 · LinkedIn 16'],
+['Aralık','Kapanış','2027 değerlendirmesi + 2028 öngörüsü. Yıllık ritüel oturuyor.','Blog 5 · LinkedIn 16']];
+
+const CHK_BLOG=['Tek bir sütuna oturuyor','Ana teze hizmet ediyor','Coğrafi konum referansı yok','Geçmiş şirket ismi yok — anonim anlatım','Marka hikayesi geçiyorsa yalnızca Anthropos','Tek CTA','Emoji, ünlem, yasak kelime taraması yapıldı','Tırnaklar curly','800-1500 kelime aralığında','Her rakamın kaynağı var','Meta description ve URL elle yazıldı (TR + EN)','En az 2 iç bağlantı','UTM etiketi eklendi','Hero görsel marka paletinde','EN çeviri düzeltildi','hreflang karşılıklı bağlandı','Sosyal türetmeler hazır'];
+const CHK_SOC=['Diğer hesaptaki bir postu tekrar etmiyor','Blog thread\'i ise yalnızca @anthifel atıyor','Kaynak paylaşımıysa Türkiye yorumu katmanı var','Rakam varsa kaynağı belirtilmiş','Coğrafi konum referansı yok','Geçmiş şirket ismi yok','Emoji yok, ünlem yok, yasak kelime yok','Tırnaklar curly','LinkedIn hashtag ≤3 ve sonda · X\'te hashtag yok','Tek CTA','Görsel marka paletinde','Link UTM etiketli','Sonraki 90 dakika yoruma ayrıldı'];
+
+/* ═══════════ DURUM ═══════════ */
+let P=[];            // postlar
+let dirty=false, fh=null;
+let view='dash', flt={ch:'',st:'',pil:'',q:''}, calM=new Date(2026,7,1), editId=null, ctab='write';
+
+function uid(){return 'p'+Math.random().toString(36).slice(2,9)}
+function boot(){
+  P=SEED.trim().split('\n').filter(Boolean).map(l=>{
+    const [d,t,ch,ty,pl,lg,ti,no]=l.split('|');
+    let note=no||'', en='';
+    const m=note.match(/\|\|EN:\s*(\S+)/); if(m){en=m[1];note=note.replace(/\s*\|\|EN:.*/,'').trim();}
+    return {id:uid(),date:d,time:t,ch,type:ty,pillar:pl,lang:lg,title:ti,body:'',note,enDate:en,status:0,checks:{}};
+  });
+}
+
+/* ═══════════ YARDIMCI ═══════════ */
+const MON=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const MS=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const DS=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+function E(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function pd(s){const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)}
+function fs(s){const d=pd(s);return d.getDate()+' '+MS[d.getMonth()]}
+function fl(s){const d=pd(s);return d.getDate()+' '+MS[d.getMonth()]+' '+DS[(d.getDay()+6)%7]}
+function tod(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function mark(){dirty=true;upStat()}
+function upStat(){
+  document.getElementById('sdot').className='dot '+(dirty?'un':'sv');
+  document.getElementById('stxt').textContent=dirty?(fh?'Kaydedilmemiş değişiklik':'Kaydedilmedi'):(fh?fh.name:'Kaydedildi');
+  document.getElementById('sbtn').className=dirty?'p':'';
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2100)}
+function copy(x,m){const a=document.createElement('textarea');a.value=x;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy');toast(m||'Kopyalandı')}catch(e){toast('Kopyalanamadı')}document.body.removeChild(a)}
+function byDate(a,b){return a.date===b.date?(a.time||'').localeCompare(b.time||''):a.date.localeCompare(b.date)}
+function chip(p){return `<span class="ch ${p.ch}">${CH[p.ch].s}</span>`}
+function stTag(p){return `<span class="st s${p.status}" data-cyc="${p.id}">${STA[p.status]}</span>`}
+function fweek(d){const x=new Date(d);const dow=(x.getDay()+6)%7;x.setDate(x.getDate()-dow);return x}
+
+/* lint */
+function lint(txt,ch){
+  const out=[];
+  if(!txt||!txt.trim())return out;
+  BAN.forEach(w=>{if(new RegExp('\\b'+w.replace(/[-\s]/g,'[-\\s]?'),'i').test(txt))out.push({s:'Yasak kelime: '+w,l:1})});
+  GEO.forEach(w=>{if(new RegExp(w,'i').test(txt))out.push({s:'Coğrafi referans: '+w,l:1})});
+  FIRMS.forEach(w=>{if(new RegExp(w,'i').test(txt))out.push({s:'Şirket ismi: '+w+' — anonimleştir',l:1})});
+  if(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/u.test(txt))out.push({s:'Emoji',l:1});
+  if(/!/.test(txt))out.push({s:'Ünlem',l:1});
+  if(/"/.test(txt))out.push({s:'Düz tırnak — curly kullan',l:2});
+  const hs=(txt.match(/#\w+/g)||[]).length;
+  if(ch&&ch.startsWith('x-')&&hs>0)out.push({s:'X\'te hashtag kullanılmaz',l:1});
+  if(ch&&ch.startsWith('li-')&&hs>3)out.push({s:'LinkedIn hashtag en fazla 3 (şu an '+hs+')',l:1});
+  const w=txt.trim().split(/\s+/).length;
+  if(ch&&ch.startsWith('li-')&&w>250)out.push({s:w+' kelime — 250 üstü blog yazısıdır',l:2});
+  const first=(txt.trim().split(/\n/)[0]||'');
+  if(/^(Günümüzde|Bugünlerde|Son (yıllarda|dönemde)|Artık\s+(herkes|hepimiz|hiç)|Bilindiği üzere|Herkesin bildiği|Teknoloji dünyasında|Yapay zeka\s+(çağı|artık|günümüzde))/i.test(first))out.push({s:'Genel tespitle açılıyor — somut bir anla aç',l:1});
+  return out;
+}
+
+/* ═══════════ GÖRÜNÜMLER ═══════════ */
+const V={};
+const TITLES={dash:'Panel',cal:'Takvim',board:'Akış',list:'Tüm içerik',blog:'Blog',social:'Sosyal',
+ accounts:'Hesaplar',plans:'Aylık ve yıllık plan',analytics:'Hedefler',rules:'Kurallar ve ses',
+ types:'İçerik tipleri',src:'Kaynaklar',data:'Veri'};
+
+/* ── Panel ── */
+V.dash=()=>{
+  const t=tod(), ti=iso(t);
+  const ws=fweek(t), we=new Date(ws); we.setDate(we.getDate()+6);
+  const wk=P.filter(p=>p.date>=iso(ws)&&p.date<=iso(we)).sort(byDate);
+  const up=P.filter(p=>p.date>=ti&&p.status<4).sort(byDate).slice(0,8);
+  const late=P.filter(p=>p.date<ti&&p.status<4);
+  const pub=P.filter(p=>p.status===4).length;
+  const rdy=P.filter(p=>p.status>=3).length;
+  const bl=P.filter(p=>p.ch==='blog');
+  const blDone=bl.filter(p=>p.status===4).length;
+  const dep=DEPS.filter(d=>d.d>=ti).slice(0,3);
+  const days=Math.ceil((pd('2026-08-20')-t)/864e5);
+
+  let h='';
+  h+=`<div class="kpis">
+   <div class="kpi"><div class="n">${P.length}</div><div class="l">Toplam içerik</div><div class="d">${Object.keys(CH).length} kanal</div></div>
+   <div class="kpi"><div class="n">${pub}<small>/${P.length}</small></div><div class="l">Yayında</div><div class="trk"><div class="fil" style="width:${P.length?pub/P.length*100:0}%"></div></div></div>
+   <div class="kpi"><div class="n">${rdy}</div><div class="l">Hazır veya yayında</div><div class="d">${P.filter(p=>p.status===1||p.status===2).length} taslak/incelemede</div></div>
+   <div class="kpi"><div class="n">${wk.length}</div><div class="l">Bu hafta planlı</div><div class="d">${fs(iso(ws))} – ${fs(iso(we))}</div></div>
+   ${days>0?`<div class="kpi"><div class="n">${days}</div><div class="l">Lansmana kalan gün</div><div class="d">20 Ağustos 2026</div></div>`
+    :`<div class="kpi"><div class="n ${late.length?'no':'ok'}">${late.length}</div><div class="l">Geciken</div><div class="d">${late.length?'Tarihi geçti, yayında değil':'Gecikme yok'}</div></div>`}
+  </div>`;
+
+  if(late.length)h+=`<div class="note"><strong>${late.length} içeriğin tarihi geçmiş ve yayında değil.</strong> Ya durumunu güncelleyin ya da tarihini ileri alın — takvimin doğruluğu buna bağlı.</div>`;
+
+  h+=`<div class="g2">`;
+  if(days>0){
+    h+=`<div class="card"><h3>Lansmandan önce bitmesi gerekenler</h3><div class="in">
+     ${['Blog yazı 1 sitede yayında (12 Ağustos)','AI Readiness Assessment formu canlı, mail otomasyonu bağlı','LinkedIn profil paketi güncellendi — konum referansları çıkarıldı','Launch post TR ve EN hazır','Ön-bilgilendirme DM şablonları (A/B/C grup) yazıldı','Company Page taslak kuruldu (17-19 Ağustos)','Görsel şablonlar hazır: alıntı, veri, sözlük, hero, duyuru','Calendly bağlantısı çalışıyor']
+      .map(x=>`<label class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('k',this.checked)"><span>${E(x)}</span></label>`).join('')}
+     </div></div>`;
+  } else {
+    h+=`<div class="card"><h3>Bu hafta<span class="rt"><button class="gh" onclick="go('cal')">Takvimde aç</button></span></h3>
+     <div class="in tight">${wk.length?wk.map(prow).join(''):'<div class="empty">Bu hafta planlı içerik yok.</div>'}</div></div>`;
+  }
+  h+=`<div class="card"><h3>Sırada<span class="rt"><button class="gh" onclick="go('list')">Tümü</button></span></h3>
+   <div class="in tight">${up.length?up.map(prow).join(''):'<div class="empty">Yaklaşan içerik yok.</div>'}</div></div>`;
+  h+=`</div>`;
+
+  h+=`<div class="g2">
+   <div class="card"><h3>Yaklaşan kararlar</h3><div class="in">
+   ${dep.length?dep.map(d=>`<div style="padding:8px 0;border-bottom:1px solid var(--line2)">
+     <div style="font-size:11px;color:var(--stone)">${fl(d.d)}</div>
+     <div style="font-size:13.5px;margin-top:2px">${E(d.t)}</div>
+     <div style="font-size:12px;color:var(--stone);margin-top:2px">${E(d.w)}</div></div>`).join(''):'<div class="mut">Bekleyen karar yok.</div>'}
+   </div></div>
+   <div class="card"><h3>Kanal dağılımı</h3><div class="in">
+   ${Object.keys(CH).map(c=>{const n=P.filter(p=>p.ch===c).length;const mx=Math.max(...Object.keys(CH).map(k=>P.filter(p=>p.ch===k).length))||1;
+     return `<div style="display:flex;align-items:center;gap:9px;margin-bottom:7px">
+      <span class="ch ${c}">${CH[c].s}</span>
+      <span style="font-size:12.5px;flex:0 0 130px">${CH[c].n}</span>
+      <span style="flex:1;height:6px;background:var(--line2);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:${n/mx*100}%;background:var(--kekova)"></span></span>
+      <span style="font-size:12px;color:var(--stone);flex:0 0 26px;text-align:right">${n}</span></div>`}).join('')}
+   </div></div></div>`;
+  return h;
+};
+function prow(p){
+  const blogEn=p.ch==='blog'&&p.enDate?`<span class="tg en">EN ${fs(p.enDate)}</span>`:'';
+  return `<div class="pr ${p.status===4?'done':''}" data-id="${p.id}">
+   <div class="dt">${fl(p.date)}<br><span style="opacity:.7">${E(p.time||'')}</span></div>
+   ${chip(p)}
+   <div class="ti"><span>${E(p.title)}</span>
+     <div class="sub"><span class="tg ${p.pillar}">${PIL[p.pillar]?PIL[p.pillar].split(' ')[0]:p.pillar}</span>
+     <span>${TYP[p.type]||p.type}</span>${p.lang==='en'?'<span class="tg en">EN</span>':''}${blogEn}
+     ${SILENT[p.date]?`<span class="no">${SILENT[p.date]} — sessiz gün</span>`:''}</div></div>
+   <div></div>${stTag(p)}</div>`;
+}
+
+/* ── Takvim ── */
+V.cal=()=>{
+  const y=calM.getFullYear(), m=calM.getMonth();
+  const first=new Date(y,m,1), start=fweek(first);
+  const t=iso(tod());
+  let h=`<div class="bar">
+   <button onclick="calStep(-1)">‹</button>
+   <strong class="sf" style="font-size:17px;min-width:150px;text-align:center">${MON[m]} ${y}</strong>
+   <button onclick="calStep(1)">›</button>
+   <button onclick="calToday()">Bugün</button>
+   <div class="sep"></div>${chFilter()}</div>`;
+  h+=`<div class="cal">${DS.map(d=>`<div class="hd">${d}</div>`).join('')}`;
+  const cur=new Date(start);
+  for(let i=0;i<42;i++){
+    const ds=iso(cur), out=cur.getMonth()!==m;
+    const ev=P.filter(p=>p.date===ds&&passFlt(p)).sort(byDate);
+    h+=`<div class="cel ${out?'out':''} ${ds===t?'tod':''}">
+      <div class="dn"><span>${cur.getDate()}</span><button class="add" onclick="openC(null,'${ds}')">+</button></div>
+      ${SILENT[ds]?`<div class="sil">${SILENT[ds]}</div>`:''}
+      ${ev.map(p=>`<div class="ev ${p.ch} ${p.status===4?'pub':''}" data-id="${p.id}" title="${E(p.time+' · '+CH[p.ch].n+' · '+p.title)}">
+        <span class="t">${E((p.time||'').slice(0,5))}</span><span class="n">${E(p.title)}</span></div>`).join('')}
+      ${(p=>'')()}
+    </div>`;
+    cur.setDate(cur.getDate()+1);
+  }
+  h+=`</div><div style="margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--stone)">
+   ${Object.keys(CH).map(c=>`<span style="display:flex;gap:5px;align-items:center"><span style="width:9px;height:9px;border-radius:2px;background:${c==='blog'?'#0F0F0E':c==='li-eray'?'#2B4C5C':c==='li-ant'?'#4a6a7d':c==='nl'?'#5C6B4A':'#7A756C'}"></span>${CH[c].n}</span>`).join('')}
+   </div>`;
+  return h;
+};
+function calStep(n){calM=new Date(calM.getFullYear(),calM.getMonth()+n,1);render()}
+function calToday(){const d=tod();calM=new Date(d.getFullYear(),d.getMonth(),1);render()}
+
+/* ── Akış (kanban) ── */
+let bWin=8;
+V.board=()=>{
+  const t=tod(); const lim=new Date(t); lim.setDate(lim.getDate()+bWin*7);
+  const inWin=p=>bWin===0?true:(p.date<=iso(lim));
+  let h=`<div class="bar">${chFilter()}<div class="sep"></div>
+   <span class="lb">Pencere</span><select style="width:auto" onchange="bWin=+this.value;render()">
+    ${[[4,'4 hafta'],[8,'8 hafta'],[16,'16 hafta'],[0,'Tümü']].map(o=>`<option value="${o[0]}" ${bWin===o[0]?'selected':''}>${o[1]}</option>`).join('')}
+   </select>
+   ${flt.ch?`<button onclick="flt.ch='';render()">Filtreyi temizle</button>`:''}
+   <span class="lb" style="margin-left:auto">${P.filter(p=>passFlt(p)&&inWin(p)).length} kart · sürükleyerek durum değiştirin</span></div><div class="bo">`;
+  STA.forEach((s,i)=>{
+    const it=P.filter(p=>p.status===i&&passFlt(p)&&inWin(p)).sort(byDate);
+    h+=`<div class="col" data-col="${i}"><h4><span>${s}</span><span>${it.length}</span></h4>
+      <div class="cin">${it.map(p=>`<div class="bc" draggable="true" data-id="${p.id}">
+        <div style="display:flex;gap:6px;align-items:flex-start">${chip(p)}<span>${E(p.title)}</span></div>
+        <div class="m"><span>${fs(p.date)}</span><span>·</span><span>${TYP[p.type]||p.type}</span></div></div>`).join('')}</div></div>`;
+  });
+  return h+`</div>`;
+};
+
+/* ── Liste ── */
+V.list=()=>{
+  const it=P.filter(passFlt).sort(byDate);
+  return `<div class="bar">${chFilter()}<div class="sep"></div>${stFilter()}<div class="sep"></div>
+   <input type="text" placeholder="Ara…" value="${E(flt.q)}" oninput="flt.q=this.value;render()" style="width:180px">
+   <span class="lb" style="margin-left:auto">${it.length} kayıt</span>
+   <button onclick="expCSV()">CSV</button></div>
+   <div class="card"><div class="in tight">${it.length?it.map(prow).join(''):'<div class="empty">Filtreye uyan içerik yok.</div>'}</div></div>`;
+};
+
+/* ── Blog ── */
+V.blog=()=>{
+  const bl=P.filter(p=>p.ch==='blog').sort(byDate);
+  const done=bl.filter(p=>p.status===4).length;
+  const cnt={};bl.forEach(p=>cnt[p.pillar]=(cnt[p.pillar]||0)+1);
+  let h=`<div class="kpis">
+   <div class="kpi"><div class="n">${bl.length}</div><div class="l">Yazı</div><div class="d">Her biri TR + EN = ${bl.length*2} yayın</div></div>
+   <div class="kpi"><div class="n">${done}<small>/${bl.length}</small></div><div class="l">Yayında</div><div class="trk"><div class="fil" style="width:${bl.length?done/bl.length*100:0}%"></div></div></div>
+   <div class="kpi"><div class="n">1<small>/hafta</small></div><div class="l">Tempo</div><div class="d">Salı 09:00 TR · Perşembe EN</div></div>
+   <div class="kpi"><div class="n">17-29<small>sa</small></div><div class="l">Aylık efor</div><div class="d">Çeviri ve newsletter dahil</div></div>
+  </div>`;
+  h+=`<div class="card"><h3>Yazı takvimi<span class="rt"><button onclick="openC(null,null,'blog')">+ Yazı ekle</button></span></h3>
+   <div class="in tight">${bl.map(prow).join('')}</div></div>`;
+  h+=`<div class="g2"><div class="card"><h3>Sütun dağılımı</h3><div class="in">
+   <table><tr><th>Sütun</th><th>Adet</th><th>Pay</th><th>Uzun vadeli hedef</th></tr>
+   ${Object.keys(PIL).map(k=>{const n=cnt[k]||0;const pc=bl.length?Math.round(n/bl.length*100):0;
+     return `<tr><td>${PIL[k]}</td><td>${n}</td><td>%${pc}</td><td class="mut">${PIL_TARGET[k]?'%'+PIL_TARGET[k]:'—'}</td></tr>`}).join('')}
+   </table><p class="mut" style="font-size:12.5px;margin-top:8px">Çerçeve sütununun ağır basması bilinçli ve geçici — ilk 5 ayda vaka stoku dar. Yeni müşteri vakaları Şubat 2027'den itibaren giriyor, denge o zaman kuruluyor.</p>
+   </div></div>
+   <div class="card"><h3>Raf yazıları</h3><div class="in tight">
+   ${SHELF.map(s=>`<div class="pr" style="grid-template-columns:34px 1fr auto"><div class="dt">${s[0]}</div>
+     <div class="ti"><span>${E(s[1])}</span><div class="sub"><span class="tg ${s[2]}">${PIL[s[2]].split(' ')[0]}</span><span>${E(s[3])}</span></div></div>
+     <button class="gh" onclick="addShelf('${s[0]}')">Takvime al</button></div>`).join('')}
+   </div></div></div>`;
+  h+=`<div class="card"><h3>Yeniden kullanım motoru</h3><div class="in">
+   <pre class="tpl">1 blog yazısı (Salı 09:00 TR · Perşembe EN)
+   ├── Eray kişisel LinkedIn — 1 post (Salı 18:00, ana argüman)
+   ├── Anthifel Company Page — 1 post (Salı 10:30, kurumsal özet)
+   ├── X @anthifel        — 1 thread (Salı 11:00, 5-7 tweet)
+   ├── Eray kişisel X     — 2-3 kısa versiyon (thread değil)
+   └── Newsletter         — ayın yazılarından derleme</pre>
+   <p class="mut" style="font-size:12.5px">Thread yalnızca @anthifel'in işi. Uzun anlatı yalnızca kişisel LinkedIn'in işi. Aynı içerik iki hesaptan aynı gün aynı formatta çıkmaz.</p></div></div>`;
+  return h;
+};
+function addShelf(k){
+  const s=SHELF.find(x=>x[0]===k);if(!s)return;
+  const d=new Date(tod());d.setDate(d.getDate()+7);
+  P.push({id:uid(),date:iso(d),time:'09:00',ch:'blog',type:'blog',pillar:s[2],lang:'tr',title:s[1],body:'',note:'Raf yazısı '+k+' — '+s[3],enDate:'',status:0,checks:{}});
+  mark();render();toast(k+' takvime alındı');
+}
+
+/* ── Sosyal ── */
+V.social=()=>{
+  const soc=P.filter(p=>p.ch!=='blog'&&p.ch!=='nl');
+  const t=iso(tod());
+  const byCh={};Object.keys(CH).forEach(c=>byCh[c]=P.filter(p=>p.ch===c));
+  let h=`<div class="kpis">
+   ${['li-eray','li-ant','x-eray','x-ant'].map(c=>{const n=byCh[c].length;const pub=byCh[c].filter(p=>p.status===4).length;
+     return `<div class="kpi"><div class="n">${n}</div><div class="l">${CH[c].n}</div><div class="d">${pub} yayında · ${CH[c].ac}</div></div>`}).join('')}
+  </div>`;
+  h+=`<div class="note o"><strong>Tempo tabanı:</strong> Eray LinkedIn haftada 4 · Company Page haftada 2 · @anthifel haftada 5 · Eray X haftada 5-7.
+   Taban rakam kutsaldır, hedef bonustur — 19 hafta kesintisiz haftada 2, üç hafta 5 atıp susmaktan kıyaslanamayacak kadar değerlidir.</div>`;
+
+  h+=`<div class="card"><h3>Haftalık ritim<span class="rt"><span class="lb">Sabit slotlar</span></span></h3><div class="in">
+   <table><tr><th>Gün</th><th>Eray LinkedIn</th><th>Company Page</th><th>X</th></tr>
+   <tr><td>Pazartesi</td><td class="mut">—</td><td class="mut">—</td><td>Gözlem (her iki hesap)</td></tr>
+   <tr><td>Salı</td><td><strong>18:00</strong> Blog ana argümanı</td><td><strong>10:30</strong> Blog türevi</td><td><strong>11:00</strong> @anthifel thread</td></tr>
+   <tr><td>Çarşamba</td><td><strong>08:30</strong> Vaka anlatısı</td><td class="mut">—</td><td>Tekil</td></tr>
+   <tr><td>Perşembe</td><td><strong>18:00</strong> Karşı görüş / çerçeve / sektör</td><td><strong>10:00</strong> Özgün post</td><td>Kaynak veya sektör</td></tr>
+   <tr><td>Cuma</td><td><strong>08:30</strong> Kişisel / kaynak / milestone</td><td class="mut">—</td><td>Kapanış</td></tr></table>
+   <p class="mut" style="font-size:12.5px;margin-top:9px">Company Page sabah bandının geç yarısını (10:00-10:30), kişisel hesap erken yarısını (08:30) ve akşamı (18:00) kullanır. Salı günü ikisi de post atar ama arada yedi buçuk saat vardır.</p></div></div>`;
+
+  h+=`<div class="g2">
+   <div class="card"><h3>Çakışan olaylar, ayrılmış açılar</h3><div class="in">
+   <table><tr><th>Olay</th><th>Company Page</th><th>Kişisel</th></tr>
+   <tr><td><strong>Roundtable</strong><br><span class="mut" style="font-size:11px">28 Ekim</span></td><td><em>Yöntem:</em> formatı neden kurduk, nasıl işledi</td><td><em>İçerik:</em> masada konuşulan üç şey, isimsiz</td></tr>
+   <tr><td><strong>90 gün</strong><br><span class="mut" style="font-size:11px">17-18 Kasım</span></td><td><em>Sayılar:</em> kuru tablo, 17 Kasım</td><td><em>Öğrenilenler:</em> anlatı, 18 Kasım</td></tr></table></div></div>
+   <div class="card"><h3>Yorum protokolü</h3><div class="in">
+   <p style="font-size:13px;margin-bottom:8px">LinkedIn erişiminin yaklaşık yarısı ilk 90 dakikadaki yorum trafiğinden gelir. Post atıp kaçmak, hiç atmamaktan az farklıdır.</p>
+   <ul style="margin-left:16px;font-size:13px">
+   <li><strong>Post saatinden sonraki 90 dakika ajandada bloklu.</strong></li>
+   <li>Her yoruma cevap — yorumun içine giren bir cümle</li>
+   <li><strong>Günde 20 dakika başkalarının postuna yorum.</strong> İlk üç ayda erişimin en hızlı büyüme yolu bu</li>
+   <li>Zıt yoruma cevap verilir, silinmez</li></ul></div></div></div>`;
+
+  h+=`<div class="note"><strong>X tekil postları takvimde tohum olarak yok — kasten.</strong> Seed veri thread'leri ve LinkedIn slotlarını taşıyor;
+   günlük X postları gündeme göre yazılan şeyler. Panel bunları siz ekledikçe sayar, boş slot olarak göstermez.
+   X'in gerçek işi içerik dağıtımı değil, fikir test alanı: bir gözlem X'te tutuyorsa LinkedIn postu olur, LinkedIn postu tutuyorsa blog yazısı olur.</div>`;
+  h+=`<div class="card"><h3>Sosyal içerik<span class="rt">${chFilter()}</span></h3>
+   <div class="in tight">${soc.filter(passFlt).sort(byDate).slice(0,60).map(prow).join('')||'<div class="empty">Kayıt yok.</div>'}</div></div>`;
+  return h;
+};
+
+/* ── Hesaplar ── */
+V.accounts=()=>{
+  let h=`<div class="note"><strong>Bu panel bir kayıt ve hazırlık sistemidir, yayın robotu değil.</strong>
+   Metinler burada yazılır, kontrolden geçer, zamanı gelince tek tıkla kopyalanıp ilgili platformda açılır.
+   Otomatik yayın için gereken teknik yol aşağıda — bunun için bir sunucu ve platform onayları gerekiyor.</div>`;
+  h+=`<div class="card"><h3>Bağlı hesaplar</h3><div class="in tight">
+   ${Object.keys(CH).map(c=>`<div class="pr" style="grid-template-columns:22px 1fr auto auto;cursor:default">
+     ${chip({ch:c})}
+     <div class="ti"><span>${CH[c].n}</span><div class="sub"><span>${E(CH[c].ac)}</span>${CH[c].lim?`<span>${CH[c].lim} karakter sınırı</span>`:''}</div></div>
+     <span class="st s0">Elle yayın</span>
+     ${CH[c].url?`<a class="btn" href="${CH[c].url}" target="_blank" rel="noopener">Platformda aç</a>`:'<span></span>'}
+   </div>`).join('')}</div></div>`;
+
+  h+=`<div class="card"><h3>Otomatik yayına geçmek için gerekenler</h3><div class="in">
+   <p style="font-size:13px;margin-bottom:12px">Bu dosya tarayıcıda çalışan tek bir sayfa. Bir platforma doğrudan post atabilmesi için üç şey gerekiyor ve üçü de tarayıcının dışında:</p>
+   <table><tr><th>Gereken</th><th>Ne için</th><th>Zorluk</th></tr>
+   <tr><td><strong>Sunucu</strong> (küçük bir Node/Python servisi)</td><td>API anahtarlarını saklamak ve zamanlanmış postları tetiklemek. Tarayıcıda anahtar saklamak güvenli değil.</td><td>Orta — aylık birkaç dolarlık bir servis yeter</td></tr>
+   <tr><td><strong>LinkedIn API erişimi</strong></td><td>Kişisel profil ve Company Page paylaşımı. Marketing Developer Platform başvurusu gerekiyor.</td><td>Yüksek — onay süreci haftalar sürebiliyor</td></tr>
+   <tr><td><strong>X API</strong></td><td>Post ve thread yayını. Ücretli plan gerekiyor.</td><td>Düşük — aylık ücretli, onay hızlı</td></tr></table>
+   <p style="font-size:13px;margin-top:12px"><strong>Pratik alternatif:</strong> Buffer, Publer veya Hypefury gibi bir zamanlayıcıya bu paneldeki CSV dışa aktarımıyla toplu yükleme yapabilirsiniz. Planlama ve marka kontrolü burada kalır, yayın orada olur. İlk 90 gün için bu yeterli — solo çalışırken kurulum maliyeti içerik üretiminden çalar.</p>
+   <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button onclick="expCSV()">Zamanlayıcı için CSV al</button><button onclick="go('data')">Veri sayfası</button></div></div></div>`;
+
+  h+=`<div class="card"><h3>Yayın akışı — bugün nasıl işliyor</h3><div class="in">
+   <table><tr><th>#</th><th>Adım</th><th>Nerede</th></tr>
+   <tr><td>1</td><td>İçeriği panelde yaz, marka kontrolünden geçir</td><td>Bu panel — Composer</td></tr>
+   <tr><td>2</td><td>Durumu <em>Zamanlandı</em> yap, tarih ve saati kesinleştir</td><td>Bu panel</td></tr>
+   <tr><td>3</td><td>Zamanı gelince “Kopyala ve platformda aç” butonuna bas</td><td>Bu panel → platform</td></tr>
+   <tr><td>4</td><td>Yapıştır, görseli ekle, yayınla</td><td>LinkedIn / X</td></tr>
+   <tr><td>5</td><td>Panele dön, durumu <em>Yayında</em> yap</td><td>Bu panel</td></tr>
+   <tr><td>6</td><td>Sonraki 90 dakika yorumlara ayrılmış olmalı</td><td>Platform</td></tr></table></div></div>`;
+  return h;
+};
+
+/* ── Planlar ── */
+V.plans=()=>{
+  const mAgg={};
+  P.forEach(p=>{const k=p.date.slice(0,7);mAgg[k]=mAgg[k]||{t:0,b:0,s:0};mAgg[k].t++;if(p.ch==='blog')mAgg[k].b++;else if(p.ch!=='nl')mAgg[k].s++;});
+  const months=Object.keys(mAgg).sort();
+  const themes={'2026-08':'Lansman — konumlandırmayı ilan et','2026-09':'Temel kurma — çerçeveleri kur, kredibilite göster',
+   '2026-10':'Derinleşme — kategori tanımı ve ilk etkinlik','2026-11':'Otorite — podcast, şeffaflık, 90 gün',
+   '2026-12':'Kapanış — yıl değerlendirmesi, SEO hasadı, 2027 tohumu'};
+  let h=`<div class="card"><h3>2026 — aylık plan</h3><div class="in">
+   <table><tr><th>Ay</th><th>Tema</th><th>Blog</th><th>Sosyal</th><th>Toplam</th></tr>
+   ${months.map(m=>{const [y,mm]=m.split('-');const a=mAgg[m];
+     return `<tr><td><strong>${MON[+mm-1]} ${y}</strong></td><td>${E(themes[m]||'—')}</td><td>${a.b}</td><td>${a.s}</td><td>${a.t}</td></tr>`}).join('')}
+   </table></div></div>`;
+
+  h+=`<div class="card"><h3>2027 — yıllık çerçeve</h3><div class="in">
+   <p class="mut" style="font-size:12.5px;margin-bottom:10px">2026 planı yıl sonunda bitiyor. Aşağısı ana hatlarıyla 2027 — Aralık'ta detaylandırılacak. Tempo aynı: haftada 1 blog, haftada 4 kişisel LinkedIn postu.</p>
+   <table><tr><th>Ay</th><th>Tema</th><th>Odak</th><th>Hacim</th></tr>
+   ${PLAN27.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${E(r[1])}</td><td>${E(r[2])}</td><td class="mut" style="white-space:nowrap">${E(r[3])}</td></tr>`).join('')}
+   </table></div></div>`;
+
+  h+=`<div class="g2">
+   <div class="card"><h3>Yıllık ritüeller</h3><div class="in"><table>
+   <tr><th>Ne zaman</th><th>Ne</th></tr>
+   <tr><td>Her ayın son Perşembesi</td><td>Newsletter (bayram/tatile denk gelirse öne alınır)</td></tr>
+   <tr><td>Her ayın son Cuma günü</td><td>30 dakikalık gözden geçirme — ölçüm sayfasındaki liste</td></tr>
+   <tr><td>Şubat</td><td>İlk müşteri vakası — vaka sütunu %40'a döner</td></tr>
+   <tr><td>Haziran</td><td>Yarıyıl şeffaflık raporu</td></tr>
+   <tr><td>Ağustos</td><td>Yıl dönümü — Yıl 1 tam şeffaflık raporu</td></tr>
+   <tr><td>Aralık</td><td>Yıl değerlendirmesi + ertesi yıl öngörüsü + sonraki yılın planı</td></tr>
+   </table></div></div>
+   <div class="card"><h3>Tempo sigortası</h3><div class="in">
+   <p style="font-size:13px;margin-bottom:9px">Haftada 1 blog, brief'teki gerçekçi temponun üstünde. Üç emniyet supabı planın içinde:</p>
+   <ol style="margin-left:17px;font-size:13px">
+   <li><strong>Raf yazısı bankası</strong> — her ayın sonunda rafta en az 1 hazır yazı</li>
+   <li><strong>Ağırlık dönüşümü</strong> — uzun (1200-1500) ve kısa (800-1000) dönüşümlü</li>
+   <li><strong>Kırmızı çizgi</strong> — üst üste 2 hafta kaçırılırsa tempo otomatik 2 haftada 1'e düşer. Bu bir başarısızlık değil, planın içindeki bir dal</li>
+   </ol>
+   <p class="mut" style="font-size:12.5px;margin-top:9px">Fazladan enerji bir sonraki yazıyı erkene çekmek yerine rafa yazı eklemek için kullanılır. Erken bitmiş bir yazı tempoyu kurtarmaz, raftaki yazı kurtarır.</p></div></div></div>`;
+  return h;
+};
+
+/* ── Hedefler ── */
+V.analytics=()=>{
+  let h=`<div class="note"><strong>Atıf uyarısı.</strong> Business Plan'ın 90 gün hedefi <strong>toplam 10-15 keşif görüşmesi.</strong>
+   Aşağıdaki kanal hedefleri bu toplamın içindedir, üstüne değil. Bir görüşme genelde birden fazla temastan gelir; atıf son tıklanan UTM'ye yazılır, kanallar toplanmaz.</div>`;
+  h+=`<div class="card"><h3>90 gün — 20 Kasım</h3><div class="in"><table>
+   <tr><th>Kanal</th><th>Keşif görüşmesi</th><th>Assessment</th></tr>
+   <tr><td>Blog kaynaklı</td><td>3-5</td><td>25+</td></tr>
+   <tr><td>Kişisel LinkedIn + X</td><td>5-8</td><td>25-35</td></tr>
+   <tr><td>Kurumsal hesaplar</td><td>2-3</td><td>15-25</td></tr>
+   <tr><td><strong>Toplam</strong></td><td><strong>10-15</strong></td><td><strong>65-85</strong></td></tr>
+   </table></div></div>`;
+  h+=`<div class="card"><h3>Aralık sonu hedefleri</h3><div class="in"><table>
+   <tr><th>Metrik</th><th>Hedef</th></tr>
+   <tr><td>Eray LinkedIn takipçi</td><td>+2.500-3.000 (→ ~8.500-9.000)</td></tr>
+   <tr><td>Eray LinkedIn aylık impression</td><td>80-120K</td></tr>
+   <tr><td>Eray X takipçi</td><td>+800-1.200</td></tr>
+   <tr><td>Company Page takipçi</td><td>400-600</td></tr>
+   <tr><td>X @anthifel takipçi</td><td>500-800</td></tr>
+   <tr><td>Newsletter abone</td><td>300-500</td></tr>
+   <tr><td><strong>Assessment tamamlama</strong></td><td><strong>90-120</strong></td></tr>
+   <tr><td><strong>Keşif görüşmesi</strong></td><td><strong>15-20</strong></td></tr>
+   </table><p class="mut" style="font-size:12.5px;margin-top:8px">Son iki satır kalın çünkü asıl olanlar onlar. Takipçi sayısı huniye insan taşımıyorsa sadece bir sayıdır.</p></div></div>`;
+  h+=`<div class="g2"><div class="card"><h3>UTM şeması</h3><div class="in"><table>
+   <tr><th>Kanal</th><th>utm_source</th></tr>
+   <tr><td>Blog CTA</td><td><code>blog</code> + <code>utm_content=tr|en</code></td></tr>
+   <tr><td>Eray LinkedIn</td><td><code>linkedin-eray</code></td></tr>
+   <tr><td>Company Page</td><td><code>linkedin-company</code></td></tr>
+   <tr><td>Eray X</td><td><code>x-eray</code></td></tr>
+   <tr><td>@anthifel</td><td><code>x-anthifel</code></td></tr>
+   <tr><td>Newsletter</td><td><code>newsletter</code></td></tr>
+   </table><p class="mut" style="font-size:12.5px;margin-top:8px">Etiketlenmemiş link atılmaz — hangi kanalın çalıştığı bilinmezse plan üç ay sonra körleşir.</p></div></div>
+   <div class="card"><h3>Aylık gözden geçirme</h3><div class="in">
+   ${['En çok assessment üreten yazı hangisiydi? O sütunda bir yazı daha planla','EN versiyonların trafiği çeviri eforunu karşılıyor mu?','Hangi içerik tipi tıklama getirdi? Hangisi iki ay üst üste tutmadı?','Company Page ile kişisel hesap birbirini tekrar etti mi?','Rafta kaç yazı var? 1\'in altındaysa raf doldur','Esnek slotlar dolduruldu mu?','Karar tarihi yaklaşan bağımlılık var mı?','Yorumlara gerçekten cevap verildi mi?','Gelecek ayın görselleri ve newsletter\'ı hazır mı?']
+   .map((q,i)=>`<label class="chk"><input type="checkbox" onchange="this.parentElement.classList.toggle('k',this.checked)"><span>${E(q)}</span></label>`).join('')}
+   </div></div></div>`;
+  return h;
+};
+
+/* ── Kurallar ── */
+V.rules=()=>{
+  let h=`<div class="card"><h3>Tek tez</h3><div class="in">
+   <p class="sf" style="font-size:19px;margin-bottom:6px">“AI dönüşümü teknoloji değil, organizasyon problemidir.”</p>
+   <p class="mut">Marka cümlesi: <em>“Teknolojiyi kuran değil, insanı organize eden.”</em></p></div></div>`;
+  h+=`<div class="g2">
+   <div class="card"><h3>İki mutlak kural</h3><div class="in">
+   <p style="font-size:13.5px;margin-bottom:9px"><strong class="no">Coğrafi referans yok.</strong> Kaş, Antiphellos, Likya, “antik liman kenti” hiçbir kanalda geçmez. Uzaktan çalışma anlatılacaksa <em>biçim</em> anlatılır, <em>yer</em> değil.</p>
+   <p style="font-size:13.5px;margin:0"><strong class="no">Geçmiş şirket ismi yok.</strong> “Kurduğum medya grubu”, “çalıştığım ajans”, “bir birleşme”. Anthifel kendi markası olduğu için geçebilir.</p></div></div>
+   <div class="card"><h3>Marka hikayesi — tek kök</h3><div class="in">
+   <p style="font-size:13.5px;margin:0">İsim Yunanca <em>anthropos</em>'tan gelir: insan. AI'ın zor kısmı hiçbir zaman makineler olmadı — onları kullanan, yöneten ve ne işe yarayacağına karar veren insanlar oldu. <strong>İkinci kök anlatılmaz.</strong></p></div></div></div>`;
+  h+=`<div class="card"><h3>Metin denetimi</h3><div class="in">
+   <textarea id="scan" rows="5" placeholder="Kontrol edilecek metni yapıştırın…"></textarea>
+   <div style="margin-top:9px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <select id="scanch" style="width:auto"><option value="li-eray">LinkedIn</option><option value="x-eray">X</option><option value="blog">Blog</option></select>
+    <button class="p" onclick="runScan()">Tara</button><span id="scanres" style="font-size:12.5px"></span></div>
+   <p class="mut" style="margin-top:10px;font-size:12px">Aranan: yasak kelimeler · coğrafi referans · şirket ismi · emoji · ünlem · düz tırnak · hashtag kuralı · uzunluk · genel tespitle açılış</p></div></div>`;
+  h+=`<div class="card"><h3>Ses tanımı</h3><div class="in"><table>
+   <tr><th>Özellik</th><th>Kural</th></tr>
+   <tr><td>Kişi</td><td>Birinci tekil. “Biz” yalnızca Anthifel'in bir iş yaptığını anlatırken</td></tr>
+   <tr><td>Cümle uzunluğu</td><td>Ortalama 15-20 kelime. Uzun cümleden sonra kısa cümle</td></tr>
+   <tr><td><strong>Açılış</strong></td><td><strong>Her zaman somut bir an.</strong> Genel tespitle açma — “Günümüzde yapay zeka…” yazıldığı an post ölür</td></tr>
+   <tr><td>Kesinlik</td><td>Düşük. “Bence”, “gördüğüm kadarıyla”, “yanılıyor olabilirim ama”</td></tr>
+   <tr><td>Mizah</td><td>Kuru, seyrek, hep kendine yönelik</td></tr>
+   <tr><td>Soru</td><td>Sorulur ama retorik değil. Gelen cevap okunur</td></tr>
+   <tr><td>Jargon</td><td>Yok. Türkçesi varken İngilizcesi kullanılmaz</td></tr>
+   <tr><td>Uzunluk</td><td>LinkedIn 120-250 kelime. 300 kelimeyi geçen post bloga gider</td></tr>
+   <tr><td class="no">Yasaklar</td><td class="no">Emoji · ünlem · düz tırnak · “Kabul edelim ki” · “İşte bu yüzden” · madde işareti yığını · “Katılıyor musunuz?”</td></tr>
+   </table></div></div>`;
+  h+=`<div class="card"><h3>Ton kalibrasyonu</h3><div class="in"><div class="g2">
+   <div><div class="lb" style="margin-bottom:6px">Yanlış — satış tonu</div><p class="mut" style="font-size:13px">AI dönüşümünde şirketlerin %70'i başarısız oluyor. Peki neden? Cevap basit: yanlış stratejiyle yola çıkıyorlar. Doğru rehberlikle bu oranı tersine çevirmek mümkün.</p></div>
+   <div><div class="lb" style="margin-bottom:6px">Yanlış — öğretmen tonu</div><p class="mut" style="font-size:13px">Bugün sizlere AI dönüşümünün üç temel bileşeninden bahsedeceğim. Birincisi strateji, ikincisi organizasyon, üçüncüsü kültür.</p></div></div>
+   <div style="margin-top:14px;border-left:3px solid var(--terra);padding-left:13px">
+   <div class="lb" style="margin-bottom:6px">Doğru</div>
+   <p style="font-size:13px">Geçen ay bir perakende şirketinin CTO'suyla konuştum. Altı ay önce bir AI pilotu başlatmışlar, teknik olarak çalışmış, sonra durmuş.<br><br>“Neden durdu?” diye sordum.<br><br>Uzun bir sessizlik oldu. Sonra şunu dedi: “Aslında kimse durdurmadı. Sadece kimse devam ettirmedi.”<br><br>Pilot ölmedi. Sahipsiz kaldı.</p></div></div></div>`;
+  h+=`<div class="card"><h3>Yazılmayacak içerik</h3><div class="in">
+   <p class="no" style="font-size:13.5px">Araç tanıtımı · prompt taktikleri · model karşılaştırması · “şu 10 AI aracı” listeleri · haber aktarımı (yorum olmadan) · genel AI tanıtımı</p>
+   <p class="mut" style="font-size:12.5px;margin-top:6px">Bunlar etkileşim getirir, yanlış kitleyi çeker, konumlandırmayı bulanıklaştırır.</p></div></div>`;
+  return h;
+};
+function runScan(){
+  const t=document.getElementById('scan').value, ch=document.getElementById('scanch').value;
+  const r=lint(t,ch), o=document.getElementById('scanres');
+  if(!t.trim()){o.innerHTML='<span class="mut">Metin girin</span>';return}
+  const w=t.trim().split(/\s+/).length, c=t.length;
+  o.innerHTML=r.length?`<strong class="no">${r.length} sorun:</strong> <span class="no">${r.map(x=>E(x.s)).join(' · ')}</span> <span class="mut">· ${w} kelime, ${c} karakter</span>`
+   :`<strong class="ok">Temiz.</strong> <span class="mut">${w} kelime, ${c} karakter</span>`;
+}
+
+/* ── Tipler ── */
+V.types=()=>{
+  let h=`<p class="mut" style="font-size:13px;margin-bottom:16px">Blogdan türetilen içerik takvimin yarısını doldurur. Diğer yarısı bu on arketipten gelir. Sıklıklar takvimin gerçekten taşıdığı hacme göre yazıldı.</p>`;
+  h+=TYPES_DOC.map(t=>`<div class="card"><div class="in">
+   <div style="display:flex;gap:11px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px">
+    <span class="sf" style="font-size:19px;color:var(--terra)">${t[0]}</span>
+    <strong class="sf" style="font-size:16px">${E(t[1])}</strong>
+    <span style="margin-left:auto;font-size:11.5px;color:var(--stone)">${E(t[2])}</span></div>
+   <p style="font-size:13.5px;margin-bottom:6px">${E(t[3])}</p>
+   <p class="mut" style="font-size:12.5px;margin:0"><strong>Kural:</strong> ${E(t[4])}</p></div></div>`).join('');
+  h+=`<div class="card"><h3>Kaynak paylaşımı iskeleti</h3><div class="in">
+   <pre class="tpl" id="srctpl">[Kaynak adı] yeni raporunu yayınladı.
+
+Öne çıkan bulgu: [tek cümle, rakamlı]
+
+Neden önemli: [iki cümle — bulgunun altındaki mesele]
+
+Türkiye'deki bir şirket için anlamı: [iki-üç cümle — Anthifel'in katkısı burası]
+
+[link]</pre>
+   <button onclick="copy(document.getElementById('srctpl').textContent,'İskelet kopyalandı')">Kopyala</button>
+   <p class="mut" style="margin-top:10px;font-size:12.5px"><strong>İki kritik kural.</strong> 1) Paylaşımdan önce rapor gerçekten okunur, rakam kaynağından teyit edilir — ikinci el özetten alıntı yapılmaz. 2) McKinsey ve Deloitte aynı zamanda rakip; yorum katmanı zorunlu, yoksa Anthifel onların dağıtım kanalı olur.</p></div></div>`;
+  return h;
+};
+
+/* ── Kaynaklar ── */
+V.src=()=>`<div class="card"><h3>Takip edilen yayınlar</h3><div class="in"><table>
+ <tr><th>Kaynak</th><th>Ne verir</th><th>Dönem</th></tr>
+ ${SRC.map(s=>`<tr><td>${s[3]?`<a class="ex" href="${s[3]}" target="_blank" rel="noopener">${E(s[0])}</a>`:`<strong>${E(s[0])}</strong>`}</td><td>${E(s[1])}</td><td class="mut" style="white-space:nowrap">${E(s[2])}</td></tr>`).join('')}
+ </table></div></div>
+ <div class="note">Yanlış bir rakam paylaşmak, hiç paylaşmamaktan çok daha pahalıdır — bu markanın tek sermayesi güvenilirlik.</div>`;
+
+/* ── Veri ── */
+V.data=()=>{
+  const st={};STA.forEach((s,i)=>st[s]=P.filter(p=>p.status===i).length);
+  return `<div class="card"><h3>Kayıt</h3><div class="in">
+   <p style="font-size:13.5px;margin-bottom:12px">Bu panel verisini bir dosyada tutar. <strong>Bir çalışma dosyası seçtiğinizde</strong> her değişiklik otomatik olarak oraya yazılır; seçmezseniz “Kaydet” dosyayı indirir ve “Aç” geri yükler.</p>
+   <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="p" onclick="pickFile()">Çalışma dosyası seç</button>
+    <button onclick="saveNow()">Kaydet</button>
+    <button onclick="loadFile()">Dosyadan aç</button>
+    <button onclick="expCSV()">CSV dışa aktar</button>
+    <button onclick="resetAll()">Tohum veriye dön</button></div>
+   <p class="mut" style="font-size:12px;margin-top:10px">Çalışma dosyası seçme özelliği Chrome ve Edge'de çalışır. Safari ve Firefox'ta indir/aç akışını kullanın.</p>
+   </div></div>
+   <div class="g2"><div class="card"><h3>Durum dağılımı</h3><div class="in"><table>
+   ${STA.map((s,i)=>`<tr><td>${s}</td><td style="text-align:right">${st[s]}</td></tr>`).join('')}
+   <tr><td><strong>Toplam</strong></td><td style="text-align:right"><strong>${P.length}</strong></td></tr></table></div></div>
+   <div class="card"><h3>Kanal dökümü</h3><div class="in"><table>
+   ${Object.keys(CH).map(c=>`<tr><td>${CH[c].n}</td><td style="text-align:right">${P.filter(p=>p.ch===c).length}</td></tr>`).join('')}
+   </table></div></div></div>`;
+};
+function resetAll(){if(!confirm('Tüm değişiklikler silinecek ve plan tohum verisine dönecek. Emin misiniz?'))return;boot();mark();render();toast('Tohum veriye dönüldü')}
+
+/* ═══════════ FİLTRE ═══════════ */
+function chFilter(){
+  return `<span class="lb">Kanal</span><select onchange="flt.ch=this.value;render()" style="width:auto">
+   <option value="">Hepsi</option>${Object.keys(CH).map(c=>`<option value="${c}" ${flt.ch===c?'selected':''}>${CH[c].n}</option>`).join('')}</select>`;
+}
+function stFilter(){
+  return `<span class="lb">Durum</span><select onchange="flt.st=this.value;render()" style="width:auto">
+   <option value="">Hepsi</option>${STA.map((s,i)=>`<option value="${i}" ${flt.st===String(i)?'selected':''}>${s}</option>`).join('')}</select>`;
+}
+function passFlt(p){
+  if(flt.ch&&p.ch!==flt.ch)return false;
+  if(flt.st!==''&&String(p.status)!==flt.st)return false;
+  if(flt.pil&&p.pillar!==flt.pil)return false;
+  if(flt.q){const q=flt.q.toLowerCase();if(!((p.title||'')+' '+(p.body||'')+' '+(p.note||'')).toLowerCase().includes(q))return false}
+  return true;
+}
+
+/* ═══════════ COMPOSER ═══════════ */
+function openC(id,date,ch){
+  editId=id||null; ctab='write';
+  if(!id){
+    const d=date||iso(tod());
+    P.push({id:'__new',date:d,time:'18:00',ch:ch||'li-eray',type:'vaka',pillar:'vaka',lang:'tr',title:'',body:'',note:'',enDate:'',status:0,checks:{}});
+    editId='__new';
+  }
+  drawC();
+  document.getElementById('dlg').classList.add('on');
+  document.getElementById('scrim').classList.add('on');
+}
+function closeC(){
+  const p=P.find(x=>x.id===editId);
+  if(p&&p.id==='__new'){P=P.filter(x=>x.id!=='__new')}
+  editId=null;
+  document.getElementById('dlg').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+  render();
+}
+function cur(){return P.find(x=>x.id===editId)}
+function setF(k,v){const p=cur();if(!p)return;p[k]=v;if(k==='body'||k==='ch')drawC(true);mark()}
+function drawC(soft){
+  const p=cur();if(!p)return;
+  const isNew=p.id==='__new';
+  const isBlog=p.ch==='blog';
+  const lim=CH[p.ch].lim, len=(p.body||'').length;
+  const L=lint(p.body||p.title,p.ch);
+  const chk=isBlog?CHK_BLOG:CHK_SOC;
+  const d=document.getElementById('dlg');
+  const focus=document.activeElement&&document.activeElement.id;
+  const selS=document.activeElement&&document.activeElement.selectionStart;
+
+  d.innerHTML=`<div class="dh"><h2>${isNew?'Yeni içerik':'İçeriği düzenle'}</h2>
+    ${!isNew?`<button class="gh" onclick="delP()" title="Sil">Sil</button>`:''}
+    <button class="gh" onclick="closeC()">✕</button></div>
+   <div class="dbody">
+    <div class="tabs">
+     <button class="${ctab==='write'?'on':''}" onclick="ctab='write';drawC()">Yaz</button>
+     <button class="${ctab==='prev'?'on':''}" onclick="ctab='prev';drawC()">Önizleme</button>
+     <button class="${ctab==='meta'?'on':''}" onclick="ctab='meta';drawC()">Detay</button>
+     <button class="${ctab==='chk'?'on':''}" onclick="ctab='chk';drawC()">Kontrol</button>
+    </div>
+    ${ctab==='write'?`
+     <div class="fr"><label class="fl">Başlık / konu</label>
+      <input type="text" id="f-title" value="${E(p.title)}" oninput="setF('title',this.value)" placeholder="Bu içerik neyi anlatıyor?"></div>
+     <div class="fr"><label class="fl">Metin${lim?` · en fazla ${lim} karakter`:''}</label>
+      <textarea id="f-body" rows="${isBlog?8:13}" oninput="setF('body',this.value)" placeholder="${isBlog?'Yazının açısı, ana argüman, notlar…':'Postun tam metni. Somut bir anla açın.'}">${E(p.body)}</textarea>
+      ${lim?`<div class="cnt ${len>lim?'over':''}">${len} / ${lim}</div>`:`<div class="cnt">${(p.body||'').trim()?(p.body.trim().split(/\s+/).length+' kelime'):''}</div>`}
+      <div class="lint ${L.length?'bad':'good'}">
+       ${L.length?`<b class="no">${L.length} uyarı</b><div style="margin-top:5px">${L.map(x=>`<div>${x.l===1?'●':'○'} ${E(x.s)}</div>`).join('')}</div>`
+        :`<b class="ok">Marka kurallarına uygun</b>`}</div></div>`:''}
+    ${ctab==='prev'?preview(p):''}
+    ${ctab==='meta'?`
+     <div class="fg f2"><div class="fr"><label class="fl">Kanal</label>
+      <select id="f-ch" onchange="setF('ch',this.value)">${Object.keys(CH).map(c=>`<option value="${c}" ${p.ch===c?'selected':''}>${CH[c].n}</option>`).join('')}</select></div>
+      <div class="fr"><label class="fl">Durum</label>
+      <select onchange="setF('status',+this.value)">${STA.map((s,i)=>`<option value="${i}" ${p.status===i?'selected':''}>${s}</option>`).join('')}</select></div></div>
+     <div class="fg f3"><div class="fr"><label class="fl">Tarih</label><input type="date" value="${p.date}" onchange="setF('date',this.value)"></div>
+      <div class="fr"><label class="fl">Saat</label><input type="time" value="${p.time||''}" onchange="setF('time',this.value)"></div>
+      <div class="fr"><label class="fl">Dil</label><select onchange="setF('lang',this.value)"><option value="tr" ${p.lang==='tr'?'selected':''}>Türkçe</option><option value="en" ${p.lang==='en'?'selected':''}>İngilizce</option></select></div></div>
+     <div class="fg f2"><div class="fr"><label class="fl">İçerik tipi</label>
+      <select onchange="setF('type',this.value)">${Object.keys(TYP).map(k=>`<option value="${k}" ${p.type===k?'selected':''}>${TYP[k]}</option>`).join('')}</select></div>
+      <div class="fr"><label class="fl">Sütun</label>
+      <select onchange="setF('pillar',this.value)">${Object.keys(PIL).map(k=>`<option value="${k}" ${p.pillar===k?'selected':''}>${PIL[k]}</option>`).join('')}</select></div></div>
+     ${isBlog?`<div class="fr"><label class="fl">İngilizce yayın tarihi</label><input type="date" value="${p.enDate||''}" onchange="setF('enDate',this.value)"></div>`:''}
+     <div class="fr"><label class="fl">Not</label><textarea rows="3" oninput="setF('note',this.value)">${E(p.note)}</textarea></div>
+     ${SILENT[p.date]?`<div class="note"><strong>${SILENT[p.date]}</strong> — bu tarihte hiçbir kanalda paylaşım yapılmaz. Tarihi değiştirmeyi düşünün.</div>`:''}`:''}
+    ${ctab==='chk'?`<div class="lb" style="margin-bottom:8px">${isBlog?'Blog yayını öncesi':'Sosyal post öncesi'}</div>
+     ${chk.map((c,i)=>{const on=p.checks[i];
+      return `<label class="chk ${on?'k':''}"><input type="checkbox" ${on?'checked':''} onchange="tog(${i},this.checked)"><span>${E(c)}</span></label>`}).join('')}
+     <div style="margin-top:12px;font-size:12.5px;color:var(--stone)">${Object.values(p.checks).filter(Boolean).length} / ${chk.length} tamam</div>`:''}
+   </div>
+   <div class="dfoot">
+    <button class="p" onclick="saveP()">${isNew?'Ekle':'Kaydet'}</button>
+    ${!isNew&&p.body?`<button onclick="pubFlow()">Kopyala ve platformda aç</button>`:''}
+    <span style="margin-left:auto;font-size:11.5px;color:var(--stone)">${CH[p.ch].n} · ${fl(p.date)} ${E(p.time||'')}</span>
+   </div>`;
+  if(soft&&focus){const el=document.getElementById(focus);if(el){el.focus();if(selS!=null&&el.setSelectionRange)try{el.setSelectionRange(selS,selS)}catch(e){}}}
+}
+function tog(i,v){const p=cur();p.checks[i]=v;mark();drawC()}
+function saveP(){
+  const p=cur();if(!p)return;
+  if(!p.title.trim()){toast('Başlık gerekli');return}
+  if(p.id==='__new')p.id=uid();
+  mark();
+  document.getElementById('dlg').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+  editId=null;render();toast('Kaydedildi');
+}
+function delP(){
+  if(!confirm('Bu içerik silinsin mi?'))return;
+  P=P.filter(x=>x.id!==editId);editId=null;mark();
+  document.getElementById('dlg').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+  render();toast('Silindi');
+}
+function pubFlow(){
+  const p=cur();copy(p.body,'Metin kopyalandı — platformda yapıştırın');
+  if(CH[p.ch].url)window.open(CH[p.ch].url,'_blank','noopener');
+}
+function preview(p){
+  const isX=p.ch.startsWith('x-');
+  const nm=p.ch.includes('eray')?'Eray Dengiz':'Anthifel';
+  const sub=isX?(p.ch==='x-eray'?'@eraydengiz':'@anthifel'):(p.ch==='li-eray'?'AI Transformation Advisor · Founder @ Anthifel':'Boutique AI transformation advisory');
+  const body=p.body||'(metin yok)';
+  const cut=!isX&&body.length>210;
+  if(p.ch==='blog'||p.ch==='nl'){
+    return `<div style="background:var(--card);border:1px solid var(--line);border-radius:3px;padding:22px 26px;max-width:560px">
+     <div class="lb" style="margin-bottom:9px">${p.ch==='blog'?'anthifel.com/blog':'Newsletter'}</div>
+     <h2 class="sf" style="font-size:26px;line-height:1.2;margin-bottom:10px">${E(p.title)}</h2>
+     <div class="mut" style="font-size:12px;margin-bottom:14px">Eray Dengiz · ${fl(p.date)}</div>
+     <div style="font-size:14px;white-space:pre-wrap;line-height:1.65">${E(body)}</div></div>
+     <p class="mut" style="font-size:12px;margin-top:10px">Blog gövde metni siteye yazılır; buradaki alan açı ve notlar içindir.</p>`;
+  }
+  return `<div class="pv ${isX?'x':''}">
+   <div class="ph"><div class="av">${nm[0]}</div><div><div class="nm">${nm}</div><div class="sub">${E(sub)}</div></div></div>
+   <div class="txt">${E(cut?body.slice(0,210):body)}${cut?'…':''}</div>
+   ${cut?'<div class="fold">…daha fazlasını gör</div>':''}
+   </div>
+   <p class="mut" style="font-size:12px;margin-top:10px">${isX?'X\'te 280 karakter sınırı var; uzun metin thread olarak bölünmeli.':'LinkedIn ilk ~210 karakterden sonra metni katlar. İlk iki satır tıklanmayı belirler.'}</p>`;
+}
+
+/* ═══════════ KAYIT ═══════════ */
+async function pickFile(){
+  if(!window.showSaveFilePicker){toast('Tarayıcınız desteklemiyor — indir/aç kullanın');return}
+  try{
+    fh=await window.showSaveFilePicker({suggestedName:'anthifel-content.json',types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+    await writeFH();toast('Çalışma dosyası bağlandı — değişiklikler otomatik kaydedilecek');
+  }catch(e){}
+}
+async function writeFH(){
+  if(!fh)return false;
+  const w=await fh.createWritable();
+  await w.write(JSON.stringify({v:2,saved:new Date().toISOString(),posts:P},null,1));
+  await w.close();dirty=false;upStat();return true;
+}
+async function saveNow(){
+  if(fh){await writeFH();toast('Kaydedildi — '+fh.name);return}
+  const b=new Blob([JSON.stringify({v:2,saved:new Date().toISOString(),posts:P},null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='anthifel-content-'+iso(new Date())+'.json';a.click();URL.revokeObjectURL(a.href);
+  dirty=false;upStat();toast('Dosya indirildi');
+}
+function loadFile(){
+  const i=document.createElement('input');i.type='file';i.accept='.json';
+  i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();
+   r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.posts)throw 0;P=d.posts;dirty=false;upStat();render();toast('Yüklendi — '+P.length+' kayıt')}catch(e){toast('Dosya okunamadı')}};
+   r.readAsText(f)};
+  i.click();
+}
+function expCSV(){
+  const hd=['tarih','saat','kanal','tip','sutun','dil','durum','baslik','metin','not'];
+  const rows=P.slice().sort(byDate).map(p=>[p.date,p.time,CH[p.ch].n,TYP[p.type]||p.type,PIL[p.pillar]||p.pillar,p.lang,STA[p.status],p.title,(p.body||'').replace(/\n/g,' '),p.note]);
+  const csv=[hd,...rows].map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const b=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='anthifel-content.csv';a.click();URL.revokeObjectURL(a.href);
+  toast('CSV indirildi');
+}
+let autoT=null;
+function scheduleAuto(){if(!fh)return;clearTimeout(autoT);autoT=setTimeout(()=>writeFH(),1200)}
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+
+/* ═══════════ YÖNLENDİRME ═══════════ */
+function go(v){view=v;flt.q='';render()}
+function render(){
+  document.getElementById('main').innerHTML=V[view]?V[view]():'';
+  document.getElementById('ttl').textContent=TITLES[view]||'';
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===view));
+  document.getElementById('c-cal').textContent=P.length;
+  document.getElementById('c-brd').textContent=P.filter(p=>p.status<4).length;
+  document.getElementById('c-all').textContent=P.length;
+  document.getElementById('c-blog').textContent=P.filter(p=>p.ch==='blog').length;
+  document.getElementById('c-soc').textContent=P.filter(p=>p.ch!=='blog'&&p.ch!=='nl').length;
+  upStat();scheduleAuto();
+  bindBoard();
+}
+document.getElementById('nav').addEventListener('click',e=>{const a=e.target.closest('a[data-v]');if(a){view=a.dataset.v;flt.q='';render();window.scrollTo(0,0)}});
+document.getElementById('main').addEventListener('click',e=>{
+  const s=e.target.closest('[data-cyc]');
+  if(s){e.stopPropagation();const p=P.find(x=>x.id===s.dataset.cyc);if(p){p.status=(p.status+1)%5;mark();render()}return}
+  const r=e.target.closest('[data-id]');
+  if(r){openC(r.dataset.id);return}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&editId)closeC();
+  if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();saveNow()}
+});
+
+/* drag & drop */
+function bindBoard(){
+  if(view!=='board')return;
+  let dragId=null;
+  document.querySelectorAll('.bc').forEach(c=>{
+    c.addEventListener('dragstart',e=>{dragId=c.dataset.id;c.classList.add('drag');e.dataTransfer.effectAllowed='move'});
+    c.addEventListener('dragend',()=>{c.classList.remove('drag');document.querySelectorAll('.col').forEach(x=>x.classList.remove('over'))});
+  });
+  document.querySelectorAll('.col').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('over')});
+    col.addEventListener('dragleave',()=>col.classList.remove('over'));
+    col.addEventListener('drop',e=>{
+      e.preventDefault();col.classList.remove('over');
+      const p=P.find(x=>x.id===dragId);
+      if(p){p.status=+col.dataset.col;mark();render();toast(p.title.slice(0,32)+' → '+STA[p.status])}
+    });
+  });
+}
+
+boot();
+const _t=tod();
+calM=_t<pd('2026-08-01')?new Date(2026,7,1):new Date(_t.getFullYear(),_t.getMonth(),1);
+dirty=false;render();
+</script>
+</body>
+</html>
