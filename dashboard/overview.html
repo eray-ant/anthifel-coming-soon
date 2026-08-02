@@ -27,8 +27,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:400}
 /* ---- top bar ---- */
 .bar{position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--line2)}
 .bar-in{display:flex;align-items:center;gap:24px;padding:0 24px;min-height:var(--bar)}
-.bar .brand{display:flex;flex-direction:column;gap:5px;flex:none;padding:11px 0}
-.bar .brand img{height:13px;width:auto;display:block}
+.bar .brand{display:flex;flex-direction:column;align-items:flex-start;gap:5px;flex:none;padding:11px 0}
+.bar .brand img{height:15px;width:auto;display:block;image-rendering:auto}
 .bar .brand .sub{font-size:9px;letter-spacing:.26em;text-transform:uppercase;color:var(--terra)}
 .bar nav{display:flex;align-items:stretch;gap:2px;flex:1;min-width:0;overflow-x:auto}
 .bar nav a{display:flex;align-items:center;gap:8px;padding:19px 12px;font-size:13.5px;
@@ -147,19 +147,90 @@ pre.code{background:rgba(15,15,14,.05);border:1px solid var(--line2);padding:14p
 .login-card .fine{font-size:11.5px;color:var(--stone);margin-top:22px;line-height:1.55;
   border-top:1px solid var(--line2);padding-top:16px}
 
-@media(max-width:900px){
-  .bar-in{flex-wrap:wrap;padding:0 16px;gap:12px}
-  .bar nav{order:3;width:100%;gap:0}
-  .bar nav a{padding:12px 11px;font-size:13px}
-  .bar .util{margin-left:auto}
-  .shell{flex-direction:column}
-  .snav{width:auto;position:static;height:auto;border-right:none;border-bottom:1px solid var(--line2);
-    display:flex;flex-wrap:wrap;padding:6px 8px;overflow-x:auto}
+/* ---- yatay taşmaya karşı genel güvenlik ---- */
+img,svg,iframe,table{max-width:100%}
+pre.code{white-space:pre-wrap;word-break:break-word}
+code{word-break:break-word}
+.wrap,.panel,.top{min-width:0}
+
+/* ---- tablet ---- */
+@media(max-width:1100px){
+  .cols{grid-template-columns:1fr}
+}
+
+/* ---- mobil ---- */
+@media(max-width:820px){
+  :root{--bar:auto}
+  html,body{overflow-x:hidden}
+  .bar{position:static}
+  .bar-in{flex-wrap:wrap;padding:0 16px;gap:0}
+  .bar .brand{padding:13px 0;flex:1;gap:5px}
+  .bar .brand img{height:15px;width:auto}
+  .bar .brand .sub{font-size:9px;letter-spacing:.24em}
+  .bar .util{padding:13px 0;gap:13px}
+  .bar .util a,.bar .util button{font-size:12px}
+  .bar nav{order:3;flex:1 0 100%;width:100%;overflow:visible;
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-top:1px solid var(--line2)}
+  .bar nav a{padding:12px 14px;font-size:13px;gap:9px;justify-content:flex-start;text-align:left;
+    white-space:normal;border-bottom:none;border-right:1px solid var(--line2);
+    box-shadow:inset 0 -1px 0 var(--line2)}
+  .bar nav a:nth-child(2n){border-right:none}
+  .bar nav a:last-child:nth-child(odd){grid-column:1 / -1;border-right:none}
+  .bar nav a svg{width:15px;height:15px}
+  .bar nav a.on{background:rgba(184,76,46,.07);color:var(--basalt);font-weight:500;
+    box-shadow:inset 2px 0 0 var(--terra),inset 0 -1px 0 var(--line2)}
+
+  .shell{display:block;min-height:0}
+  .snav{width:auto;position:static;height:auto;overflow:visible;border-right:none;
+    border-bottom:1px solid var(--line2);background:var(--card);
+    display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
   .snav .gp{display:none}
-  .snav a{border-left:none;border-bottom:2px solid transparent;padding:9px 12px;white-space:nowrap}
-  .snav a.on{border-bottom-color:var(--terra)}
-  .top,.wrap{padding-left:16px;padding-right:16px}
-  .top{flex-direction:column;align-items:flex-start;gap:4px}
+  .snav a{border-left:none;border:1px solid var(--line2);border-radius:2px;
+    padding:8px 11px;font-size:12.5px;gap:7px;white-space:normal;flex:0 1 auto;background:var(--lime2)}
+  .snav a svg{width:13px;height:13px}
+  .snav a.on{background:rgba(184,76,46,.09);border-color:rgba(184,76,46,.35);color:var(--basalt)}
+  .content{display:block}
+
+  .top{flex-direction:column;align-items:flex-start;gap:2px;padding:18px 16px 14px}
+  .top h1{font-size:23px}
+  .wrap{padding:18px 16px 48px}
+  .lead{font-size:13.5px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+  .kpi{padding:13px 14px}
+  .kpi .val{font-size:27px}
+  .kpi .note{font-size:11.5px}
+  .grid{grid-template-columns:1fr;gap:12px}
+  .panel{padding:16px 14px;margin-bottom:14px}
+  .panel h2{font-size:20px}
+  .soon{padding:34px 18px}
+
+  /* tablolar: her satır bir kart olur — yatay kaydırma yok */
+  table,tbody{display:block;width:100%}
+  thead,tr:first-child th{display:none}
+  tr:has(th){display:none}   /* başlık satırı boş kart bırakmasın */
+  tr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;width:100%;
+    border:1px solid var(--line2);border-radius:2px;padding:11px 12px;margin-bottom:9px;background:var(--lime2)}
+  td{display:block;flex:1 1 100%;border:none;padding:0;font-size:13.5px;min-width:0}
+  td.mi{flex:0 0 auto}
+  td.mt{flex:1 1 60%}
+  td.num,th.num{text-align:left}
+  td:empty{display:none}
+  td[data-l]:before{content:attr(data-l);display:block;font-size:9.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin-bottom:2px}
+
+  /* formlar: alanlar alt alta, tam genişlik */
+  .frow{flex-direction:column;align-items:stretch;gap:12px}
+  .frow .f,.frow .f[style]{max-width:none !important;min-width:0;width:100%}
+  .frow .btn{width:100%;justify-content:center}
+  .btn{padding:12px 16px}
+
+  .ck li{font-size:13.5px}
+  .appframe{min-height:calc(100vh - 132px)}
+}
+
+@media(max-width:359px){
+  .kpis{grid-template-columns:1fr}
 }
 </style>
 <script>
@@ -321,11 +392,11 @@ function todoRender(){
     var late = !r.done && r.d && r.d < todayIso;
     var tr=document.createElement('tr');
     tr.innerHTML =
-      '<td><input type="checkbox" '+(r.done?'checked':'')+' onchange="todoToggle('+i+')" style="accent-color:var(--terra);width:15px;height:15px;cursor:pointer"></td>'+
-      '<td style="'+(r.done?'color:var(--stone);text-decoration:line-through':'')+'">'+r.t+'</td>'+
-      '<td><span style="display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);background:rgba(184,76,46,.08);padding:3px 8px;border-radius:2px">'+r.c+'</span></td>'+
-      '<td style="'+(late?'color:var(--terra);font-weight:500':'color:var(--stone)')+'">'+(r.d?r.d.split('-').reverse().join('.'):'—')+(late?' · gecikti':'')+'</td>'+
-      '<td class="num"><button class="btn ghost" style="padding:4px 9px;font-size:11px" onclick="todoDel('+i+')">Sil</button></td>';
+      '<td class="mi"><input type="checkbox" '+(r.done?'checked':'')+' onchange="todoToggle('+i+')" style="accent-color:var(--terra);width:16px;height:16px;cursor:pointer"></td>'+
+      '<td class="mt" style="'+(r.done?'color:var(--stone);text-decoration:line-through':'')+'">'+r.t+'</td>'+
+      '<td class="mi"><span style="display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);background:rgba(184,76,46,.08);padding:3px 8px;border-radius:2px">'+r.c+'</span></td>'+
+      '<td class="mi" style="'+(late?'color:var(--terra);font-weight:500':'color:var(--stone)')+'">'+(r.d?r.d.split('-').reverse().join('.'):'—')+(late?' · gecikti':'')+'</td>'+
+      '<td class="num mi"><button class="btn ghost" style="padding:5px 10px;font-size:11px" onclick="todoDel('+i+')">Sil</button></td>';
     t.appendChild(tr);
   });
   if(!rows.length){ var e=document.createElement('tr'); e.innerHTML='<td colspan="5" style="color:var(--stone)">Henüz madde yok. Yukarıdan ekleyebilirsin.</td>'; t.appendChild(e); }
