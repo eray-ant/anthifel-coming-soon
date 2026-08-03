@@ -1,0 +1,4 @@
+Add this to the repo-root robots.txt (create it if there is none):
+
+User-agent: *
+Disallow: /preview/
