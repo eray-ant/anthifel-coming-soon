@@ -117,10 +117,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .also-b div{font-size:15px;color:#3A3733;line-height:1.55}
 .also-b b{font-weight:600;color:#0F0F0E}
 
-/* ---- brand narrative ---- */
-.story{padding:104px var(--pad) 0}
-.story p{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:34px;line-height:1.38;max-width:820px;color:#0F0F0E;text-wrap:pretty}
-.story em{font-style:italic}
 
 /* ---- assessment ---- */
 .assess{padding:104px var(--pad) 96px}
@@ -225,7 +221,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .assess-in{padding:48px 36px}
 }
 @media (max-width:820px){
-  .story p{font-size:27px}
   .nav{display:none;order:3;width:100%;flex-direction:column;gap:0;align-items:stretch;border-top:1px solid rgba(15,15,14,.09);margin-top:16px;padding-top:8px}
   .nav.open{display:flex}
   .nav a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.06);letter-spacing:.14em;text-align:left}
@@ -244,8 +239,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 }
 @media (max-width:640px){
   :root{--h-card:22px;--t-card:14.5px;--pad:24px}
-  .story{padding-top:72px}
-  .story p{font-size:23px}
   .hero{padding-top:64px;padding-bottom:64px}
   .hero h1{font-size:42px}
   .hero-mark{display:none}
@@ -275,7 +268,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 }
 @media (max-width:400px){
   :root{--pad:18px}
-  .story p{font-size:20px}
   .hero h1{font-size:35px}
   .quote blockquote{font-size:21px}
   .assess-in h2{font-size:26px}
@@ -308,7 +300,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <a href="#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="#assessment" data-en="Assessment" data-tr="Test">Assessment</a>
-    <a href="/blog" data-en="Blog" data-tr="Blog">Blog</a>
+    <a href="blog/" data-en="Blog" data-tr="Blog">Blog</a>
     <a href="#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -329,7 +321,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <h1 class="serif" data-en="AI needs a guide,&lt;br&gt;not just tools." data-tr="AI araçla başlar,&lt;br&gt;rehberle ilerler.">AI needs a guide,<br>not just tools.</h1>
     <p data-en="Transformation is new for everyone. We stand with you while every part of your company adapts to AI." data-tr="Dönüşüm herkes için yeni. Şirketinizin bütün birimleri AI’a uyum sağlarken yanınızdayız.">Transformation is new for everyone. We stand with you while every part of your company adapts to AI.</p>
     <div class="hero-cta">
-      <a href="/meet" class="btn btn-p" data-en="Book a 30-minute call" data-tr="30 dakikalık görüşme ayarlayın">Book a 30-minute call</a>
+      <a href="meet/" class="btn btn-p" data-en="Book a 30-minute call" data-tr="30 dakikalık görüşme ayarlayın">Book a 30-minute call</a>
       <a href="#assessment" class="btn btn-s" data-start data-en="Readiness assessment →" data-tr="Hazırlık testi →">Readiness assessment →</a>
     </div>
   </div>
@@ -427,11 +419,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   </div>
 </section>
 
-<!-- ============ BRAND NARRATIVE (Brand Guidelines §8.4) ============ -->
-<section class="story" id="story">
-  <p class="serif" data-en="Anthifel comes from the Greek &lt;em&gt;anthropos&lt;/em&gt;: human. Because the hardest part of AI has never been the machines. It’s the people who use them, lead them, and decide what they’re for." data-tr="Anthifel adı Yunanca &lt;em&gt;anthropos&lt;/em&gt; kökünden gelir: insan. İsmimiz yaptığımız işi anlatır: dönüşümün insan tarafını organize etmek. AI’ın en zor kısmı hiçbir zaman makineler olmadı.">Anthifel comes from the Greek <em>anthropos</em>: human. Because the hardest part of AI has never been the machines. It’s the people who use them, lead them, and decide what they’re for.</p>
-</section>
-
 <!-- ============ ASSESSMENT + GATE ============ -->
 <section class="assess" id="assessment">
   <div class="assess-in">
@@ -512,17 +499,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <li><a href="#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a></li>
         <li><a href="#services" data-en="Services" data-tr="Hizmetler">Services</a></li>
         <li><a href="#assessment" data-en="Assessment" data-tr="Test">Assessment</a></li>
-        <li><a href="/meet" data-en="Book a call" data-tr="Görüşme ayarla">Book a call</a></li>
+        <li><a href="meet/" data-en="Book a call" data-tr="Görüşme ayarla">Book a call</a></li>
       </ul>
     </div>
     <div>
       <h4>Blog</h4>
       <ul>
-        <li><a href="/blog/ai-transformation-people-problem">Why AI transformation is a people problem</a></li>
-        <li><a href="/blog/twelve-signals-ready-for-ai">Twelve signals your company is ready for AI</a></li>
-        <li><a href="/blog/first-ninety-days-ai-roadmap">The first ninety days of an AI roadmap</a></li>
-        <li><a href="/blog/who-should-own-ai">Who should own AI in your organisation?</a></li>
-        <li><a href="/blog/what-a-pilot-really-tells-you">What a pilot project really tells you</a></li>
+        <li><a href="blog/ai-transformation-people-problem/">Why AI transformation is a people problem</a></li>
+        <li><a href="blog/twelve-signals-ready-for-ai/">Twelve signals your company is ready for AI</a></li>
+        <li><a href="blog/first-ninety-days-ai-roadmap/">The first ninety days of an AI roadmap</a></li>
+        <li><a href="blog/who-should-own-ai/">Who should own AI in your organisation?</a></li>
+        <li><a href="blog/what-a-pilot-really-tells-you/">What a pilot project really tells you</a></li>
       </ul>
     </div>
     <div>
