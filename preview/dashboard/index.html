@@ -132,6 +132,14 @@ table{border-collapse:collapse}
    applications: tables, checklists, step lists, a few counters. They share this
    vocabulary so a rule written once looks the same in all six. */
 .lede{max-width:660px;font-size:13.5px;line-height:1.65;color:var(--muted);margin-bottom:20px}
+/* A form laid out as a row. It used to live inside the Finans panel and take
+   the panel's own .frow rule; when the panel was confined to #fin and the
+   ledger moved out from under it, the rule stopped applying and every field
+   went full width, stacked. It belongs to the shell, which is where the form
+   is. */
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-items:end}
+.frow .f{margin:0}
+.frow .btn{white-space:nowrap}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 .cols-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start}
 .stack{display:flex;flex-direction:column;gap:16px}
@@ -5416,21 +5424,24 @@ Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xls
 <section class="panel">
   <h2>Yeni kayıt</h2>
   <div class="pad">
+    <!-- Kategori used to sit under the button, so the order on screen was
+         "add the record, then choose what it was". It is a field like the
+         others and belongs in the form, before the thing that submits it. -->
     <form class="frow" id="fiForm">
-      <div class="f" style="margin:0"><label for="fiDate">Tarih</label><input id="fiDate" type="date" required></div>
-      <div class="f" style="margin:0"><label for="fiType">Tür</label>
+      <div class="f"><label for="fiDate">Tarih</label><input id="fiDate" type="date" required></div>
+      <div class="f"><label for="fiType">Tür</label>
         <select id="fiType"><option value="gelir">Gelir</option><option value="gider">Gider</option></select></div>
-      <div class="f" style="margin:0"><label for="fiDesc">Açıklama</label>
+      <div class="f"><label for="fiCat">Kategori</label>
+        <select id="fiCat">
+          <option>Danışmanlık</option><option>Workshop / Konuşma</option><option>Yazılım ve araçlar</option>
+          <option>Pazarlama</option><option>Hukuk ve muhasebe</option><option>Seyahat</option><option>Diğer</option>
+        </select></div>
+      <div class="f"><label for="fiDesc">Açıklama</label>
         <input id="fiDesc" placeholder="Kim, ne için" required></div>
-      <div class="f" style="margin:0"><label for="fiAmt">Tutar (£)</label>
+      <div class="f"><label for="fiAmt">Tutar (£)</label>
         <input id="fiAmt" type="number" step="0.01" min="0" required></div>
       <button class="btn btn-p" type="submit">Ekle</button>
     </form>
-    <div class="f" style="max-width:260px;margin:14px 0 0"><label for="fiCat">Kategori</label>
-      <select id="fiCat">
-        <option>Danışmanlık</option><option>Workshop / Konuşma</option><option>Yazılım ve araçlar</option>
-        <option>Pazarlama</option><option>Hukuk ve muhasebe</option><option>Seyahat</option><option>Diğer</option>
-      </select></div>
   </div>
 </section>
 
@@ -5447,11 +5458,11 @@ Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xls
   </section>
 
   <section class="panel">
-    <h2>Kategori dağılımı</h2>
+    <h2>Kategori dağılımı <span class="n">giderler</span></h2>
     <div class="scroll">
       <table class="tbl"><tbody id="fiCats"></tbody></table>
     </div>
-    <div class="empty" id="fiCatsEmpty"><b>Henüz veri yok</b>Kayıt girildikçe kategoriler burada toplanır.</div>
+    <div class="empty" id="fiCatsEmpty"><b>Henüz gider yok</b>Bu döküm yalnızca giderleri toplar; gelir kayıtları burada görünmez.</div>
   </section>
 </div>
 </div><!-- .stack -->
@@ -5977,6 +5988,7 @@ window.dashInit.finans = function(){
       if(!v) return;
       if(finApply(v)){ finButtons(); _finRender(); finStamp(true); }
     }).catch(function(e){ finStamp(false, e.message); });
+    if(window.dashLedgerSync) window.dashLedgerSync();
   }
 };
 })();
@@ -6025,6 +6037,12 @@ window.dashLedger = function(){
     return { id: r.id, date: r.entry_date, type: r.kind, desc: r.description,
              cat: r.category, amt: Number(r.amount) };
   }
+  /* Exposed, because this runs once at parse time — before anyone has signed
+     in — and the section is opened later. Without a second call the ledger
+     shows whatever this browser happened to have and never asks the server,
+     which on a machine that has never seen it means an empty ledger and no
+     sign that anything is missing. */
+  window.dashLedgerSync = function(){ pull(); };
   function pull(){
     var d = db(); if(!d) return;
     d.ledger.list().then(function(list){
