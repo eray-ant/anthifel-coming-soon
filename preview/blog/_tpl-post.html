@@ -55,8 +55,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 .hdr img{height:16px;width:auto;display:block}
 .brandlink{display:flex;align-items:flex-start;flex:none}
 .nav{display:flex;gap:34px;flex-wrap:wrap;justify-content:center}
-.nav a{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#0F0F0E}
-.nav a[aria-current="page"]{font-weight:600;border-bottom:1px solid #0F0F0E;padding-bottom:3px}
+.nav a{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#0F0F0E;transition:color .18s}
+.nav a:hover,.nav a:focus-visible{color:#B84C2E}
+/* The marker on the current page hangs below its own line box. Without the
+   negative margin it makes the nav 4px taller than the landing page's and
+   lifts every label 2px, which reads as the header shifting between pages. */
+.nav a[aria-current="page"]{font-weight:600;border-bottom:1px solid #0F0F0E;padding-bottom:3px;margin-bottom:-4px}
 .lang{display:flex;gap:6px;align-items:center;flex:none}
 .lang button{background:none;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#7A756C;transition:color .18s}
 .lang button[aria-current="true"]{color:#0F0F0E}
