@@ -710,6 +710,7 @@ for(var s=0;s<starters.length;s++){
   starters[s].addEventListener('click', function(e){ e.preventDefault(); openGate(); });
 }
 function openGate(){
+  rcLoad();
   aIntro.hidden = true; aQuiz.hidden = true; aGate.hidden = false;
   scrollTo_(document.getElementById('assessment'));
   setTimeout(function(){ try{ emailEl.focus({preventScroll:true}); }catch(e){} }, 400);
@@ -724,7 +725,29 @@ consentEl.addEventListener('change', function(){
   if(this.checked){ setErr('e-consent',''); mark('f-consent',false); }
 });
 
-/* reCAPTCHA v2 — rendered explicitly so it only loads with the gate */
+/* reCAPTCHA v2.
+
+   The widget was already rendered explicitly, but the script tag that fetches
+   it sat at the bottom of the page and ran on every visit. Rendering late does
+   not help: the request itself is what sends the visitor's IP address, user
+   agent and reCAPTCHA cookies to Google, and it was going out on every page
+   view — before the gate, before any consent, and before a privacy policy
+   exists to disclose it.
+
+   It is fetched here instead, once, at the moment the gate actually opens and
+   only when there is a live form and a real key behind it. With FORM_LIVE
+   false, which is where we are, nothing is requested from Google at all. */
+var rcAsked = false;
+function rcLoad(){
+  if(rcAsked) return;
+  if(!FORM_LIVE || !RC_SITEKEY || RC_SITEKEY.charAt(0) === '_') return;
+  rcAsked = true;
+  var sc = document.createElement('script');
+  sc.src = 'https://www.google.com/recaptcha/api.js?onload=__rcReady&render=explicit';
+  sc.async = true; sc.defer = true;
+  document.body.appendChild(sc);
+}
+
 window.__rcReady = function(){
   if(!window.grecaptcha || !RC_SITEKEY || RC_SITEKEY.charAt(0)==='_') return;
   try{
@@ -1161,6 +1184,5 @@ f.addEventListener('submit', function(e){
 });
 })();
 </script>
-<script src="https://www.google.com/recaptcha/api.js?onload=__rcReady&render=explicit" async defer></script>
 </body>
 </html>
