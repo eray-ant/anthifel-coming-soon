@@ -40,12 +40,17 @@ table{border-collapse:collapse}
 .top img{height:15px;width:auto;display:block}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand .sub{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);border-left:1px solid var(--line);padding-left:12px}
-.dnav{display:flex;gap:2px;flex-wrap:wrap;flex:1;min-width:0}
-.dnav a{font-size:12.5px;font-weight:500;color:var(--muted);padding:8px 13px;border-radius:2px;white-space:nowrap;transition:background .14s,color .14s}
-.dnav a:hover{background:var(--wash);color:var(--ink)}
-.dnav a[aria-current="page"]{background:var(--tint);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
-.dnav .soon{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--soft);padding:8px 13px;white-space:nowrap;cursor:default}
-.dnav .soon em{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);background:#F0EDE6;border-radius:2px;padding:2px 5px}
+.dnav{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.drow{display:flex;gap:2px;flex-wrap:wrap}
+.drow a{font-size:12.5px;font-weight:500;color:var(--muted);padding:7px 13px;border-radius:2px;white-space:nowrap;transition:background .14s,color .14s}
+.drow a:hover{background:var(--wash);color:var(--ink)}
+.drow a[aria-current="true"]{background:var(--tint);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.dsub{display:flex;min-height:18px}
+.dsub>span{display:flex;align-items:center;gap:9px;padding-left:13px}
+.dsub a{font-size:11.5px;font-weight:500;letter-spacing:.04em;color:var(--soft);white-space:nowrap;transition:color .14s}
+.dsub a:hover{color:var(--ink)}
+.dsub a[aria-current="page"]{color:var(--accent);font-weight:600}
+.dsub i{font-style:normal;color:#C9C3B8;font-size:11px}
 .dutil{display:flex;align-items:center;gap:14px;flex:none;font-size:12.5px}
 .dutil a{color:var(--muted)}
 .dutil a:hover{color:var(--ink)}
@@ -161,11 +166,13 @@ table{border-collapse:collapse}
 
 @media (max-width:900px){
   .top-in{padding:12px 18px;gap:12px}
-  .dnav{display:none;order:4;width:100%;gap:0;flex-direction:column;border-top:1px solid var(--line-soft);padding-top:6px;margin-top:4px}
+  .dnav{display:none;order:4;width:100%;gap:0;border-top:1px solid var(--line-soft);padding-top:6px;margin-top:4px}
   .dnav.open{display:flex}
-  .dnav a,.dnav .soon{padding:11px 4px;border-radius:0;border-bottom:1px solid var(--line-soft)}
-  .dnav a[aria-current="page"]{box-shadow:inset 2px 0 0 var(--accent);background:var(--tint)}
-  .dnav a:last-child,.dnav .soon:last-child{border-bottom:0}
+  .drow{flex-direction:column;gap:0}
+  .drow a{padding:11px 4px;border-radius:0;border-bottom:1px solid var(--line-soft)}
+  .drow a[aria-current="true"]{box-shadow:inset 2px 0 0 var(--accent);background:var(--tint)}
+  .dsub{padding:4px 0 8px}
+  .dsub>span{padding-left:4px;flex-wrap:wrap}
   .dburger{display:inline-block;order:3}
   .dutil{order:2;margin-left:auto}
   .wrap{padding:18px}
@@ -206,16 +213,27 @@ window.dashInit = {};
     <a class="brand" href="#ozet"><img src="data:image/png;base64,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" alt="Anthifel"><span class="sub">Dashboard</span></a>
     <!-- One address, one document. The sections are panes inside this page, so
          the menu changes what you are looking at without leaving the dashboard;
-         the hash is there only so a section can be linked to and reloaded. -->
+         the hash is there only so a section can be linked to and reloaded.
+
+         Two rows, because the panel is not one person's tool: the top row is
+         the department that owns the work, the row under it the sections that
+         department works in. A department with a single section still gets the
+         row, so the shape never changes under you. -->
     <nav class="dnav" id="dnav">
-      <a href="#ozet">Genel Bakış</a>
-      <a href="#crm">CRM</a>
-      <a href="#blog">Blog</a>
-      <a href="#icerik">İçerik</a>
-      <a href="#site">Site</a>
-      <a href="#seo">SEO</a>
-      <a href="#analitik">Analitik</a>
-      <a href="#finans">Finans</a>
+      <div class="drow" id="ddept">
+        <a href="#ozet" data-dept="ozet">Genel Bakış</a>
+        <a href="#crm" data-dept="sales">Sales</a>
+        <a href="#icerik" data-dept="marketing">Marketing</a>
+        <a href="#finans" data-dept="finance">Finance</a>
+        <a href="#site" data-dept="developer">Developer</a>
+      </div>
+      <div class="dsub" id="dsub">
+        <span data-of="ozet" hidden><a href="#ozet">Panel</a></span>
+        <span data-of="sales" hidden><a href="#crm">CRM</a></span>
+        <span data-of="marketing" hidden><a href="#icerik">İçerik</a><i>·</i><a href="#blog">Blog</a></span>
+        <span data-of="finance" hidden><a href="#finans">Finans</a></span>
+        <span data-of="developer" hidden><a href="#site">Site</a><i>·</i><a href="#seo">SEO</a><i>·</i><a href="#analitik">Analitik</a></span>
+      </div>
     </nav>
     <div class="dutil">
       <a href="../" target="_blank" rel="noopener">Siteyi aç</a>
@@ -4958,32 +4976,164 @@ window.dashInit.analitik = function(){
 };
 </script></section>
   <section class="sec" id="sec-finans" hidden><style>
-#sec-finans .frow{display:grid;grid-template-columns:130px 110px 1fr 120px auto;gap:10px;align-items:end}
-@media (max-width:860px){#sec-finans .frow{grid-template-columns:1fr 1fr}}
-@media (max-width:520px){#sec-finans .frow{grid-template-columns:1fr}}
-#sec-finans .gelir{color:#2F6B3F}
-#sec-finans .gider{color:#B0342A}
-#sec-finans .x{background:none;border:0;color:var(--soft);cursor:pointer;font-size:15px;line-height:1;padding:0 4px}
-#sec-finans .x:hover{color:#B0342A}
-#sec-finans .bar{height:7px;background:var(--wash);border-radius:2px;overflow:hidden;min-width:70px}
-#sec-finans .bar i{display:block;height:100%;background:var(--accent)}
+
+/* ============================================================
+   Finans — nakit modeli
+
+   Finance's panel, re-housed. The engine, the payload and the three formulas
+   are theirs and are untouched; `Anthifel_Finansal_Model.xlsx` is still the one
+   true source and the payload is regenerated there, not here.
+
+   Everything is confined to #fin at build time: the panel's class names are
+   .card, .bar, .dot, .note, which four other things in this document also use.
+   ============================================================ */
+/* The panel declared its custom properties on :root. Confined to #fin that
+   selector matches nothing, and every border, muted label and chart colour
+   below it resolves to nothing — the panel comes up flat and unreadable with
+   no error. They are declared on #fin instead, which is the element the rest
+   of this sheet hangs off.
+   The dark-mode block that sat here is gone: panel interfaces do not go dark. */
+#fin{--bg:#F5F1EA;--surf:#FFFDF9;--surf2:#FAF7F1;--ink:#0F0F0E;--mut:#7A756C;--rule:#E2DCD1;
+--c1:#B84C2E;--c2:#0C7FA8;--neg:#B3261E;--ok:#5C6B4A}
+#fin h2{font-size:15px;margin:22px 0 9px}
+#fin .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:9px;margin-bottom:18px}
+#fin .tile{background:var(--surf);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
+#fin .tile .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+#fin .tile .v{font-size:20px;font-weight:650;margin-top:3px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#fin .tile .s{font-size:11.5px;color:var(--mut);margin-top:2px}
+#fin .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:1px}
+#fin .card{background:var(--surf);border:1px solid var(--rule);border-radius:10px;padding:15px 13px 4px;margin-bottom:18px;position:relative}
+#fin .ttl{font-size:14px;font-weight:650;margin:0 0 2px;padding-left:4px}
+#fin .cap{font-size:12px;color:var(--mut);margin:0 0 9px;padding-left:4px}
+#fin .leg{display:flex;gap:15px;font-size:12.5px;color:var(--mut);padding:0 4px 8px}
+#fin svg{display:block;width:100%;height:auto}
+#fin .g{stroke:var(--rule);stroke-width:1}#fin .zero{stroke:var(--mut);stroke-width:1.5;stroke-dasharray:3 3;opacity:.75}
+#fin .ax{fill:var(--mut);font-size:10.5px}
+#fin .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+#fin .mk{stroke:var(--surf);stroke-width:2}#fin .dl{fill:var(--ink);font-size:11.5px;font-weight:650}
+#fin .hot{fill:transparent}#fin .cross{stroke:var(--mut);stroke-width:1;opacity:0;pointer-events:none}
+#fin #tip{position:absolute;pointer-events:none;opacity:0;background:var(--surf);border:1px solid var(--rule);
+border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 4px 14px rgba(0,0,0,.10);white-space:nowrap;transition:opacity .1s}
+#fin #tip b{display:block;font-size:11.5px;color:var(--mut);font-weight:500;margin-bottom:4px}
+#fin .bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:16px}
+/* The panel styles bare <button>. Confined to #fin that becomes "#fin button",
+   which outranks the shell's .btn on specificity and repaints the flow strip
+   and every dashboard button that shares this section. It is held off anything
+   the shell owns. */
+#fin button:not(.btn):not([data-flow]){font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--rule);
+background:var(--surf);color:var(--ink);cursor:pointer}
+#fin button:not(.btn):not([data-flow]):hover{background:var(--surf2)}
+#fin button:not(.btn):not([data-flow]).on{background:var(--c1);border-color:var(--c1);color:#fff}
+#fin .seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden}
+#fin .seg button{border:0;border-radius:0}
+#fin .chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mut);cursor:pointer}
+#fin .mrow{background:var(--surf);border:1px solid var(--rule);border-radius:9px;margin-bottom:6px;overflow:hidden}
+#fin .mhead{display:grid;grid-template-columns:30px 1fr 92px 104px 112px 18px;gap:8px;align-items:center;
+padding:9px 12px;cursor:pointer;font-size:13.5px}
+#fin .mhead:hover{background:var(--surf2)}
+#fin .mhead .no{color:var(--mut);font-size:12px}
+#fin .mhead .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut);font-size:12px}
+#fin .mhead .cash{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+#fin .mhead .cash.neg{color:var(--neg)}
+#fin .arw{display:inline-block;transition:transform .12s;color:var(--mut);font-size:11px}
+#fin .mrow.open .arw{transform:rotate(90deg)}
+#fin .mbody{display:none;border-top:1px solid var(--rule);background:var(--surf2);padding:4px 0 10px}
+#fin .mrow.open .mbody{display:block}
+#fin .li{display:grid;grid-template-columns:24px 1fr 96px 100px 54px;gap:8px;align-items:center;padding:4px 12px;font-size:12.5px}
+#fin .li:hover{background:var(--surf)}
+#fin .li .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#fin .li .ct{color:var(--mut);font-size:11px}
+#fin .li .am{text-align:right;font-variant-numeric:tabular-nums}
+#fin .li.off .nm,#fin .li.off .am,#fin .li.off .ct{opacity:.35;text-decoration:line-through}
+#fin .li.new .nm::after{content:" YENİ";color:var(--ok);font-size:10px;font-weight:650}
+#fin .li.edited .nm::after{content:" DÜZENLENDİ";color:var(--c2);font-size:10px;font-weight:650}
+#fin .act{display:flex;gap:3px;justify-content:flex-end}
+#fin .ib{border:1px solid var(--rule);background:var(--surf);border-radius:6px;width:23px;height:23px;
+padding:0;line-height:1;font-size:13px;color:var(--mut);cursor:pointer;display:grid;place-items:center}
+#fin .ib:hover{color:var(--ink);border-color:var(--mut)}
+#fin .ib.minus:hover{color:var(--neg);border-color:var(--neg)}
+#fin .ib.plus{color:var(--ok)}
+/* renamed from .sec: the dashboard shell uses .sec for its section panes,
+   and a category heading inside a month row was counting as an open section. */
+#fin .fsec{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:8px 12px 3px;font-weight:600}
+#fin .sum{display:grid;grid-template-columns:1fr 100px 54px;gap:8px;padding:7px 12px;font-size:12.5px;
+border-top:1px solid var(--rule);margin-top:4px}
+#fin .sum .am{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+#fin .addbar{padding:8px 12px 2px}
+#fin .form{background:var(--surf);border:1px solid var(--rule);border-radius:8px;margin:6px 12px;padding:10px 12px}
+#fin .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin-bottom:9px}
+#fin .fg label{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);display:block;margin-bottom:3px}
+#fin .fg input,#fin .fg select{width:100%;font:inherit;font-size:12.5px;padding:5px 7px;border-radius:6px;
+border:1px solid var(--rule);background:var(--surf2);color:var(--ink)}
+#fin .frow{display:flex;gap:7px}
+#fin .note{font-size:12.5px;color:var(--mut);margin-top:16px;line-height:1.6}
+#fin code{font-size:12px;background:var(--surf2);padding:1px 4px;border-radius:4px}
+/* ---------- housing ---------- */
+#fin{font-size:14px;line-height:1.55;color:#1A1815}
+#fin .pnav{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:#FFFFFF;
+  border:1px solid rgba(26,24,21,.10);border-radius:3px;padding:7px 9px;margin-bottom:14px}
+#fin .pnav button{background:none;border:1px solid transparent;border-radius:2px;padding:7px 12px;
+  font-family:inherit;font-size:12.5px;font-weight:500;color:#57534C;cursor:pointer;white-space:nowrap;
+  transition:background .14s,color .14s}
+#fin .pnav button:hover{background:#FAF9F6;color:#1A1815}
+#fin .pnav button[aria-selected="true"]{background:#FAF7F4;color:#1A1815;font-weight:600;
+  box-shadow:inset 0 -2px 0 #B84C2E}
+/* The cash model was drawn to a 920px measure and its chart scales with the
+   box, so at full dashboard width the axis labels grow with it. The measure
+   travels with the panel. */
+#fin .flow[data-flow="model"]{max-width:960px}
+#fin .flow{display:none}
+#fin .flow.on{display:block}
+
 </style>
 
 <div class="phead">
   <div>
     <h1>Finans</h1>
-    <p>Basit gelir ve gider takibi. Muhasebe aracı değil, hafıza aracı.</p>
+    <p>Nakit modeli ve basit gelir/gider defteri.<br>
+       Model Finance'ın; buradaki değişiklikler bu tarayıcıda saklanır.</p>
+    <div class="status"><span class="led" id="finLed"></span><span id="finSaved">Değişiklik yok</span></div>
   </div>
   <div class="acts">
-    <button class="btn btn-s" id="fiCsv" type="button">CSV indir</button>
+    <button class="btn btn-s" id="fiCsv" type="button">Defteri CSV indir</button>
   </div>
 </div>
 
-<p class="lede">
-  Kayıtlar bu tarayıcıda saklanır ve istediğin an CSV olarak çıkar. Sunucuya gitmez,
-  başka cihazdan görünmez. Bu yüzden ay sonunda CSV'yi indirip muhasebeye vermek gerekir.
-  Fiyatları CEO belirler; burada yalnızca olan biten kaydedilir.
-</p>
+<div id="fin">
+  <nav class="pnav" role="tablist">
+    <button type="button" role="tab" data-flow="model" aria-selected="true">Nakit modeli</button>
+    <button type="button" role="tab" data-flow="defter" aria-selected="false">Defter</button>
+    <button type="button" role="tab" data-flow="sabit" aria-selected="false">Sabit giderler</button>
+  </nav>
+
+  <div class="flow on" data-flow="model">
+<div class="tiles" id="finTiles"></div>
+<div class="bar">
+  <div class="seg"><button id="finPMevcut" class="on">Mevcut model</button><button id="finPPaket">Ay 1 paketi</button></div>
+  <button id="finAllOn">Hepsini işaretle</button><button id="finReset">Sıfırla</button>
+  <label class="chk"><input type="checkbox" id="finRealCash" checked> Yıllık kalemler peşin</label>
+  <button id="finExp">JSON dışa aktar</button><button id="finImp">İçe aktar</button>
+  <input type="file" id="finImpf" accept="application/json" hidden>
+  <span style="flex:1"></span>
+  <div class="seg"><button id="finSHalf" class="on">Yarı zamanlı</button><button id="finSFull">Tam zamanlı</button></div>
+</div>
+<div class="card">
+<p class="ttl">Kapanış nakdi — ilk 9 ay</p>
+<p class="cap">Karar penceresi. Her iki senaryo canlı; aşağıdaki döküm seçili senaryoyu gösterir.</p>
+<div class="leg"><span><span class="dot" style="background:var(--c1)"></span>Yarı zamanlı</span>
+<span><span class="dot" style="background:var(--c2)"></span>Tam zamanlı</span></div>
+<svg viewBox="0 0 760 300" id="finCh"></svg><div id="finTip"></div>
+</div>
+<h2>Ay ay döküm</h2>
+<div id="finMonths"></div>
+<p class="note">Ay satırına tıkla — o ay gerçekleşen bütün kalemler açılır.
+<b>−</b> kalemi tüm aylardan çıkarır · <b>✎</b> tutar, para birimi, sıklık ve başlangıç/bitiş ayını düzenler ·
+<b>+</b> o aya yeni kalem ekler. Nakit her değişiklikte yeniden hesaplanır.
+Seçimini <b>JSON dışa aktar</b> ile kaydet — modele işlerken ve Developer'a devrederken bu dosya kullanılır.
+Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xlsx</code>'e henüz işlenmedi.</p>
+  </div>
+
+  <div class="flow" data-flow="defter">
 
 <div class="stats">
   <div class="stat"><div class="l">Gelir</div><div class="v gelir" id="fiGelir">£0</div><div class="s">toplam</div></div>
@@ -5035,6 +5185,10 @@ window.dashInit.analitik = function(){
     <div class="empty" id="fiCatsEmpty"><b>Henüz veri yok</b>Kayıt girildikçe kategoriler burada toplanır.</div>
   </section>
 </div>
+</div><!-- .stack -->
+  </div>
+
+  <div class="flow" data-flow="sabit">
 
 <div class="cols">
   <section class="panel">
@@ -5064,12 +5218,268 @@ window.dashInit.analitik = function(){
       künye ile birlikte tamamlanır.</div>
   </section>
 </div>
-
+  </div>
 </div>
 
 <script>
-/* Finans — a ledger in this browser, and a CSV button so it can leave. */
+/* Finance's cash panel.
+   Wrapped. The panel was handed over as a page, so its names — render, D, mode,
+   off, on, edits — were top-level globals. In this document İçerik is also
+   top-level (it draws with innerHTML and calls back through inline handlers, so
+   it has to be), and it has a render() of its own. Loading order decided which
+   one won: the panel's render() replaced İçerik's, and İçerik came up blank with
+   no error anywhere. Nothing here is reached from markup, so a closure costs
+   nothing and removes the whole class of collision. */
+(function(){
+const D={"fx":[46.3,47.1375,47.9901,48.8581,49.7418,50.6415,51.5575,52.49,53.4395,54.4061,55.3901,56.392,57.1752,57.9693,58.7744,59.5907,60.4183,61.2574,62.1082,62.9708,63.8453,64.732,65.6311,66.5426,67.3221,68.1108,68.9087,69.716,70.5327,71.359,72.1949,73.0407,73.8963,74.762,75.6379,76.524],"gbp":[61.3475,62.4571,63.5868,64.737,65.9079,67.1,68.3137,69.5493,70.8073,72.088,73.3919,74.7194,75.7571,76.8093,77.8761,78.9576,80.0542,81.1661,82.2933,83.4362,84.595,85.7699,86.9611,88.1689,89.2018,90.2468,91.304,92.3736,93.4558,94.5506,95.6583,96.7789,97.9126,99.0597,100.2202,101.3942],"tl":[1.0,1.021447,1.043354,1.065731,1.088587,1.111934,1.135782,1.160141,1.185022,1.210437,1.236397,1.262914,1.285757,1.309014,1.332691,1.356796,1.381337,1.406322,1.431759,1.457656,1.484021,1.510864,1.538192,1.566014,1.587763,1.609815,1.632173,1.654841,1.677824,1.701126,1.724752,1.748707,1.772993,1.797617,1.822583,1.847896],"per":["Ağu 2026","Eyl 2026","Eki 2026","Kas 2026","Ara 2026","Oca 2027","Şub 2027","Mar 2027","Nis 2027","May 2027","Haz 2027","Tem 2027","Ağu 2027","Eyl 2027","Eki 2027","Kas 2027","Ara 2027","Oca 2028","Şub 2028","Mar 2028","Nis 2028","May 2028","Haz 2028","Tem 2028","Ağu 2028","Eyl 2028","Eki 2028","Kas 2028","Ara 2028","Oca 2029","Şub 2029","Mar 2029","Nis 2029","May 2029","Haz 2029","Tem 2029"],"rev":{"si":[0.0,0.0,0.0,0.0,0.0,9000.0,15000.0,17000.0,26000.0,20000.0,34000.0,41000.0,60250.0,39000.0,43000.0,56250.0,56500.0,63750.0,62500.0,63750.0,56500.0,69750.0,52500.0,67750.0,110500.0,85000.0,110500.0,85000.0,103500.0,110500.0,121500.0,133500.0,126500.0,115000.0,126500.0,133500.0],"sj":[0.0,0.0,0.0,9000.0,5000.0,24000.0,34000.0,41000.0,46000.0,49000.0,63000.0,58000.0,93250.0,72000.0,93250.0,87250.0,82000.0,93250.0,102750.0,112750.0,101500.0,120250.0,126250.0,137500.0,172500.0,160500.0,186000.0,188500.0,181500.0,188500.0,220000.0,211500.0,211500.0,241000.0,227500.0,227500.0]},"cap":1200000.0,"col":[0.35,0.45,0.2],"fxcost":0.005,"lines":[{"no":2,"cat":"Yazılım & Araçlar","name":"Google Workspace — EA koltuğu","price":14.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":12.0,"sj":7.0,"end":36.0,"new":0,"pOff":0,"pSi":12.0,"pSj":7.0,"pPrice":14.0,"pNew":0},{"no":3,"cat":"Yazılım & Araçlar","name":"Google Workspace — Analyst koltuğu","price":14.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":14.0,"pNew":0},{"no":4,"cat":"Yazılım & Araçlar","name":"Google Workspace — 2. Analyst + BD koltukları","price":14.0,"cur":"USD","qty":2.0,"freq":"Aylık","si":37.0,"sj":28.0,"end":36.0,"new":0,"pOff":0,"pSi":37.0,"pSj":28.0,"pPrice":14.0,"pNew":0},{"no":5,"cat":"Yazılım & Araçlar","name":"Claude Max (5x kullanım)","price":100.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":100.0,"pNew":0},{"no":6,"cat":"Yazılım & Araçlar","name":"Claude Team ek koltuk","price":25.0,"cur":"USD","qty":2.0,"freq":"Aylık","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":25.0,"pNew":0},{"no":7,"cat":"Yazılım & Araçlar","name":"Yedek model aboneliği (ChatGPT/Gemini)","price":20.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":4,"pSj":4,"pPrice":20.0,"pNew":0},{"no":8,"cat":"Yazılım & Araçlar","name":"AI API kullanımı (Assessment skorlama)","price":80.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":80.0,"pNew":0},{"no":9,"cat":"Yazılım & Araçlar","name":"Squarespace Core","price":29.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":29.0,"pNew":0},{"no":10,"cat":"Yazılım & Araçlar","name":"Domain portföyü (.com + defansif)","price":180.0,"cur":"USD","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":180.0,"pNew":0},{"no":11,"cat":"Yazılım & Araçlar","name":"Notion Plus","price":10.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":10.0,"pNew":0},{"no":12,"cat":"Yazılım & Araçlar","name":"Notion Business — ekip koltukları","price":20.0,"cur":"USD","qty":3.0,"freq":"Aylık","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":20.0,"pNew":0},{"no":13,"cat":"Yazılım & Araçlar","name":"Calendly Standard","price":10.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":10.0,"pNew":0},{"no":14,"cat":"Yazılım & Araçlar","name":"Zapier Professional","price":30.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":3,"pSj":3,"pPrice":30.0,"pNew":0},{"no":15,"cat":"Yazılım & Araçlar","name":"LinkedIn Sales Navigator Core","price":80.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":80.0,"pNew":0},{"no":16,"cat":"Yazılım & Araçlar","name":"Xero Standard (UK muhasebe yazılımı)","price":37.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":37.0,"pNew":0},{"no":17,"cat":"Yazılım & Araçlar","name":"Dext (fiş/fatura yakalama)","price":18.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":7.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":7.0,"pSj":4.0,"pPrice":18.0,"pNew":0},{"no":18,"cat":"Yazılım & Araçlar","name":"Tally/Typeform Pro (Readiness Assessment formu)","price":29.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":3,"pSj":3,"pPrice":29.0,"pNew":0},{"no":19,"cat":"Yazılım & Araçlar","name":"Newsletter platformu (Beehiiv/ConvertKit)","price":39.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":3.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":3.0,"pSj":2.0,"pPrice":39.0,"pNew":0},{"no":20,"cat":"Yazılım & Araçlar","name":"Canva Pro","price":15.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":15.0,"pNew":0},{"no":21,"cat":"Yazılım & Araçlar","name":"Figma Professional","price":16.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":6,"pSj":6,"pPrice":16.0,"pNew":0},{"no":22,"cat":"Yazılım & Araçlar","name":"Loom Business","price":15.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":15.0,"pNew":0},{"no":23,"cat":"Yazılım & Araçlar","name":"Toplantı transkript (Fireflies/Otter)","price":19.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":19.0,"pNew":0},{"no":24,"cat":"Yazılım & Araçlar","name":"DeepL Pro","price":12.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":12.0,"pNew":0},{"no":25,"cat":"Yazılım & Araçlar","name":"E-imza / teklif aracı (PandaDoc)","price":35.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":35.0,"pNew":0},{"no":26,"cat":"Yazılım & Araçlar","name":"1Password Business","price":8.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":8.0,"pNew":0},{"no":27,"cat":"Yazılım & Araçlar","name":"VPN + uç nokta güvenliği","price":12.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":12.0,"pNew":0},{"no":28,"cat":"Yazılım & Araçlar","name":"Riverside.fm (podcast kayıt)","price":24.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":6.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":6.0,"pSj":4.0,"pPrice":24.0,"pNew":0},{"no":29,"cat":"Yazılım & Araçlar","name":"Podcast hosting (Transistor)","price":19.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":6.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":6.0,"pSj":4.0,"pPrice":19.0,"pNew":0},{"no":30,"cat":"Yazılım & Araçlar","name":"Plausible Analytics","price":14.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":3,"pSj":3,"pPrice":14.0,"pNew":0},{"no":31,"cat":"Yazılım & Araçlar","name":"SEO aracı (Ahrefs Starter)","price":29.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":14.0,"sj":10.0,"end":36.0,"new":0,"pOff":0,"pSi":14.0,"pSj":10.0,"pPrice":29.0,"pNew":0},{"no":32,"cat":"Yazılım & Araçlar","name":"CRM (Attio Plus)","price":34.0,"cur":"USD","qty":2.0,"freq":"Aylık","si":14.0,"sj":10.0,"end":36.0,"new":0,"pOff":0,"pSi":14.0,"pSj":10.0,"pPrice":34.0,"pNew":0},{"no":33,"cat":"Yazılım & Araçlar","name":"Sosyal planlama (Buffer)","price":18.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":18.0,"pNew":0},{"no":34,"cat":"Yazılım & Araçlar","name":"Adobe Acrobat Pro","price":20.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":20.0,"pNew":0},{"no":35,"cat":"Yazılım & Araçlar","name":"Yedekleme + Google Vault","price":5.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":5.0,"pNew":0},{"no":36,"cat":"Profesyonel Hizmetler","name":"UK muhasebeci — aylık paket","price":150.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":58.25,"pNew":0},{"no":37,"cat":"Profesyonel Hizmetler","name":"UK muhasebeci — VAT + genişleyen kapsam","price":110.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":16.0,"sj":10.0,"end":36.0,"new":0,"pOff":0,"pSi":16.0,"pSj":10.0,"pPrice":110.0,"pNew":0},{"no":38,"cat":"Profesyonel Hizmetler","name":"Registered office + director service address","price":120.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":120.0,"pNew":0},{"no":39,"cat":"Profesyonel Hizmetler","name":"Confirmation Statement (Companies House)","price":50.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":13.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":13.0,"pSj":13.0,"pPrice":50.0,"pNew":0},{"no":40,"cat":"Profesyonel Hizmetler","name":"Türkiye mali müşavir","price":12000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":6,"pSj":6,"pPrice":12000.0,"pNew":0},{"no":41,"cat":"Profesyonel Hizmetler","name":"Hukuk avansı","price":12000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":6,"pSj":6,"pPrice":12000.0,"pNew":0},{"no":42,"cat":"Profesyonel Hizmetler","name":"Marka avukatı — TR başvurusu","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":25000.0,"pNew":0},{"no":43,"cat":"Profesyonel Hizmetler","name":"Uluslararası marka koruması","price":180000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":14.0,"sj":12.0,"end":36.0,"new":0,"pOff":0,"pSi":14.0,"pSj":12.0,"pPrice":180000.0,"pNew":0},{"no":44,"cat":"Profesyonel Hizmetler","name":"Marka izleme servisi (watch)","price":400.0,"cur":"USD","qty":1.0,"freq":"Yıllık","si":14.0,"sj":12.0,"end":36.0,"new":0,"pOff":0,"pSi":14.0,"pSj":12.0,"pPrice":400.0,"pNew":0},{"no":45,"cat":"Profesyonel Hizmetler","name":"KVKK/GDPR uyum + politikalar","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":25000.0,"pNew":0},{"no":46,"cat":"Profesyonel Hizmetler","name":"Uluslararası sözleşme şablonları (EN)","price":40000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":40000.0,"pNew":0},{"no":47,"cat":"Profesyonel Hizmetler","name":"İstihdam/bordro yapı danışmanlığı","price":30000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":30000.0,"pNew":0},{"no":48,"cat":"Profesyonel Hizmetler","name":"Yıllık vergi/yapı gözden geçirmesi","price":20000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":13.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":13.0,"pSj":13.0,"pPrice":20000.0,"pNew":0},{"no":49,"cat":"Finans & Bankacılık","name":"Wise Business hesap açılışı","price":50.0,"cur":"GBP","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":50.0,"pNew":0},{"no":50,"cat":"Finans & Bankacılık","name":"Wise Business kartları (2 adet)","price":7.0,"cur":"GBP","qty":2.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":7.0,"pNew":0},{"no":51,"cat":"Finans & Bankacılık","name":"Revolut Business Grow (yedek hesap)","price":25.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":25.0,"pNew":0},{"no":52,"cat":"Finans & Bankacılık","name":"Gelen SWIFT / havale ücretleri","price":40.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":4.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":4.0,"pSj":4.0,"pPrice":40.0,"pNew":0},{"no":53,"cat":"Finans & Bankacılık","name":"TR banka masrafları, EFT, döviz alım-satım","price":3000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":4,"pSj":4,"pPrice":3000.0,"pNew":0},{"no":54,"cat":"Finans & Bankacılık","name":"Ödeme geçidi (Stripe) — kart ile tahsilat","price":45.0,"cur":"USD","qty":1.0,"freq":"Aylık","si":6.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":6.0,"pSj":4.0,"pPrice":45.0,"pNew":0},{"no":55,"cat":"Finans & Bankacılık","name":"Banka-muhasebe mutabakat aracı","price":15.0,"cur":"GBP","qty":1.0,"freq":"Aylık","si":4.0,"sj":4.0,"end":36.0,"new":0,"pOff":1,"pSi":4.0,"pSj":4.0,"pPrice":15.0,"pNew":0},{"no":56,"cat":"Pazarlama","name":"LinkedIn Ads","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":4.0,"sj":3.0,"end":36.0,"new":0,"pOff":0,"pSi":6,"pSj":6,"pPrice":25000.0,"pNew":0},{"no":57,"cat":"Pazarlama","name":"İçerik üretim freelance (görsel, edit, klip)","price":20000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":6.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":6.0,"pSj":4.0,"pPrice":20000.0,"pNew":0},{"no":58,"cat":"Pazarlama","name":"Podcast prodüksiyon (edit, kapak, klip)","price":15000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":6.0,"sj":4.0,"end":36.0,"new":0,"pOff":0,"pSi":6.0,"pSj":4.0,"pPrice":15000.0,"pNew":0},{"no":59,"cat":"Pazarlama","name":"Website bakım + geliştirme","price":8000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":3.0,"sj":3.0,"end":36.0,"new":0,"pOff":0,"pSi":3.0,"pSj":3.0,"pPrice":8000.0,"pNew":0},{"no":60,"cat":"Pazarlama","name":"Executive Roundtable (mekan + ikram)","price":30000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":8.0,"sj":6.0,"end":36.0,"new":0,"pOff":0,"pSi":8.0,"pSj":6.0,"pPrice":30000.0,"pNew":0},{"no":61,"cat":"Pazarlama","name":"Konferans katılım + bilet","price":20000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":7.0,"sj":5.0,"end":36.0,"new":0,"pOff":0,"pSi":7.0,"pSj":5.0,"pPrice":20000.0,"pNew":0},{"no":62,"cat":"Pazarlama","name":"Profesyonel fotoğraf/video çekimi","price":60000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":60000.0,"pNew":0},{"no":63,"cat":"Pazarlama","name":"Marka/tasarım güncellemeleri","price":50000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":13.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":13.0,"pSj":13.0,"pPrice":50000.0,"pNew":0},{"no":64,"cat":"Pazarlama","name":"Basılı materyal (kartvizit, dosya, hediye)","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":4,"pSj":4,"pPrice":25000.0,"pNew":0},{"no":65,"cat":"Pazarlama","name":"Sponsorluk / etkinlik ortaklığı","price":150000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":20.0,"sj":14.0,"end":36.0,"new":0,"pOff":0,"pSi":20.0,"pSj":14.0,"pPrice":150000.0,"pNew":0},{"no":66,"cat":"Seyahat & Temsil","name":"Aylık İstanbul haftası — uçak + konaklama","price":55000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":55000.0,"pNew":0},{"no":67,"cat":"Seyahat & Temsil","name":"Müşteri toplantı yemek / temsil","price":15000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":15000.0,"pNew":0},{"no":68,"cat":"Seyahat & Temsil","name":"Şehir içi ulaşım, taksi, otopark","price":6000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":6000.0,"pNew":0},{"no":69,"cat":"Seyahat & Temsil","name":"Uluslararası seyahat (Dubai / Londra / Avrupa)","price":320000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":16.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":16.0,"pSj":13.0,"pPrice":320000.0,"pNew":0},{"no":70,"cat":"Seyahat & Temsil","name":"Vize, pasaport, seyahat sağlık sigortası","price":45000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":13.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":13.0,"pSj":13.0,"pPrice":45000.0,"pNew":0},{"no":71,"cat":"Ofis & Ekipman","name":"Ev ofisi payı (kira, elektrik, ısınma katkısı)","price":12000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":12000.0,"pNew":0},{"no":72,"cat":"Ofis & Ekipman","name":"Co-working / toplantı odası (İstanbul)","price":8000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":4.0,"sj":3.0,"end":36.0,"new":0,"pOff":0,"pSi":4.0,"pSj":3.0,"pPrice":8000.0,"pNew":0},{"no":73,"cat":"Ofis & Ekipman","name":"Fiber internet + yedek hat (Starlink)","price":6500.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":6500.0,"pNew":0},{"no":74,"cat":"Ofis & Ekipman","name":"Mobil hat + yurtdışı data","price":3500.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":3500.0,"pNew":0},{"no":75,"cat":"Ofis & Ekipman","name":"MacBook Pro (ana makine)","price":190000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":4,"pSj":4,"pPrice":190000.0,"pNew":0},{"no":76,"cat":"Ofis & Ekipman","name":"Monitör, kamera, mikrofon, ışık seti","price":95000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":4,"pSj":4,"pPrice":95000.0,"pNew":0},{"no":77,"cat":"Ofis & Ekipman","name":"Ekip donanımı (Analyst/EA laptop)","price":130000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":130000.0,"pNew":0},{"no":78,"cat":"Ofis & Ekipman","name":"Kırtasiye, kargo, kurye, baskı","price":3000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":3000.0,"pNew":0},{"no":79,"cat":"Ofis & Ekipman","name":"Donanım yenileme / bakım karşılığı","price":40000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":13.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":13.0,"pSj":13.0,"pPrice":40000.0,"pNew":0},{"no":80,"cat":"Sigorta","name":"Professional Indemnity (£1M)","price":900.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":900.0,"pNew":0},{"no":81,"cat":"Sigorta","name":"Public Liability","price":180.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":6,"pSj":6,"pPrice":180.0,"pNew":0},{"no":82,"cat":"Sigorta","name":"Cyber Liability","price":600.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":600.0,"pNew":0},{"no":83,"cat":"Sigorta","name":"Directors & Officers (D&O)","price":1100.0,"cur":"GBP","qty":1.0,"freq":"Yıllık","si":9.0,"sj":7.0,"end":36.0,"new":0,"pOff":0,"pSi":9.0,"pSj":7.0,"pPrice":1100.0,"pNew":0},{"no":84,"cat":"Sigorta","name":"Özel sağlık sigortası (şirketten)","price":90000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":7,"pSj":7,"pPrice":90000.0,"pNew":0},{"no":85,"cat":"Ekip","name":"EA / Kişisel Asistan (part-time, remote)","price":45000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":12.0,"sj":7.0,"end":36.0,"new":0,"pOff":0,"pSi":12.0,"pSj":7.0,"pPrice":45000.0,"pNew":0},{"no":86,"cat":"Ekip","name":"Senior Business Analyst #1","price":220000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":220000.0,"pNew":0},{"no":87,"cat":"Ekip","name":"Senior Business Analyst #2","price":220000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":34.0,"sj":28.0,"end":36.0,"new":0,"pOff":0,"pSi":34.0,"pSj":28.0,"pPrice":220000.0,"pNew":0},{"no":88,"cat":"Ekip","name":"Satış/BD (fractional Head of Growth)","price":140000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":37.0,"sj":30.0,"end":36.0,"new":0,"pOff":0,"pSi":37.0,"pSj":30.0,"pPrice":140000.0,"pNew":0},{"no":89,"cat":"Ekip","name":"Freelance havuz (araştırma, çeviri, tasarım, veri)","price":30000.0,"cur":"TRY","qty":1.0,"freq":"Aylık","si":8.0,"sj":5.0,"end":36.0,"new":0,"pOff":0,"pSi":8.0,"pSj":5.0,"pPrice":30000.0,"pNew":0},{"no":90,"cat":"Ekip","name":"İşe alım maliyeti — Analyst #1","price":120000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":22.0,"sj":13.0,"end":36.0,"new":0,"pOff":0,"pSi":22.0,"pSj":13.0,"pPrice":120000.0,"pNew":0},{"no":91,"cat":"Ekip","name":"İşe alım maliyeti — Analyst #2 / BD","price":120000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":34.0,"sj":28.0,"end":36.0,"new":0,"pOff":0,"pSi":34.0,"pSj":28.0,"pPrice":120000.0,"pNew":0},{"no":92,"cat":"Ekip","name":"Ekip eğitim + konferans bütçesi","price":60000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":25.0,"sj":14.0,"end":36.0,"new":0,"pOff":0,"pSi":25.0,"pSj":14.0,"pPrice":60000.0,"pNew":0},{"no":93,"cat":"Ekip","name":"Yıllık ekip offsite","price":80000.0,"cur":"TRY","qty":1.0,"freq":"Yıllık","si":25.0,"sj":14.0,"end":36.0,"new":0,"pOff":0,"pSi":25.0,"pSj":14.0,"pPrice":80000.0,"pNew":0},{"no":94,"cat":"Kuruluş & Tek Seferlik","name":"Companies House kuruluş ücreti (dijital)","price":100.0,"cur":"GBP","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":100.0,"pNew":0},{"no":95,"cat":"Kuruluş & Tek Seferlik","name":"Formation agent paketi","price":350.0,"cur":"GBP","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":350.0,"pNew":0},{"no":96,"cat":"Kuruluş & Tek Seferlik","name":"Kimlik doğrulama (ACSP / GOV.UK One Login)","price":60.0,"cur":"GBP","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":1,"pSi":1.0,"pSj":1.0,"pPrice":60.0,"pNew":0},{"no":97,"cat":"Kuruluş & Tek Seferlik","name":"Website tasarım / kurulum","price":45000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":45000.0,"pNew":0},{"no":98,"cat":"Kuruluş & Tek Seferlik","name":"İçerik ve copywriting (TR + EN)","price":55000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":25000,"pNew":0},{"no":99,"cat":"Kuruluş & Tek Seferlik","name":"AI Readiness Assessment kurgu + otomasyon","price":40000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":3,"pSj":3,"pPrice":40000.0,"pNew":0},{"no":100,"cat":"Kuruluş & Tek Seferlik","name":"Logo final + marka varlık paketi","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":25000.0,"pNew":0},{"no":101,"cat":"Kuruluş & Tek Seferlik","name":"Kurumsal kimlik uygulamaları","price":30000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":3,"pSj":3,"pPrice":30000.0,"pNew":0},{"no":102,"cat":"Kuruluş & Tek Seferlik","name":"Profesyonel portre çekimi (lansman)","price":30000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":1.0,"sj":1.0,"end":36.0,"new":0,"pOff":0,"pSi":1.0,"pSj":1.0,"pPrice":15000,"pNew":0},{"no":103,"cat":"Kuruluş & Tek Seferlik","name":"İlk case study yazımı (Kriptomeda / Paribu)","price":25000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":25000.0,"pNew":0},{"no":104,"cat":"Kuruluş & Tek Seferlik","name":"Teklif ve sözleşme şablonu tasarımı","price":15000.0,"cur":"TRY","qty":1.0,"freq":"Tek seferlik","si":2.0,"sj":2.0,"end":36.0,"new":0,"pOff":0,"pSi":2.0,"pSj":2.0,"pPrice":15000.0,"pNew":0},{"no":996,"cat":"Profesyonel Hizmetler","name":"ICO kaydı (yeni)","price":52,"cur":"GBP","qty":1,"freq":"Yıllık","si":1,"sj":1,"end":36,"new":1,"pOff":0,"pSi":1,"pSj":1,"pPrice":52,"pNew":1},{"no":997,"cat":"Profesyonel Hizmetler","name":"UKIPO marka 35+42 (yeni)","price":265,"cur":"GBP","qty":1,"freq":"Tek seferlik","si":1,"sj":1,"end":36,"new":1,"pOff":0,"pSi":1,"pSj":1,"pPrice":265,"pNew":1},{"no":998,"cat":"Kuruluş & Tek Seferlik","name":"İçerik copywriting — 2. dilim (yeni)","price":30000,"cur":"TRY","qty":1,"freq":"Tek seferlik","si":3,"sj":3,"end":36,"new":1,"pOff":0,"pSi":3,"pSj":3,"pPrice":30000,"pNew":1}]};
+const CATS=["Yazılım & Araçlar", "Profesyonel Hizmetler", "Finans & Bankacılık", "Pazarlama", "Seyahat & Temsil", "Ofis & Ekipman", "Sigorta", "Ekip", "Kuruluş & Tek Seferlik"];
+const N=36,W=760,H=300,L=64,R=18,T=16,B=34,K=9,C1='#B84C2E',C2='#0C7FA8';
+let mode='mevcut',scen='si',real=true;
+let off=new Set(),on=new Set(),edits={},custom=[],nextNo=9001,editing=null,adding=null;
+
+const allLines=()=>D.lines.concat(custom);
+function eff(l){
+  const b = (mode==='paket'&&!l.custom) ? Object.assign({},l,{si:l.pSi,sj:l.pSj,price:l.pPrice}) : Object.assign({},l);
+  return Object.assign(b, edits[l.no]||{});
+}
+function active(l){
+  if(on.has(l.no))return true;
+  if(off.has(l.no))return false;
+  if(l.custom)return true;
+  if(mode==='paket'&&l.pOff)return false;
+  if(mode!=='paket'&&l.new)return false;
+  return true;
+}
+const rate=(cur,m)=>cur==='TRY'?D.tl[m]:(cur==='USD'?D.fx[m]:D.gbp[m]);
+function amount(l,m,sk,ignoreOff){
+  if(!ignoreOff&&!active(l))return 0;
+  const e=eff(l), st=sk==='si'?e.si:e.sj; if(!st)return 0;
+  const end=e.freq==='Tek seferlik'?st:e.end, mm=m+1;
+  if(mm<st||mm>end)return 0;
+  const tot=e.price*e.qty;
+  if(e.freq==='Yıllık') return real ? (((mm-st)%12===0)?tot*rate(e.cur,m):0) : (tot/12)*rate(e.cur,m);
+  return tot*rate(e.cur,m);
+}
+function series(sk){
+  const exp=[],cash=[],coll=[],revTry=[],L2=allLines();
+  for(let m=0;m<N;m++){let s=0;for(const l of L2)s+=amount(l,m,sk);
+    revTry[m]=D.rev[sk][m]*D.fx[m]; exp[m]=s+revTry[m]*D.fxcost;}
+  let op=D.cap;
+  for(let m=0;m<N;m++){
+    coll[m]=revTry[m]*D.col[0]+(m>=1?revTry[m-1]*D.col[1]:0)+(m>=2?revTry[m-2]*D.col[2]:0);
+    cash[m]=op+coll[m]-exp[m];op=cash[m];}
+  return {exp,cash,coll,revTry};
+}
+const tl=v=>(v<0?'−₺':'₺')+Math.round(Math.abs(v)).toLocaleString('tr-TR');
+const usd=v=>'$'+Math.round(v).toLocaleString('tr-TR');
+
+function chart(A,Bs){
+  const vals=A.cash.slice(0,K).concat(Bs.cash.slice(0,K)).concat([0]);
+  let lo=Math.min(...vals),hi=Math.max(...vals);const pad=(hi-lo)*.10||1;lo-=pad;hi+=pad;
+  const X=i=>L+(W-L-R)*i/(K-1),Y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo));
+  const p=a=>'M'+a.slice(0,K).map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' L');
+  const sr=(hi-lo)/4,mag=Math.pow(10,Math.floor(Math.log10(Math.abs(sr)||1)));
+  const step=Math.max(mag*Math.round(sr/mag),1);
+  let ticks=[];for(let t=Math.ceil(lo/step)*step;t<=hi;t+=step)ticks.push(t);
+  if(!ticks.some(t=>Math.abs(t)<1e-6))ticks.push(0);
+  const lbl=t=>Math.abs(t)<1?'0':(Math.abs(t)>=1e6?(t/1e6).toFixed(1).replace('.0','')+'M':Math.round(t/1000)+'K');
+  const grid=ticks.map(t=>`<line class="g" x1="${L}" x2="${W-R}" y1="${Y(t).toFixed(1)}" y2="${Y(t).toFixed(1)}"/><text class="ax" x="${L-8}" y="${(Y(t)+4).toFixed(1)}" text-anchor="end">${lbl(t)}</text>`).join('');
+  const li=a=>a.slice(0,K).reduce((b,v,i,ar)=>v<ar[b]?i:b,0);
+  const a1=li(A.cash),a2=li(Bs.cash);
+  const marks=`<circle class="mk" cx="${X(a1)}" cy="${Y(A.cash[a1])}" r="5" fill="${C1}"/><circle class="mk" cx="${X(a2)}" cy="${Y(Bs.cash[a2])}" r="5" fill="${C2}"/><text class="dl" x="${X(a1)}" y="${Y(A.cash[a1])+22}" text-anchor="middle">${tl(A.cash[a1])}</text><text class="dl" x="${X(a2)+6}" y="${Y(Bs.cash[a2])-12}" text-anchor="start">${tl(Bs.cash[a2])}</text>`;
+  const xl=D.per.slice(0,K).map((s,i)=>`<text class="ax" x="${X(i).toFixed(1)}" y="${H-12}" text-anchor="middle">${s.split(' ')[0]}</text>`).join('');
+  const hw=(W-L-R)/(K-1);
+  const hot=Array.from({length:K},(_,i)=>`<rect class="hot" x="${(X(i)-hw/2).toFixed(1)}" y="${T}" width="${hw.toFixed(1)}" height="${H-T-B}" data-i="${i}"/>`).join('');
+  document.getElementById('finCh').innerHTML=grid+`<line class="zero" x1="${L}" x2="${W-R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/><line class="cross" id="cx" y1="${T}" y2="${H-B}"/><path class="ln" style="stroke:var(--c1)" d="${p(A.cash)}"/><path class="ln" style="stroke:var(--c2)" d="${p(Bs.cash)}"/>`+marks+xl+hot;
+  const svg=document.getElementById('finCh'),tip=document.getElementById('finTip'),cx=document.getElementById('cx');
+  svg.querySelectorAll('.hot').forEach(r=>{r.onpointerenter=()=>{
+    const i=+r.dataset.i,b=svg.getBoundingClientRect(),k=b.width/W;
+    cx.setAttribute('x1',X(i));cx.setAttribute('x2',X(i));cx.style.opacity=.5;
+    tip.innerHTML=`<b>Ay ${i+1} · ${D.per[i]}</b><span class="dot" style="background:var(--c1)"></span>Yarı ${tl(A.cash[i])}<br><span class="dot" style="background:var(--c2)"></span>Tam ${tl(Bs.cash[i])}`;
+    tip.style.opacity=1;const tw=tip.offsetWidth;
+    tip.style.left=Math.min(Math.max(X(i)*k-tw/2,6),b.width-tw-6)+'px';tip.style.top='34px';};});
+  svg.onpointerleave=()=>{tip.style.opacity=0;cx.style.opacity=0;};
+}
+const trough=a=>{let b=0;for(let i=1;i<N;i++)if(a[i]<a[b])b=i;return b;};
+
+function render(){
+  const A=series('si'),Bs=series('sj'),ta=trough(A.cash),tb=trough(Bs.cash);
+  const gap=Math.max(0,-A.cash[ta]);
+  document.getElementById('finTiles').innerHTML=
+   `<div class="tile"><div class="k">Yarı zamanlı — dip</div><div class="v" style="color:var(--c1)">${tl(A.cash[ta])}</div><div class="s">Ay ${ta+1} · ${D.per[ta]}</div></div>`+
+   `<div class="tile"><div class="k">Tam zamanlı — dip</div><div class="v" style="color:var(--c2)">${tl(Bs.cash[tb])}</div><div class="s">Ay ${tb+1} · ${D.per[tb]}</div></div>`+
+   `<div class="tile"><div class="k">Ay 1 çıkışı</div><div class="v">${tl(A.exp[0])}</div><div class="s">${off.size} kapalı · ${Object.keys(edits).length} düzenli · ${custom.length} eklendi</div></div>`+
+   `<div class="tile"><div class="k">Ek sermaye (yarı)</div><div class="v">${gap?tl(gap*1.3):'yok'}</div><div class="s">${gap?'açık × 1,3 tampon':'nakit pozitif kalıyor'}</div></div>`;
+  chart(A,Bs); months(scen==='si'?A:Bs);
+}
+function formHTML(o,m,isNew){
+  const f=(k,lab,v,t)=>`<div><label>${lab}</label><input name="${k}" type="${t||'text'}" value="${v}"></div>`;
+  const sel=(k,lab,v,opts)=>`<div><label>${lab}</label><select name="${k}">`+opts.map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')+`</select></div>`;
+  return `<div class="form" data-form="${isNew?'new':o.no}" data-m="${m}">
+   <div class="fg">${f('name','Kalem adı',o.name)}${sel('cat','Kategori',o.cat,CATS)}</div>
+   <div class="fg">${f('price','Birim tutar',o.price,'number')}${sel('cur','Para',o.cur,['TRY','USD','GBP'])}
+   ${f('qty','Adet',o.qty,'number')}${sel('freq','Sıklık',o.freq,['Aylık','Yıllık','Tek seferlik'])}</div>
+   <div class="fg">${f('si','Başlangıç ayı — yarı',o.si,'number')}${f('sj','Başlangıç ayı — tam',o.sj,'number')}${f('end','Bitiş ayı',o.end,'number')}</div>
+   <div class="frow"><button class="save on">Kaydet</button><button class="cancel">Vazgeç</button>
+   ${isNew?'':'<button class="revert">Düzenlemeyi geri al</button>'}</div></div>`;
+}
+function months(S){
+  const openM=new Set([...document.querySelectorAll('#fin .mrow.open')].map(e=>+e.dataset.m));
+  let h='';
+  for(let m=0;m<N;m++){
+    const items=allLines().map(l=>({l,a:amount(l,m,scen),raw:amount(l,m,scen,true)})).filter(x=>x.raw>0);
+    items.sort((x,y)=>y.raw-x.raw);
+    const byCat={}; for(const it of items){(byCat[it.l.cat]=byCat[it.l.cat]||[]).push(it);}
+    let body='';
+    for(const c of CATS){ if(!byCat[c])continue;
+      body+=`<div class="fsec">${c}</div>`;
+      for(const {l,raw} of byCat[c]){
+        const dis=!active(l), e=eff(l), ed=!!edits[l.no];
+        body+=`<div class="li ${dis?'off':''} ${l.new&&!ed?'new':''} ${ed?'edited':''}">`+
+          `<input type="checkbox" data-no="${l.no}" ${dis?'':'checked'}>`+
+          `<span class="nm">${e.name}<span class="ct"> · ${e.freq}${e.cur!=='TRY'?' · '+e.cur:''} · Ay ${scen==='si'?e.si:e.sj}${e.freq!=='Tek seferlik'?'–'+e.end:''}</span></span>`+
+          `<span class="am ct">${e.cur==='TRY'?'':e.cur+' '+(+e.price).toLocaleString('tr-TR')}</span>`+
+          `<span class="am">${tl(raw)}</span>`+
+          `<span class="act"><button class="ib edit" data-no="${l.no}" data-m="${m}" title="Düzenle">✎</button>`+
+          `<button class="ib minus" data-no="${l.no}" title="Çıkar">−</button></span></div>`;
+        if(editing===l.no) body+=formHTML(e,m,false);
+      }
+    }
+    body+=`<div class="addbar"><button class="ib plus add" data-m="${m}" title="Bu aya kalem ekle">+</button>`+
+          `<span class="ct" style="margin-left:8px;color:var(--mut)">Bu aya kalem ekle</span></div>`;
+    if(adding===m) body+=formHTML({name:'Yeni kalem',cat:CATS[0],price:0,cur:'TRY',qty:1,freq:'Tek seferlik',si:m+1,sj:m+1,end:36},m,true);
+    body+=`<div class="sum"><span>Kur dönüşüm maliyeti</span><span class="am">${tl(S.revTry[m]*D.fxcost)}</span><span></span></div>`+
+          `<div class="sum"><span><b>Toplam gider</b></span><span class="am">${tl(S.exp[m])}</span><span></span></div>`+
+          `<div class="sum"><span>Tahsilat</span><span class="am">${tl(S.coll[m])}</span><span></span></div>`;
+    h+=`<div class="mrow ${openM.has(m)?'open':''}" data-m="${m}"><div class="mhead">`+
+       `<span class="no">${m+1}</span><span>${D.per[m]}</span>`+
+       `<span class="num">${usd(D.rev[scen][m])}</span><span class="num">${tl(S.exp[m])}</span>`+
+       `<span class="cash ${S.cash[m]<0?'neg':''}">${tl(S.cash[m])}</span><span class="arw">▶</span>`+
+       `</div><div class="mbody">${body}</div></div>`;
+  }
+  document.getElementById('finMonths').innerHTML=h;
+}
+document.addEventListener('click',e=>{
+  if(document.getElementById('sec-finans').hidden)return;
+  const t=e.target;
+  if(t.classList.contains('minus')){const n=+t.dataset.no;on.delete(n);off.add(n);render();return;}
+  if(t.classList.contains('edit')){const n=+t.dataset.no;editing=(editing===n?null:n);adding=null;render();return;}
+  if(t.classList.contains('add')){adding=(adding===+t.dataset.m?null:+t.dataset.m);editing=null;render();return;}
+  if(t.classList.contains('cancel')){editing=null;adding=null;render();return;}
+  if(t.classList.contains('revert')){const f=t.closest('.form');delete edits[+f.dataset.form];editing=null;render();return;}
+  if(t.classList.contains('save')){
+    const f=t.closest('.form'),g=k=>f.querySelector(`[name=${k}]`).value;
+    const o={name:g('name'),cat:g('cat'),price:+g('price'),cur:g('cur'),qty:+g('qty'),
+             freq:g('freq'),si:+g('si'),sj:+g('sj'),end:+g('end')};
+    if(f.dataset.form==='new'){custom.push(Object.assign({no:nextNo++,custom:1,new:0,pOff:0},o));adding=null;}
+    else{edits[+f.dataset.form]=o;editing=null;}
+    render();return;}
+  const h=t.closest('.mhead'); if(h&&t.tagName!=='INPUT'&&t.tagName!=='BUTTON'){h.parentElement.classList.toggle('open');}
+});
+document.addEventListener('change',e=>{
+  if(document.getElementById('sec-finans').hidden)return;
+  const cb=e.target.closest('input[data-no]');
+  if(cb){const n=+cb.dataset.no; if(cb.checked){off.delete(n);on.add(n);}else{on.delete(n);off.add(n);} render();return;}
+  if(e.target.id==='finRealCash'){real=e.target.checked;render();}
+});
+const seg=(a,b,v)=>{document.getElementById(a).classList.toggle('on',v);document.getElementById(b).classList.toggle('on',!v);};
+onclickBind=(id,fn)=>document.getElementById(id).addEventListener('click',fn);
+onclickBind('finPMevcut',()=>{mode='mevcut';seg('finPMevcut','finPPaket',true);render();});
+onclickBind('finPPaket',()=>{mode='paket';seg('finPMevcut','finPPaket',false);render();});
+onclickBind('finSHalf',()=>{scen='si';seg('finSHalf','finSFull',true);render();});
+onclickBind('finSFull',()=>{scen='sj';seg('finSHalf','finSFull',false);render();});
+onclickBind('finAllOn',()=>{off.clear();allLines().forEach(l=>on.add(l.no));render();});
+onclickBind('finReset',()=>{off.clear();on.clear();edits={};custom=[];mode='mevcut';real=true;
+  document.getElementById('finRealCash').checked=true;seg('finPMevcut','finPPaket',true);render();});
+onclickBind('finExp',()=>{
+  const blob=new Blob([JSON.stringify({mode,real,off:[...off],on:[...on],edits,custom},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='anthifel-finance-secim.json';a.click();});
+onclickBind('finImp',()=>document.getElementById('finImpf').click());
+document.getElementById('finImpf').addEventListener('change',ev=>{
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const s=JSON.parse(r.result);
+    mode=s.mode||'mevcut';real=s.real!==false;off=new Set(s.off||[]);on=new Set(s.on||[]);
+    edits=s.edits||{};custom=s.custom||[];nextNo=Math.max(9001,...custom.map(c=>c.no+1));
+    document.getElementById('finRealCash').checked=real;seg('finPMevcut','finPPaket',mode!=='paket');render();
+  }catch(err){alert('JSON okunamadı: '+err.message);}};
+  r.readAsText(f);});
+
+/* ── persistence ──────────────────────────────────────────────────────────
+   Finance's panel exports { mode, real, off, on, edits, custom } and reads the
+   same shape back. That is the whole state, so that is what is stored: no
+   second format, no mapping to keep in step. It lives in this browser for now.
+   When the Sheet is live, save() and load() are the only two functions that
+   change — and the file the panel exports stays interchangeable with what is
+   stored, which is what makes the move safe.
+   ──────────────────────────────────────────────────────────────────────── */
+var FIN_KEY = 'anth_fin_model_v1';
+
+function finState(){
+  return { mode: mode, real: real, scen: scen,
+           off: Array.from(off), on: Array.from(on),
+           edits: edits, custom: custom };
+}
+function finSave(){
+  try{ localStorage.setItem(FIN_KEY, JSON.stringify(finState())); }
+  catch(e){ window.toast('Tarayıcı kaydetmeye izin vermedi.'); }
+  finStamp();
+}
+function finLoad(){
+  var raw;
+  try{ raw = localStorage.getItem(FIN_KEY); }catch(e){ return false; }
+  if(!raw) return false;
+  try{
+    var d = JSON.parse(raw);
+    if(d.mode) mode = d.mode;
+    if(d.scen) scen = d.scen;
+    if(typeof d.real === 'boolean') real = d.real;
+    off = new Set(d.off || []);
+    on = new Set(d.on || []);
+    edits = d.edits || {};
+    custom = d.custom || [];
+    custom.forEach(function(c){ if(c.no >= nextNo) nextNo = c.no + 1; });
+    return true;
+  }catch(e){ return false; }
+}
+function finStamp(){
+  var el = document.getElementById('finSaved');
+  if(!el) return;
+  var n = off.size + on.size + Object.keys(edits).length + custom.length;
+  el.textContent = n ? n + ' değişiklik kayıtlı' : 'Değişiklik yok';
+}
+
+/* Every path that touches the model already calls render(); saving there means
+   no button has to remember to. */
+var _finRender = render;
+render = function(){ _finRender(); finSave(); };
+
 window.dashInit.finans = function(){
+  finLoad();
+  document.getElementById('finPMevcut').classList.toggle('on', mode === 'mevcut');
+  document.getElementById('finPPaket').classList.toggle('on', mode === 'paket');
+  document.getElementById('finSHalf').classList.toggle('on', scen === 'si');
+  document.getElementById('finSFull').classList.toggle('on', scen === 'sj');
+  document.getElementById('finRealCash').checked = real;
+  render();
+};
+})();
+</script>
+
+<script>
+/* The flow strip, and the ledger that was here before the model arrived. */
+(function(){
+  var box = document.getElementById('fin');
+  var tabs = [].slice.call(box.querySelectorAll('.pnav button'));
+  var flows = [].slice.call(box.querySelectorAll('.flow'));
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.setAttribute('aria-selected', String(x === t)); });
+      flows.forEach(function(f){ f.classList.toggle('on', f.getAttribute('data-flow') === t.getAttribute('data-flow')); });
+    });
+  });
+})();
+/* Finans — a ledger in this browser, and a CSV button so it can leave. */
+window.dashLedger = function(){
   'use strict';
   var KEY = 'anth_fin_v1';
   var $ = function(id){ return document.getElementById(id); };
@@ -5174,6 +5584,7 @@ window.dashInit.finans = function(){
 
   draw();
 };
+window.dashLedger();
 </script></section>
 </div>
 
@@ -5280,15 +5691,31 @@ window.dashInit.finans = function(){
      call the Apps Script, until you actually go there. */
   var built = {};
   var panes = [].slice.call(document.querySelectorAll('.sec'));
-  var TITLES = {};
-  [].slice.call(nv.querySelectorAll('a')).forEach(function(a){
-    TITLES[a.getAttribute('href').slice(1)] = a.textContent.trim();
+  var subs = [].slice.call(document.querySelectorAll('#dsub > span'));
+  var depts = [].slice.call(document.querySelectorAll('#ddept a'));
+
+  /* section → the department that owns it, and the label to put in the title */
+  var OWNER = {}, TITLES = {};
+  subs.forEach(function(box){
+    var dept = box.getAttribute('data-of');
+    [].slice.call(box.querySelectorAll('a')).forEach(function(a){
+      var name = a.getAttribute('href').slice(1);
+      OWNER[name] = dept;
+      TITLES[name] = a.textContent.trim();
+    });
   });
+  TITLES.ozet = 'Genel Bakış';
 
   function open(name){
     if(!document.getElementById('sec-' + name)) name = 'ozet';
     panes.forEach(function(p){ p.hidden = (p.id !== 'sec-' + name); });
-    [].slice.call(nv.querySelectorAll('a')).forEach(function(a){
+    var dept = OWNER[name] || 'ozet';
+    depts.forEach(function(a){
+      if(a.getAttribute('data-dept') === dept) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    subs.forEach(function(box){ box.hidden = box.getAttribute('data-of') !== dept; });
+    [].slice.call(nv.querySelectorAll('.dsub a')).forEach(function(a){
       if(a.getAttribute('href') === '#' + name) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
