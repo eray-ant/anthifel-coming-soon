@@ -18,7 +18,7 @@
    terracotta. No dark surfaces anywhere in here — Anthifel_Website.md §5. */
 :root{
   --bg:#F1F0EC; --surface:#FFFFFF; --ink:#1A1815; --muted:#57534C; --soft:#7A756C;
-  --line:rgba(26,24,21,.12); --line-soft:rgba(26,24,21,.08); --accent:#B84C2E;
+  --line:rgba(26,24,21,.12); --line-soft:rgba(26,24,21,.08); --accent:#B84C2E; --neg:#B3261E;
   --wash:#FAF9F6; --tint:#FAF7F4;
   /* List colours. Terracotta is reserved for actions, so the four working
      lists take their own hues and stay distinguishable from a button. */
@@ -40,27 +40,58 @@ table{border-collapse:collapse}
 .top img{height:15px;width:auto;display:block}
 .brand{display:flex;align-items:center;gap:12px;flex:none}
 .brand .sub{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);border-left:1px solid var(--line);padding-left:12px}
-.dnav{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
-.drow{display:flex;gap:2px;flex-wrap:wrap}
-.drow a{font-size:12.5px;font-weight:500;color:var(--muted);padding:7px 13px;border-radius:2px;white-space:nowrap;transition:background .14s,color .14s}
-.drow a:hover{background:var(--wash);color:var(--ink)}
-.drow a[aria-current="true"]{background:var(--tint);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
-.dsub{display:flex;min-height:18px}
-.dsub>span{display:flex;align-items:center;gap:9px;padding-left:13px}
-.dsub a{font-size:11.5px;font-weight:500;letter-spacing:.04em;color:var(--soft);white-space:nowrap;transition:color .14s}
-.dsub a:hover{color:var(--ink)}
-.dsub a[aria-current="page"]{color:var(--accent);font-weight:600}
-.dsub i{font-style:normal;color:#C9C3B8;font-size:11px}
+.dnav{display:flex;gap:2px;flex-wrap:wrap;flex:1;min-width:0}
+/* A full-height hairline, so DASHBOARD and the menu read as two things. It is
+   a child of .top-in rather than a border on the nav, because only a flex item
+   can stretch to the bar's height — the negative margins eat the bar padding. */
+.vsep{flex:none;align-self:stretch;width:1px;background:var(--line);margin:-14px 6px -14px 0}
+.dept{position:relative}
+.dept>button{display:flex;align-items:center;gap:6px;background:none;border:0;border-radius:2px;
+  font-size:12.5px;font-weight:500;color:var(--muted);padding:7px 13px;white-space:nowrap;cursor:pointer;
+  transition:background .14s,color .14s}
+.dept>button:hover{background:var(--wash);color:var(--ink)}
+.dept>button[aria-current="true"]{background:var(--tint);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.dept>button .cv{font-size:8px;line-height:1;color:var(--soft);transition:transform .14s}
+.dept.open>button .cv{transform:rotate(180deg)}
+/* The panel itself. Surface white on a light page — no dark menu. */
+.dmenu::before{content:'';position:absolute;left:0;right:0;top:-8px;height:8px}
+.dmenu{position:absolute;top:calc(100% + 6px);left:0;z-index:60;min-width:172px;
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  box-shadow:0 6px 22px rgba(26,24,21,.10);padding:5px;display:none}
+.dept.open .dmenu{display:block}
+.dmenu a{display:block;font-size:12.5px;font-weight:500;color:var(--muted);
+  padding:8px 11px;border-radius:2px;white-space:nowrap;transition:background .14s,color .14s}
+.dmenu a:hover,.dmenu a:focus-visible{background:var(--wash);color:var(--ink)}
+.dmenu a[aria-current="page"]{color:var(--accent);font-weight:600;background:var(--tint)}
 .dutil{display:flex;align-items:center;gap:14px;flex:none;font-size:12.5px}
-.dutil a{color:var(--muted)}
+.dutil a,.dutil button{display:inline-flex;align-items:center;gap:5px;color:var(--muted);
+  background:none;border:0;padding:0;cursor:pointer;font-size:12.5px;transition:color .14s}
 .dutil a:hover{color:var(--ink)}
-.dutil button{background:none;border:0;padding:0;cursor:pointer;font-size:12.5px;color:var(--muted)}
 .dutil button:hover{color:var(--accent)}
+.dutil svg{width:12px;height:12px;flex:none;stroke:currentColor;stroke-width:1.7;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
 .dburger{display:none;background:none;border:1px solid rgba(26,24,21,.26);border-radius:2px;padding:7px 9px;cursor:pointer;line-height:0}
 .dburger svg{width:17px;height:17px;stroke:var(--ink);stroke-width:1.6;fill:none}
 
 /* ---- page frame ---- */
 .wrap{max-width:1440px;margin:0 auto;padding:24px 28px 56px}
+/* ---- flow strip: one section, several screens ----
+   Finans has three (the cash model, the ledger, the fixed costs). It lives in
+   the shell rather than in the section because a section's own stylesheet is
+   confined to its app at build time, and this strip has to sit outside that
+   app — otherwise the app's rules for bare <button> reach the strip and the
+   shell's own buttons, which is exactly what happened the first time. */
+.pflow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:var(--surface);
+  border:1px solid var(--line);border-radius:3px;padding:7px 9px;margin-bottom:14px}
+.pflow button{background:none;border:1px solid transparent;border-radius:2px;padding:7px 12px;
+  font-family:inherit;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;
+  transition:background .14s,color .14s}
+.pflow button:hover{background:var(--wash);color:var(--ink)}
+.pflow button[aria-selected="true"]{background:var(--tint);color:var(--ink);font-weight:600;
+  box-shadow:inset 0 -2px 0 var(--accent)}
+.pfpane{display:none}
+.pfpane.on{display:block}
+
 .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:20px}
 .phead h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:30px;line-height:1.15}
 .phead p{margin-top:5px;font-size:13px;color:var(--soft);line-height:1.5}
@@ -166,13 +197,22 @@ table{border-collapse:collapse}
 
 @media (max-width:900px){
   .top-in{padding:12px 18px;gap:12px}
-  .dnav{display:none;order:4;width:100%;gap:0;border-top:1px solid var(--line-soft);padding-top:6px;margin-top:4px}
+  /* On a phone a dropdown inside a dropdown is a trap. The burger opens the
+     whole tree at once: department, then its sections indented under it. */
+  /* flex:1 in the base rule sets a zero basis, which does not force a line of
+     its own however wide it is told to be. On a phone the menu is a block
+     under the bar, so it takes the whole line explicitly. */
+  .dnav{display:none;order:4;flex:0 0 100%;width:100%;gap:0;flex-direction:column;
+    border-top:1px solid var(--line-soft);padding-top:6px;margin-top:4px}
   .dnav.open{display:flex}
-  .drow{flex-direction:column;gap:0}
-  .drow a{padding:11px 4px;border-radius:0;border-bottom:1px solid var(--line-soft)}
-  .drow a[aria-current="true"]{box-shadow:inset 2px 0 0 var(--accent);background:var(--tint)}
-  .dsub{padding:4px 0 8px}
-  .dsub>span{padding-left:4px;flex-wrap:wrap}
+  .vsep{display:none}
+  .dept{position:static}
+  .dept>button{width:100%;padding:11px 4px;border-radius:0;border-bottom:1px solid var(--line-soft);justify-content:space-between}
+  .dept>button[aria-current="true"]{box-shadow:inset 2px 0 0 var(--accent);background:var(--tint)}
+  .dept>button .cv{display:none}
+  .dmenu{position:static;display:block;min-width:0;border:0;border-radius:0;box-shadow:none;
+    padding:2px 0 6px 14px;background:none}
+  .dmenu a{padding:8px 4px;font-size:12px}
   .dburger{display:inline-block;order:3}
   .dutil{order:2;margin-left:auto}
   .wrap{padding:18px}
@@ -215,29 +255,42 @@ window.dashInit = {};
          the menu changes what you are looking at without leaving the dashboard;
          the hash is there only so a section can be linked to and reloaded.
 
-         Two rows, because the panel is not one person's tool: the top row is
-         the department that owns the work, the row under it the sections that
-         department works in. A department with a single section still gets the
-         row, so the shape never changes under you. -->
+         One row of departments, each opening its own sections. The panel is
+         not one person's tool, so the first question the menu answers is whose
+         work this is. A department with one section still gets a menu, so the
+         shape never changes under you — and clicking a department goes to its
+         first section straight away, so the extra click only exists where
+         there is actually a choice to make. -->
+    <span class="vsep" aria-hidden="true"></span>
     <nav class="dnav" id="dnav">
-      <div class="drow" id="ddept">
-        <a href="#ozet" data-dept="ozet">Genel Bakış</a>
-        <a href="#crm" data-dept="sales">Sales</a>
-        <a href="#icerik" data-dept="marketing">Marketing</a>
-        <a href="#finans" data-dept="finance">Finance</a>
-        <a href="#site" data-dept="developer">Developer</a>
+      <div class="dept" data-dept="ozet">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Genel Bakış<span class="cv">▼</span></button>
+        <div class="dmenu"><a href="#ozet">Panel</a></div>
       </div>
-      <div class="dsub" id="dsub">
-        <span data-of="ozet" hidden><a href="#ozet">Panel</a></span>
-        <span data-of="sales" hidden><a href="#crm">CRM</a></span>
-        <span data-of="marketing" hidden><a href="#icerik">İçerik</a><i>·</i><a href="#blog">Blog</a></span>
-        <span data-of="finance" hidden><a href="#finans">Finans</a></span>
-        <span data-of="developer" hidden><a href="#site">Site</a><i>·</i><a href="#seo">SEO</a><i>·</i><a href="#analitik">Analitik</a></span>
+      <div class="dept" data-dept="sales">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Sales<span class="cv">▼</span></button>
+        <div class="dmenu"><a href="#crm">CRM</a></div>
+      </div>
+      <div class="dept" data-dept="marketing">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Marketing<span class="cv">▼</span></button>
+        <div class="dmenu"><a href="#icerik">İçerik</a><a href="#blog">Blog</a></div>
+      </div>
+      <div class="dept" data-dept="finance">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Finance<span class="cv">▼</span></button>
+        <div class="dmenu"><a href="#finans">Finans</a></div>
+      </div>
+      <div class="dept" data-dept="developer">
+        <button type="button" aria-haspopup="true" aria-expanded="false">Developer<span class="cv">▼</span></button>
+        <div class="dmenu"><a href="#site">Site</a><a href="#seo">SEO</a><a href="#analitik">Analitik</a></div>
       </div>
     </nav>
     <div class="dutil">
-      <a href="../" target="_blank" rel="noopener">Siteyi aç</a>
-      <button type="button" id="logoutBtn">Çıkış</button>
+      <!-- Up and to the right: this one leaves the panel for another tab.
+           Straight right: this one ends the session and comes back here. -->
+      <a href="../" target="_blank" rel="noopener">Site
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 10l5-5M6.5 4.6H11.4V9.5"/></svg></a>
+      <button type="button" id="logoutBtn">Çıkış
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5"/></svg></button>
     </div>
     <button class="dburger" id="dburger" aria-label="Menü" aria-expanded="false" aria-controls="dnav">
       <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
@@ -5016,14 +5069,14 @@ window.dashInit.analitik = function(){
 border-radius:8px;padding:8px 10px;font-size:12.5px;box-shadow:0 4px 14px rgba(0,0,0,.10);white-space:nowrap;transition:opacity .1s}
 #fin #tip b{display:block;font-size:11.5px;color:var(--mut);font-weight:500;margin-bottom:4px}
 #fin .bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:16px}
-/* The panel styles bare <button>. Confined to #fin that becomes "#fin button",
-   which outranks the shell's .btn on specificity and repaints the flow strip
-   and every dashboard button that shares this section. It is held off anything
-   the shell owns. */
-#fin button:not(.btn):not([data-flow]){font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--rule);
+/* Bare <button>, as the panel wrote it. The :not() guards that were here are
+   gone: they raised this rule above .ib, which is a 23px icon box, and the
+   12px padding pushed the glyph out of it. Nothing the shell owns lives inside
+   #fin any more, so the guards are not needed. */
+#fin button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--rule);
 background:var(--surf);color:var(--ink);cursor:pointer}
-#fin button:not(.btn):not([data-flow]):hover{background:var(--surf2)}
-#fin button:not(.btn):not([data-flow]).on{background:var(--c1);border-color:var(--c1);color:#fff}
+#fin button:hover{background:var(--surf2)}
+#fin button.on{background:var(--c1);border-color:var(--c1);color:#fff}
 #fin .seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden}
 #fin .seg button{border:0;border-radius:0}
 #fin .chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mut);cursor:pointer}
@@ -5039,7 +5092,7 @@ padding:9px 12px;cursor:pointer;font-size:13.5px}
 #fin .mrow.open .arw{transform:rotate(90deg)}
 #fin .mbody{display:none;border-top:1px solid var(--rule);background:var(--surf2);padding:4px 0 10px}
 #fin .mrow.open .mbody{display:block}
-#fin .li{display:grid;grid-template-columns:24px 1fr 96px 100px 54px;gap:8px;align-items:center;padding:4px 12px;font-size:12.5px}
+#fin .li{display:grid;grid-template-columns:24px 1fr 108px 96px 100px 54px;gap:8px;align-items:center;padding:4px 12px;font-size:12.5px}
 #fin .li:hover{background:var(--surf)}
 #fin .li .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #fin .li .ct{color:var(--mut);font-size:11px}
@@ -5058,8 +5111,19 @@ padding:0;line-height:1;font-size:13px;color:var(--mut);cursor:pointer;display:g
 #fin .fsec{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:8px 12px 3px;font-weight:600}
 #fin .sum{display:grid;grid-template-columns:1fr 100px 54px;gap:8px;padding:7px 12px;font-size:12.5px;
 border-top:1px solid var(--rule);margin-top:4px}
+/* The icon boxes take no pointer events from their glyph, so the button stays
+   the click target for every handler that reads e.target. */
+#fin .ib svg{pointer-events:none;display:block}
 #fin .sum .am{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
 #fin .addbar{padding:8px 12px 2px}
+/* the lines list: same rows, no month wrapper around them */
+#fin .lbox{background:var(--surf);border:1px solid var(--rule);border-radius:9px;overflow:hidden}
+#fin .lbox .fsec{background:var(--surf2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  display:grid;gap:8px;align-items:baseline;padding:7px 12px}
+#fin .lbox .fsec:first-child{border-top:0}
+#fin .lbox .fsec .csum{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650;
+  text-transform:none;letter-spacing:0;font-size:12px}
+#fin .lempty{padding:26px 12px;text-align:center;color:var(--mut);font-size:12.5px}
 #fin .form{background:var(--surf);border:1px solid var(--rule);border-radius:8px;margin:6px 12px;padding:10px 12px}
 #fin .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin-bottom:9px}
 #fin .fg label{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);display:block;margin-bottom:3px}
@@ -5068,22 +5132,55 @@ border:1px solid var(--rule);background:var(--surf2);color:var(--ink)}
 #fin .frow{display:flex;gap:7px}
 #fin .note{font-size:12.5px;color:var(--mut);margin-top:16px;line-height:1.6}
 #fin code{font-size:12px;background:var(--surf2);padding:1px 4px;border-radius:4px}
-/* ---------- housing ---------- */
+/* ---------- housing ----------
+   #fin now wraps the cash panel and nothing else. The flow strip and the other
+   two screens sit outside it, in shell markup, because everything in this
+   stylesheet is prefixed with #fin at build time — including the panel's rule
+   for bare <button>, which was reaching the strip and the shell's own buttons
+   and winning on specificity. Confinement only works if the thing being
+   confined is the only thing inside. */
 #fin{font-size:14px;line-height:1.55;color:#1A1815}
-#fin .pnav{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:#FFFFFF;
-  border:1px solid rgba(26,24,21,.10);border-radius:3px;padding:7px 9px;margin-bottom:14px}
-#fin .pnav button{background:none;border:1px solid transparent;border-radius:2px;padding:7px 12px;
-  font-family:inherit;font-size:12.5px;font-weight:500;color:#57534C;cursor:pointer;white-space:nowrap;
-  transition:background .14s,color .14s}
-#fin .pnav button:hover{background:#FAF9F6;color:#1A1815}
-#fin .pnav button[aria-selected="true"]{background:#FAF7F4;color:#1A1815;font-weight:600;
-  box-shadow:inset 0 -2px 0 #B84C2E}
-/* The cash model was drawn to a 920px measure and its chart scales with the
-   box, so at full dashboard width the axis labels grow with it. The measure
-   travels with the panel. */
-#fin .flow[data-flow="model"]{max-width:960px}
-#fin .flow{display:none}
-#fin .flow.on{display:block}
+
+/* The chart scales with its box, so at full width the axis labels grow with
+   it. The chart is capped and the column beside it carries the category
+   totals, which is the first thing you want to see anyway. The lists below
+   take the whole width. */
+#fin .finrow{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);gap:14px;align-items:start}
+@media (max-width:1080px){ #fin .finrow{grid-template-columns:minmax(0,1fr)} }
+#fin .cattbl{width:100%;border-collapse:collapse;font-size:12.5px}
+#fin .cattbl th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--mut);font-weight:600;padding:0 4px 6px;border-bottom:1px solid var(--rule)}
+#fin .cattbl th.r,#fin .cattbl td.r{text-align:right;font-variant-numeric:tabular-nums}
+#fin .cattbl td{padding:5px 4px;border-bottom:1px solid var(--rule)}
+#fin .cattbl tr:last-child td{border-bottom:0}
+#fin .cattbl tr.tot td{font-weight:650;border-top:1px solid var(--mut);border-bottom:0}
+#fin .cattbl .bq{display:block;height:3px;border-radius:2px;background:var(--rule);margin-top:4px}
+#fin .cattbl .bq i{display:block;height:3px;border-radius:2px;background:var(--c1);opacity:.55}
+
+/* ---------- the two lists ---------- */
+#fin .vbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 9px}
+#fin .vbar h2{margin:0}
+#fin .vbar .sp{flex:1}
+#fin .vbar select{font:inherit;font-size:12.5px;padding:5px 8px;border-radius:7px;
+  border:1px solid var(--rule);background:var(--surf);color:var(--ink)}
+/* Column headings for both lists. The month rows and the lines inside them are
+   grids, so the heading has to be the same grid or it will not line up. */
+#fin .chead{display:grid;gap:8px;padding:0 12px 6px;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--mut);font-weight:600}
+#fin .chead.m{grid-template-columns:30px 1fr 92px 104px 112px 18px}
+/* Nine columns: the three model years side by side, because "36 ay toplam" is
+   a number nobody can check by eye. The unit price moved into the name line to
+   pay for the space. */
+#fin .chead.l{grid-template-columns:24px 1fr 92px 100px 100px 100px 100px 112px 54px}
+#fin .lbox .li{grid-template-columns:24px 1fr 92px 100px 100px 100px 100px 112px 54px}
+#fin .lbox .fsec{grid-template-columns:24px 1fr 92px 100px 100px 100px 100px 112px 54px}
+/* One month chosen, and the years collapse to that month's figure. */
+#fin .chead.l.one{grid-template-columns:24px 1fr 92px 100px 112px 54px}
+#fin .lbox.one .li{grid-template-columns:24px 1fr 92px 100px 112px 54px}
+#fin .lbox.one .fsec{grid-template-columns:24px 1fr 92px 100px 112px 54px}
+#fin .lbox.one .yr{display:none}
+#fin .chead.l.one .yr{display:none}
+#fin .chead .r{text-align:right}
 
 </style>
 
@@ -5099,14 +5196,14 @@ border:1px solid var(--rule);background:var(--surf2);color:var(--ink)}
   </div>
 </div>
 
-<div id="fin">
-  <nav class="pnav" role="tablist">
-    <button type="button" role="tab" data-flow="model" aria-selected="true">Nakit modeli</button>
-    <button type="button" role="tab" data-flow="defter" aria-selected="false">Defter</button>
-    <button type="button" role="tab" data-flow="sabit" aria-selected="false">Sabit giderler</button>
-  </nav>
+<nav class="pflow" role="tablist">
+  <button type="button" role="tab" data-flow="model" aria-selected="true">Nakit modeli</button>
+  <button type="button" role="tab" data-flow="defter" aria-selected="false">Defter</button>
+  <button type="button" role="tab" data-flow="sabit" aria-selected="false">Sabit giderler</button>
+</nav>
 
-  <div class="flow on" data-flow="model">
+<div class="pfpane on" data-flow="model">
+<div id="fin">
 <div class="tiles" id="finTiles"></div>
 <div class="bar">
   <div class="seg"><button id="finPMevcut" class="on">Mevcut model</button><button id="finPPaket">Ay 1 paketi</button></div>
@@ -5117,23 +5214,71 @@ border:1px solid var(--rule);background:var(--surf2);color:var(--ink)}
   <span style="flex:1"></span>
   <div class="seg"><button id="finSHalf" class="on">Yarı zamanlı</button><button id="finSFull">Tam zamanlı</button></div>
 </div>
-<div class="card">
-<p class="ttl">Kapanış nakdi — ilk 9 ay</p>
-<p class="cap">Karar penceresi. Her iki senaryo canlı; aşağıdaki döküm seçili senaryoyu gösterir.</p>
-<div class="leg"><span><span class="dot" style="background:var(--c1)"></span>Yarı zamanlı</span>
-<span><span class="dot" style="background:var(--c2)"></span>Tam zamanlı</span></div>
-<svg viewBox="0 0 760 300" id="finCh"></svg><div id="finTip"></div>
-</div>
-<h2>Ay ay döküm</h2>
-<div id="finMonths"></div>
-<p class="note">Ay satırına tıkla — o ay gerçekleşen bütün kalemler açılır.
-<b>−</b> kalemi tüm aylardan çıkarır · <b>✎</b> tutar, para birimi, sıklık ve başlangıç/bitiş ayını düzenler ·
-<b>+</b> o aya yeni kalem ekler. Nakit her değişiklikte yeniden hesaplanır.
-Seçimini <b>JSON dışa aktar</b> ile kaydet — modele işlerken ve Developer'a devrederken bu dosya kullanılır.
-Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xlsx</code>'e henüz işlenmedi.</p>
+<div class="finrow">
+  <div class="card">
+  <p class="ttl">Kapanış nakdi — ilk 9 ay</p>
+  <p class="cap">Karar penceresi. Her iki senaryo canlı; aşağıdaki döküm seçili senaryoyu gösterir.</p>
+  <div class="leg"><span><span class="dot" style="background:var(--c1)"></span>Yarı zamanlı</span>
+  <span><span class="dot" style="background:var(--c2)"></span>Tam zamanlı</span></div>
+  <svg viewBox="0 0 760 300" id="finCh"></svg><div id="finTip"></div>
   </div>
 
-  <div class="flow" data-flow="defter">
+  <div>
+    <div class="card">
+    <p class="ttl">Yıllık akış</p>
+    <p class="cap">Ufuk ağustosta başlıyor, bu yüzden yıllar takvim yılı değil: her biri on iki ay.</p>
+    <table class="cattbl"><thead><tr>
+      <th>Yıl</th><th class="r">Gelir ₺</th><th class="r">Gider ₺</th><th class="r">Kapanış nakdi ₺</th>
+    </tr></thead><tbody id="finYears"></tbody></table>
+    </div>
+
+    <div class="card">
+    <p class="ttl">Kategoriler</p>
+    <p class="cap" id="finCatCap">Seçili senaryoda 36 ayın toplamı — bir ayın değil.</p>
+    <table class="cattbl"><thead><tr>
+      <th>Kategori</th><th class="r">Kalem</th><th class="r" id="finCatHead">Toplam ₺</th><th class="r">Pay</th>
+    </tr></thead><tbody id="finCats"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<div class="vbar">
+  <h2 id="finListTtl">Kalemler</h2>
+  <div class="seg"><button id="finVKalem" class="on">Kalemler</button><button id="finVAy">Ay ay</button></div>
+  <span class="sp"></span>
+  <label class="chk" for="finMonthSel">Ay</label>
+  <select id="finMonthSel"><option value="">Tüm aylar</option></select>
+</div>
+
+<div class="chead l" id="finLineHead">
+  <span></span><span>Kalem</span><span>Sıklık</span>
+  <span class="r">Bugünkü ₺</span>
+  <span class="r yr" id="finY1H">Yıl 1</span><span class="r yr" id="finY2H">Yıl 2</span>
+  <span class="r yr" id="finY3H">Yıl 3</span>
+  <span class="r" id="finTotHead">Toplam ₺</span><span></span>
+</div>
+<div id="finLines"></div>
+
+<div class="chead m" id="finMonthHead" hidden>
+  <span>#</span><span>Tarih</span><span class="r">Gelir ($)</span>
+  <span class="r">Gider (₺)</span><span class="r">Kapanış nakdi (₺)</span><span></span>
+</div>
+<div id="finMonths" hidden></div>
+
+<p class="note"><b>Kalemler</b> bütün giderleri kategori kategori listeler; her satır kendi sıklığını
+taşır — aylık, yıllık ya da tek seferlik. <b>Bugünkü ₺</b> tek bir ödemenin bugünkü kuruyla karşılığıdır
+($100/ay → ₺4.630/ay). <b>Yıl 1 / 2 / 3</b> aynı kalemin her yıl ödenecek tutarıdır; yıllar ağustosta başlar,
+takvim yılı değildir. Toplam sütunu modelin kur patikasını taşır: kur 46,3'ten 76,5'e çıktığı için
+$100/ay üç yılda ₺221.736 eder, ₺166.680 değil. Ay seçersen yıl sütunları kalkar, tek sütun o ayın
+rakamını gösterir. <b>Ay ay</b> aynı veriyi zaman ekseninde verir.
+<b>−</b> kalemi tüm aylardan çıkarır · <b>✎</b> tutar, para birimi, sıklık ve başlangıç/bitiş ayını
+düzenler · <b>+</b> yeni kalem ekler. Nakit her değişiklikte yeniden hesaplanır.
+Seçimini <b>JSON dışa aktar</b> ile kaydet — modele işlerken ve Developer'a devrederken bu dosya kullanılır.
+Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xlsx</code>'e henüz işlenmedi.</p>
+</div>
+</div>
+
+  <div class="pfpane" data-flow="defter">
 
 <div class="stats">
   <div class="stat"><div class="l">Gelir</div><div class="v gelir" id="fiGelir">£0</div><div class="s">toplam</div></div>
@@ -5188,7 +5333,7 @@ Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xls
 </div><!-- .stack -->
   </div>
 
-  <div class="flow" data-flow="sabit">
+  <div class="pfpane" data-flow="sabit">
 
 <div class="cols">
   <section class="panel">
@@ -5212,14 +5357,40 @@ Rakamlar modelin yeniden kurulmuş motorundan; <code>Anthifel_Finansal_Model.xls
   </section>
 
   <section class="panel">
+    <h2>Yıllık ve tek seferlik kalemler <span class="n" id="fxCount"></span></h2>
+    <div class="scroll" style="max-height:420px">
+      <table class="tbl" id="fxTbl">
+        <thead><tr><th>Kalem</th><th>Sıklık</th><th class="num">Tutar</th><th class="num">Başlangıç ayı</th></tr></thead>
+        <tbody id="fxRows"></tbody>
+      </table>
+    </div>
+    <p class="pad" style="font-size:11.5px;color:var(--soft);line-height:1.55;border-top:1px solid var(--line-soft)">
+      Modelden okunur, burada yazılmaz. Aylık olmayan her kalem — sigorta, marka, kuruluş, donanım —
+      bu listede. Kapattığın ya da düzenlediğin kalemler modeldeki hâliyle yansır.
+    </p>
+  </section>
+</div>
+
+<div class="cols" style="margin-top:14px">
+  <section class="panel">
     <h2>Vergi ve muhasebe</h2>
     <div class="empty"><b>Henüz kurulmadı</b>
       Muhasebeci bilgisi, beyan takvimi ve VAT durumu buraya. Şirket bilgileri Legal'den gelince
       künye ile birlikte tamamlanır.</div>
   </section>
+
+  <section class="panel">
+    <h2>Sonraki on iki ay</h2>
+    <div class="scroll">
+      <table class="tbl"><thead><tr><th>Ay</th><th class="num">Gider (₺)</th><th class="num">Kapanış nakdi (₺)</th></tr></thead>
+        <tbody id="fnextRows"></tbody></table>
+    </div>
+    <p class="pad" style="font-size:11.5px;color:var(--soft);line-height:1.55;border-top:1px solid var(--line-soft)">
+      Seçili senaryonun ilk on iki ayı. Nakit eksiye düşen aylar kırmızı.
+    </p>
+  </section>
 </div>
   </div>
-</div>
 
 <script>
 /* Finance's cash panel.
@@ -5236,6 +5407,21 @@ const CATS=["Yazılım & Araçlar", "Profesyonel Hizmetler", "Finans & Bankacıl
 const N=36,W=760,H=300,L=64,R=18,T=16,B=34,K=9,C1='#B84C2E',C2='#0C7FA8';
 let mode='mevcut',scen='si',real=true;
 let off=new Set(),on=new Set(),edits={},custom=[],nextNo=9001,editing=null,adding=null;
+/* Which list is on screen, and whether it is filtered to one month. The panel
+   arrived month-first, which is the wrong way round for the question actually
+   being asked of it: what are we paying for, and how often. Lines first,
+   months as a filter. */
+let view='kalem', mSel=null;
+
+/* Icons as SVG rather than ✎ and −. Glyph metrics differ between the two, so
+   in a 23px box one sat high and the other low however the box was centred.
+   The <svg> takes no pointer events, so every existing handler still sees the
+   button as the click target. */
+const ICO={
+  edit:'<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11.3 2.2l2.5 2.5-8 8-3.3.8.8-3.3z"/></svg>',
+  minus:'<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 8h9"/></svg>',
+  plus:'<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3.5v9M3.5 8h9"/></svg>'
+};
 
 const allLines=()=>D.lines.concat(custom);
 function eff(l){
@@ -5302,6 +5488,142 @@ function chart(A,Bs){
 }
 const trough=a=>{let b=0;for(let i=1;i<N;i++)if(a[i]<a[b])b=i;return b;};
 
+/* Unit price as the model holds it: what one costs, times how many. Turkish
+   lira is the reporting currency, so it is not repeated on every line. */
+/* What one charge costs today, at month 1's rate, with the unit spelled out.
+   The column beside it is the whole horizon, and the two were being read as
+   the same thing: $100 a month is ₺4.630 today and ₺221.736 over 36 months,
+   because the model carries a rate that moves from 46,3 to 76,5. Both numbers
+   are right; only one of them was labelled. */
+function nowCost(e){
+  const r = e.cur==='TRY' ? 1 : (e.cur==='USD' ? D.fx[0] : D.gbp[0]);
+  return e.price * e.qty * r;
+}
+const PER = {'Aylık':' / ay','Yıllık':' / yıl','Tek seferlik':''};
+function unit(e){
+  const q = (+e.qty>1) ? ' × '+e.qty : '';
+  return (e.cur==='TRY' ? '₺'+(+e.price).toLocaleString('tr-TR') : e.cur+' '+(+e.price).toLocaleString('tr-TR')) + q;
+}
+/* What a line costs over the whole horizon, or in one month if one is chosen.
+   `true` on amount() means "ignore whether it is switched off" — a switched-off
+   line still shows its number, struck through, so turning it back on is an
+   informed decision rather than a guess. */
+function lineTotal(l){
+  if(mSel!==null) return amount(l,mSel,scen,true);
+  let t=0; for(let m=0;m<N;m++) t+=amount(l,m,scen,true);
+  return t;
+}
+/* The horizon is three twelve-month years, not three calendar years — it starts
+   in August, so calendar years would give four uneven buckets and a first year
+   five months long. Year 1 is Ağu 2026 – Tem 2027. */
+const YRS=3;
+function yearTotal(l,y){
+  let t=0; for(let m=y*12;m<y*12+12 && m<N;m++) t+=amount(l,m,scen,true);
+  return t;
+}
+function yearLabel(y){
+  const a=D.per[y*12], b=D.per[Math.min(y*12+11,N-1)];
+  return a.replace(' 20',' ')+' – '+b.replace(' 20',' ');
+}
+function inMonth(l,m){ return amount(l,m,scen,true)>0; }
+
+/* ---- the lines list, category first ----
+   Every line the model holds, grouped the way the model groups them, each one
+   carrying its own frequency. This is the screen that answers "what are we
+   paying for"; the month list answers "when", which is a different question
+   and now a different tab. */
+function lines(){
+  const box=document.getElementById('finLines');
+  const L2=allLines().filter(l=>mSel===null || inMonth(l,mSel));
+  const byCat={}; for(const l of L2){ (byCat[l.cat]=byCat[l.cat]||[]).push(l); }
+  let h='';
+  for(const c of CATS){
+    const g=byCat[c]; if(!g) continue;
+    g.sort((a,b)=>lineTotal(b)-lineTotal(a));
+    let csum=0, cy=[0,0,0];
+    for(const l of g){ if(active(l)){ csum+=lineTotal(l); for(let y=0;y<YRS;y++) cy[y]+=yearTotal(l,y); } }
+    h+=`<div class="fsec"><span></span><span>${c} · ${g.length}</span><span></span><span></span>`+
+       (mSel===null ? cy.map(v=>`<span class="csum am yr">${tl(v)}</span>`).join('') : '')+
+       `<span class="csum am">${tl(csum)}</span><span></span></div>`;
+    for(const l of g){
+      const dis=!active(l), e=eff(l), ed=!!edits[l.no];
+      h+=`<div class="li ${dis?'off':''} ${l.new&&!ed?'new':''} ${ed?'edited':''}">`+
+        `<input type="checkbox" data-no="${l.no}" ${dis?'':'checked'}>`+
+        `<span class="nm">${e.name}<span class="ct"> · ${unit(e)} · Ay ${scen==='si'?e.si:e.sj}${e.freq!=='Tek seferlik'?'–'+e.end:''}</span></span>`+
+        `<span class="ct">${e.freq}</span>`+
+        `<span class="am ct">${tl(nowCost(e))}<span style="opacity:.7">${PER[e.freq]||''}</span></span>`+
+        (mSel===null ? `<span class="am ct yr">${tl(yearTotal(l,0))}</span>`+
+                       `<span class="am ct yr">${tl(yearTotal(l,1))}</span>`+
+                       `<span class="am ct yr">${tl(yearTotal(l,2))}</span>` : '')+
+        `<span class="am">${tl(lineTotal(l))}</span>`+
+        `<span class="act"><button class="ib edit" data-no="${l.no}" data-m="${mSel===null?0:mSel}" title="Düzenle">${ICO.edit}</button>`+
+        `<button class="ib minus" data-no="${l.no}" title="Çıkar">${ICO.minus}</button></span></div>`;
+      if(editing===l.no) h+=formHTML(e,mSel===null?0:mSel,false);
+    }
+  }
+  if(!h) h='<div class="lempty">Bu ayda gerçekleşen kalem yok.</div>';
+  h+=`<div class="addbar"><button class="ib plus add" data-m="${mSel===null?0:mSel}" title="Kalem ekle">${ICO.plus}</button>`+
+     `<span class="ct" style="margin-left:8px;color:var(--mut)">Kalem ekle</span></div>`;
+  if(adding!==null) h+=formHTML({name:'Yeni kalem',cat:CATS[0],price:0,cur:'TRY',qty:1,freq:'Tek seferlik',
+                                 si:(mSel===null?0:mSel)+1,sj:(mSel===null?0:mSel)+1,end:36},mSel===null?0:mSel,true);
+  box.className = 'lbox' + (mSel===null ? '' : ' one');
+  box.innerHTML=h;
+}
+
+/* ---- category totals, beside the chart ---- */
+function cats(){
+  const rows=[]; let grand=0;
+  for(const c of CATS){
+    const g=allLines().filter(l=>l.cat===c && (mSel===null || inMonth(l,mSel)));
+    let t=0,n=0; for(const l of g){ if(active(l)){ t+=lineTotal(l); n++; } }
+    if(!g.length) continue;
+    rows.push({c,t,n}); grand+=t;
+  }
+  rows.sort((a,b)=>b.t-a.t);
+  document.getElementById('finCats').innerHTML =
+    rows.map(r=>`<tr><td>${r.c}<span class="bq"><i style="width:${grand?Math.max(2,Math.round(r.t/grand*100)):0}%"></i></span></td>`+
+      `<td class="r">${r.n}</td><td class="r">${tl(r.t)}</td>`+
+      `<td class="r">${grand?Math.round(r.t/grand*100):0}%</td></tr>`).join('')+
+    `<tr class="tot"><td>Toplam</td><td class="r"></td><td class="r">${tl(grand)}</td><td class="r"></td></tr>`;
+  document.getElementById('finCatCap').textContent =
+    mSel===null ? 'Seçili senaryoda üç yılın toplamı — bir ayın değil.' : D.per[mSel]+' ayında gerçekleşenler.';
+  document.getElementById('finCatHead').textContent = mSel===null ? 'Toplam ₺' : D.per[mSel]+' ₺';
+}
+
+/* ---- three years, so the horizon is readable without adding it up ---- */
+function years(S){
+  let h='';
+  for(let y=0;y<YRS;y++){
+    let rev=0,exp=0;
+    for(let m=y*12;m<y*12+12 && m<N;m++){ rev+=S.revTry[m]; exp+=S.exp[m]; }
+    const end=S.cash[Math.min(y*12+11,N-1)];
+    h+=`<tr><td>Yıl ${y+1}`+
+       `<span style="display:block;font-size:11px;color:var(--mut)">${yearLabel(y)}</span></td>`+
+       `<td class="r">${tl(rev)}</td><td class="r">${tl(exp)}</td>`+
+       `<td class="r" style="${end<0?'color:var(--neg);font-weight:650':'font-weight:650'}">${tl(end)}</td></tr>`;
+  }
+  document.getElementById('finYears').innerHTML=h;
+}
+
+/* ---- the fixed-costs screen reads the model rather than repeating it ---- */
+function fixed(S){
+  const g=allLines().filter(l=>eff(l).freq!=='Aylık');
+  g.sort((a,b)=>lineTotal(b)-lineTotal(a));
+  document.getElementById('fxCount').textContent=g.length;
+  document.getElementById('fxRows').innerHTML=g.map(l=>{
+    const e=eff(l), dis=!active(l);
+    return `<tr style="${dis?'opacity:.4;text-decoration:line-through':''}"><td>${e.name}</td>`+
+      `<td>${e.freq}</td><td class="num">${unit(e)}</td>`+
+      `<td class="num">${scen==='si'?e.si:e.sj}</td></tr>`;
+  }).join('');
+  let h='';
+  /* These two tables live outside #fin, so the panel's own custom properties
+     are not in scope here — the shell's are. */
+  for(let m=0;m<12;m++) h+=`<tr><td>${D.per[m]}</td><td class="num">${tl(S.exp[m])}</td>`+
+    `<td class="num" style="${S.cash[m]<0?'color:var(--neg);font-weight:650':''}">${tl(S.cash[m])}</td></tr>`;
+  document.getElementById('fnextRows').innerHTML=h;
+}
+
 function render(){
   const A=series('si'),Bs=series('sj'),ta=trough(A.cash),tb=trough(Bs.cash);
   const gap=Math.max(0,-A.cash[ta]);
@@ -5310,7 +5632,21 @@ function render(){
    `<div class="tile"><div class="k">Tam zamanlı — dip</div><div class="v" style="color:var(--c2)">${tl(Bs.cash[tb])}</div><div class="s">Ay ${tb+1} · ${D.per[tb]}</div></div>`+
    `<div class="tile"><div class="k">Ay 1 çıkışı</div><div class="v">${tl(A.exp[0])}</div><div class="s">${off.size} kapalı · ${Object.keys(edits).length} düzenli · ${custom.length} eklendi</div></div>`+
    `<div class="tile"><div class="k">Ek sermaye (yarı)</div><div class="v">${gap?tl(gap*1.3):'yok'}</div><div class="s">${gap?'açık × 1,3 tampon':'nakit pozitif kalıyor'}</div></div>`;
-  chart(A,Bs); months(scen==='si'?A:Bs);
+  const S = scen==='si' ? A : Bs;
+  chart(A,Bs); months(S); lines(); cats(); years(S); fixed(S);
+  const kalem = view==='kalem';
+  document.getElementById('finLines').hidden = !kalem;
+  document.getElementById('finLineHead').hidden = !kalem;
+  document.getElementById('finMonths').hidden = kalem;
+  document.getElementById('finMonthHead').hidden = kalem;
+  document.getElementById('finVKalem').classList.toggle('on', kalem);
+  document.getElementById('finVAy').classList.toggle('on', !kalem);
+  document.getElementById('finListTtl').textContent =
+    (kalem ? 'Kalemler' : 'Ay ay döküm') + (mSel===null ? '' : ' · ' + D.per[mSel]);
+  document.getElementById('finLineHead').classList.toggle('one', mSel!==null);
+  document.getElementById('finTotHead').textContent =
+    mSel===null ? 'Toplam ₺' : D.per[mSel]+' ₺';
+  for(let y=0;y<YRS;y++) document.getElementById('finY'+(y+1)+'H').textContent = yearLabel(y);
 }
 function formHTML(o,m,isNew){
   const f=(k,lab,v,t)=>`<div><label>${lab}</label><input name="${k}" type="${t||'text'}" value="${v}"></div>`;
@@ -5337,15 +5673,16 @@ function months(S){
         const dis=!active(l), e=eff(l), ed=!!edits[l.no];
         body+=`<div class="li ${dis?'off':''} ${l.new&&!ed?'new':''} ${ed?'edited':''}">`+
           `<input type="checkbox" data-no="${l.no}" ${dis?'':'checked'}>`+
-          `<span class="nm">${e.name}<span class="ct"> · ${e.freq}${e.cur!=='TRY'?' · '+e.cur:''} · Ay ${scen==='si'?e.si:e.sj}${e.freq!=='Tek seferlik'?'–'+e.end:''}</span></span>`+
-          `<span class="am ct">${e.cur==='TRY'?'':e.cur+' '+(+e.price).toLocaleString('tr-TR')}</span>`+
+          `<span class="nm">${e.name}<span class="ct"> · Ay ${scen==='si'?e.si:e.sj}${e.freq!=='Tek seferlik'?'–'+e.end:''}</span></span>`+
+          `<span class="ct">${e.freq}</span>`+
+          `<span class="am ct">${unit(e)}</span>`+
           `<span class="am">${tl(raw)}</span>`+
-          `<span class="act"><button class="ib edit" data-no="${l.no}" data-m="${m}" title="Düzenle">✎</button>`+
-          `<button class="ib minus" data-no="${l.no}" title="Çıkar">−</button></span></div>`;
+          `<span class="act"><button class="ib edit" data-no="${l.no}" data-m="${m}" title="Düzenle">${ICO.edit}</button>`+
+          `<button class="ib minus" data-no="${l.no}" title="Çıkar">${ICO.minus}</button></span></div>`;
         if(editing===l.no) body+=formHTML(e,m,false);
       }
     }
-    body+=`<div class="addbar"><button class="ib plus add" data-m="${m}" title="Bu aya kalem ekle">+</button>`+
+    body+=`<div class="addbar"><button class="ib plus add" data-m="${m}" title="Bu aya kalem ekle">${ICO.plus}</button>`+
           `<span class="ct" style="margin-left:8px;color:var(--mut)">Bu aya kalem ekle</span></div>`;
     if(adding===m) body+=formHTML({name:'Yeni kalem',cat:CATS[0],price:0,cur:'TRY',qty:1,freq:'Tek seferlik',si:m+1,sj:m+1,end:36},m,true);
     body+=`<div class="sum"><span>Kur dönüşüm maliyeti</span><span class="am">${tl(S.revTry[m]*D.fxcost)}</span><span></span></div>`+
@@ -5395,6 +5732,15 @@ onclickBind('finExp',()=>{
   const blob=new Blob([JSON.stringify({mode,real,off:[...off],on:[...on],edits,custom},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='anthifel-finance-secim.json';a.click();});
 onclickBind('finImp',()=>document.getElementById('finImpf').click());
+
+/* ---- which list, and which month ---- */
+onclickBind('finVKalem',()=>{view='kalem';editing=null;adding=null;render();});
+onclickBind('finVAy',   ()=>{view='ay';   editing=null;adding=null;render();});
+(function(){
+  const sel=document.getElementById('finMonthSel');
+  for(let m=0;m<N;m++){ const o=document.createElement('option'); o.value=m; o.textContent=(m+1)+' · '+D.per[m]; sel.appendChild(o); }
+  sel.addEventListener('change',()=>{ mSel = sel.value==='' ? null : +sel.value; editing=null; adding=null; render(); });
+})();
 document.getElementById('finImpf').addEventListener('change',ev=>{
   const f=ev.target.files[0];if(!f)return;const r=new FileReader();
   r.onload=()=>{try{const s=JSON.parse(r.result);
@@ -5417,7 +5763,12 @@ var FIN_KEY = 'anth_fin_model_v1';
 function finState(){
   return { mode: mode, real: real, scen: scen,
            off: Array.from(off), on: Array.from(on),
-           edits: edits, custom: custom };
+           edits: edits, custom: custom,
+           /* view and mSel are not part of the model — Finance's export must
+              stay interchangeable with what is stored, and a screen preference
+              is not a modelling decision. They ride alongside it and are
+              ignored by anything that reads the export. */
+           ui: { view: view, mSel: mSel } };
 }
 function finSave(){
   try{ localStorage.setItem(FIN_KEY, JSON.stringify(finState())); }
@@ -5438,6 +5789,10 @@ function finLoad(){
     edits = d.edits || {};
     custom = d.custom || [];
     custom.forEach(function(c){ if(c.no >= nextNo) nextNo = c.no + 1; });
+    if(d.ui){
+      if(d.ui.view === 'ay' || d.ui.view === 'kalem') view = d.ui.view;
+      if(typeof d.ui.mSel === 'number' && d.ui.mSel >= 0 && d.ui.mSel < N) mSel = d.ui.mSel;
+    }
     return true;
   }catch(e){ return false; }
 }
@@ -5460,6 +5815,7 @@ window.dashInit.finans = function(){
   document.getElementById('finSHalf').classList.toggle('on', scen === 'si');
   document.getElementById('finSFull').classList.toggle('on', scen === 'sj');
   document.getElementById('finRealCash').checked = real;
+  document.getElementById('finMonthSel').value = (mSel === null ? '' : String(mSel));
   render();
 };
 })();
@@ -5468,9 +5824,9 @@ window.dashInit.finans = function(){
 <script>
 /* The flow strip, and the ledger that was here before the model arrived. */
 (function(){
-  var box = document.getElementById('fin');
-  var tabs = [].slice.call(box.querySelectorAll('.pnav button'));
-  var flows = [].slice.call(box.querySelectorAll('.flow'));
+  var box = document.getElementById('sec-finans');
+  var tabs = [].slice.call(box.querySelectorAll('.pflow button'));
+  var flows = [].slice.call(box.querySelectorAll('.pfpane'));
   tabs.forEach(function(t){
     t.addEventListener('click', function(){
       tabs.forEach(function(x){ x.setAttribute('aria-selected', String(x === t)); });
@@ -5624,6 +5980,78 @@ window.dashLedger();
   });
   nv.addEventListener('click', function(e){ if(e.target.tagName === 'A') nv.classList.remove('open'); });
 
+  /* ---- department dropdowns ----
+     Each department button opens its own list. Clicking a department also goes
+     straight to its first section, so the menu never costs a click it does not
+     owe: the panel is open by the time you decide whether you wanted a
+     different section. Below 900px the CSS opens every list at once and this
+     stays out of the way — a dropdown inside a burger is a trap. */
+  var depts = [].slice.call(nv.querySelectorAll('.dept'));
+  function shut(except){
+    depts.forEach(function(d){
+      if(d === except) return;
+      d.classList.remove('open');
+      d.querySelector('button').setAttribute('aria-expanded', 'false');
+    });
+  }
+  function phone(){ return window.matchMedia('(max-width:900px)').matches; }
+  /* Hover opens it. Only where hovering means something: a touch screen reports
+     a hover it never really had, and the menu would open under the finger on
+     the way to somewhere else. */
+  function hoverable(){ return window.matchMedia('(hover:hover) and (pointer:fine)').matches && !phone(); }
+  function show(d, yes){
+    d.classList.toggle('open', yes);
+    d.querySelector('button').setAttribute('aria-expanded', yes ? 'true' : 'false');
+  }
+  var leave = null;
+  depts.forEach(function(d){
+    var btn = d.querySelector('button');
+    var first = d.querySelector('.dmenu a');
+    var many = d.querySelectorAll('.dmenu a').length > 1;
+    btn.addEventListener('click', function(){
+      /* On a phone every list is already open under its department, so the
+         button is just a link to the first section — and, like every other
+         link in this menu, it closes the burger behind it. */
+      if(phone()){
+        if(first) location.hash = first.getAttribute('href');
+        nv.classList.remove('open'); bg.setAttribute('aria-expanded','false');
+        return;
+      }
+      var wasOpen = d.classList.contains('open');
+      shut(d);
+      /* Where hovering works the list is already open by the time you press,
+         so the header is simply a link to the department's first section.
+         Without hover it has to do both jobs: open the list, and go. */
+      if(!many || hoverable()){
+        show(d, false);
+        if(first) location.hash = first.getAttribute('href');
+        return;
+      }
+      show(d, !wasOpen);
+      if(!wasOpen && first && !d.querySelector('.dmenu a[aria-current="page"]')){
+        location.hash = first.getAttribute('href');
+      }
+    });
+    d.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){ shut(null); btn.focus(); }
+    });
+    /* The panel hangs 6px below its button and that gap is outside both, so
+       crossing it fires mouseleave. A short grace period covers the travel;
+       the transparent strip on .dmenu covers the rest. */
+    d.addEventListener('mouseenter', function(){
+      if(!hoverable()) return;
+      clearTimeout(leave); shut(d); show(d, true);
+    });
+    d.addEventListener('mouseleave', function(){
+      if(!hoverable()) return;
+      clearTimeout(leave);
+      leave = setTimeout(function(){ show(d, false); }, 180);
+    });
+    d.addEventListener('focusin', function(){ if(!phone()){ shut(d); show(d, true); } });
+  });
+  document.addEventListener('click', function(e){ if(!e.target.closest('.dept')) shut(null); });
+  nv.addEventListener('click', function(e){ if(e.target.tagName === 'A') shut(null); });
+
   var t = document.getElementById('toast'), tmr = null;
   window.toast = function(msg){
     t.textContent = msg; t.classList.add('on');
@@ -5691,31 +6119,31 @@ window.dashLedger();
      call the Apps Script, until you actually go there. */
   var built = {};
   var panes = [].slice.call(document.querySelectorAll('.sec'));
-  var subs = [].slice.call(document.querySelectorAll('#dsub > span'));
-  var depts = [].slice.call(document.querySelectorAll('#ddept a'));
+  var groups = [].slice.call(document.querySelectorAll('#dnav .dept'));
 
-  /* section → the department that owns it, and the label to put in the title */
+  /* section → the department that owns it, and the label to put in the title.
+     Both are read off the menu markup, so adding a section is one line in one
+     place and nothing here has to be kept in step with it. */
   var OWNER = {}, TITLES = {};
-  subs.forEach(function(box){
-    var dept = box.getAttribute('data-of');
-    [].slice.call(box.querySelectorAll('a')).forEach(function(a){
+  groups.forEach(function(box){
+    var dept = box.getAttribute('data-dept');
+    [].slice.call(box.querySelectorAll('.dmenu a')).forEach(function(a){
       var name = a.getAttribute('href').slice(1);
       OWNER[name] = dept;
       TITLES[name] = a.textContent.trim();
     });
   });
-  TITLES.ozet = 'Genel Bakış';
 
   function open(name){
     if(!document.getElementById('sec-' + name)) name = 'ozet';
     panes.forEach(function(p){ p.hidden = (p.id !== 'sec-' + name); });
     var dept = OWNER[name] || 'ozet';
-    depts.forEach(function(a){
-      if(a.getAttribute('data-dept') === dept) a.setAttribute('aria-current', 'true');
-      else a.removeAttribute('aria-current');
+    groups.forEach(function(box){
+      var btn = box.querySelector('button');
+      if(box.getAttribute('data-dept') === dept) btn.setAttribute('aria-current', 'true');
+      else btn.removeAttribute('aria-current');
     });
-    subs.forEach(function(box){ box.hidden = box.getAttribute('data-of') !== dept; });
-    [].slice.call(nv.querySelectorAll('.dsub a')).forEach(function(a){
+    [].slice.call(nv.querySelectorAll('.dmenu a')).forEach(function(a){
       if(a.getAttribute('href') === '#' + name) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
