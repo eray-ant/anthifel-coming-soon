@@ -137,6 +137,11 @@ table{border-collapse:collapse}
    ledger moved out from under it, the rule stopped applying and every field
    went full width, stacked. It belongs to the shell, which is where the form
    is. */
+/* A record the server has not acknowledged. Said on the row, not in a toast,
+   because a toast is gone in three seconds and this is not. */
+.onlyhere{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.04em;
+  color:var(--accent);border:1px solid currentColor;border-radius:2px;padding:1px 5px;
+  margin-left:7px;vertical-align:1px;white-space:nowrap}
 .frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-items:end}
 .frow .f{margin:0}
 .frow .btn{white-space:nowrap}
@@ -5253,8 +5258,14 @@ border-top:1px solid var(--rule);margin-top:4px}
 #fin .lbox .fsec{background:var(--surf2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
   display:grid;gap:8px;align-items:baseline;padding:7px 12px}
 #fin .lbox .fsec:first-child{border-top:0}
+/* .am is written as ".li .am", so it never reached these — they are not rows.
+   The cells were in the right place and the numbers inside them were not, which
+   reads exactly like a column shift. */
 #fin .lbox .fsec .csum{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650;
-  text-transform:none;letter-spacing:0;font-size:12px}
+  text-transform:none;letter-spacing:0;font-size:12px;text-align:right}
+/* the foot of the list: every category added up */
+#fin .lbox .fsec.ftot{background:var(--surf);border-top:2px solid var(--ink);border-bottom:0}
+#fin .lbox .fsec.ftot .csum{font-size:13px}
 #fin .lempty{padding:26px 12px;text-align:center;color:var(--mut);font-size:12.5px}
 #fin .form{background:var(--surf);border:1px solid var(--rule);border-radius:8px;margin:6px 12px;padding:10px 12px}
 #fin .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin-bottom:9px}
@@ -5696,6 +5707,15 @@ function lines(){
       if(editing===l.no) h+=formHTML(e,mSel===null?0:mSel,false);
     }
   }
+  if(h){
+    /* Only the lines actually on screen, and only the ones switched on — the
+       same rule the subtotals above it follow, so the column adds up by eye. */
+    var tt=0, ty=[0,0,0], n=0;
+    for(const l of L2){ if(!active(l)) continue; n++; tt+=lineTotal(l); for(let y=0;y<YRS;y++) ty[y]+=yearTotal(l,y); }
+    h+=`<div class="fsec ftot"><span></span><span>Toplam · ${n} kalem</span><span></span><span></span>`+
+       (mSel===null ? ty.map(v=>`<span class="csum am yr">${tl(v)}</span>`).join('') : '')+
+       `<span class="csum am">${tl(tt)}</span><span></span></div>`;
+  }
   if(!h) h='<div class="lempty">Bu ayda gerçekleşen kalem yok.</div>';
   h+=`<div class="addbar"><button class="ib plus add" data-m="${mSel===null?0:mSel}" title="Kalem ekle">${ICO.plus}</button>`+
      `<span class="ct" style="margin-left:8px;color:var(--mut)">Kalem ekle</span></div>`;
@@ -6076,7 +6096,13 @@ window.dashLedger = function(){
         c.innerHTML = html;
         return c;
       };
-      tr.append(td(r.date), td(r.desc), td(r.cat));
+      /* No id means the server never came back with one. A toast disappears; a
+         record that is only in this browser has to keep saying so, because the
+         whole reason for having a server is that this browser is not the
+         record. */
+      var solo = (db() && !r.id)
+        ? ' <span class="onlyhere">yalnızca bu tarayıcıda</span>' : '';
+      tr.append(td(r.date), td(r.desc + solo), td(r.cat));
       tr.append(td('<span class="' + r.type + '">' + (r.type === 'gider' ? '−' : '+') + gbp(r.amt) + '</span>', 'num'));
       var last = document.createElement('td');
       last.className = 'num'; last.append(x);
@@ -6131,6 +6157,7 @@ window.dashLedger = function(){
     if(d) d.ledger.add(toDB(rec)).then(function(back){
       if(back) rec.id = back.id;   /* so it can be deleted later */
       save();
+      draw();                      /* and so the row stops saying it is only here */
     }).catch(function(e){
       window.toast('Sunucuya yazılamadı, kayıt bu tarayıcıda: ' + e.message);
     });
