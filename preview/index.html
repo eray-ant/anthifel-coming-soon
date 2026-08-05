@@ -155,6 +155,49 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .gate .actions{display:flex;flex-direction:column;gap:12px;align-items:stretch}
 .gate .actions .btn{width:100%}
 .stamp{margin-top:16px;font-size:12.5px;color:#7A756C;line-height:1.5;text-align:center}
+/* ---- the twelve questions, and the result ---- */
+.qtop{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.qbar{flex:1;height:3px;background:rgba(15,15,14,.12);overflow:hidden}
+.qbar i{display:block;height:100%;background:#B84C2E;width:0;transition:width .28s}
+.qnum{font-size:12px;letter-spacing:.14em;color:#7A756C;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qdim{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#B84C2E;margin-bottom:12px}
+.qq{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:30px;line-height:1.22;text-wrap:pretty}
+.qopts{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.qopt{display:block;width:100%;text-align:left;font-family:inherit;font-size:15.5px;line-height:1.5;color:#0F0F0E;background:#FFFFFF;border:1px solid rgba(15,15,14,.18);border-radius:2px;padding:16px 18px;cursor:pointer;transition:border-color .16s,background .16s}
+.qopt:hover{border-color:#B84C2E;background:#FDF8F5}
+.qopt[aria-pressed="true"]{border-color:#B84C2E;background:#FDF6F3;box-shadow:inset 2px 0 0 #B84C2E}
+.qback{margin-top:22px;background:none;border:0;padding:0;font-family:inherit;font-size:13.5px;color:#7A756C;cursor:pointer}
+.qback:hover{color:#B84C2E}
+.qback[hidden]{display:none!important}
+
+.res{text-align:center}
+.res .score{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:88px;line-height:1;letter-spacing:-.02em}
+.res .score small{font-size:26px;color:#7A756C;letter-spacing:0}
+.res h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:32px;line-height:1.2;margin-top:14px;text-wrap:pretty}
+.res .lede{margin:16px auto 0;max-width:520px;font-size:15.5px;line-height:1.65;color:#3A3733;text-wrap:pretty}
+/* The cap is the most useful thing on this screen, so it is stated, not hinted. */
+.capnote{margin:22px auto 0;max-width:520px;padding:14px 16px;border:1px solid rgba(184,76,46,.4);background:#FDF6F3;font-size:13.5px;line-height:1.6;color:#8A3D22;text-align:left}
+.capnote b{font-weight:600}
+.dimlist{margin:34px 0 0;text-align:left;border-top:1px solid rgba(15,15,14,.12)}
+.dimrow{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(15,15,14,.08)}
+.dimrow .nm{flex:0 0 190px;font-size:14px;color:#3A3733}
+.dimrow .tr{flex:1;height:6px;background:rgba(15,15,14,.08);min-width:60px}
+.dimrow .tr i{display:block;height:100%;background:#7A756C}
+.dimrow .vl{flex:0 0 42px;text-align:right;font-size:13.5px;color:#7A756C;font-variant-numeric:tabular-nums}
+.dimrow.low .nm{color:#0F0F0E;font-weight:500}
+.dimrow.low .tr i{background:#B84C2E}
+.dimrow.low .vl{color:#B84C2E}
+.lowline{margin-top:18px;font-size:14.5px;line-height:1.6;color:#0F0F0E;text-align:left}
+.res .cta{margin-top:34px}
+.res .cta .btn{width:100%;max-width:420px}
+.limit{margin:26px auto 0;max-width:520px;font-size:12.5px;line-height:1.6;color:#7A756C}
+@media (max-width:640px){
+  .qq{font-size:25px}
+  .res .score{font-size:68px}
+  .dimrow{flex-wrap:wrap;gap:8px}
+  .dimrow .nm{flex:1 0 100%}
+  .dimrow .vl{flex:0 0 40px}
+}
 .quizhold{text-align:center;padding:8px 0}
 .quizhold h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:32px;line-height:1.2}
 .quizhold p{margin-top:14px;font-size:15.5px;line-height:1.6;color:#3A3733}
@@ -353,7 +396,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <div class="step">
       <span class="rn">III</span>
       <h4 data-en="Audit" data-tr="Audit">Audit</h4>
-      <p data-en="Two weeks. The cheapest way to find out where you are." data-tr="İki hafta. Nerede durduğunuzu görmenin en kısa yolu.">Two weeks. The cheapest way to find out where you are.</p>
+      <p data-en="Seven working days. The cheapest way to find out where you are." data-tr="Yedi iş günü. Nerede durduğunuzu görmenin en kısa yolu.">Seven working days. The cheapest way to find out where you are.</p>
     </div>
     <div class="step">
       <span class="rn">IV</span>
@@ -382,7 +425,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
           <h3 class="serif">AI Readiness Audit</h3>
           <p data-en="An honest picture of where you stand, and the first three things to fix." data-tr="Nerede durduğunuzun dürüst bir fotoğrafı ve önce düzeltilecek üç şey.">An honest picture of where you stand, and the first three things to fix.</p>
         </div>
-        <div class="meta"><span class="dur" data-en="2 weeks" data-tr="2 hafta">2 weeks</span></div>
+        <div class="meta"><span class="dur" data-en="7 working days" data-tr="7 iş günü">7 working days</span></div>
       </div>
       <div class="row">
         <span class="rn">II</span>
@@ -427,12 +470,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <div class="intro" id="aIntro">
       <span class="eyebrow" data-en="AI Readiness Assessment" data-tr="AI Hazırlık Testi">AI Readiness Assessment</span>
       <h2 data-en="Is your company ready for AI?" data-tr="Şirketiniz AI'a hazır mı?">Is your company ready for AI?</h2>
-      <p data-en="Twelve questions across strategy, organisation, technology and people. Three minutes, an honest score, and a short read of what it means." data-tr="Strateji, organizasyon, teknoloji ve insan başlıklarında on iki soru. Üç dakika, dürüst bir sonuç ve sonucun ne anlama geldiğine dair kısa bir değerlendirme.">Twelve questions across strategy, organisation, technology and people. Three minutes, an honest score, and a short read of what it means.</p>
+      <p data-en="Twelve questions across five dimensions. Three minutes, an honest score, and a short read of what it means." data-tr="Beş boyutta on iki soru. Üç dakika, dürüst bir sonuç ve sonucun ne anlama geldiğine dair kısa bir değerlendirme.">Twelve questions across five dimensions. Three minutes, an honest score, and a short read of what it means.</p>
+      <!-- The five dimensions and their weights are Business's, from
+           Anthifel_Readiness_Metodolojisi.md §1. Technology is last and
+           lightest on purpose. -->
       <div class="dims">
-        <i data-en="STRATEGY" data-tr="STRATEJİ">STRATEGY</i><s>·</s>
-        <i data-en="ORGANISATION" data-tr="ORGANİZASYON">ORGANISATION</i><s>·</s>
-        <i data-en="TECHNOLOGY" data-tr="TEKNOLOJİ">TECHNOLOGY</i><s>·</s>
-        <i data-en="PEOPLE" data-tr="İNSAN">PEOPLE</i>
+        <i data-en="STRATEGY &amp; OWNERSHIP" data-tr="STRATEJİ VE SAHİPLİK">STRATEGY &amp; OWNERSHIP</i><s>·</s>
+        <i data-en="PEOPLE &amp; CAPACITY" data-tr="İNSAN VE KAPASİTE">PEOPLE &amp; CAPACITY</i><s>·</s>
+        <i data-en="DATA &amp; PROCESS" data-tr="VERİ VE SÜREÇ">DATA &amp; PROCESS</i><s>·</s>
+        <i data-en="ECONOMICS &amp; MEASUREMENT" data-tr="EKONOMİ VE ÖLÇÜM">ECONOMICS &amp; MEASUREMENT</i><s>·</s>
+        <i data-en="TECHNOLOGY" data-tr="TEKNOLOJİ">TECHNOLOGY</i>
       </div>
       <button type="button" class="btn btn-d" style="margin-top:36px" data-start data-en="Start the assessment →" data-tr="Teste başlayın →">Start the assessment →</button>
     </div>
@@ -469,15 +516,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       </form>
     </div>
 
-    <!-- step 2 of 2 — the assessment itself. The twelve questions render here
-         once Business delivers the scoring methodology (open work 2). -->
+    <!-- step 2 of 2 — the twelve questions and the result. Everything from here
+         is computed in the browser: no answer, and no score, leaves the page.
+         Scoring follows Anthifel_Readiness_Metodolojisi.md §1, §6 and §4. -->
     <div class="gate" id="aQuiz" hidden>
-      <div class="quizhold">
-        <h3 class="serif" data-en="Thank you, you’re on the list." data-tr="Teşekkürler, listeye alındınız.">Thank you, you’re on the list.</h3>
-        <p data-en="The twelve questions go live shortly. We'll write to you the moment they do, and your score comes straight back." data-tr="On iki soru çok yakında yayına giriyor. Yayına girdiği anda size yazacağız, sonucunuz da hemen ardından gelecek.">The twelve questions go live shortly. We'll write to you the moment they do, and your score comes straight back.</p>
-        <p class="who" id="qWho"></p>
-        <div class="devnote" id="devnote" hidden></div>
+      <div id="qAsk">
+        <div class="qtop">
+          <span class="qnum"><span id="qNow">1</span> / 12</span>
+          <span class="qbar"><i id="qFill"></i></span>
+        </div>
+        <div class="qdim" id="qDim"></div>
+        <h3 class="qq" id="qText"></h3>
+        <div class="qopts" id="qOpts"></div>
+        <button type="button" class="qback" id="qBack" hidden></button>
       </div>
+      <div class="res" id="qRes" hidden></div>
+      <div class="devnote" id="devnote" hidden></div>
     </div>
 
   </div>
@@ -575,6 +629,8 @@ function applyLang(l){
     b[j].setAttribute('aria-current', b[j].getAttribute('data-lang')===LANG ? 'true':'false');
   }
   try{ localStorage.setItem('anthifel_lang', LANG); }catch(e){}
+  /* The assessment is drawn in JS, so data-en/data-tr cannot reach it. */
+  try{ if(typeof Q !== 'undefined' && Q.redraw) Q.redraw(); }catch(e){}
   try{
     var u = new URL(window.location.href);
     if(LANG==='tr') u.searchParams.set('lang','tr'); else u.searchParams.delete('lang');
@@ -683,12 +739,346 @@ function capToken(){
 
 function showQuiz(recorded){
   aGate.hidden = true; aQuiz.hidden = false;
-  document.getElementById('qWho').textContent = emailEl.value.trim();
   var dn = document.getElementById('devnote');
   if(recorded){ dn.hidden = true; }
   else { dn.hidden = false; dn.textContent = t('dev'); }
+  Q.start();
   scrollTo_(document.getElementById('assessment'));
 }
+
+/* ============================================================
+   The twelve questions
+
+   Structure, weights and the two caps come from
+   Anthifel_Readiness_Metodolojisi.md — §1 for the dimensions and their
+   weights, §6 for the twelve-question mapping, §4 for the caps. The band
+   texts are Business's, verbatim, from the Developer brief §A.4.
+
+   Nothing here is sent anywhere. The answers live in one array in memory,
+   the score is computed in the browser, and neither is written to storage,
+   posted to the endpoint or passed to analytics. That is a rule, not an
+   implementation detail: Developer brief, red line 2.
+   ============================================================ */
+var Q = (function(){
+
+  /* Weights sum to 100. Technology is the lightest on purpose — the thesis
+     is that the constraint is organisational, and the weights say so. */
+  var DIMS = [
+    { k:'strategy', w:30, en:'Strategy & Ownership',      tr:'Strateji ve Sahiplik' },
+    { k:'people',   w:25, en:'People & Capacity',          tr:'İnsan ve Kapasite' },
+    { k:'data',     w:20, en:'Data & Process Foundation',  tr:'Veri ve Süreç Zemini' },
+    { k:'econ',     w:15, en:'Economics & Measurement',    tr:'Ekonomi ve Ölçüm' },
+    { k:'tech',     w:10, en:'Technology & Infrastructure',tr:'Teknoloji ve Altyapı' }
+  ];
+
+  /* Twelve of the seventeen criteria. Options carry 0 / 50 / 100 in order. */
+  var QS = [
+    { d:'strategy',
+      en:{ q:'Has AI been decided on at board or CEO level?',
+           a:['It has not come up in management.',
+              'It has been discussed. Nothing is written down.',
+              'There is a clear, dated decision on record.'] },
+      tr:{ q:'AI, yönetim ya da CEO düzeyinde karara bağlandı mı?',
+           a:['Yönetim gündemine hiç gelmedi.',
+              'Konuşuldu. Yazılı bir karar yok.',
+              'Açık, tarihli ve kayda geçmiş bir karar var.'] } },
+    { d:'strategy',
+      en:{ q:'Who is responsible for it?',
+           a:['Nobody. Or everybody.',
+              'Someone is named, but it sits on top of their day job.',
+              'One named person, with time set aside for it.'] },
+      tr:{ q:'Bu işin sorumlusu kim?',
+           a:['Kimse. Ya da herkes.',
+              'Adı geçen biri var, ama asıl işinin üstüne kalıyor.',
+              'Adı belli tek bir kişi, ve buna ayrılmış zamanı var.'] } },
+    { d:'strategy',
+      en:{ q:'Is there a budget for the next twelve months?',
+           a:['No budget, and it has not been discussed.',
+              'It is being discussed. Nothing is allocated yet.',
+              'Allocated, and spendable.'] },
+      tr:{ q:'Önümüzdeki on iki ay için ayrılmış bir bütçe var mı?',
+           a:['Bütçe yok, konuşulmadı da.',
+              'Konuşuluyor. Henüz ayrılmış bir tutar yok.',
+              'Ayrılmış ve harcanabilir durumda.'] } },
+
+    { d:'people',
+      en:{ q:'Do you know where your people’s time actually goes?',
+           a:['No. It has never been measured.',
+              'In some teams, roughly.',
+              'Measured at department level, and costed.'] },
+      tr:{ q:'Ekibinizin zamanının gerçekte nereye gittiğini biliyor musunuz?',
+           a:['Hayır, hiç ölçülmedi.',
+              'Bazı ekiplerde, kabaca.',
+              'Departman düzeyinde ölçülüyor ve maliyetlendirilmiş.'] } },
+    { d:'people',
+      en:{ q:'Is there someone inside who can read a technical proposal and push back on it?',
+           a:['No.',
+              'Someone could, but it is not their job.',
+              'Yes, at least one person.'] },
+      tr:{ q:'İçeride teknik bir teklifi okuyup itiraz edebilecek biri var mı?',
+           a:['Yok.',
+              'Yapabilecek biri var, ama bu onun işi değil.',
+              'Var, en az bir kişi.'] } },
+    { d:'people',
+      en:{ q:'How did your last change programme end?',
+           a:['It stalled, and people still remember it.',
+              'It half worked.',
+              'It finished, and someone owned it.'] },
+      tr:{ q:'En son değişim programınız nasıl bitti?',
+           a:['Yarıda kaldı, ve bu hâlâ hatırlanıyor.',
+              'Yarısı oldu.',
+              'Tamamlandı, ve sahibi vardı.'] } },
+
+    { d:'data',
+      en:{ q:'Are the processes you would start with written down?',
+           a:['They live in people’s heads.',
+              'Some are written, and out of date.',
+              'Written, owned, and running steadily.'] },
+      tr:{ q:'İşe başlayacağınız süreçler yazılı mı?',
+           a:['Kafalarda duruyor.',
+              'Bir kısmı yazılı, güncel değil.',
+              'Yazılı, sahibi belli, istikrarlı işliyor.'] } },
+    { d:'data',
+      en:{ q:'How hard is it to get the data those processes produce?',
+           a:['Getting it is a project of its own.',
+              'It takes days, and a few favours.',
+              'The right person can get it in reasonable time.'] },
+      tr:{ q:'O süreçlerin ürettiği veriye ulaşmak ne kadar zor?',
+           a:['Ulaşmak başlı başına bir proje.',
+              'Günler sürüyor, birkaç kişiye rica gerekiyor.',
+              'Yetkili kişi makul sürede ulaşabiliyor.'] } },
+
+    { d:'econ',
+      en:{ q:'Do you know what one of those processes costs you?',
+           a:['No.',
+              'We could estimate it.',
+              'We can produce the figure, process by process.'] },
+      tr:{ q:'Bu süreçlerden birinin şirkete maliyetini biliyor musunuz?',
+           a:['Hayır.',
+              'Tahmin edebiliriz.',
+              'Süreç bazında rakamı çıkarabiliyoruz.'] } },
+    { d:'econ',
+      en:{ q:'Who decides to stop something that is not working?',
+           a:['It is not clear, so things rarely stop.',
+              'It goes to the top every time.',
+              'The owner and the threshold are both defined.'] },
+      tr:{ q:'Yürümeyen bir işi durdurma kararını kim verir?',
+           a:['Belirsiz, o yüzden işler nadiren durur.',
+              'Her seferinde en üste çıkar.',
+              'Kararın sahibi de eşiği de belli.'] } },
+
+    { d:'tech',
+      en:{ q:'Do you know which AI tools your people already use?',
+           a:['No. Whatever is in use, we cannot see it.',
+              'The official ones, yes. The unofficial ones, no.',
+              'Yes, including the unofficial ones.'] },
+      tr:{ q:'Ekibinizin şu an hangi AI araçlarını kullandığını biliyor musunuz?',
+           a:['Hayır. Ne kullanıldığını göremiyoruz.',
+              'Resmî olanları biliyoruz, gayriresmî olanları bilmiyoruz.',
+              'Biliyoruz, gayriresmî kullanım dahil.'] } },
+    { d:'tech',
+      en:{ q:'Is there a policy for what data may leave the company?',
+           a:['No policy.',
+              'A rule of thumb, not written down.',
+              'Written, and it covers external models.'] },
+      tr:{ q:'Şirketten dışarı hangi verinin çıkabileceğine dair bir politika var mı?',
+           a:['Politika yok.',
+              'Yazılı olmayan bir teamül var.',
+              'Yazılı, ve dış modellere veri gönderimini kapsıyor.'] } }
+  ];
+
+  /* Band copy is Business's, verbatim — Developer brief §A.4. One call to
+     action per band, by instruction: two buttons defer the decision. */
+  var BANDS = [
+    { max:29,
+      en:{ h:'You are not ready for AI. That is the expensive kind of not-ready.',
+           p:'A low score does not mean AI is not for you. It means that if you start now, the money goes out and nothing changes — because the problem sitting in front of the technology is a process, data or management problem. Fixing that first is cheaper than discovering it in month nine.',
+           c:'Book a free 30-minute call. We will tell you what to fix first — even if the answer is that you do not need us yet.' },
+      tr:{ h:'AI’ya hazır değilsiniz. Ve bu, pahalı olan hazır değillik türü.',
+           p:'Düşük skor "AI size göre değil" demek değildir. Şu an başlarsanız paranın çıkacağı ama hiçbir şeyin değişmeyeceği anlamına gelir — çünkü teknolojinin önünde duran şey bir süreç, veri ya da yönetim sorunudur. Bunu önce çözmek, dokuzuncu ayda keşfetmekten ucuzdur.',
+           c:'30 dakikalık ücretsiz görüşme alın. Önce neyi düzeltmeniz gerektiğini söyleriz — cevap "şu an bize ihtiyacınız yok" olsa bile.' },
+      href:'#contact' },
+    { max:49,
+      en:{ h:'The ground is not laid yet.',
+           p:'You have the intent but not the foundation. Starting a large programme from here is how budgets disappear. The next step is small and specific: measure where your capacity actually goes and what it costs you, before deciding anything.',
+           c:'See what the AI Readiness Audit measures →' },
+      tr:{ h:'Zemin henüz hazır değil.',
+           p:'Niyet var, zemin yok. Buradan büyük bir programa girmek bütçelerin kaybolma şeklidir. Sıradaki adım küçük ve somut: bir şeye karar vermeden önce kapasitenizin gerçekte nereye gittiğini ve size neye mal olduğunu ölçün.',
+           c:'AI Readiness Audit’in neyi ölçtüğünü görün →' },
+      href:'#services' },
+    { max:69,
+      en:{ h:'Ready, but without a direction.',
+           p:'The foundation holds. What is missing is a roadmap with owners, costs and dates — not a list of ideas. This is the point where most companies buy tools instead of making decisions.',
+           c:'See how the Discovery Sprint works →' },
+      tr:{ h:'Hazırsınız, ama yönünüz yok.',
+           p:'Zemin sağlam. Eksik olan sahipleri, maliyetleri ve tarihleri olan bir yol haritası — fikir listesi değil. Çoğu şirketin karar vermek yerine araç satın aldığı nokta tam burası.',
+           c:'Discovery Sprint nasıl işliyor, bakın →' },
+      href:'#services' },
+    { max:84,
+      en:{ h:'You know where you are going. The question is who takes you there.',
+           p:'Direction is not the constraint. Execution is — the right people hired, the right partners connected, and a rhythm that holds after the enthusiasm fades.',
+           c:'See how the Transformation Retainer works →' },
+      tr:{ h:'Nereye gittiğinizi biliyorsunuz. Soru, sizi oraya kimin götüreceği.',
+           p:'Kısıt yön değil. Uygulama: doğru insanların işe alınması, doğru ortakların bağlanması, ve heves geçtikten sonra da tutan bir ritim.',
+           c:'Transformation Retainer nasıl işliyor, bakın →' },
+      href:'#services' },
+    { max:100,
+      en:{ h:'You are further along than most. You may not need us.',
+           p:'At this level the value of an outside adviser is not execution — it is a second opinion at the moments that matter, from someone with no stake in which tools you choose.',
+           c:'See what an Advisory Board Seat covers →' },
+      tr:{ h:'Çoğundan ilerdesiniz. Bize ihtiyacınız olmayabilir.',
+           p:'Bu seviyede dış danışmanın değeri uygulama değildir; önemli anlarda, hangi aracı seçtiğinizde çıkarı olmayan birinden ikinci bir görüştür.',
+           c:'Advisory Board Seat neyi kapsıyor, bakın →' },
+      href:'#services' }
+  ];
+
+  var LIMIT = {
+    en:'This score rests on your own answers and moves by roughly ±15 points. The evidenced measurement is what the AI Readiness Audit does.',
+    tr:'Bu skor sizin beyanınıza dayanıyor ve yaklaşık ±15 puan oynar. Kanıtlı ölçüm AI Readiness Audit’in işidir.'
+  };
+  var CAP = {
+    en:{ lead:'A ceiling was applied.', raw:'Raw score', capped:'Ceiling', because:'Because' },
+    tr:{ lead:'Bir tavan uygulandı.', raw:'Ham skor', capped:'Tavan', because:'Sebep' }
+  };
+  var LOW = {
+    en:'What is holding you back is ',
+    tr:'Sizi geri tutan şey '
+  };
+  var BACK = { en:'← Previous question', tr:'← Önceki soru' };
+
+  var answers = [];      // 0 / 50 / 100 per question, in memory only
+  var at = 0;
+
+  function L(o){ return o[LANG] || o.en; }
+  function el(id){ return document.getElementById(id); }
+
+  function dimScores(){
+    var out = {};
+    DIMS.forEach(function(d){
+      var vals = [];
+      QS.forEach(function(q, i){ if(q.d === d.k) vals.push(answers[i]); });
+      out[d.k] = vals.reduce(function(a,b){ return a+b; }, 0) / vals.length;
+    });
+    return out;
+  }
+
+  /* §4: the average hides the death. Two ceilings, applied in order, and the
+     result screen says which one bit and why. */
+  function result(){
+    var ds = dimScores();
+    var raw = 0;
+    DIMS.forEach(function(d){ raw += ds[d.k] * d.w; });
+    raw = raw / 100;
+
+    var score = raw, cap = null, culprit = null;
+    var weakest = DIMS[0];
+    DIMS.forEach(function(d){ if(ds[d.k] < ds[weakest.k]) weakest = d; });
+
+    if(ds[weakest.k] < 40 && raw > 59){ score = 59; cap = 59; culprit = weakest; }
+    if(ds.strategy < 40 && score > 49){
+      score = 49; cap = 49;
+      culprit = DIMS[0];
+    }
+    return { raw:Math.round(raw), score:Math.round(score), cap:cap, culprit:culprit,
+             dims:ds, weakest:weakest };
+  }
+
+  function band(score){
+    for(var i=0;i<BANDS.length;i++) if(score <= BANDS[i].max) return BANDS[i];
+    return BANDS[BANDS.length-1];
+  }
+
+  function esc(str){
+    return String(str).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  function drawQuestion(){
+    el('qRes').hidden = true;
+    el('qAsk').hidden = false;
+    var q = QS[at], d = null;
+    DIMS.forEach(function(x){ if(x.k === q.d) d = x; });
+    el('qNow').textContent = String(at + 1);
+    el('qFill').style.width = ((at) / QS.length * 100) + '%';
+    el('qDim').textContent = L(d);
+    el('qText').textContent = L(q).q;
+
+    var box = el('qOpts');
+    box.innerHTML = '';
+    L(q).a.forEach(function(text, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'qopt';
+      b.textContent = text;
+      b.setAttribute('aria-pressed', answers[at] === i * 50 ? 'true' : 'false');
+      b.addEventListener('click', function(){
+        answers[at] = i * 50;
+        if(at < QS.length - 1){ at++; drawQuestion(); }
+        else { drawResult(); }
+      });
+      box.appendChild(b);
+    });
+
+    var back = el('qBack');
+    back.hidden = at === 0;
+    back.textContent = L(BACK);
+  }
+
+  function drawResult(){
+    var r = result(), b = band(r.score), c = L(CAP);
+    el('qAsk').hidden = true;
+    el('qFill').style.width = '100%';
+
+    var html = '';
+    html += '<div class="score">' + r.score + '<small> / 100</small></div>';
+    html += '<h3>' + esc(L(b).h) + '</h3>';
+    html += '<p class="lede">' + esc(L(b).p) + '</p>';
+
+    if(r.cap !== null){
+      html += '<div class="capnote">' + esc(c.lead) + ' ' +
+              '<b>' + esc(c.raw) + ':</b> ' + r.raw + ' · ' +
+              '<b>' + esc(c.capped) + ':</b> ' + r.cap + ' · ' +
+              '<b>' + esc(c.because) + ':</b> ' + esc(L(r.culprit)) + ', ' +
+              Math.round(r.dims[r.culprit.k]) + '</div>';
+    }
+
+    html += '<div class="dimlist">';
+    DIMS.forEach(function(d){
+      var v = Math.round(r.dims[d.k]);
+      var low = d.k === r.weakest.k;
+      html += '<div class="dimrow' + (low ? ' low' : '') + '">' +
+                '<span class="nm">' + esc(L(d)) + '</span>' +
+                '<span class="tr"><i style="width:' + v + '%"></i></span>' +
+                '<span class="vl">' + v + '</span>' +
+              '</div>';
+    });
+    html += '</div>';
+    html += '<p class="lowline">' + esc(L(LOW)) + '<b>' + esc(L(r.weakest)) + '</b>, ' +
+            Math.round(r.dims[r.weakest.k]) + '.</p>';
+
+    html += '<div class="cta"><a class="btn btn-p" href="' + b.href + '">' + esc(L(b).c) + '</a></div>';
+    html += '<p class="limit">' + esc(L(LIMIT)) + '</p>';
+
+    var res = el('qRes');
+    res.innerHTML = html;
+    res.hidden = false;
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if(t && t.id === 'qBack'){ if(at > 0){ at--; drawQuestion(); } }
+  });
+
+  return {
+    start: function(){ answers = []; at = 0; drawQuestion(); },
+    /* The language switch redraws whatever is on screen. */
+    redraw: function(){
+      if(aQuiz.hidden) return;
+      if(el('qRes').hidden) drawQuestion(); else drawResult();
+    }
+  };
+})();
 
 /* ---------- privacy, shown without leaving the form ---------- */
 (function(){
