@@ -5335,6 +5335,7 @@ border:1px solid var(--rule);background:var(--surf2);color:var(--ink)}
     <div class="status"><span class="led" id="finLed"></span><span id="finSaved">Değişiklik yok</span></div>
   </div>
   <div class="acts">
+    <button class="btn btn-s" id="finHand" type="button">Finance'a devret</button>
     <button class="btn btn-s" id="fiCsv" type="button">Defteri CSV indir</button>
   </div>
 </div>
@@ -5883,9 +5884,129 @@ onclickBind('finSFull',()=>{scen='sj';seg('finSHalf','finSFull',false);render();
 onclickBind('finAllOn',()=>{off.clear();allLines().forEach(l=>on.add(l.no));render();});
 onclickBind('finReset',()=>{off.clear();on.clear();edits={};custom=[];mode='mevcut';real=true;
   document.getElementById('finRealCash').checked=true;seg('finPMevcut','finPPaket',true);render();});
+/* The export is a handover, not a sync. Finance's spreadsheet is the source of
+   truth; what leaves here is a dated proposal — these lines off, these edited,
+   these added — for Finance to work in or reject.
+
+   Two things beyond the raw state, both aimed at the same failure. The date is
+   in the filename, because a fixed name makes a three-week-old handover look
+   like today's. And a readable summary rides along, so Finance can see what
+   changed and what it comes to without re-deriving any of it. Neither is read
+   back on import: the keys the panel imports are exactly the ones it always
+   had, and everything else is ignored. */
+function finSummary(){
+  const S = series(scen), t = trough(S.cash);
+  const named = no => { const l = allLines().find(x => x.no === no); return l ? eff(l).name : ('#' + no); };
+  const yrs = [0,1,2].map(y => allLines().reduce((a,l) => a + (active(l) ? yearTotal(l,y) : 0), 0));
+  return {
+    tarih: new Date().toISOString().slice(0,10),
+    senaryo: scen === 'si' ? 'Yarı zamanlı' : 'Tam zamanlı',
+    mod: mode === 'paket' ? 'Ay 1 paketi' : 'Mevcut model',
+    yillik_kalemler_pesin: real,
+    kapali_kalemler: [...off].map(named),
+    duzenlenen_kalemler: Object.keys(edits).map(no => ({ kalem: named(+no), yeni: edits[no] })),
+    eklenen_kalemler: custom.map(c => c.name),
+    toplam_gider_try: { yil1: Math.round(yrs[0]), yil2: Math.round(yrs[1]), yil3: Math.round(yrs[2]),
+                        uc_yil: Math.round(yrs[0] + yrs[1] + yrs[2]) },
+    dip_nakit_try: Math.round(S.cash[t]),
+    dip_ay: D.per[t],
+    not: 'Bu dosya dashboard Finans bölümünden alınan bir devir kaydıdır. Kaynak model ' +
+         'Anthifel_Finansal_Model.xlsx; buradaki seçimler öneridir, işlenmeden modele girmez.'
+  };
+}
+function finPayload(){
+  const ozet = finSummary();
+  return { name: 'anthifel-finance-secim-' + ozet.tarih + '.json',
+           text: JSON.stringify({ mode, real, off:[...off], on:[...on], edits, custom, _devir: ozet }, null, 2) };
+}
+function finDownload(){
+  const f = finPayload();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([f.text], { type:'application/json' }));
+  a.download = f.name;
+  a.click();
+  return f.name;
+}
 onclickBind('finExp',()=>{
-  const blob=new Blob([JSON.stringify({mode,real,off:[...off],on:[...on],edits,custom},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='anthifel-finance-secim.json';a.click();});
+  window.toast('Dosya indirildi: ' + finDownload() + ' — Anthifel MD\'s klasörüne koy.');
+});
+
+/* ── handing over to Finance ────────────────────────────────────────────────
+   Finance reads the shared folder; it cannot see this panel and cannot reach
+   the database. So the file is the channel, and the only friction left was
+   carrying it from Downloads by hand — which is the step that gets forgotten,
+   and a forgotten handover is worse than none because Finance reads something
+   stale without knowing it.
+
+   The folder is chosen once. The browser keeps a handle to it, this stores the
+   handle, and every click after that writes straight in. Permission has to be
+   re-confirmed after a browser restart — one click, and it is asked for from
+   this button rather than sprung on you.
+
+   Where the API does not exist, this is a download and the note says so. */
+var FS_DB = 'anth_fs', FS_STORE = 'handles', FS_KEY = 'finance_dir';
+var finDir = null;
+function fsOpen(){
+  return new Promise(function(res, rej){
+    var r = indexedDB.open(FS_DB, 1);
+    r.onupgradeneeded = function(){ r.result.createObjectStore(FS_STORE); };
+    r.onsuccess = function(){ res(r.result); };
+    r.onerror   = function(){ rej(r.error); };
+  });
+}
+function fsGet(){
+  return fsOpen().then(function(db){
+    return new Promise(function(res){
+      var q = db.transaction(FS_STORE).objectStore(FS_STORE).get(FS_KEY);
+      q.onsuccess = function(){ res(q.result || null); };
+      q.onerror   = function(){ res(null); };
+    });
+  }).catch(function(){ return null; });
+}
+function fsPut(h){
+  return fsOpen().then(function(db){
+    return new Promise(function(res){
+      var t = db.transaction(FS_STORE, 'readwrite');
+      t.objectStore(FS_STORE).put(h, FS_KEY);
+      t.oncomplete = function(){ res(true); };
+      t.onerror    = function(){ res(false); };
+    });
+  }).catch(function(){ return false; });
+}
+async function finHandOver(){
+  if(!window.showDirectoryPicker){
+    window.toast('Bu tarayıcı klasöre yazmayı desteklemiyor — dosya indirildi: ' + finDownload());
+    return;
+  }
+  /* Kept in memory as well as in IndexedDB. IndexedDB is what survives a
+     reload; this is what stops a second click in the same session from asking
+     again when IndexedDB is unavailable — a private window, or storage the
+     browser has declined. */
+  var dir = finDir || await fsGet();
+  if(dir){
+    var st = await dir.queryPermission({ mode: 'readwrite' });
+    if(st !== 'granted') st = await dir.requestPermission({ mode: 'readwrite' });
+    if(st !== 'granted') dir = null;
+  }
+  if(!dir){
+    dir = await window.showDirectoryPicker({ mode: 'readwrite', id: 'anthifel-md' });
+    await fsPut(dir);
+  }
+  finDir = dir;
+  var f = finPayload();
+  var fh = await dir.getFileHandle(f.name, { create: true });
+  var w = await fh.createWritable();
+  await w.write(f.text);
+  await w.close();
+  window.toast('Finance klasörüne yazıldı: ' + f.name);
+}
+onclickBind('finHand', function(){
+  finHandOver().catch(function(e){
+    /* Cancelling the picker is an answer, not a fault. */
+    if(e && (e.name === 'AbortError' || e.name === 'NotAllowedError')) return;
+    window.toast('Klasöre yazılamadı, dosya indirildi: ' + finDownload());
+  });
+});
 onclickBind('finImp',()=>document.getElementById('finImpf').click());
 
 /* ---- which list, and which month ---- */
