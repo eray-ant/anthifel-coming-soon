@@ -41,6 +41,24 @@ footer a:hover{color:#0F0F0E}
 footer .lnks{display:flex;gap:22px;flex-wrap:wrap}
 a:focus-visible,button:focus-visible{outline:2px solid #B84C2E;outline-offset:2px}
 
+
+/* ---- the site menu ----
+   Every page carries it. A visitor who lands on a service page or a legal page
+   from a link should be able to get anywhere else without going back to the
+   home page first, and the anchors resolve against index.html rather than the
+   page they are on. */
+.nav{display:flex;gap:30px;flex-wrap:wrap;justify-content:center}
+.nav a{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#0F0F0E;text-decoration:none;transition:color .18s}
+.nav a:hover,.nav a:focus-visible{color:#B84C2E}
+.burger{display:none;background:none;border:1px solid rgba(15,15,14,.28);border-radius:2px;padding:8px 10px;cursor:pointer;line-height:0}
+.burger svg{width:18px;height:18px;stroke:#0F0F0E;stroke-width:1.6;fill:none}
+@media (max-width:960px){
+  .hdr{flex-wrap:wrap;gap:12px}
+  .burger{display:inline-block;order:2}
+  .lang{order:1;margin-left:auto;margin-right:14px}
+  .nav{order:3;flex:0 0 100%;display:none;flex-direction:column;align-items:flex-start;gap:16px;padding:14px 0 4px}
+  .nav.open{display:flex}
+}
 /* ---- buttons: the landing page's, because a visitor arrives from it and the
         two colours already mean something to them ---- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;font-family:inherit;font-size:14.5px;font-weight:500;letter-spacing:.01em;line-height:1.2;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:background .18s,color .18s,border-color .18s;text-align:center}
@@ -101,18 +119,6 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .back{display:inline-block;margin-top:0;font-size:14px;color:#0F0F0E;border-bottom:1px solid rgba(15,15,14,.3);padding-bottom:2px;text-decoration:none;transition:color .18s,border-color .18s}
 .back:hover{color:#B84C2E;border-color:#B84C2E}
 
-/* ---- the modal frame the booking window borrows. Same values as the landing
-        page's, because it is the same window. ---- */
-.povl{position:fixed;inset:0;background:rgba(15,15,14,.5);display:flex;align-items:center;justify-content:center;padding:24px;z-index:90}
-.pmodal{background:#FCFAF5;border-top:2px solid #B84C2E;width:100%;max-width:600px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(15,15,14,.28)}
-.pmhd{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:22px 28px 16px;border-bottom:1px solid rgba(15,15,14,.12)}
-.pmhd h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
-.pmhd button{background:none;border:0;font-size:26px;line-height:1;color:#7A756C;cursor:pointer;padding:0 2px}
-.pmhd button:hover{color:#0F0F0E}
-.pmft{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 28px 22px;border-top:1px solid rgba(15,15,14,.12)}
-.pmft a{font-size:13.5px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
-.pmft a:hover{color:#B84C2E}
-.pmft .btn{padding:11px 24px;font-size:13.5px}
 
 @media (max-width:1024px){
   :root{--pad:44px}
@@ -139,10 +145,6 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .svc-cta .btn{width:100%}
   .frm .actions .btn{width:100%}
   footer{flex-direction:column;gap:12px}
-  .povl{padding:14px}
-  .pmhd,.pmft{padding-left:20px;padding-right:20px}
-  .pmft{flex-direction:column-reverse;align-items:stretch}
-  .pmft .btn{width:100%}
 }
 @media (max-width:400px){
   :root{--pad:18px}
@@ -161,11 +163,21 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 </style>
   <header class="hdr">
     <a href="index.html" class="brandlink" aria-label="Anthifel"><img src="data:image/png;base64,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" alt="Anthifel"></a>
+    <nav class="nav" id="nav">
+      <a href="index.html#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
+      <a href="index.html#services" data-en="Services" data-tr="Hizmetler">Services</a>
+      <a href="index.html#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
+      <a href="blog/" data-en="Blog" data-tr="Blog">Blog</a>
+      <a href="index.html#contact" data-en="Contact" data-tr="İletişim">Contact</a>
+    </nav>
     <div class="lang">
       <button type="button" data-lang="en" aria-current="true">EN</button>
       <span>·</span>
       <button type="button" data-lang="tr" aria-current="false">TR</button>
     </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+    </button>
   </header>
 
   <main>
@@ -303,6 +315,159 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
     </div>
   </main>
 
+<!-- ==== MEET ==== -->
+<!-- Booking the call, in the page.
+
+     It was a modal over the page. A modal is the right shape for something you
+     must answer before you can carry on, and this is the opposite: a visitor
+     who is only looking should be able to look. So the calendar is a band that
+     opens where the page continues, the button scrolls to it, and closing it is
+     the same button again.
+
+     What cannot be done, and it is worth writing down rather than attempting:
+     the panel cannot close itself when a booking is made. The booking happens
+     inside Google's page, on Google's origin, and nothing about it is readable
+     from here. Any "it closed, so it worked" would be a guess. It closes when
+     the visitor closes it, and Google's own confirmation is what tells them the
+     booking happened. -->
+<section class="meet" id="meet" hidden>
+  <div class="wrap">
+    <div class="meethd">
+      <span class="meetttl">
+        <span class="eyebrow" data-en="Introductory call" data-tr="Tanışma görüşmesi">Introductory call</span>
+        <h2 data-en="Thirty minutes, free" data-tr="Otuz dakika, ücretsiz">Thirty minutes, free</h2>
+      </span>
+      <button type="button" class="meetx" id="meetClose" data-en="Close" data-tr="Kapat">Close</button>
+    </div>
+
+
+    <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
+
+    <div class="mmcal" id="mmCal">
+      <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
+    </div>
+
+    <p class="mmnote">
+      <span data-en="The times come from Google Calendar, which loads inside this page once you open it. Nothing reaches Google before that." data-tr="Saatler Google Takvim'den gelir ve bu sayfanın içinde, siz açtığınız anda yüklenir. Öncesinde Google'a hiçbir şey gitmez.">The times come from Google Calendar, which loads inside this page once you open it. Nothing reaches Google before that.</span>
+      <!-- A browser or an extension can refuse to frame another origin, and when
+           it does the box above is empty with nothing to say so. One line out. -->
+      <a id="mmOut" href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-en="Calendar not loading? Open it in a new tab" data-tr="Takvim açılmadıysa yeni sekmede açın">Calendar not loading? Open it in a new tab</a>
+    </p>
+  </div>
+</section>
+<style>
+/* ---- the booking band ----
+   A band of the page, not a layer over it: same gutter, same column, and it
+   pushes what follows down rather than covering it. */
+.meet{background:#FCFAF5;border-top:2px solid #B84C2E;border-bottom:1px solid rgba(15,15,14,.12);padding:44px var(--pad) 52px;scroll-margin-top:84px}
+.meet .wrap{max-width:1136px;margin:0 auto}
+.meethd{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:22px}
+.meetttl{display:flex;flex-direction:column;gap:5px;min-width:0}
+.meetttl .eyebrow{margin:0}
+.meetttl h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:32px;line-height:1.18}
+.meetx{flex:0 0 auto;background:none;border:1px solid rgba(15,15,14,.24);padding:9px 18px;font-family:inherit;font-size:13px;color:#0F0F0E;cursor:pointer;transition:border-color .18s,color .18s}
+.meetx:hover{border-color:#B84C2E;color:#B84C2E}
+
+/* No crop. It was cropped for a while, to hide the organiser block and the
+   Google footer that come with the framed page, and the cost of that was worse
+   than the thing it hid: on a page Google lays out at a different height, the
+   crop cut the calendar instead. What the frame shows now is Google's page as
+   Google renders it, whole, and everything we want said first is said above it
+   in our own words.
+
+   The height is generous rather than exact for the same reason. If Google's
+   page is shorter there is a little space under it; if it is taller the frame
+   scrolls, which is the browser doing the obvious thing. Nothing here depends
+   on Google's layout staying still. */
+.mmcal{position:relative;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px}
+.mmcal iframe{display:block;border:0;width:100%;height:1180px}
+.mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
+
+.mmintro{margin-top:0;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:3;column-gap:38px}
+.mmintro>*{break-inside:avoid}
+.mmintro p{margin:0 0 12px}
+.mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
+.mmintro ol{margin:0 0 14px;padding-left:20px}
+.mmintro li{margin-bottom:7px;padding-left:2px}
+.mmintro li::marker{color:#B84C2E;font-weight:600}
+.mmnote{margin:20px 0 0;font-size:12.5px;line-height:1.6;color:#7A756C}
+.mmnote a{display:inline-block;margin-left:10px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
+.mmnote a:hover{color:#B84C2E}
+@media (max-width:1024px){
+  .mmintro{column-count:2}
+}
+@media (max-width:640px){
+  .meet{padding-top:32px;padding-bottom:36px}
+  .meetttl h2{font-size:25px}
+  .mmcal{margin-top:20px}
+  /* Narrow: Google stacks the month above the times, so the page it renders is
+     much taller than the desktop one. */
+  .mmcal iframe{height:1560px}
+  .mmintro{column-count:1}
+  .mmnote a{display:block;margin:6px 0 0}
+}
+</style>
+<script>
+(function(){
+'use strict';
+var MEET_URL = ' https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l '.trim();
+var sec = document.getElementById('meet');
+if(!sec) return;
+var links = document.querySelectorAll('[data-meet]');
+var out = document.getElementById('mmOut');
+var asked = false, opener = null;
+
+/* One URL, one place. Whatever the markup says, the links agree with the
+   constant the panel is built from. */
+for(var i=0;i<links.length;i++) links[i].setAttribute('href', MEET_URL);
+if(out) out.setAttribute('href', MEET_URL);
+
+/* Google's embed wants gv=true; without it the schedule renders its own full
+   page chrome inside the band. */
+function load_(){
+  if(asked) return;
+  asked = true;
+  var fr = document.createElement('iframe');
+  fr.src = MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true';
+  fr.title = 'Anthifel';
+  fr.setAttribute('loading','lazy');
+  fr.addEventListener('load', function(){
+    var l = document.getElementById('mmLoad');
+    if(l) l.hidden = true;
+  });
+  document.getElementById('mmCal').appendChild(fr);
+}
+function scroll_(){
+  var top = sec.getBoundingClientRect().top + window.pageYOffset - 84;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+function open_(from){
+  opener = from || opener;
+  sec.hidden = false;
+  load_();
+  scroll_();
+}
+function close_(){
+  sec.hidden = true;
+  if(opener){ try{ opener.scrollIntoView({behavior:'smooth', block:'center'}); opener.focus({preventScroll:true}); }catch(err){} }
+}
+for(var j=0;j<links.length;j++){
+  links[j].addEventListener('click', function(e){
+    e.preventDefault();
+    /* Any of these buttons toggles it. Someone who opened it to look should be
+       able to shut it with the thing they just pressed. */
+    if(!sec.hidden){ close_(); return; }
+    open_(this);
+  });
+}
+document.getElementById('meetClose').addEventListener('click', close_);
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !sec.hidden) close_(); });
+/* A link straight to #meet, from an email or a quote, opens it. */
+if(location.hash === '#meet') open_();
+})();
+</script>
+<!-- ==== /MEET ==== -->
+
   <footer>
     <span data-en="© 2026 Anthifel Ltd · Registered in England and Wales" data-tr="© 2026 Anthifel Ltd · İngiltere ve Galler'de tescillidir">© 2026 Anthifel Ltd · Registered in England and Wales</span>
     <span class="lnks">
@@ -313,158 +478,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   </footer>
 </div>
 
-<!-- ==== MEET ==== -->
-<!-- The booking window, shared by every page that offers the call. One
-     copy of the briefing, one copy of the URL, one modal: a page that
-     wants it names this file in its template and gets the markup, the
-     styles and the behaviour together. It binds to every [data-meet] link
-     it finds, so a page only has to mark its buttons. -->
-<style>
-/* ---- meeting modal ----
-   The privacy modal's frame and the assessment gate's typography, so the call
-   is booked in a room the visitor already recognises. Only the grid of times
-   inside it belongs to Google. */
-.mmodal{max-width:880px}
-.mmttl{display:flex;flex-direction:column;gap:5px;text-align:left;min-width:0}
-.mmttl .eyebrow{margin:0}
-.mmttl h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
-.mmbody{padding:20px 28px 24px;overflow:auto;text-align:left}
-/* One column: the calendar inside our own border, the briefing under it. Side
-   by side left a tall empty column beside the text and pushed the picker into
-   half the width it wants. */
-.mmgrid{display:block}
-.mmintro{margin-top:22px;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:2;column-gap:34px}
-.mmintro>*{break-inside:avoid}
-.mmintro p{margin:0 0 12px}
-.mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
-.mmintro ol{margin:0 0 14px;padding-left:20px}
-.mmintro li{margin-bottom:7px;padding-left:2px}
-.mmintro li::marker{color:#B84C2E;font-weight:600}
-/* Google's booking page is framed, and everything around its date picker comes
-   with it: the organiser's photo and name, the meeting title, the duration, the
-   Meet line, the description we already print underneath, and a footer of
-   Google links. None of it can be turned off with a parameter and none of it
-   can be styled from here, because the frame is another origin.
 
-   So the box is the crop. It has a fixed height and hides its overflow; the
-   frame is pulled up by --gcrop and out by --gcropx, and made taller than the
-   box so the footer falls outside it. The horizontal inset exists so Google's
-   own card border ends up under our edge rather than beside it — one border
-   around the calendar, not two.
-
-   Three numbers, and they are the only ones to touch if Google changes the
-   page:  --gcrop   how much comes off the top
-          --gcropx  how much comes off each side
-          height    how much of the picker shows
-   Set by eye against the live page: this build has no network to Google. */
-.mmcal{--gcrop:150px;--gcropx:34px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);height:470px}
-.mmcal iframe{display:block;border:0;width:calc(100% + 2 * var(--gcropx));margin-left:calc(-1 * var(--gcropx));height:calc(470px + var(--gcrop) + 300px);margin-top:calc(-1 * var(--gcrop))}
-.mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
-.mmft-l{display:flex;flex-direction:column;gap:7px;align-items:flex-start;max-width:600px;min-width:0}
-.mmnote{font-size:12.5px;line-height:1.5;color:#7A756C}
-@media (max-width:640px){
-  .mmttl h3{font-size:22px}
-  .mmbody{padding:16px 20px 20px}
-  .mmintro{font-size:14px}
-  .mmcal{--gcropx:16px;height:430px}
-  .mmintro{column-count:1}
-  .mmft-l{align-items:center;text-align:center}
-}
-</style>
-<!-- The free call, booked without leaving the page. The times are Google's —
-     they have to be, the calendar is where they live — but the room around
-     them is ours, and the request to Google is made when the visitor asks for
-     it by clicking, never on a plain page view. The links still carry the real
-     schedule URL, so the button works even if this script never runs. -->
-<div class="povl" id="movl" hidden>
-  <div class="pmodal mmodal" role="dialog" aria-modal="true" aria-labelledby="mmTitle">
-    <div class="pmhd">
-      <span class="mmttl">
-        <span class="eyebrow" data-en="Introductory call" data-tr="Tanışma görüşmesi">Introductory call</span>
-        <!-- Not "pick a time": Google's own panel already says that, in the same
-           window, six inches to the right. This says what the half hour is. -->
-        <h3 id="mmTitle" data-en="Thirty minutes, free" data-tr="Otuz dakika, ücretsiz">Thirty minutes, free</h3>
-      </span>
-      <button type="button" id="mmClose" aria-label="Close">&times;</button>
-    </div>
-    <div class="mmbody">
-      <div class="mmgrid">
-      <!-- The picker first, in one box of our own. What the call is, written by
-           the CEO on 9 August, sits under it: a briefing rather than a caption,
-           because the four questions are what makes the half hour work and a
-           visitor who reads them arrives ready. -->
-      <div class="mmcal" id="mmCal">
-        <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
-      </div>
-      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
-      </div>
-    </div>
-    <div class="pmft">
-      <span class="mmft-l">
-        <span class="mmnote" data-en="The times come from Google Calendar, which loads inside this window once you open it. Nothing reaches Google before that." data-tr="Saatler Google Takvim'den gelir ve bu pencerenin içinde, siz açtığınız anda yüklenir. Öncesinde Google'a hiçbir şey gitmez.">The times come from Google Calendar, which loads inside this window once you open it. Nothing reaches Google before that.</span>
-        <!-- A browser or an extension can refuse to frame someone else's page,
-             and when it does the box above is simply empty with nothing to say
-             so. This is the way out of that, and it costs one line. -->
-        <a id="mmOut" href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-en="Calendar not loading? Open it in a new tab" data-tr="Takvim açılmadıysa yeni sekmede açın">Calendar not loading? Open it in a new tab</a>
-      </span>
-      <button type="button" class="btn btn-s" id="mmDone" data-en="Close" data-tr="Kapat">Close</button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-'use strict';
-var MEET_URL = 'https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l';
-  var ovl = document.getElementById('movl');
-  if(!ovl) return;
-  var links = document.querySelectorAll('[data-meet]');
-  var out = document.getElementById('mmOut');
-  var last = null, asked = false;
-
-  /* One URL, one place. Whatever the markup says, the links agree with the
-     constant the frame is built from. */
-  for(var i=0;i<links.length;i++) links[i].setAttribute('href', MEET_URL);
-  if(out) out.setAttribute('href', MEET_URL);
-
-  /* Google's embed wants gv=true; without it the schedule renders its own
-     full page chrome inside our window. */
-  function embedURL(){
-    return MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true';
-  }
-  function load_(){
-    if(asked) return;
-    asked = true;
-    var fr = document.createElement('iframe');
-    fr.src = embedURL();
-    fr.title = 'Anthifel';
-    fr.setAttribute('loading','lazy');
-    fr.addEventListener('load', function(){
-      var l = document.getElementById('mmLoad');
-      if(l) l.hidden = true;
-    });
-    document.getElementById('mmCal').appendChild(fr);
-  }
-  function open_(e){
-    if(e) e.preventDefault();
-    last = document.activeElement;
-    ovl.hidden = false;
-    document.body.style.overflow = 'hidden';
-    load_();
-    document.getElementById('mmClose').focus();
-  }
-  function close_(){
-    ovl.hidden = true;
-    document.body.style.overflow = '';
-    if(last){ try{ last.focus(); }catch(err){} }
-  }
-  for(var j=0;j<links.length;j++) links[j].addEventListener('click', open_);
-  document.getElementById('mmClose').addEventListener('click', close_);
-  document.getElementById('mmDone').addEventListener('click', close_);
-  ovl.addEventListener('click', function(e){ if(e.target === ovl) close_(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ovl.hidden) close_(); });
-})();
-</script>
-<!-- ==== /MEET ==== -->
 
 <script>
 (function(){
@@ -496,6 +510,19 @@ if(!l&&(navigator.language||'').toLowerCase().indexOf('tr')===0) l='tr';
 apply(l||'en');
 var lb=document.querySelectorAll('.lang button');
 for(var k=0;k<lb.length;k++) lb[k].addEventListener('click',function(){apply(this.getAttribute('data-lang'));});
+
+/* The menu folds into a burger on a narrow screen, and a tap on a link closes
+   it again — otherwise the menu stays over the page you just asked for. */
+var burger = document.getElementById('burger'), nav = document.getElementById('nav');
+if(burger && nav){
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){ nav.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  });
+}
 
 /* Anchors inside the page scroll rather than jump, so the form arriving from
    a button at the top does not feel like a new page. */

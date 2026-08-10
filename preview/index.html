@@ -577,6 +577,159 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   </div>
 </section>
 
+<!-- ==== MEET ==== -->
+<!-- Booking the call, in the page.
+
+     It was a modal over the page. A modal is the right shape for something you
+     must answer before you can carry on, and this is the opposite: a visitor
+     who is only looking should be able to look. So the calendar is a band that
+     opens where the page continues, the button scrolls to it, and closing it is
+     the same button again.
+
+     What cannot be done, and it is worth writing down rather than attempting:
+     the panel cannot close itself when a booking is made. The booking happens
+     inside Google's page, on Google's origin, and nothing about it is readable
+     from here. Any "it closed, so it worked" would be a guess. It closes when
+     the visitor closes it, and Google's own confirmation is what tells them the
+     booking happened. -->
+<section class="meet" id="meet" hidden>
+  <div class="wrap">
+    <div class="meethd">
+      <span class="meetttl">
+        <span class="eyebrow" data-en="Introductory call" data-tr="Tanışma görüşmesi">Introductory call</span>
+        <h2 data-en="Thirty minutes, free" data-tr="Otuz dakika, ücretsiz">Thirty minutes, free</h2>
+      </span>
+      <button type="button" class="meetx" id="meetClose" data-en="Close" data-tr="Kapat">Close</button>
+    </div>
+
+
+    <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
+
+    <div class="mmcal" id="mmCal">
+      <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
+    </div>
+
+    <p class="mmnote">
+      <span data-en="The times come from Google Calendar, which loads inside this page once you open it. Nothing reaches Google before that." data-tr="Saatler Google Takvim'den gelir ve bu sayfanın içinde, siz açtığınız anda yüklenir. Öncesinde Google'a hiçbir şey gitmez.">The times come from Google Calendar, which loads inside this page once you open it. Nothing reaches Google before that.</span>
+      <!-- A browser or an extension can refuse to frame another origin, and when
+           it does the box above is empty with nothing to say so. One line out. -->
+      <a id="mmOut" href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-en="Calendar not loading? Open it in a new tab" data-tr="Takvim açılmadıysa yeni sekmede açın">Calendar not loading? Open it in a new tab</a>
+    </p>
+  </div>
+</section>
+<style>
+/* ---- the booking band ----
+   A band of the page, not a layer over it: same gutter, same column, and it
+   pushes what follows down rather than covering it. */
+.meet{background:#FCFAF5;border-top:2px solid #B84C2E;border-bottom:1px solid rgba(15,15,14,.12);padding:44px var(--pad) 52px;scroll-margin-top:84px}
+.meet .wrap{max-width:1136px;margin:0 auto}
+.meethd{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:22px}
+.meetttl{display:flex;flex-direction:column;gap:5px;min-width:0}
+.meetttl .eyebrow{margin:0}
+.meetttl h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:32px;line-height:1.18}
+.meetx{flex:0 0 auto;background:none;border:1px solid rgba(15,15,14,.24);padding:9px 18px;font-family:inherit;font-size:13px;color:#0F0F0E;cursor:pointer;transition:border-color .18s,color .18s}
+.meetx:hover{border-color:#B84C2E;color:#B84C2E}
+
+/* No crop. It was cropped for a while, to hide the organiser block and the
+   Google footer that come with the framed page, and the cost of that was worse
+   than the thing it hid: on a page Google lays out at a different height, the
+   crop cut the calendar instead. What the frame shows now is Google's page as
+   Google renders it, whole, and everything we want said first is said above it
+   in our own words.
+
+   The height is generous rather than exact for the same reason. If Google's
+   page is shorter there is a little space under it; if it is taller the frame
+   scrolls, which is the browser doing the obvious thing. Nothing here depends
+   on Google's layout staying still. */
+.mmcal{position:relative;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px}
+.mmcal iframe{display:block;border:0;width:100%;height:1180px}
+.mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
+
+.mmintro{margin-top:0;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:3;column-gap:38px}
+.mmintro>*{break-inside:avoid}
+.mmintro p{margin:0 0 12px}
+.mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
+.mmintro ol{margin:0 0 14px;padding-left:20px}
+.mmintro li{margin-bottom:7px;padding-left:2px}
+.mmintro li::marker{color:#B84C2E;font-weight:600}
+.mmnote{margin:20px 0 0;font-size:12.5px;line-height:1.6;color:#7A756C}
+.mmnote a{display:inline-block;margin-left:10px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
+.mmnote a:hover{color:#B84C2E}
+@media (max-width:1024px){
+  .mmintro{column-count:2}
+}
+@media (max-width:640px){
+  .meet{padding-top:32px;padding-bottom:36px}
+  .meetttl h2{font-size:25px}
+  .mmcal{margin-top:20px}
+  /* Narrow: Google stacks the month above the times, so the page it renders is
+     much taller than the desktop one. */
+  .mmcal iframe{height:1560px}
+  .mmintro{column-count:1}
+  .mmnote a{display:block;margin:6px 0 0}
+}
+</style>
+<script>
+(function(){
+'use strict';
+var MEET_URL = ' https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l '.trim();
+var sec = document.getElementById('meet');
+if(!sec) return;
+var links = document.querySelectorAll('[data-meet]');
+var out = document.getElementById('mmOut');
+var asked = false, opener = null;
+
+/* One URL, one place. Whatever the markup says, the links agree with the
+   constant the panel is built from. */
+for(var i=0;i<links.length;i++) links[i].setAttribute('href', MEET_URL);
+if(out) out.setAttribute('href', MEET_URL);
+
+/* Google's embed wants gv=true; without it the schedule renders its own full
+   page chrome inside the band. */
+function load_(){
+  if(asked) return;
+  asked = true;
+  var fr = document.createElement('iframe');
+  fr.src = MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true';
+  fr.title = 'Anthifel';
+  fr.setAttribute('loading','lazy');
+  fr.addEventListener('load', function(){
+    var l = document.getElementById('mmLoad');
+    if(l) l.hidden = true;
+  });
+  document.getElementById('mmCal').appendChild(fr);
+}
+function scroll_(){
+  var top = sec.getBoundingClientRect().top + window.pageYOffset - 84;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+function open_(from){
+  opener = from || opener;
+  sec.hidden = false;
+  load_();
+  scroll_();
+}
+function close_(){
+  sec.hidden = true;
+  if(opener){ try{ opener.scrollIntoView({behavior:'smooth', block:'center'}); opener.focus({preventScroll:true}); }catch(err){} }
+}
+for(var j=0;j<links.length;j++){
+  links[j].addEventListener('click', function(e){
+    e.preventDefault();
+    /* Any of these buttons toggles it. Someone who opened it to look should be
+       able to shut it with the thing they just pressed. */
+    if(!sec.hidden){ close_(); return; }
+    open_(this);
+  });
+}
+document.getElementById('meetClose').addEventListener('click', close_);
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !sec.hidden) close_(); });
+/* A link straight to #meet, from an email or a quote, opens it. */
+if(location.hash === '#meet') open_();
+})();
+</script>
+<!-- ==== /MEET ==== -->
+
 <!-- ============ FOOTER ============ -->
 <footer class="ftr" id="contact">
   <div class="ftr-g">
@@ -707,158 +860,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   </div>
 </div>
 
-<!-- ==== MEET ==== -->
-<!-- The booking window, shared by every page that offers the call. One
-     copy of the briefing, one copy of the URL, one modal: a page that
-     wants it names this file in its template and gets the markup, the
-     styles and the behaviour together. It binds to every [data-meet] link
-     it finds, so a page only has to mark its buttons. -->
-<style>
-/* ---- meeting modal ----
-   The privacy modal's frame and the assessment gate's typography, so the call
-   is booked in a room the visitor already recognises. Only the grid of times
-   inside it belongs to Google. */
-.mmodal{max-width:880px}
-.mmttl{display:flex;flex-direction:column;gap:5px;text-align:left;min-width:0}
-.mmttl .eyebrow{margin:0}
-.mmttl h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
-.mmbody{padding:20px 28px 24px;overflow:auto;text-align:left}
-/* One column: the calendar inside our own border, the briefing under it. Side
-   by side left a tall empty column beside the text and pushed the picker into
-   half the width it wants. */
-.mmgrid{display:block}
-.mmintro{margin-top:22px;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:2;column-gap:34px}
-.mmintro>*{break-inside:avoid}
-.mmintro p{margin:0 0 12px}
-.mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
-.mmintro ol{margin:0 0 14px;padding-left:20px}
-.mmintro li{margin-bottom:7px;padding-left:2px}
-.mmintro li::marker{color:#B84C2E;font-weight:600}
-/* Google's booking page is framed, and everything around its date picker comes
-   with it: the organiser's photo and name, the meeting title, the duration, the
-   Meet line, the description we already print underneath, and a footer of
-   Google links. None of it can be turned off with a parameter and none of it
-   can be styled from here, because the frame is another origin.
-
-   So the box is the crop. It has a fixed height and hides its overflow; the
-   frame is pulled up by --gcrop and out by --gcropx, and made taller than the
-   box so the footer falls outside it. The horizontal inset exists so Google's
-   own card border ends up under our edge rather than beside it — one border
-   around the calendar, not two.
-
-   Three numbers, and they are the only ones to touch if Google changes the
-   page:  --gcrop   how much comes off the top
-          --gcropx  how much comes off each side
-          height    how much of the picker shows
-   Set by eye against the live page: this build has no network to Google. */
-.mmcal{--gcrop:150px;--gcropx:34px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);height:470px}
-.mmcal iframe{display:block;border:0;width:calc(100% + 2 * var(--gcropx));margin-left:calc(-1 * var(--gcropx));height:calc(470px + var(--gcrop) + 300px);margin-top:calc(-1 * var(--gcrop))}
-.mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
-.mmft-l{display:flex;flex-direction:column;gap:7px;align-items:flex-start;max-width:600px;min-width:0}
-.mmnote{font-size:12.5px;line-height:1.5;color:#7A756C}
-@media (max-width:640px){
-  .mmttl h3{font-size:22px}
-  .mmbody{padding:16px 20px 20px}
-  .mmintro{font-size:14px}
-  .mmcal{--gcropx:16px;height:430px}
-  .mmintro{column-count:1}
-  .mmft-l{align-items:center;text-align:center}
-}
-</style>
-<!-- The free call, booked without leaving the page. The times are Google's —
-     they have to be, the calendar is where they live — but the room around
-     them is ours, and the request to Google is made when the visitor asks for
-     it by clicking, never on a plain page view. The links still carry the real
-     schedule URL, so the button works even if this script never runs. -->
-<div class="povl" id="movl" hidden>
-  <div class="pmodal mmodal" role="dialog" aria-modal="true" aria-labelledby="mmTitle">
-    <div class="pmhd">
-      <span class="mmttl">
-        <span class="eyebrow" data-en="Introductory call" data-tr="Tanışma görüşmesi">Introductory call</span>
-        <!-- Not "pick a time": Google's own panel already says that, in the same
-           window, six inches to the right. This says what the half hour is. -->
-        <h3 id="mmTitle" data-en="Thirty minutes, free" data-tr="Otuz dakika, ücretsiz">Thirty minutes, free</h3>
-      </span>
-      <button type="button" id="mmClose" aria-label="Close">&times;</button>
-    </div>
-    <div class="mmbody">
-      <div class="mmgrid">
-      <!-- The picker first, in one box of our own. What the call is, written by
-           the CEO on 9 August, sits under it: a briefing rather than a caption,
-           because the four questions are what makes the half hour work and a
-           visitor who reads them arrives ready. -->
-      <div class="mmcal" id="mmCal">
-        <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
-      </div>
-      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
-      </div>
-    </div>
-    <div class="pmft">
-      <span class="mmft-l">
-        <span class="mmnote" data-en="The times come from Google Calendar, which loads inside this window once you open it. Nothing reaches Google before that." data-tr="Saatler Google Takvim'den gelir ve bu pencerenin içinde, siz açtığınız anda yüklenir. Öncesinde Google'a hiçbir şey gitmez.">The times come from Google Calendar, which loads inside this window once you open it. Nothing reaches Google before that.</span>
-        <!-- A browser or an extension can refuse to frame someone else's page,
-             and when it does the box above is simply empty with nothing to say
-             so. This is the way out of that, and it costs one line. -->
-        <a id="mmOut" href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-en="Calendar not loading? Open it in a new tab" data-tr="Takvim açılmadıysa yeni sekmede açın">Calendar not loading? Open it in a new tab</a>
-      </span>
-      <button type="button" class="btn btn-s" id="mmDone" data-en="Close" data-tr="Kapat">Close</button>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-'use strict';
-var MEET_URL = 'https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l';
-  var ovl = document.getElementById('movl');
-  if(!ovl) return;
-  var links = document.querySelectorAll('[data-meet]');
-  var out = document.getElementById('mmOut');
-  var last = null, asked = false;
-
-  /* One URL, one place. Whatever the markup says, the links agree with the
-     constant the frame is built from. */
-  for(var i=0;i<links.length;i++) links[i].setAttribute('href', MEET_URL);
-  if(out) out.setAttribute('href', MEET_URL);
-
-  /* Google's embed wants gv=true; without it the schedule renders its own
-     full page chrome inside our window. */
-  function embedURL(){
-    return MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true';
-  }
-  function load_(){
-    if(asked) return;
-    asked = true;
-    var fr = document.createElement('iframe');
-    fr.src = embedURL();
-    fr.title = 'Anthifel';
-    fr.setAttribute('loading','lazy');
-    fr.addEventListener('load', function(){
-      var l = document.getElementById('mmLoad');
-      if(l) l.hidden = true;
-    });
-    document.getElementById('mmCal').appendChild(fr);
-  }
-  function open_(e){
-    if(e) e.preventDefault();
-    last = document.activeElement;
-    ovl.hidden = false;
-    document.body.style.overflow = 'hidden';
-    load_();
-    document.getElementById('mmClose').focus();
-  }
-  function close_(){
-    ovl.hidden = true;
-    document.body.style.overflow = '';
-    if(last){ try{ last.focus(); }catch(err){} }
-  }
-  for(var j=0;j<links.length;j++) links[j].addEventListener('click', open_);
-  document.getElementById('mmClose').addEventListener('click', close_);
-  document.getElementById('mmDone').addEventListener('click', close_);
-  ovl.addEventListener('click', function(e){ if(e.target === ovl) close_(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ovl.hidden) close_(); });
-})();
-</script>
-<!-- ==== /MEET ==== -->
 </div>
 
 <script>
