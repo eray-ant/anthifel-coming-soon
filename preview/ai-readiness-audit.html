@@ -97,8 +97,8 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
 .devnote{grid-column:1/-1;margin-top:6px;padding:12px 16px;border:1px dashed rgba(184,76,46,.5);background:#FDF6F3;font-size:12.5px;line-height:1.5;color:#8A3D22}
 
-.svc-foot{margin-top:72px;padding-top:38px;border-top:1px solid rgba(15,15,14,.12)}
-.back{display:inline-block;margin-top:34px;font-size:14px;color:#0F0F0E;border-bottom:1px solid rgba(15,15,14,.3);padding-bottom:2px;text-decoration:none;transition:color .18s,border-color .18s}
+.svc-foot{margin-top:56px;padding-top:30px;border-top:1px solid rgba(15,15,14,.12)}
+.back{display:inline-block;margin-top:0;font-size:14px;color:#0F0F0E;border-bottom:1px solid rgba(15,15,14,.3);padding-bottom:2px;text-decoration:none;transition:color .18s,border-color .18s}
 .back:hover{color:#B84C2E;border-color:#B84C2E}
 
 /* ---- the modal frame the booking window borrows. Same values as the landing
@@ -293,11 +293,11 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
         </form>
       </section>
 
+      <!-- One pair of buttons on the page, at the top. The foot used to repeat
+           them; a visitor who has read the page scrolls back up or uses the
+           form they are standing in front of, and the same two buttons twice
+           read as a page that does not know what it wants. -->
       <div class="svc-foot">
-        <div class="svc-cta">
-          <a class="btn btn-p" href="#teklif" data-en="Request a quote" data-tr="Teklif alın">Request a quote</a>
-          <a class="btn btn-s" href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a 30-minute call" data-tr="30 dakikalık görüşme alın">Book a 30-minute call</a>
-        </div>
         <a class="back" href="index.html" data-en="← Back to the site" data-tr="← Siteye dön">← Back to the site</a>
       </div>
     </div>
@@ -324,41 +324,50 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
    The privacy modal's frame and the assessment gate's typography, so the call
    is booked in a room the visitor already recognises. Only the grid of times
    inside it belongs to Google. */
-.mmodal{max-width:1180px}
+.mmodal{max-width:880px}
 .mmttl{display:flex;flex-direction:column;gap:5px;text-align:left;min-width:0}
 .mmttl .eyebrow{margin:0}
 .mmttl h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
 .mmbody{padding:20px 28px 24px;overflow:auto;text-align:left}
-/* The briefing and the picker side by side, so a visitor never has to scroll
-   past one to reach the other. Below 900px they stack, briefing first. */
-.mmgrid{display:grid;grid-template-columns:355px minmax(0,1fr);gap:26px;align-items:start}
-.mmintro{font-size:14.5px;line-height:1.62;color:#3A3733}
+/* One column: the calendar inside our own border, the briefing under it. Side
+   by side left a tall empty column beside the text and pushed the picker into
+   half the width it wants. */
+.mmgrid{display:block}
+.mmintro{margin-top:22px;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:2;column-gap:34px}
+.mmintro>*{break-inside:avoid}
 .mmintro p{margin:0 0 12px}
 .mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
 .mmintro ol{margin:0 0 14px;padding-left:20px}
 .mmintro li{margin-bottom:7px;padding-left:2px}
 .mmintro li::marker{color:#B84C2E;font-weight:600}
-/* Google's booking page opens with its own header: the organiser's photo and
-   name, the meeting title, the duration, the Meet line and the description we
-   already print on the left of this window. None of it can be turned off with
-   a parameter and none of it can be styled from here, because the frame is
-   another origin. So it is cropped: the frame is pulled up by --gcrop and the
-   box hides the overflow, leaving the date picker.
-   --gcrop is the one number to change if Google's header grows or shrinks. */
-.mmcal{--gcrop:250px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.12);min-height:560px}
-.mmcal iframe{display:block;width:100%;height:calc(620px + var(--gcrop));border:0;margin-top:calc(-1 * var(--gcrop))}
+/* Google's booking page is framed, and everything around its date picker comes
+   with it: the organiser's photo and name, the meeting title, the duration, the
+   Meet line, the description we already print underneath, and a footer of
+   Google links. None of it can be turned off with a parameter and none of it
+   can be styled from here, because the frame is another origin.
+
+   So the box is the crop. It has a fixed height and hides its overflow; the
+   frame is pulled up by --gcrop and out by --gcropx, and made taller than the
+   box so the footer falls outside it. The horizontal inset exists so Google's
+   own card border ends up under our edge rather than beside it — one border
+   around the calendar, not two.
+
+   Three numbers, and they are the only ones to touch if Google changes the
+   page:  --gcrop   how much comes off the top
+          --gcropx  how much comes off each side
+          height    how much of the picker shows
+   Set by eye against the live page: this build has no network to Google. */
+.mmcal{--gcrop:150px;--gcropx:34px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);height:470px}
+.mmcal iframe{display:block;border:0;width:calc(100% + 2 * var(--gcropx));margin-left:calc(-1 * var(--gcropx));height:calc(470px + var(--gcrop) + 300px);margin-top:calc(-1 * var(--gcrop))}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 .mmft-l{display:flex;flex-direction:column;gap:7px;align-items:flex-start;max-width:600px;min-width:0}
 .mmnote{font-size:12.5px;line-height:1.5;color:#7A756C}
-@media (max-width:1040px){
-  .mmgrid{grid-template-columns:1fr;gap:18px}
-}
 @media (max-width:640px){
   .mmttl h3{font-size:22px}
   .mmbody{padding:16px 20px 20px}
   .mmintro{font-size:14px}
-  .mmcal{--gcrop:230px;min-height:520px}
-  .mmcal iframe{height:calc(560px + var(--gcrop))}
+  .mmcal{--gcropx:16px;height:430px}
+  .mmintro{column-count:1}
   .mmft-l{align-items:center;text-align:center}
 }
 </style>
@@ -380,14 +389,14 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
     </div>
     <div class="mmbody">
       <div class="mmgrid">
-      <!-- What the call is, written by the CEO on 9 August. It is a briefing,
-           not a caption: the four questions are what makes the half hour work,
-           and a visitor who reads them arrives ready. It sits beside the
-           calendar on a wide screen so neither has to be scrolled to. -->
-      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
+      <!-- The picker first, in one box of our own. What the call is, written by
+           the CEO on 9 August, sits under it: a briefing rather than a caption,
+           because the four questions are what makes the half hour work and a
+           visitor who reads them arrives ready. -->
       <div class="mmcal" id="mmCal">
         <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
       </div>
+      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
       </div>
     </div>
     <div class="pmft">

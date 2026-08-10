@@ -153,6 +153,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cap{display:none;margin:0 0 20px;justify-content:center}
 .cap.on{display:flex;min-height:78px}
 .cap>div{max-width:100%}
+/* The bot check reads as a control, not a badge: a box you press, a tick when
+   it is done, and one line saying where the work happened. */
+.powbox{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;background:#FCFAF5;border:1px solid rgba(15,15,14,.22);font-family:inherit;text-align:left;cursor:pointer;transition:border-color .18s}
+.powbox:hover{border-color:#B84C2E}
+.powbox[disabled]{cursor:default}
+.powtick{flex:0 0 22px;width:22px;height:22px;border:1px solid rgba(15,15,14,.3);background:#fff;position:relative}
+.powtx{display:flex;flex-direction:column;gap:3px;min-width:0}
+.powtx b{font-size:14px;font-weight:500;color:#0F0F0E}
+.powtx i{font-style:normal;font-size:12px;color:#7A756C}
+.powbox.busy .powtick{border-color:#B84C2E}
+.powbox.busy .powtick::after{content:'';position:absolute;inset:4px;border:2px solid rgba(184,76,46,.25);border-top-color:#B84C2E;border-radius:50%;animation:powspin .7s linear infinite}
+@keyframes powspin{to{transform:rotate(360deg)}}
+.powbox.done{border-color:#2E7D4F;background:#F4FAF6}
+.powbox.done .powtick{border-color:#2E7D4F;background:#2E7D4F}
+.powbox.done .powtick::after{content:'';position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 .emsg{font-size:13px;color:#B84C2E;margin:-10px 0 14px}
 .emsg:empty{display:none}
 .gate .actions{display:flex;flex-direction:column;gap:12px;align-items:stretch}
@@ -218,6 +233,23 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .pmbody{padding:22px 28px;overflow:auto;font-size:15px;line-height:1.68;color:#3A3733;text-align:left}
 .pmbody p+p{margin-top:14px}
 .pmbody a{color:#B84C2E;text-decoration:underline;text-underline-offset:2px}
+/* The modal now carries Legal's whole notice rather than a summary of it, so it
+   needs the same shapes the page version has: headings, lists and the three
+   tables that hold the substance. */
+.pmbody h3{margin:26px 0 10px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:21px;line-height:1.25;color:#0F0F0E}
+.pmbody h3:first-child{margin-top:0}
+.pmbody strong{font-weight:600;color:#1A1815}
+.pmbody ul{margin:0 0 15px;padding-left:20px}
+.pmbody li{margin-bottom:7px}
+.pmbody blockquote{margin:0 0 15px;padding:12px 15px;background:#F5F1EA;border-left:2px solid #B84C2E;font-size:14px}
+.pmbody table{width:100%;border-collapse:collapse;margin:4px 0 18px;font-size:13px;line-height:1.5}
+.pmbody thead th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#625D55;padding:0 12px 8px 0;border-bottom:1px solid rgba(15,15,14,.2);vertical-align:bottom}
+.pmbody tbody td{padding:10px 12px 10px 0;border-bottom:1px solid rgba(15,15,14,.09);vertical-align:top}
+.pmbody th:last-child,.pmbody td:last-child{padding-right:0}
+.pmbody .tw{overflow-x:auto}
+.pmbody .tw table{min-width:520px}
+/* Legal has not filled these yet; the marker is the same one the page uses. */
+.pmbody .lgap{display:inline-block;background:#FDF0EB;border:1px dashed #B84C2E;color:#8A3D22;font-size:11.5px;font-weight:600;padding:1px 6px;white-space:nowrap}
 .pmft{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 28px 22px;border-top:1px solid rgba(15,15,14,.12)}
 .pmft a{font-size:13.5px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
 .pmft a:hover{color:#B84C2E}
@@ -500,7 +532,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         </div>
         <div class="emsg" id="e-consent"></div>
 
-        <div class="cap"><div id="rc"></div></div>
+        <!-- The bot check. It runs in this browser and reaches nobody: the
+             visitor's device does a short piece of arithmetic that is cheap
+             once and expensive ten thousand times, which is the whole job a
+             captcha has here. Nothing is sent to Google, so nothing has to be
+             disclosed, consented to, or paid for. -->
+        <div class="cap on">
+          <button type="button" class="powbox" id="pow" aria-pressed="false">
+            <span class="powtick" aria-hidden="true"></span>
+            <span class="powtx">
+              <b data-en="Confirm you are not a robot" data-tr="Robot olmadığınızı doğrulayın">Confirm you are not a robot</b>
+              <i data-en="Runs in your browser. Nothing is sent anywhere." data-tr="Tarayıcınızda çalışır. Hiçbir yere veri gitmez.">Runs in your browser. Nothing is sent anywhere.</i>
+            </span>
+          </button>
+        </div>
         <div class="emsg" id="e-cap"></div>
 
         <div class="actions">
@@ -587,8 +632,74 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <h3 id="pmTitle" data-en="Privacy Policy" data-tr="Gizlilik Politikası">Privacy Policy</h3>
       <button type="button" id="pmClose" aria-label="Close">&times;</button>
     </div>
-    <div class="pmbody"><p data-en="Our privacy policy is being finalised and will be published before this site collects any personal data. Until it is live, the enquiry form stays switched off." data-tr="Gizlilik politikamız hazırlanıyor ve bu site herhangi bir kişisel veri toplamadan önce yayımlanacak. Yayımlanana kadar iletişim formu kapalı kalır.">Our privacy policy is being finalised and will be published before this site collects any personal data. Until it is live, the enquiry form stays switched off.</p>
-<p data-en="If you have a question about how we handle your information, or you would like anything we hold about you deleted, write to <a href='mailto:privacy@anthifel.com'>privacy@anthifel.com</a> and we will answer within seven days." data-tr="Bilgilerinizi nasıl işlediğimizle ilgili bir sorunuz varsa ya da hakkınızda tuttuğumuz herhangi bir şeyin silinmesini istiyorsanız, <a href='mailto:privacy@anthifel.com'>privacy@anthifel.com</a> adresine yazın, yedi gün içinde yanıtlayalım.">If you have a question about how we handle your information, or you would like anything we hold about you deleted, write to <a href='mailto:privacy@anthifel.com'>privacy@anthifel.com</a> and we will answer within seven days.</p></div>
+    <div class="pmbody"><div class="pmpane" data-pane="en"><p><strong>Last updated:</strong> 20 August 2026 <strong>Version:</strong> privacy-v1</p>
+<h3>Who we are</h3>
+<p>Anthifel Ltd is a company registered in England and Wales, company number <span class="lgap" title="Legal">[COMPANY NUMBER]</span>, registered office <span class="lgap" title="Legal">[REGISTERED ADDRESS]</span>. We are the controller of the personal data described in this policy.</p>
+<p>For anything relating to your personal data, write to <strong><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a></strong>.</p>
+<p>We are registered with the Information Commissioner's Office under registration number <span class="lgap" title="Legal">[ICO REGISTRATION NUMBER]</span>.</p>
+<h3>What this policy covers</h3>
+<p>This policy covers personal data we collect through our website and in the course of providing our consultancy services. It does not cover other companies' websites we link to.</p>
+<h3>What we collect, why, and on what basis</h3>
+<table><thead><tr><th>What we collect</th><th>Why</th><th>Legal basis</th><th>How long we keep it</th></tr></thead><tbody><tr><td>Name, email address, company, role — when you contact us or request the assessment result</td><td>To reply to you and send what you asked for</td><td>Our legitimate interest in responding to enquiries; and taking steps at your request before entering a contract</td><td>24 months from our last contact with you</td></tr><tr><td>Your email address, for our newsletter and updates</td><td>To send you content and updates about our work</td><td>Your consent, given separately. You can withdraw it at any time</td><td>Until you unsubscribe, or after 24 months of no engagement, whichever comes first</td></tr><tr><td>Information you give us during an engagement — including material about your organisation and its people</td><td>To deliver the service you have engaged us for</td><td>Performance of our contract with you; and our legitimate interest in delivering the engagement</td><td>For the period set out in the engagement contract</td></tr><tr><td>Technical information about your visit — IP address, browser, pages viewed</td><td>To keep the site working and understand how it is used</td><td>Your consent for anything beyond what is strictly necessary</td><td>Set out in our cookie information below</td></tr></tbody></table>
+<p><strong>The AI Readiness Assessment.</strong> The assessment on our website does not store your answers or your result against you. If you ask us to send you the result, we use your email address for that and nothing else.</p>
+<p><strong>We do not make automated decisions about you</strong> that produce legal or similarly significant effects, and we do not profile you.</p>
+<p><strong>We do not sell your personal data.</strong> We do not share it with anyone for their own marketing.</p>
+<h3>Where we get your data from</h3>
+<p>From you. You give it to us when you contact us, ask for something, or work with us.</p>
+<p>Where we ever hold information about you that did not come from you directly, we will tell you at the first point we contact you — what we hold, where it came from, and how to object.</p>
+<h3>Who we share it with</h3>
+<p>We use service providers who process personal data on our behalf, under contract, and only on our instructions:</p>
+<table><thead><tr><th>Service provider</th><th>What it does</th><th>What personal data reaches it</th><th>Where it is hosted</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Website hosting. Serves every page</td><td>IP address and browser user agent, in server access logs</td><td>United Kingdom (London region)</td></tr><tr><td>Domain registrar</td><td>The anthifel.com registration</td><td>Registrant contact details in the WHOIS record</td><td>To be confirmed with the registrar</td></tr><tr><td>Google (Apps Script and Workspace)</td><td>Receives the assessment form and sends the result by email</td><td>Name, email address, company and the message you send</td><td>Google</td></tr><tr><td>Google (Calendar appointment schedule)</td><td>The booking window behind every call button</td><td>IP address, browser user agent and Google cookies, only once you open the booking window; then whatever you enter into Google’s booking form</td><td>Google. No region choice is offered</td></tr><tr><td>Supabase</td><td>The database behind our internal dashboard. No visitor data reaches it</td><td>Staff account email addresses only</td><td>United Kingdom (London region)</td></tr></tbody></table>
+<p>We also share personal data where we are required to by law, or with our professional advisers where necessary.</p>
+<h3>Sending data outside the UK</h3>
+<p>Where a service provider is located outside the United Kingdom, we put in place a transfer mechanism recognised under UK data protection law before any personal data is transferred. You can ask us which mechanism applies to a particular transfer.</p>
+<h3>Your rights</h3>
+<p>You have the right to:</p>
+<ul><li><strong>ask for a copy</strong> of the personal data we hold about you</li><li><strong>have it corrected</strong> if it is wrong</li><li><strong>have it deleted</strong> in certain circumstances</li><li><strong>restrict how we use it</strong> in certain circumstances</li><li><strong>receive it in a portable format</strong>, where we rely on your consent or on a contract</li><li><strong>object to our use of it</strong> where we rely on legitimate interests — including, at any time and for any reason, to our use of it for direct marketing</li><li><strong>withdraw your consent</strong> at any time, where we rely on consent. Withdrawing it does not affect anything we did before you withdrew it</li></ul>
+<p>To exercise any of these, write to <strong><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a></strong>. We will respond within one month. There is no charge.</p>
+<p><strong>Unsubscribing</strong> is always available from a link in every marketing email, and we do not ask you for a reason.</p>
+<h3>Cookies and analytics</h3>
+<p>We use cookies that are strictly necessary for the site to function. These do not need your consent.</p>
+<p>We ask for your consent before setting any other cookie, including analytics. If you decline, the site works normally — you simply are not measured. You can change your choice at any time.</p>
+<h3>Complaints</h3>
+<p>If you are unhappy with how we have handled your personal data, please tell us first at <a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a> — we would rather fix it.</p>
+<p>You also have the right to complain to the Information Commissioner's Office, the UK's data protection regulator, at <strong><a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></strong>, without contacting us first.</p>
+<h3>Changes to this policy</h3>
+<p>If we change this policy we will publish the new version here with a new version number and date. Where a change materially affects how we use data you have already given us, we will tell you directly.</p></div>
+<div class="pmpane" data-pane="tr" hidden><p><strong>Son güncelleme:</strong> 20 Ağustos 2026 <strong>Sürüm:</strong> privacy-v1</p>
+<h3>Biz kimiz</h3>
+<p>Anthifel Ltd, İngiltere ve Galler'de kayıtlı bir şirkettir. Şirket numarası <span class="lgap" title="Legal">[ŞİRKET NUMARASI]</span>, kayıtlı adresi <span class="lgap" title="Legal">[KAYITLI ADRES]</span>. Bu politikada anlatılan kişisel verilerin <strong>veri sorumlusu</strong> biziz.</p>
+<p>Kişisel verilerinizle ilgili her konu için: <strong><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a></strong></p>
+<p>Bilgi Komiserliği Ofisi'ne (ICO) <span class="lgap" title="Legal">[ICO KAYIT NUMARASI]</span> numarasıyla kayıtlıyız.</p>
+<h3>Bu politika neyi kapsar</h3>
+<p>Web sitemiz üzerinden ve danışmanlık hizmetlerimizi verirken topladığımız kişisel verileri kapsar. Bağlantı verdiğimiz başka şirketlerin sitelerini kapsamaz.</p>
+<h3>Neyi, neden, hangi dayanakla topluyoruz</h3>
+<table><thead><tr><th>Ne topluyoruz</th><th>Neden</th><th>Hukuki dayanak</th><th>Ne kadar saklıyoruz</th></tr></thead><tbody><tr><td>Ad, e-posta, şirket, unvan — bize yazdığınızda veya değerlendirme sonucunu istediğinizde</td><td>Size cevap vermek ve istediğiniz şeyi göndermek</td><td>Gelen taleplere cevap vermekteki meşru menfaatimiz; ve sözleşme öncesi sizin talebinizle atılan adım</td><td>Son temasımızdan itibaren 24 ay</td></tr><tr><td>E-posta adresiniz — bülten ve güncellemeler için</td><td>Size işimize dair içerik ve güncelleme göndermek</td><td><strong>Ayrıca verdiğiniz açık rızanız.</strong> Dilediğiniz zaman geri alabilirsiniz</td><td>Abonelikten çıkana kadar, ya da 24 ay hiç etkileşim olmazsa — hangisi önceyse</td></tr><tr><td>Bir proje sırasında bize verdiğiniz bilgiler — kurumunuza ve çalışanlarınıza dair malzeme dahil</td><td>Bizden aldığınız hizmeti sunmak</td><td>Sizinle yaptığımız sözleşmenin ifası; ve projeyi yürütmekteki meşru menfaatimiz</td><td>Proje sözleşmesinde belirtilen süre</td></tr><tr><td>Ziyaretinize dair teknik bilgi — IP adresi, tarayıcı, görüntülenen sayfalar</td><td>Sitenin çalışmasını sürdürmek ve nasıl kullanıldığını anlamak</td><td>Kesinlikle gerekli olanın ötesindeki her şey için rızanız</td><td>Aşağıdaki çerez bölümünde</td></tr></tbody></table>
+<p><strong>AI Readiness Assessment.</strong> Sitemizdeki değerlendirme, cevaplarınızı ve sonucunuzu size bağlı olarak saklamaz. Sonucu size göndermemizi isterseniz e-posta adresinizi yalnızca bunun için kullanırız.</p>
+<p><strong>Hakkınızda otomatik karar almıyoruz</strong> ve profilleme yapmıyoruz.</p>
+<p><strong>Kişisel verinizi satmıyoruz.</strong> Kimseyle kendi pazarlaması için paylaşmıyoruz.</p>
+<h3>Verinizi nereden alıyoruz</h3>
+<p>Sizden. Bize yazdığınızda, bir şey istediğinizde ya da bizimle çalıştığınızda siz veriyorsunuz.</p>
+<p>Hakkınızda doğrudan sizden gelmeyen bir bilgiyi elimizde tuttuğumuz durumlarda, sizinle kurduğumuz <strong>ilk temasta</strong> size söyleriz: neyi tuttuğumuzu, nereden geldiğini ve nasıl itiraz edebileceğinizi.</p>
+<h3>Kimlerle paylaşıyoruz</h3>
+<p>Bizim adımıza, sözleşmeye bağlı olarak ve yalnızca talimatlarımızla kişisel veri işleyen hizmet sağlayıcılar kullanıyoruz:</p>
+<table><thead><tr><th>Hizmet sağlayıcı</th><th>Ne yapar</th><th>Hangi kişisel veri ulaşır</th><th>Nerede barındırılır</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Web sitesi barındırma. Bütün sayfaları sunar</td><td>Sunucu erişim kayıtlarında IP adresi ve tarayıcı bilgisi</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Alan adı kayıt kuruluşu</td><td>anthifel.com tescili</td><td>WHOIS kaydındaki tescil sahibi iletişim bilgileri</td><td>Kayıt kuruluşuyla teyit edilecek</td></tr><tr><td>Google (Apps Script ve Workspace)</td><td>Test formunu alır ve sonucu e-posta ile gönderir</td><td>Ad, e-posta adresi, şirket ve gönderdiğiniz mesaj</td><td>Google</td></tr><tr><td>Google (Takvim randevu takvimi)</td><td>Her görüşme butonunun arkasındaki randevu penceresi</td><td>Randevu penceresini açtığınız anda IP adresi, tarayıcı bilgisi ve Google çerezleri; sonrasında Google’ın kendi randevu formuna girdikleriniz</td><td>Google. Bölge seçimi sunulmuyor</td></tr><tr><td>Supabase</td><td>İç panelimizin veritabanı. Ziyaretçi verisi buraya ulaşmaz</td><td>Yalnızca çalışan hesaplarının e-posta adresleri</td><td>Birleşik Krallık (Londra bölgesi)</td></tr></tbody></table>
+<p>Ayrıca hukuken zorunlu olduğumuz hâllerde ve gerektiğinde profesyonel danışmanlarımızla paylaşırız.</p>
+<h3>Verinin Birleşik Krallık dışına gönderilmesi</h3>
+<p>Bir hizmet sağlayıcı Birleşik Krallık dışındaysa, herhangi bir kişisel veri aktarılmadan önce Birleşik Krallık veri koruma hukukunun tanıdığı bir aktarım mekanizması kurarız. Belirli bir aktarım için hangi mekanizmanın geçerli olduğunu bize sorabilirsiniz.</p>
+<h3>Haklarınız</h3>
+<p>Şunları yapma hakkınız var:</p>
+<ul><li>Hakkınızda tuttuğumuz kişisel verinin <strong>bir kopyasını istemek</strong></li><li>Yanlışsa <strong>düzeltilmesini istemek</strong></li><li>Belirli hâllerde <strong>silinmesini istemek</strong></li><li>Belirli hâllerde <strong>kullanımını kısıtlatmak</strong></li><li>Rızaya veya sözleşmeye dayandığımız hâllerde veriyi <strong>taşınabilir bir biçimde almak</strong></li><li>Meşru menfaate dayandığımız hâllerde <strong>kullanımına itiraz etmek</strong> — doğrudan pazarlama için kullanımımıza <strong>her zaman ve gerekçesiz</strong> itiraz edebilirsiniz</li><li>Rızaya dayandığımız hâllerde <strong>rızanızı geri almak.</strong> Geri almanız, öncesinde yaptıklarımızı etkilemez</li></ul>
+<p>Bunlardan birini kullanmak için <strong><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a></strong> adresine yazın. Bir ay içinde cevap veririz. Ücret alınmaz.</p>
+<p><strong>Abonelikten çıkmak</strong> her pazarlama e-postasındaki bağlantıdan her zaman mümkündür ve <strong>sebep sormayız.</strong></p>
+<h3>Çerezler ve analitik</h3>
+<p>Sitenin çalışması için kesinlikle gerekli çerezleri kullanıyoruz. Bunlar rızanızı gerektirmez.</p>
+<p>Analitik dahil diğer her çerez için <strong>önceden rızanızı isteriz.</strong> Reddederseniz site normal çalışır — sadece ölçülmezsiniz. Tercihinizi istediğiniz zaman değiştirebilirsiniz.</p>
+<h3>Şikâyet</h3>
+<p>Kişisel verinizi ele alışımızdan memnun değilseniz önce bize söyleyin: <a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a>. Düzeltmeyi tercih ederiz.</p>
+<p>Bize başvurmadan da, Birleşik Krallık veri koruma düzenleyicisi olan Bilgi Komiserliği Ofisi'ne <strong><a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></strong> üzerinden şikâyet etme hakkınız var.</p>
+<h3>Bu politikadaki değişiklikler</h3>
+<p>Politikayı değiştirirsek yeni sürümü burada, yeni bir sürüm numarası ve tarihiyle yayımlarız. Bir değişiklik, bize daha önce verdiğiniz veriyi kullanma şeklimizi esaslı biçimde etkiliyorsa size doğrudan bildiririz.</p></div></div>
     <div class="pmft">
       <a href="privacy.html" target="_blank" rel="noopener" data-en="Open the full page" data-tr="Sayfanın tamamını aç">Open the full page</a>
       <button type="button" class="btn btn-s" id="pmDone" data-en="Close" data-tr="Kapat">Close</button>
@@ -607,41 +718,50 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    The privacy modal's frame and the assessment gate's typography, so the call
    is booked in a room the visitor already recognises. Only the grid of times
    inside it belongs to Google. */
-.mmodal{max-width:1180px}
+.mmodal{max-width:880px}
 .mmttl{display:flex;flex-direction:column;gap:5px;text-align:left;min-width:0}
 .mmttl .eyebrow{margin:0}
 .mmttl h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
 .mmbody{padding:20px 28px 24px;overflow:auto;text-align:left}
-/* The briefing and the picker side by side, so a visitor never has to scroll
-   past one to reach the other. Below 900px they stack, briefing first. */
-.mmgrid{display:grid;grid-template-columns:355px minmax(0,1fr);gap:26px;align-items:start}
-.mmintro{font-size:14.5px;line-height:1.62;color:#3A3733}
+/* One column: the calendar inside our own border, the briefing under it. Side
+   by side left a tall empty column beside the text and pushed the picker into
+   half the width it wants. */
+.mmgrid{display:block}
+.mmintro{margin-top:22px;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:2;column-gap:34px}
+.mmintro>*{break-inside:avoid}
 .mmintro p{margin:0 0 12px}
 .mmintro .mmq{font-weight:600;color:#1A1815;margin-bottom:8px}
 .mmintro ol{margin:0 0 14px;padding-left:20px}
 .mmintro li{margin-bottom:7px;padding-left:2px}
 .mmintro li::marker{color:#B84C2E;font-weight:600}
-/* Google's booking page opens with its own header: the organiser's photo and
-   name, the meeting title, the duration, the Meet line and the description we
-   already print on the left of this window. None of it can be turned off with
-   a parameter and none of it can be styled from here, because the frame is
-   another origin. So it is cropped: the frame is pulled up by --gcrop and the
-   box hides the overflow, leaving the date picker.
-   --gcrop is the one number to change if Google's header grows or shrinks. */
-.mmcal{--gcrop:250px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.12);min-height:560px}
-.mmcal iframe{display:block;width:100%;height:calc(620px + var(--gcrop));border:0;margin-top:calc(-1 * var(--gcrop))}
+/* Google's booking page is framed, and everything around its date picker comes
+   with it: the organiser's photo and name, the meeting title, the duration, the
+   Meet line, the description we already print underneath, and a footer of
+   Google links. None of it can be turned off with a parameter and none of it
+   can be styled from here, because the frame is another origin.
+
+   So the box is the crop. It has a fixed height and hides its overflow; the
+   frame is pulled up by --gcrop and out by --gcropx, and made taller than the
+   box so the footer falls outside it. The horizontal inset exists so Google's
+   own card border ends up under our edge rather than beside it — one border
+   around the calendar, not two.
+
+   Three numbers, and they are the only ones to touch if Google changes the
+   page:  --gcrop   how much comes off the top
+          --gcropx  how much comes off each side
+          height    how much of the picker shows
+   Set by eye against the live page: this build has no network to Google. */
+.mmcal{--gcrop:150px;--gcropx:34px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);height:470px}
+.mmcal iframe{display:block;border:0;width:calc(100% + 2 * var(--gcropx));margin-left:calc(-1 * var(--gcropx));height:calc(470px + var(--gcrop) + 300px);margin-top:calc(-1 * var(--gcrop))}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 .mmft-l{display:flex;flex-direction:column;gap:7px;align-items:flex-start;max-width:600px;min-width:0}
 .mmnote{font-size:12.5px;line-height:1.5;color:#7A756C}
-@media (max-width:1040px){
-  .mmgrid{grid-template-columns:1fr;gap:18px}
-}
 @media (max-width:640px){
   .mmttl h3{font-size:22px}
   .mmbody{padding:16px 20px 20px}
   .mmintro{font-size:14px}
-  .mmcal{--gcrop:230px;min-height:520px}
-  .mmcal iframe{height:calc(560px + var(--gcrop))}
+  .mmcal{--gcropx:16px;height:430px}
+  .mmintro{column-count:1}
   .mmft-l{align-items:center;text-align:center}
 }
 </style>
@@ -663,14 +783,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
     <div class="mmbody">
       <div class="mmgrid">
-      <!-- What the call is, written by the CEO on 9 August. It is a briefing,
-           not a caption: the four questions are what makes the half hour work,
-           and a visitor who reads them arrives ready. It sits beside the
-           calendar on a wide screen so neither has to be scrolled to. -->
-      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
+      <!-- The picker first, in one box of our own. What the call is, written by
+           the CEO on 9 August, sits under it: a briefing rather than a caption,
+           because the four questions are what makes the half hour work and a
+           visitor who reads them arrives ready. -->
       <div class="mmcal" id="mmCal">
         <div class="mmload" id="mmLoad" data-en="Loading the calendar…" data-tr="Takvim yükleniyor…">Loading the calendar…</div>
       </div>
+      <div class="mmintro" data-en="<p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p>" data-tr="<p>30 dakikalık ücretsiz keşif görüşmesi. Bu bir tanıtım toplantısı değildir. Amacı, şirketinizin AI konusunda nerede durduğunu birlikte teşhis etmek ve size neyin gerektiğini söylemektir. Şu an bir şeye ihtiyacınız yoksa onu da söyleriz.</p><p class='mmq'>Görüşmeden önce 4 soruyu düşünmeniz yeterli:</p><ol><li>Şirketiniz ile ilgili genel bilgi verir misiniz?</li><li>Bu konu (AI dönüşümü) neden şimdi gündeminizde? Yönetim mi sordu, bir rakip mi hamle yaptı, bütçe mi açıldı?</li><li>Şirket içinde bu işin adı belli bir sahibi var mı?</li><li>Daha önce denenmiş bir girişim oldu mu, sonucu ne oldu?</li></ol><p>Sunum hazırlamanıza gerek yok. Görüşme sonunda nasıl ilerlememiz gerektiğine beraber karar vereceğiz.</p>"><p>A free 30-minute discovery call. This is not a sales presentation. The purpose is to work out together where your company stands on AI, and to tell you what you need. If you need nothing right now, we will say so.</p><p class='mmq'>Four questions are worth thinking about beforehand:</p><ol><li>Could you give us some general background on your company?</li><li>Why is this (AI transformation) on your agenda now? Did the board ask, did a competitor move, did a budget open?</li><li>Is there one named owner for this inside the company?</li><li>Has anything been attempted before, and what came of it?</li></ol><p>No slides needed. At the end of the call we will decide together how to proceed.</p></div>
       </div>
     </div>
     <div class="pmft">
@@ -747,7 +867,6 @@ var MEET_URL = 'https://calendar.google.com/appointments/schedules/AcZssZ0oNnk16
 
 /* ---------- CONFIG ---------- */
 var ENDPOINT   = '__APPS_SCRIPT_URL__';    // Google Apps Script web app URL
-var RC_SITEKEY = '__RECAPTCHA_SITE_KEY__'; // reCAPTCHA v2 checkbox site key
 var FORM_LIVE  = false;  // ← set true only after the Privacy Policy is published
 
 /* ---------- i18n ---------- */
@@ -762,6 +881,11 @@ function applyLang(l){
     if(n.tagName==='TITLE'){ document.title = v; continue; }
     if(n.tagName==='META'){ n.setAttribute('content', v); continue; }
     n.innerHTML = v;
+  }
+  /* Long documents live as two panes rather than in an attribute. */
+  var panes = document.querySelectorAll('[data-pane]');
+  for(var pi=0;pi<panes.length;pi++){
+    panes[pi].hidden = (panes[pi].getAttribute('data-pane') !== LANG);
   }
   var b = document.querySelectorAll('.lang button');
   for(var j=0;j<b.length;j++){
@@ -826,7 +950,6 @@ var aIntro = document.getElementById('aIntro'),
     consentEl = document.getElementById('consent');
 
 var consentAt = null;   // ISO timestamp of the moment consent was ticked
-var rcWidget = null;
 
 var T = {
   email:{en:'Please enter a valid email address.', tr:'Lütfen geçerli bir e-posta adresi girin.'},
@@ -849,7 +972,6 @@ for(var s=0;s<starters.length;s++){
   starters[s].addEventListener('click', function(e){ e.preventDefault(); openGate(); });
 }
 function openGate(){
-  rcLoad();
   aIntro.hidden = true; aQuiz.hidden = true; aGate.hidden = false;
   scrollTo_(document.getElementById('assessment'));
   setTimeout(function(){ try{ emailEl.focus({preventScroll:true}); }catch(e){} }, 400);
@@ -864,40 +986,94 @@ consentEl.addEventListener('change', function(){
   if(this.checked){ setErr('e-consent',''); mark('f-consent',false); }
 });
 
-/* reCAPTCHA v2.
+/* The bot check, done here rather than by Google.
 
-   The widget was already rendered explicitly, but the script tag that fetches
-   it sat at the bottom of the page and ran on every visit. Rendering late does
-   not help: the request itself is what sends the visitor's IP address, user
-   agent and reCAPTCHA cookies to Google, and it was going out on every page
-   view — before the gate, before any consent, and before a privacy policy
-   exists to disclose it.
+   The old arrangement was reCAPTCHA v2. It worked, but it cost a request to
+   Google carrying the visitor's IP address, user agent and reCAPTCHA cookies;
+   it needed two keys we do not have yet; and it put a processor on the privacy
+   notice for a form that asks for one email address. The trade stopped making
+   sense once the notice had to list it.
 
-   It is fetched here instead, once, at the moment the gate actually opens and
-   only when there is a live form and a real key behind it. With FORM_LIVE
-   false, which is where we are, nothing is requested from Google at all. */
-var rcAsked = false;
-function rcLoad(){
-  if(rcAsked) return;
-  if(!FORM_LIVE || !RC_SITEKEY || RC_SITEKEY.charAt(0) === '_') return;
-  rcAsked = true;
-  var sc = document.createElement('script');
-  sc.src = 'https://www.google.com/recaptcha/api.js?onload=__rcReady&render=explicit';
-  sc.async = true; sc.defer = true;
-  document.body.appendChild(sc);
+   What replaces it is a proof of work. The browser is given a challenge and has
+   to find a number that makes SHA-256 of the pair start with enough zero bits.
+   One visitor waits a fraction of a second. A script wanting ten thousand
+   submissions pays that ten thousand times, on its own hardware, and that is
+   the entire economics of the thing. It is not a Turing test and does not
+   pretend to be; combined with the honeypot it prices out volume, which is what
+   this form is actually exposed to.
+
+   The challenge carries the minute it was issued, so the server can refuse one
+   minted last week, and the check is verified on receipt — Apps Script repeats
+   the hash once, which costs it nothing. Until that is deployed the token is
+   still carried and still recorded. */
+var POW_BITS = 18;                 // ~260k hashes: under a second on a phone
+var powToken = null;
+
+function powChallenge(){
+  var r = new Uint8Array(8);
+  (window.crypto || {}).getRandomValues && window.crypto.getRandomValues(r);
+  var hex = '';
+  for(var i=0;i<r.length;i++) hex += ('0' + r[i].toString(16)).slice(-2);
+  return 't' + Math.floor(Date.now()/1000) + '.' + hex;
 }
 
-window.__rcReady = function(){
-  if(!window.grecaptcha || !RC_SITEKEY || RC_SITEKEY.charAt(0)==='_') return;
-  try{
-    rcWidget = grecaptcha.render('rc', { sitekey: RC_SITEKEY, callback: function(){ setErr('e-cap',''); } });
-    document.querySelector('.cap').classList.add('on');
-  }catch(e){}
-};
-function capToken(){
-  if(rcWidget===null) return 'NO_CAPTCHA';
-  try{ return grecaptcha.getResponse(rcWidget) || ''; }catch(e){ return ''; }
+function powLeadingZeroBits(bytes){
+  var n = 0;
+  for(var i=0;i<bytes.length;i++){
+    var b = bytes[i];
+    if(b === 0){ n += 8; continue; }
+    for(var m = 128; m > 0; m >>= 1){ if(b & m) return n; n++; }
+    return n;
+  }
+  return n;
 }
+
+function powSolve(challenge, bits){
+  var enc = new TextEncoder();
+  var nonce = 0;
+  function step(){
+    return window.crypto.subtle.digest('SHA-256', enc.encode(challenge + ':' + nonce))
+      .then(function(buf){
+        if(powLeadingZeroBits(new Uint8Array(buf)) >= bits) return nonce;
+        nonce++;
+        /* Yield every few thousand tries so the page never looks frozen. */
+        if(nonce % 2000 === 0) return new Promise(function(r){ setTimeout(r, 0); }).then(step);
+        return step();
+      });
+  }
+  return step();
+}
+
+var powBtn = document.getElementById('pow');
+if(powBtn){
+  powBtn.addEventListener('click', function(){
+    if(powToken || powBtn.classList.contains('busy')) return;
+    /* No SubtleCrypto — an old browser, or a page not served over https. The
+       check cannot run, so it is not pretended: the honeypot and the server
+       still stand, and the visitor is not blocked out of the assessment. */
+    if(!(window.crypto && window.crypto.subtle && window.TextEncoder)){
+      powToken = 'NO_POW';
+      powBtn.classList.add('done'); powBtn.setAttribute('aria-pressed','true');
+      setErr('e-cap','');
+      return;
+    }
+    var c = powChallenge();
+    powBtn.classList.add('busy');
+    powSolve(c, POW_BITS).then(function(nonce){
+      powToken = c + '.' + nonce + '.' + POW_BITS;
+      powBtn.classList.remove('busy');
+      powBtn.classList.add('done');
+      powBtn.setAttribute('aria-pressed','true');
+      powBtn.disabled = true;
+      setErr('e-cap','');
+    }).catch(function(){
+      powBtn.classList.remove('busy');
+      setErr('e-cap', t('cap'));
+    });
+  });
+}
+
+function capToken(){ return powToken || ''; }
 
 function showQuiz(recorded){
   aGate.hidden = true; aQuiz.hidden = false;
@@ -1294,6 +1470,13 @@ var Q = (function(){
   document.getElementById('pmDone').addEventListener('click', close_);
   ovl.addEventListener('click', function(e){ if(e.target === ovl) close_(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ovl.hidden) close_(); });
+  /* Wide tables get a scroller of their own rather than pushing the modal
+     sideways. Legal's notice carries three of them. */
+  var tbl = ovl.querySelectorAll('.pmbody table');
+  for(var t=0;t<tbl.length;t++){
+    var w = document.createElement('div'); w.className = 'tw';
+    tbl[t].parentNode.insertBefore(w, tbl[t]); w.appendChild(tbl[t]);
+  }
 })();
 f.addEventListener('submit', function(e){
   e.preventDefault();
@@ -1339,7 +1522,6 @@ f.addEventListener('submit', function(e){
   .catch(function(){
     setErr('e-cap', t('fail'));
     nextBtn.disabled = false; nextBtn.textContent = t('begin');
-    try{ grecaptcha.reset(rcWidget); }catch(e){}
   });
 });
 })();
