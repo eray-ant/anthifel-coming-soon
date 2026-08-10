@@ -630,19 +630,29 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .meetx{flex:0 0 auto;background:none;border:1px solid rgba(15,15,14,.24);padding:9px 18px;font-family:inherit;font-size:13px;color:#0F0F0E;cursor:pointer;transition:border-color .18s,color .18s}
 .meetx:hover{border-color:#B84C2E;color:#B84C2E}
 
-/* No crop. It was cropped for a while, to hide the organiser block and the
-   Google footer that come with the framed page, and the cost of that was worse
-   than the thing it hid: on a page Google lays out at a different height, the
-   crop cut the calendar instead. What the frame shows now is Google's page as
-   Google renders it, whole, and everything we want said first is said above it
-   in our own words.
+/* The frame is cropped, and this time the numbers are measured rather than
+   guessed — read off a screenshot of the live page, where 1136 CSS pixels of
+   our own column were 1514 pixels wide, so everything below is that scale
+   divided out.
 
-   The height is generous rather than exact for the same reason. If Google's
-   page is shorter there is a little space under it; if it is taller the frame
-   scrolls, which is the browser doing the obvious thing. Nothing here depends
-   on Google's layout staying still. */
-.mmcal{position:relative;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px}
-.mmcal iframe{display:block;border:0;width:100%;height:1180px}
+   What comes off the top is Google's own header: the organiser's photo and
+   name, the meeting title, the duration, the Meet line and the description we
+   already print above this box in both languages. 205px puts the top edge of
+   the frame exactly on the date picker.
+
+   What comes off the bottom is nothing of Google's — it is the empty space
+   under their page. The frame has to be told a height, and a frame taller than
+   the page it holds shows the difference as a blank band. Google's page runs
+   756px; 205 of that is cropped away, so 555px is what is left, and the box is
+   555px.
+
+   Two numbers, and they are the only ones to touch if Google changes the page:
+     --gcrop  what comes off the top
+     height   how much of the picker shows
+   The frame is deliberately taller than the box so a slightly longer page is
+   clipped rather than leaving a gap. */
+.mmcal{--gcrop:205px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;height:555px}
+.mmcal iframe{display:block;border:0;width:100%;height:calc(555px + var(--gcrop) + 60px);margin-top:calc(-1 * var(--gcrop))}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 
 .mmintro{margin-top:0;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:3;column-gap:38px}
@@ -661,10 +671,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:640px){
   .meet{padding-top:32px;padding-bottom:36px}
   .meetttl h2{font-size:25px}
-  .mmcal{margin-top:20px}
-  /* Narrow: Google stacks the month above the times, so the page it renders is
-     much taller than the desktop one. */
-  .mmcal iframe{height:1560px}
+  /* Narrow: Google stacks the month above the times and its header wraps onto
+     more lines, so both numbers grow. These two are estimated rather than
+     measured — there is no screenshot of the live page at this width yet. */
+  .mmcal{--gcrop:300px;margin-top:20px;height:1000px}
+  .mmcal iframe{height:calc(1000px + var(--gcrop) + 80px)}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }
