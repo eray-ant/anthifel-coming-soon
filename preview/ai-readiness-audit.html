@@ -127,6 +127,26 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .back:hover{color:#B84C2E;border-color:#B84C2E}
 
 
+/* ---- phone: things a finger has to hit ----
+   Read off the rendered page rather than guessed: the language switch was 14px
+   tall, the menu items 17px and the legal tabs 20px. A 14px target is a target
+   you miss. Nothing moves on a desktop; this is the padding a thumb needs. */
+@media (max-width:960px){
+  .lang button{padding:13px 8px}
+  .brandlink{padding:12px 0}
+  .burger{padding:11px 12px}
+  .nav a{padding:11px 0;width:100%}
+}
+@media (max-width:640px){
+  .lgnav{gap:0}
+  .lgnav a{padding:13px 0;width:100%;border-bottom:1px solid rgba(15,15,14,.09)}
+  .lgnav a[aria-current="page"]{border-bottom-color:#B84C2E}
+  footer .lnks{gap:0;flex-direction:column;width:100%}
+  footer .lnks a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.08)}
+  footer .lnks a:last-child{border-bottom:0}
+  .back{padding:12px 0}
+}
+
 @media (max-width:1024px){
   :root{--pad:44px}
   h1{font-size:46px}
@@ -391,12 +411,19 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
    756px; 205 of that is cropped away, so 555px is what is left, and the box is
    555px.
 
-   Two numbers, and they are the only ones to touch if Google changes the page:
+   The crop lands on the top edge of Google's own rounded card, which put it
+   hard against our square border while the bottom had room. --gtop is that
+   room, given back: our own background above the frame so the two edges are
+   spaced the way the bottom is.
+
+   Three numbers, and they are the only ones to touch if Google changes the
+   page:
      --gcrop  what comes off the top
+     --gtop   the breathing space above the frame
      height   how much of the picker shows
    The frame is deliberately taller than the box so a slightly longer page is
    clipped rather than leaving a gap. */
-.mmcal{--gcrop:205px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;height:555px}
+.mmcal{--gcrop:205px;--gtop:16px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;padding-top:var(--gtop);height:calc(555px + var(--gtop))}
 .mmcal iframe{display:block;border:0;width:100%;height:calc(555px + var(--gcrop) + 60px);margin-top:calc(-1 * var(--gcrop))}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 
@@ -419,7 +446,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   /* Narrow: Google stacks the month above the times and its header wraps onto
      more lines, so both numbers grow. These two are estimated rather than
      measured — there is no screenshot of the live page at this width yet. */
-  .mmcal{--gcrop:300px;margin-top:20px;height:1000px}
+  .mmcal{--gcrop:300px;--gtop:12px;margin-top:20px;height:calc(1000px + var(--gtop))}
   .mmcal iframe{height:calc(1000px + var(--gcrop) + 80px)}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}

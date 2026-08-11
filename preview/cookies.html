@@ -102,6 +102,28 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .back{display:inline-block;margin-top:44px;font-size:14px;color:#0F0F0E;border-bottom:1px solid rgba(15,15,14,.3);padding-bottom:2px;text-decoration:none;transition:color .18s,border-color .18s}
 .back:hover{color:#B84C2E;border-color:#B84C2E}
 
+/* ---- phone: things a finger has to hit ----
+   Read off the rendered page rather than guessed: the language switch was 14px
+   tall, the menu items 17px and the legal tabs 20px. A 14px target is a target
+   you miss. Nothing moves on a desktop; this is the padding a thumb needs. */
+@media (max-width:960px){
+  .lang button{padding:13px 8px}
+  .brandlink{padding:12px 0}
+  .burger{padding:11px 12px}
+  .nav a{padding:11px 0;width:100%}
+}
+@media (max-width:640px){
+  /* Stacked, each tab carries its own rule; the row's own border would be a
+     second line under the last one. */
+  .lgnav{gap:0;padding-bottom:0;border-bottom:0;flex-direction:column;align-items:stretch}
+  .lgnav a{padding:13px 0;width:100%;border-bottom:1px solid rgba(15,15,14,.09)}
+  .lgnav a[aria-current="page"]{border-bottom-color:#B84C2E}
+  footer .lnks{gap:0;flex-direction:column;width:100%}
+  footer .lnks a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.08)}
+  footer .lnks a:last-child{border-bottom:0}
+  .back{padding:12px 0}
+}
+
 @media (max-width:1024px){
   :root{--pad:44px}
   h1{font-size:44px}
