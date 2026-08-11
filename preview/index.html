@@ -99,13 +99,23 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .sec-l p{font-size:14px;line-height:1.6;color:#625D55;text-wrap:pretty}
 
 /* ---- approach ---- */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(15,15,14,.14)}
-.step{padding:22px 20px 24px;border-right:1px solid rgba(15,15,14,.09);min-width:0}
-.step:first-child{padding-left:0}
-.step:last-child{border-right:0;padding-right:0}
-.step .rn{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:24px;color:#7A756C}
-.step h4{margin-top:10px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:var(--h-card);line-height:1.2;hyphens:auto}
-.step p{margin-top:8px;font-size:var(--t-card);line-height:1.6;color:#3A3733;text-wrap:pretty}
+/* Approach and Services are one structure now, because they are one path: a
+   numeral, then the heading beside it, then the line underneath. It used to be
+   five columns here and a list there, which read as two different things.
+
+   Five columns is also why the numeral could not sit beside the heading here:
+   inside the 1fr of a 220px/1fr section, each column left about 104px of text
+   width, and "Conversation" at the shared heading size needs more than that.
+   Shrinking the heading was the other way out and it is not available — the
+   two sections share a scale, and a test holds them to it. So the row is the
+   answer rather than the type size. */
+.steps{border-top:1px solid rgba(15,15,14,.14)}
+.step{display:flex;align-items:baseline;gap:0;padding:22px 0 20px;border-bottom:1px solid rgba(15,15,14,.09);min-width:0}
+.step:last-child{border-bottom-color:rgba(15,15,14,.14)}
+.step .rn{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:22px;color:#7A756C;width:52px;flex:none}
+.step-b{flex:1;min-width:0}
+.step h4{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:var(--h-card);line-height:1.2;overflow-wrap:anywhere}
+.step p{margin-top:6px;font-size:var(--t-card);line-height:1.6;color:#3A3733;max-width:560px;text-wrap:pretty}
 
 /* ---- services ---- */
 .svc{border-top:1px solid rgba(15,15,14,.14)}
@@ -288,8 +298,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:1024px){
   :root{--pad:44px}
   .sec{grid-template-columns:1fr;gap:32px;padding-top:80px}
-  .steps{grid-template-columns:repeat(2,1fr)}
-  .step{padding:22px 20px 24px 0;border-right:0;border-bottom:1px solid rgba(15,15,14,.09)}
   .step:nth-child(odd){padding-left:0}
   .step:nth-child(even){padding-left:20px;border-left:1px solid rgba(15,15,14,.09)}
   .step:last-child{grid-column:1/-1;border-bottom:0;border-left:0;padding-left:0}
@@ -343,7 +351,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .hero-cta{gap:12px}
   .hero-cta .btn{width:100%}
   .quote blockquote{font-size:24px}
-  .steps{grid-template-columns:1fr}
   .step,.step:nth-child(even),.step:nth-child(odd){padding:20px 0;border-left:0;border-right:0;border-bottom:1px solid rgba(15,15,14,.09)}
   .step:last-child{border-bottom:0}
   .row{flex-wrap:wrap;gap:8px 0}
@@ -438,28 +445,38 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   <div class="steps">
     <div class="step">
       <span class="rn">I</span>
-      <h4 data-en="Assessment" data-tr="Hazırlık Testi">Assessment</h4>
-      <p data-en="Twelve questions, three minutes, an honest score." data-tr="On iki soru, üç dakika, dürüst bir sonuç.">Twelve questions, three minutes, an honest score.</p>
+      <div class="step-b">
+        <h4 data-en="Assessment" data-tr="Hazırlık Testi">Assessment</h4>
+        <p data-en="Twelve questions, three minutes, an honest score." data-tr="On iki soru, üç dakika, dürüst bir sonuç.">Twelve questions, three minutes, an honest score.</p>
+      </div>
     </div>
     <div class="step">
       <span class="rn">II</span>
-      <h4 data-en="Conversation" data-tr="Görüşme">Conversation</h4>
-      <p data-en="Thirty minutes, free. Diagnosis before proposal." data-tr="Otuz dakika, ücretsiz. Teklif öncesi teşhis.">Thirty minutes, free. Diagnosis before proposal.</p>
+      <div class="step-b">
+        <h4 data-en="Conversation" data-tr="Görüşme">Conversation</h4>
+        <p data-en="Thirty minutes, free. Diagnosis before proposal." data-tr="Otuz dakika, ücretsiz. Teklif öncesi teşhis.">Thirty minutes, free. Diagnosis before proposal.</p>
+      </div>
     </div>
     <div class="step">
       <span class="rn">III</span>
-      <h4 data-en="Audit" data-tr="Denetim">Audit</h4>
-      <p data-en="Seven working days. The cheapest way to find out where you are." data-tr="Yedi iş günü. Nerede durduğunuzu görmenin en kısa yolu.">Seven working days. The cheapest way to find out where you are.</p>
+      <div class="step-b">
+        <h4 data-en="Audit" data-tr="Denetim">Audit</h4>
+        <p data-en="Seven working days. The cheapest way to find out where you are." data-tr="Yedi iş günü. Nerede durduğunuzu görmenin en kısa yolu.">Seven working days. The cheapest way to find out where you are.</p>
+      </div>
     </div>
     <div class="step">
       <span class="rn">IV</span>
-      <h4 data-en="Discovery" data-tr="Keşif">Discovery</h4>
-      <p data-en="Inside the business. A roadmap with names on it." data-tr="İşinizin içinde haftalar. Üzerinde isimler olan bir yol haritası.">Inside the business. A roadmap with names on it.</p>
+      <div class="step-b">
+        <h4 data-en="Discovery" data-tr="Keşif">Discovery</h4>
+        <p data-en="Inside the business. A roadmap with names on it." data-tr="İşinizin içinde haftalar. Üzerinde isimler olan bir yol haritası.">Inside the business. A roadmap with names on it.</p>
+      </div>
     </div>
     <div class="step">
       <span class="rn">V</span>
-      <h4 data-en="Transformation" data-tr="Dönüşüm">Transformation</h4>
-      <p data-en="The right people, connected. A steady rhythm." data-tr="Roller yerine oturmuş, ekip birbirine bağlı. Tutan bir ritim.">The right people, connected. A steady rhythm.</p>
+      <div class="step-b">
+        <h4 data-en="Transformation" data-tr="Dönüşüm">Transformation</h4>
+        <p data-en="The right people, connected. A steady rhythm." data-tr="Roller yerine oturmuş, ekip birbirine bağlı. Tutan bir ritim.">The right people, connected. A steady rhythm.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -699,10 +716,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .meet{padding-top:32px;padding-bottom:36px}
   .meetttl h2{font-size:25px}
   /* Narrow: Google stacks the month above the times and its header wraps onto
-     more lines, so both numbers grow. These two are estimated rather than
-     measured — there is no screenshot of the live page at this width yet. */
-  .mmcal{--gcrop:300px;--gtop:12px;margin-top:20px;height:calc(1000px + var(--gtop))}
-  .mmcal iframe{height:calc(1000px + var(--gcrop) + 80px)}
+     more lines, so the crop grows. 300px left the "Show more" that ends the
+     collapsed description sitting at the top of the frame — measured off a
+     phone screenshot and moved down to clear it. */
+  .mmcal{--gcrop:340px;--gtop:14px;margin-top:20px;height:calc(1040px + var(--gtop))}
+  .mmcal iframe{height:calc(1040px + var(--gcrop) + 120px)}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }
