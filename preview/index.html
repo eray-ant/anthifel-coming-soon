@@ -719,8 +719,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      more lines, so the crop grows. 300px left the "Show more" that ends the
      collapsed description sitting at the top of the frame — measured off a
      phone screenshot and moved down to clear it. */
-  .mmcal{--gcrop:340px;--gtop:14px;margin-top:20px;height:calc(1040px + var(--gtop))}
-  .mmcal iframe{height:calc(1040px + var(--gcrop) + 120px)}
+  /* The two gaps are set against each other rather than each on its own: on a
+     phone the top had almost nothing and the bottom had about 45px of Google's
+     empty page under its own footer. --gtop goes up, the box comes down by
+     what the bottom was wasting, and the frame stays taller than the box. */
+  .mmcal{--gcrop:340px;--gtop:26px;margin-top:20px;height:calc(995px + var(--gtop))}
+  .mmcal iframe{height:calc(995px + var(--gcrop) + 140px)}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }

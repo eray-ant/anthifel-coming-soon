@@ -444,10 +444,15 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .meet{padding-top:32px;padding-bottom:36px}
   .meetttl h2{font-size:25px}
   /* Narrow: Google stacks the month above the times and its header wraps onto
-     more lines, so both numbers grow. These two are estimated rather than
-     measured — there is no screenshot of the live page at this width yet. */
-  .mmcal{--gcrop:300px;--gtop:12px;margin-top:20px;height:calc(1000px + var(--gtop))}
-  .mmcal iframe{height:calc(1000px + var(--gcrop) + 80px)}
+     more lines, so the crop grows. 300px left the "Show more" that ends the
+     collapsed description sitting at the top of the frame — measured off a
+     phone screenshot and moved down to clear it. */
+  /* The two gaps are set against each other rather than each on its own: on a
+     phone the top had almost nothing and the bottom had about 45px of Google's
+     empty page under its own footer. --gtop goes up, the box comes down by
+     what the bottom was wasting, and the frame stays taller than the box. */
+  .mmcal{--gcrop:340px;--gtop:26px;margin-top:20px;height:calc(995px + var(--gtop))}
+  .mmcal iframe{height:calc(995px + var(--gcrop) + 140px)}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }
