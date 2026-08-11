@@ -315,8 +315,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .brandlink{padding:12px 0}
   .burger{padding:11px 12px}
   .soc a{padding:12px 4px}
-  .legal .lnks{gap:0;flex-direction:column;align-items:flex-start}
-  .legal .lnks a{display:block;padding:13px 0}
+  /* Three short links read as a row, not as three rows. They keep their
+     thumb-sized height; only the stacking goes. */
+  .legal .lnks{display:flex;flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center}
+  .legal .lnks a{display:inline-block;padding:13px 0}
   .chip{padding:11px 16px}
   .ftr ul{gap:0}
   .ftr ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(15,15,14,.07)}
@@ -745,20 +747,51 @@ for(var i=0;i<links.length;i++) links[i].setAttribute('href', MEET_URL);
 if(out) out.setAttribute('href', MEET_URL);
 
 /* Google's embed wants gv=true; without it the schedule renders its own full
-   page chrome inside the band. */
-function load_(){
-  if(asked) return;
-  asked = true;
+   page chrome inside the band. `hl` is the language it draws itself in — the
+   picker was opening in Turkish on the English page, because without it Google
+   falls back to the browser's or the signed-in account's language rather than
+   the page's.
+
+   It is a hint, not a guarantee: a visitor signed in to Google with a fixed
+   language may still see theirs. Ours is now asked for, which is the part we
+   control. */
+function lang_(){
+  return document.documentElement.lang === 'tr' ? 'tr' : 'en';
+}
+function embedURL(){
+  return MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true&hl=' + lang_();
+}
+function frame_(){
   var fr = document.createElement('iframe');
-  fr.src = MEET_URL + (MEET_URL.indexOf('?') < 0 ? '?' : '&') + 'gv=true';
+  fr.src = embedURL();
   fr.title = 'Anthifel';
   fr.setAttribute('loading','lazy');
   fr.addEventListener('load', function(){
     var l = document.getElementById('mmLoad');
     if(l) l.hidden = true;
   });
-  document.getElementById('mmCal').appendChild(fr);
+  return fr;
 }
+function load_(){
+  if(asked) return;
+  asked = true;
+  shown = lang_();
+  document.getElementById('mmCal').appendChild(frame_());
+}
+/* Switching language with the band open has to reach inside it too. Watching
+   the lang attribute keeps this independent of whatever does the switching. */
+var shown = null;
+new MutationObserver(function(){
+  if(!asked || lang_() === shown) return;
+  shown = lang_();
+  var box = document.getElementById('mmCal');
+  var old = box.querySelector('iframe');
+  var l = document.getElementById('mmLoad');
+  if(l) l.hidden = false;
+  if(old) old.remove();
+  box.appendChild(frame_());
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
 function scroll_(){
   var top = sec.getBoundingClientRect().top + window.pageYOffset - 84;
   window.scrollTo({ top: top, behavior: 'smooth' });

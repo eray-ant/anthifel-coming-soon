@@ -122,8 +122,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   .brandlink{padding:12px 0}
   .burger{padding:11px 12px}
   .soc a{padding:12px 4px}
-  .legal .lnks{gap:0;flex-direction:column;align-items:flex-start}
-  .legal .lnks a{display:block;padding:13px 0}
+  /* Three short links read as a row, not as three rows. They keep their
+     thumb-sized height; only the stacking goes. */
+  .legal .lnks{display:flex;flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center}
+  .legal .lnks a{display:inline-block;padding:13px 0}
   .ftr ul{gap:0}
   .ftr ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(15,15,14,.07)}
   .ftr ul li:last-child a{border-bottom:0}

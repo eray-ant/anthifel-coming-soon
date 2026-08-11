@@ -118,9 +118,9 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .lgnav{gap:0;padding-bottom:0;border-bottom:0;flex-direction:column;align-items:stretch}
   .lgnav a{padding:13px 0;width:100%;border-bottom:1px solid rgba(15,15,14,.09)}
   .lgnav a[aria-current="page"]{border-bottom-color:#B84C2E}
-  footer .lnks{gap:0;flex-direction:column;width:100%}
-  footer .lnks a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.08)}
-  footer .lnks a:last-child{border-bottom:0}
+  /* Three short links read as a row, not as three rows. */
+  footer .lnks{flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center;width:100%}
+  footer .lnks a{padding:13px 0}
   .back{padding:12px 0}
 }
 
