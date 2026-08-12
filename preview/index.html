@@ -1007,6 +1007,11 @@ var FORM_LIVE  = false;  // ← set true only after the Privacy Policy is publis
    real row must never be mistaken for a rehearsal. */
 var FORM_TEST  = true;
 var TEST_MODE  = FORM_TEST && /[?&]form=live(?:&|$)/.test(window.location.search);
+/* The endpoint's own account of what it did — which sender, which quota, why a
+   send was refused. It answered a question that cost an afternoon and it is
+   worth keeping, but it is scaffolding: `?form=live` alone runs the real flow
+   and shows nothing. Add `&debug=1` to see the workings. */
+var DEBUG      = TEST_MODE && /[?&]debug=1(?:&|$)/.test(window.location.search);
 if(TEST_MODE) FORM_LIVE = true;
 
 /* ---------- i18n ---------- */
@@ -1251,8 +1256,20 @@ function openGate(){
   scrollTo_(document.getElementById('assessment'));
   setTimeout(function(){ try{ emailEl.focus({preventScroll:true}); }catch(e){} }, 400);
 }
+/* Apps Script sleeps between requests, and waking it takes most of the time
+   the visitor spends waiting for the first question — five seconds, sometimes
+   more. The code screen is where they are reading a mail, which is a gap we
+   are given for free: one throwaway GET now means the instance is already
+   awake when the code comes back. It carries nothing and its answer is
+   discarded; only the waking matters. */
+function warm_(){
+  if(offline_()) return;
+  try{ fetch(ENDPOINT, { method:'GET', mode:'no-cors', cache:'no-store' }); }catch(e){}
+}
+
 function openCode(){
   aIntro.hidden = true; aQuiz.hidden = true; aGate.hidden = true; aCode.hidden = false;
+  warm_();
   var to = document.getElementById('sentTo');
   if(to) to.innerHTML = '<b>' + escHTML(emailEl.value.trim()) + '</b>';
   scrollTo_(document.getElementById('assessment'));
@@ -1804,11 +1821,11 @@ f.addEventListener('submit', function(e){
        and we deliberately said nothing. On the live site those look the same
        on purpose; here they must not, or a test that sent no mail reads as a
        delivery problem. */
-    if(TEST_MODE && d){ note(d.sent === false
+    if(DEBUG && d){ note(d.sent === false
         ? 'ENDPOINT: no mail sent — ' + (d.why || 'refused') + '. This is the hourly limit for this address; wait an hour or use another address.'
         : 'ENDPOINT: mail sent from ' + (d.from || '?') + ' — ' + (d.quota != null ? d.quota + ' left in today\'s quota' : 'ok')); }
     if(d && d.ok) return;
-    if(TEST_MODE) note('ENDPOINT REFUSED: ' + (d && d.error ? d.error : 'no reason given'));
+    if(DEBUG) note('ENDPOINT REFUSED: ' + (d && d.error ? d.error : 'no reason given'));
     throw new Error(d && d.error ? d.error : 'failed');
   })
   .catch(function(err){
@@ -1818,7 +1835,7 @@ f.addEventListener('submit', function(e){
     setErr('e-code', t('fail'));
     /* The visitor gets one sentence. The preview gets the reason, because
        "something did not go through" is where a whole afternoon goes. */
-    if(TEST_MODE) note('FAILED: ' + (err && err.message ? err.message : String(err)));
+    if(DEBUG) note('FAILED: ' + (err && err.message ? err.message : String(err)));
   });
 });
 
@@ -1835,6 +1852,7 @@ function note(text){
    spinner for its own sake: without it, a visitor whose mail is slow has no
    way to tell "still working" from "already failed". */
 function sending(on){
+  if(!DEBUG) return;   /* the screen already says a code is on its way */
   var el = document.getElementById('e-code');
   if(!el) return;
   if(on){ el.classList.add('good'); el.textContent = t('onway'); }
