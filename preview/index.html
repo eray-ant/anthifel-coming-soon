@@ -102,7 +102,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* ---- hero ---- */
 .hero{position:relative;overflow:hidden;padding:128px var(--pad) 116px}
-.hero-mark{position:absolute;right:calc(var(--pad) - 40px);top:50%;transform:translateY(-50%);width:400px;opacity:.07;pointer-events:none;user-select:none}
+.hero-mark{position:absolute;right:calc(var(--pad) - 90px);top:50%;transform:translateY(-50%);width:540px;opacity:.07;pointer-events:none;user-select:none}
 .hero h1{font-weight:300;font-size:88px;line-height:1.05;letter-spacing:.005em;max-width:880px}
 .hero p{margin-top:30px;font-size:19px;line-height:1.6;max-width:560px;color:#3A3733;text-wrap:pretty}
 .hero-cta{display:flex;gap:22px;margin-top:42px;align-items:center;flex-wrap:wrap}
@@ -315,7 +315,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .step:nth-child(even){padding-left:20px;border-left:1px solid rgba(15,15,14,.09)}
   .step:last-child{grid-column:1/-1;border-bottom:0;border-left:0;padding-left:0}
   .hero{padding-top:88px;padding-bottom:80px}
-  .hero-mark{width:300px;right:0;opacity:.05}
+  .hero-mark{width:380px;right:-30px;opacity:.05}
   .assess{padding-top:80px;padding-bottom:80px}
   .assess-in{padding:48px 36px}
 }
@@ -1778,13 +1778,17 @@ f.addEventListener('submit', function(e){
         ? 'ENDPOINT: no mail sent — ' + (d.why || 'refused') + '. This is the hourly limit for this address; wait an hour or use another address.'
         : 'ENDPOINT: mail sent from ' + (d.from || '?') + ' — ' + (d.quota != null ? d.quota + ' left in today\'s quota' : 'ok')); }
     if(d && d.ok) return;
+    if(TEST_MODE) note('ENDPOINT REFUSED: ' + (d && d.error ? d.error : 'no reason given'));
     throw new Error(d && d.error ? d.error : 'failed');
   })
-  .catch(function(){
+  .catch(function(err){
     nextBtn.disabled = false;
     sending(false);
     mark('f-code', true);
     setErr('e-code', t('fail'));
+    /* The visitor gets one sentence. The preview gets the reason, because
+       "something did not go through" is where a whole afternoon goes. */
+    if(TEST_MODE) note('FAILED: ' + (err && err.message ? err.message : String(err)));
   });
 });
 
