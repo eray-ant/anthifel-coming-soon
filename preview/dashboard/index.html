@@ -2867,6 +2867,10 @@ render();
 /* gate */
 
 #sec-blog .note{margin:0 18px 18px;padding:12px 14px;border:1px dashed rgba(184,76,46,.45);background:#FDF6F3;font-size:12px;line-height:1.55;color:#8A3D22;border-radius:2px}
+#sec-blog .keyrow{display:flex;flex-wrap:wrap;gap:10px;margin:0 18px 18px}
+#sec-blog .keyrow input{flex:1;min-width:180px;font-family:inherit;font-size:14px;color:#1A1815;background:#FFFFFF;border:1px solid rgba(26,24,21,.22);border-radius:2px;padding:10px 12px;transition:border-color .16s}
+#sec-blog .keyrow input:focus{border-color:#B84C2E;outline:none}
+#sec-blog .keyrow .btn{flex:none}
 
 /* schedule strip */
 #sec-blog .sched{display:flex;align-items:center;gap:9px;margin:-4px 0 16px;padding:10px 13px;background:#F4F2ED;border-left:2px solid #B84C2E;border-radius:2px;font-size:12.5px;color:#57534C;line-height:1.45}
@@ -2933,6 +2937,7 @@ render();
   #sec-blog .empty{padding:20px 12px}
   #sec-blog .msg{padding:0 12px 12px}
   #sec-blog .note{margin:0 12px 12px}
+  #sec-blog .keyrow{margin:0 12px 12px}
   #sec-blog .lib{grid-template-columns:1fr 1fr;gap:10px}
 }
 
@@ -3080,6 +3085,13 @@ render();
 
     <div class="msg" id="msg"></div>
     <div class="note" id="offNote" hidden></div>
+    <!-- The panel key is typed here, once per browser, and kept in this
+         browser. It is never written into the page: this file is served from
+         a public address, and a secret in a served file is a published one. -->
+    <div class="keyrow" id="keyRow" hidden>
+      <input type="password" id="keyIn" placeholder="Panel anahtarı" autocomplete="off" spellcheck="false">
+      <button class="btn btn-s" type="button" id="keySave">Kaydet</button>
+    </div>
 
     <div class="bar">
       <button class="btn btn-s" id="saveBtn">Taslağı kaydet</button>
@@ -3146,7 +3158,17 @@ window.dashInit.blog = function(){
 
 /* ---------- CONFIG ---------- */
 var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';   // same Apps Script web app as the site forms
-var TOKEN    = '__DASH_TOKEN__';        // shared secret, also set in Script Properties
+
+/* The panel key — the shared secret this editor sends with every request, the
+   same string as DASH_TOKEN in Script Properties.
+   It used to be stamped into this file at build time. It cannot be: the
+   dashboard is a static page served from a public address, and a gate in front
+   of it does not hide what anyone can read by fetching the file. So the key is
+   typed once and lives in this browser. Losing it costs one paste; publishing
+   it would have cost write access to the repository. */
+var TOKEN_KEY = 'anthifel_dash_token';
+var TOKEN = '';
+try { TOKEN = localStorage.getItem(TOKEN_KEY) || ''; } catch(e){}
 
 var VARIANTS = [
   {key:'16x9', w:1600, h:900},
@@ -3159,7 +3181,27 @@ var SITE_PREFIX = '/preview/';   // must match BLOG_PREFIX in Script Properties
 var $ = function(id){ return document.getElementById(id); };
 var posts = [], images = [], current = null, dirty = false;
 
-function live(){ return ENDPOINT && ENDPOINT.charAt(0) !== '_' && TOKEN && TOKEN.charAt(0) !== '_'; }
+function wired(){ return ENDPOINT && ENDPOINT.charAt(0) !== '_'; }
+function live(){ return wired() && !!TOKEN; }
+
+/* Shown when the endpoint is in place and only the key is missing — the one
+   state the operator can fix from here. */
+function askForKey(){
+  var row = $('keyRow'); if(!row) return;
+  row.hidden = false;
+  $('keySave').addEventListener('click', function(){
+    var v = $('keyIn').value.trim();
+    if(!v){ $('keyIn').focus(); return; }
+    try { localStorage.setItem(TOKEN_KEY, v); } catch(e){
+      say('Bu tarayıcı anahtarı saklayamıyor. Gizli sekmede çalışmıyor.', false);
+      return;
+    }
+    location.reload();
+  });
+  $('keyIn').addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); $('keySave').click(); }
+  });
+}
 
 function say(m, ok){ var e=$('msg'); e.textContent=m||''; e.className='msg '+(ok?'ok':'bad'); }
 function mark(id,bad){ var e=$(id); if(e) e.classList.toggle('err',!!bad); }
@@ -3363,7 +3405,9 @@ function save(status){
   if(!live()){
     say('', true);
     $('offNote').hidden = false;
-    $('offNote').textContent = 'ÖNİZLEME — kaydedilmedi. Bu ekran Apps Script adresi ve panel anahtarı girilene kadar salt görüntüdür. Kurulum: KURULUM.md §7.';
+    $('offNote').textContent = wired()
+      ? 'ÖNİZLEME — kaydedilmedi. Panel anahtarı bu tarayıcıda kayıtlı değil.'
+      : 'ÖNİZLEME — kaydedilmedi. Bu ekran Apps Script adresi ve panel anahtarı girilene kadar salt görüntüdür. Kurulum: KURULUM.md §7.';
     return;
   }
   var btn = status==='published' ? $('pubBtn') : $('saveBtn');
@@ -3574,7 +3618,12 @@ if(live()){
 } else {
   $('postCount').textContent = 'önizleme';
   $('offNote').hidden = false;
-  $('offNote').textContent = 'ÖNİZLEME — Apps Script adresi ve panel anahtarı henüz girilmedi, bu yüzden kaydetme ve yayımlama kapalı. Kurulum: KURULUM.md §7.';
+  // Two different states, and saying which one it is saves an hour of looking
+  // in the wrong place.
+  $('offNote').textContent = wired()
+    ? 'ÖNİZLEME — panel anahtarı bu tarayıcıda kayıtlı değil, bu yüzden kaydetme ve yayımlama kapalı. Apps Script → Proje Ayarları → DASH_TOKEN değerini aşağıya yapıştırın. Anahtar bu tarayıcıda kalır, sayfaya yazılmaz.'
+    : 'ÖNİZLEME — Apps Script adresi ve panel anahtarı henüz girilmedi, bu yüzden kaydetme ve yayımlama kapalı. Kurulum: KURULUM.md §7.';
+  if(wired()) askForKey();
 }
 };
 </script></section>
