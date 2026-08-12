@@ -60,15 +60,21 @@ img{max-width:100%}
 .twcaret{display:inline-block;width:0;height:1.05em;border-left:2px solid #B84C2E;vertical-align:-.18em;margin-left:.16em;animation:twblink 1.05s step-end infinite}
 @keyframes twblink{0%,100%{opacity:1}50%{opacity:0}}
 /* Someone who has asked for less movement gets the sentence, finished. */
+/* Reduced motion does not switch the line off — it stops it repeating.
+
+   The first version hid the animation entirely for anyone whose system asked
+   for less motion. Correct by the letter of the rule, and wrong here: what the
+   preference exists to prevent is movement that keeps happening in someone's
+   peripheral vision — parallax, drifting backgrounds, things that loop forever.
+   One short line writing itself out once, in a corner of the hero, is not that.
+   And the failure mode was invisible: the line looked identical whether the
+   preference was on or the script had never run at all.
+
+   So the preference now changes what happens after the sentence finishes,
+   which is where the repetition is: it types once, holds, and stops. The caret
+   stops blinking with it. Everyone sees the line write itself; nobody gets a
+   loop they asked not to have. */
 @media (prefers-reduced-motion:reduce){
-  .tw .twghost{visibility:visible}
-  .tw .twlive{display:none}
-  /* The caret stays, and stops blinking. It is not decoration here: without it
-     "reduced motion is on" and "the script never ran" look identical on screen,
-     and today that cost us an afternoon. A still caret says the code is alive
-     and has chosen not to move. */
-  .tw::after{content:'';display:inline-block;width:0;height:1.05em;
-    border-left:2px solid #B84C2E;vertical-align:-.18em;margin-left:.16em}
   .twcaret{animation:none}
 }
 
@@ -1084,10 +1090,15 @@ var Typer = (function(){
         i++; draw();
         var ch = full.charAt(i - 1);
         timer = setTimeout(step, ch === '·' ? BEAT : TYPE);
+      } else if(reduce){
+        /* Written out once, and left there. This is the whole concession. */
+        phase = 'done';
       } else {
         phase = 'wipe';
         timer = setTimeout(step, HOLD);
       }
+    } else if(phase === 'done'){
+      return;
     } else {
       if(i > 0){ i--; draw(); timer = setTimeout(step, WIPE); }
       else { phase = 'type'; timer = setTimeout(step, GAP); }
@@ -1138,10 +1149,7 @@ var Typer = (function(){
     el.appendChild(ghost);
     el.appendChild(live);
 
-    /* Reduced motion: the CSS shows the ghost and hides the live layer, so the
-       visitor gets the finished sentence and nothing ever moves. */
-    if(reduce){ el.setAttribute('data-tw', 'reduced'); live = null; return; }
-    el.setAttribute('data-tw', 'typing');
+    el.setAttribute('data-tw', reduce ? 'once' : 'looping');
 
     caret = document.createElement('i');
     caret.className = 'twcaret';
