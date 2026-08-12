@@ -79,6 +79,7 @@ img{max-width:100%}
    sight, and it stops when the tab is in the background. */
 @media (prefers-reduced-motion:reduce){
   .twcaret{animation:none}
+  .arw{transition:none;transform:none}
 }
 
 /* ---- header ---- */
@@ -159,6 +160,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .row-b p{margin-top:6px;font-size:var(--t-card);line-height:1.6;color:#3A3733;max-width:560px;text-wrap:pretty}
 .meta{flex:none;padding-left:32px;text-align:right}
 .meta .dur{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#625D55;white-space:nowrap}
+/* A service row is a link when — and only when — its page exists. Row I is an
+   <a>; the other three stay <div> until BUS-033 lands. A row that grows an
+   arrow and then goes nowhere is worse than a row that never offered. */
+a.row{text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}
+a.row h3{transition:color .18s}
+a.row:hover h3,a.row:focus-visible h3{color:#B84C2E}
+a.row:focus-visible{outline:2px solid #B84C2E;outline-offset:4px}
+.arw{display:inline-block;margin-left:.42em;font-family:'Inter',system-ui,-apple-system,sans-serif;font-weight:400;font-size:.6em;line-height:1;vertical-align:.1em;color:#B84C2E;opacity:0;transform:translateX(-8px);transition:opacity .2s ease,transform .2s ease}
+a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
+/* No hover on a phone, so the arrow simply stays: it is the only signal the
+   row is tappable. */
+@media (hover:none){.arw{opacity:1;transform:none}}
 .also{display:flex;align-items:baseline;padding:22px 0 0}
 .also .rn{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:22px;color:#7A756C;width:52px;flex:none}
 .also-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -513,15 +526,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   </div>
   <div>
     <div class="svc">
-      <div class="row">
+      <a class="row row-go" href="ai-readiness-audit.html">
         <span class="rn">I</span>
         <div class="row-b">
-          <h3 class="serif">AI Readiness Audit</h3>
+          <h3 class="serif">AI Readiness Audit<span class="arw" aria-hidden="true">→</span></h3>
           <span class="svc-tr" data-en="" data-tr="AI hazırlık denetimi · “Neredeyiz?”"></span>
           <p data-en="An honest picture of where you stand, and the first three things to fix." data-tr="Nerede durduğunuzun dürüst bir fotoğrafı ve önce düzeltilecek üç şey.">An honest picture of where you stand, and the first three things to fix.</p>
         </div>
-        <div class="meta"><span class="dur" data-en="7 working days" data-tr="7 iş günü">7 working days</span></div>
-      </div>
+        <div class="meta"><span class="dur" data-en="4 working days" data-tr="4 iş günü">4 working days</span></div>
+      </a>
       <div class="row">
         <span class="rn">II</span>
         <div class="row-b">
@@ -529,7 +542,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
           <span class="svc-tr" data-en="" data-tr="Keşif ve yol haritası programı · “Nereye gidiyoruz?”"></span>
           <p data-en="Weeks inside your business. A roadmap with owners, costs and dates." data-tr="İşinizin içinde haftalar. Sahipleri, maliyetleri ve tarihleri olan bir yol haritası.">Weeks inside your business. A roadmap with owners, costs and dates.</p>
         </div>
-        <div class="meta"><span class="dur" data-en="2–4 weeks" data-tr="2–4 hafta">2–4 weeks</span></div>
+        <div class="meta"><span class="dur" data-en="7–12 working days" data-tr="7–12 iş günü">7–12 working days</span></div>
       </div>
       <div class="row">
         <span class="rn">III</span>

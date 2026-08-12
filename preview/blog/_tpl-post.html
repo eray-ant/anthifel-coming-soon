@@ -471,6 +471,54 @@ if(nf){
 </script>
 
 <script>
+/* UTM on links that leave the Journal for the site — Blog Plan §7.
+   Applied at click time, on purpose. Writing the tags into the HTML would put
+   them in the canonical URL, in the sitemap and in every crawler's index, and
+   a campaign tag belongs to a visit, not to a page. Here the href is clean
+   until someone clicks it.
+   Three kinds of link are left alone: anything off-site, anything still inside
+   the Journal, and the three legal pages. A visitor reading the Privacy Policy
+   is not a campaign. */
+(function(){
+'use strict';
+var LEGAL = /(^|\/)(privacy|terms|cookies)\.html$/i;
+var INSIDE = /(^|\/)blog\//;
+
+/* An article is served at /blog/<slug>/ but opened at /blog/<slug>/index.html
+   from disk, and the two must name the same campaign — otherwise every local
+   test reads 'yazi-index.html' and the mistake looks like a passing test. */
+function campaign(){
+  var p = location.pathname.replace(/\/index\.html?$/i, '').replace(/\/+$/, '');
+  var m = p.match(/\/blog\/([^\/]+)$/);
+  return m ? 'yazi-' + m[1] : 'journal';
+}
+
+document.addEventListener('click', function(e){
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if(!a || a.target === '_blank') return;
+  var raw = a.getAttribute('href') || '';
+  if(/^(mailto:|tel:|javascript:|#)/i.test(raw)) return;
+  var u;
+  try { u = new URL(a.href, location.href); } catch(err){ return; }
+  if(u.origin !== location.origin) return;
+  if(INSIDE.test(u.pathname) || LEGAL.test(u.pathname)) return;
+  if(/[?&]utm_source=/.test(raw)) return;
+
+  /* Rebuilt by hand rather than through URL.toString(), which would turn a
+     relative href into an absolute one and quietly hard-code the origin into
+     every link on the page. */
+  var hash = '', query = '', head = raw;
+  var h = head.indexOf('#'); if(h >= 0){ hash = head.slice(h); head = head.slice(0, h); }
+  var q = head.indexOf('?'); if(q >= 0){ query = head.slice(q + 1); head = head.slice(0, q); }
+  var tags = 'utm_source=blog&utm_medium=cta&utm_campaign=' +
+             encodeURIComponent(campaign()) + '&utm_content=' +
+             (document.documentElement.lang === 'tr' ? 'tr' : 'en');
+  a.setAttribute('href', head + '?' + (query ? query + '&' : '') + tags + hash);
+}, true);
+})();
+</script>
+
+<script>
 /* On an article the body copy is fixed to one language, so the EN/TR buttons
    must navigate to the translation rather than swap text in place. If there is
    no translation the other language is shown as unavailable instead of lying. */
