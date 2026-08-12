@@ -1216,6 +1216,7 @@ var T = {
   begin:{en:'Start the assessment →', tr:'Teste başla →'},
   start:{en:'Verify and start →', tr:'Doğrula ve başla →'},
   resent:{en:'A new code is on its way.', tr:'Yeni bir kod yolda.'},
+  onway:{en:'Sending the code…', tr:'Kod gönderiliyor…'},
   test:{en:'LIVE TEST — this run is real. A row was written to the sheet and the result mails will be sent. Preview only; this cannot happen on the live site.',
         tr:'CANLI TEST — bu tur gerçek. Tabloya satır yazıldı ve sonuç mailleri gönderilecek. Yalnızca önizlemede; yayındaki sitede bu mümkün değil.'},
   dev:{en:'PREVIEW — nothing was recorded and no mail was sent. The assessment stays switched off until the Privacy Policy is published (FORM_LIVE = false).',
@@ -1731,7 +1732,19 @@ f.addEventListener('submit', function(e){
      faked — a code nobody can receive is worse than no code at all. */
   if(offline_()){ showQuiz(false); return; }
 
-  nextBtn.disabled = true; nextBtn.textContent = t('sending');
+  /* The code screen opens now, not when Google answers.
+
+     Apps Script takes anywhere from two to twenty seconds — a cold start, then
+     a mail. Holding the visitor on a greyed-out button for that long says the
+     site is broken, and it buys nothing: there is nothing for them to decide
+     while it runs, and the next thing they do is wait for a mail anyway, which
+     takes longer than the request does.
+
+     So the screen moves and the request finishes behind it. If it fails, the
+     failure is shown there, where the visitor already is. */
+  nextBtn.disabled = true;
+  openCode();
+  sending(true);
 
   post_({
     action: 'send-code',
@@ -1746,15 +1759,28 @@ f.addEventListener('submit', function(e){
     referrer: document.referrer || ''
   })
   .then(function(d){
-    nextBtn.disabled = false; nextBtn.textContent = t('begin');
-    if(d && d.ok){ openCode(); return; }
+    nextBtn.disabled = false;
+    sending(false);
+    if(d && d.ok) return;
     throw new Error(d && d.error ? d.error : 'failed');
   })
   .catch(function(){
-    setErr('e-send', t('fail'));
-    nextBtn.disabled = false; nextBtn.textContent = t('begin');
+    nextBtn.disabled = false;
+    sending(false);
+    mark('f-code', true);
+    setErr('e-code', t('fail'));
   });
 });
+
+/* One line on the code screen while the request is in the air. It is not a
+   spinner for its own sake: without it, a visitor whose mail is slow has no
+   way to tell "still working" from "already failed". */
+function sending(on){
+  var el = document.getElementById('e-code');
+  if(!el) return;
+  if(on){ el.classList.add('good'); el.textContent = t('onway'); }
+  else if(el.classList.contains('good')){ el.classList.remove('good'); el.textContent = ''; }
+}
 
 /* ---- step 2: check the code ---- */
 codeEl.addEventListener('input', function(){
