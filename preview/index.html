@@ -581,7 +581,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <div class="emsg" id="e-send"></div>
 
         <div class="actions">
-          <button type="submit" class="btn btn-p" id="next" data-en="Send the code →" data-tr="Kodu gönder →">Send the code →</button>
+          <button type="submit" class="btn btn-p" id="next" data-en="Start the assessment →" data-tr="Teste başla →">Start the assessment →</button>
           <button type="button" class="btn btn-s" id="cancel" data-en="Cancel" data-tr="Vazgeç">Cancel</button>
         </div>
         <p class="stamp" data-en="Your consent is recorded with the date and time you gave it. You can withdraw it at any time by writing to privacy@anthifel.com." data-tr="Rızanız, verdiğiniz tarih ve saatle birlikte kaydedilir. Dilediğiniz zaman privacy@anthifel.com adresine yazarak geri alabilirsiniz.">Your consent is recorded with the date and time you gave it. You can withdraw it at any time by writing to privacy@anthifel.com.</p>
@@ -605,7 +605,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <div class="emsg" id="e-code"></div>
 
         <div class="actions">
-          <button type="submit" class="btn btn-p" id="verify" data-en="Start the assessment →" data-tr="Teste başla →">Start the assessment →</button>
+          <button type="submit" class="btn btn-p" id="verify" data-en="Verify and start →" data-tr="Doğrula ve başla →">Verify and start →</button>
           <button type="button" class="btn btn-s" id="codeBack" data-en="Use a different address" data-tr="Başka bir adres kullan">Use a different address</button>
         </div>
         <p class="stamp" data-en="No mail yet? Check your spam folder, or <button type='button' class='lnkbtn' id='resend'>send the code again</button>." data-tr="Mail gelmediyse spam klasörüne bakın ya da <button type='button' class='lnkbtn' id='resend'>kodu tekrar gönderin</button>.">No mail yet? Check your spam folder, or <button type="button" class="lnkbtn" id="resend">send the code again</button>.</p>
@@ -1213,8 +1213,8 @@ var T = {
   left:{en:'{n} attempts left.', tr:'{n} deneme hakkınız kaldı.'},
   fail:{en:'Something did not go through. Please email hello@anthifel.com directly.', tr:'Bir şeyler ters gitti. Lütfen doğrudan hello@anthifel.com adresine yazın.'},
   sending:{en:'One moment…', tr:'Bir saniye…'},
-  begin:{en:'Send the code →', tr:'Kodu gönder →'},
-  start:{en:'Start the assessment →', tr:'Teste başla →'},
+  begin:{en:'Start the assessment →', tr:'Teste başla →'},
+  start:{en:'Verify and start →', tr:'Doğrula ve başla →'},
   resent:{en:'A new code is on its way.', tr:'Yeni bir kod yolda.'},
   test:{en:'LIVE TEST — this run is real. A row was written to the sheet and the result mails will be sent. Preview only; this cannot happen on the live site.',
         tr:'CANLI TEST — bu tur gerçek. Tabloya satır yazıldı ve sonuç mailleri gönderilecek. Yalnızca önizlemede; yayındaki sitede bu mümkün değil.'},
@@ -1255,6 +1255,7 @@ cancelBtn.addEventListener('click', function(){
 codeBackBtn.addEventListener('click', function(){
   setErr('e-code',''); mark('f-code', false);
   codeEl.value = '';
+  lastTried = null;
   openGate();
 });
 
@@ -1761,15 +1762,27 @@ codeEl.addEventListener('input', function(){
   var v = this.value.replace(/\D+/g, '').slice(0, 6);
   if(v !== this.value) this.value = v;
   if(v.length) { setErr('e-code',''); mark('f-code', false); }
+  /* Six digits is the whole code — there is nothing left to decide, so the
+     button is not worth making anyone press. It stays on screen for the second
+     attempt after a wrong code, and for anyone who edits what they typed. */
+  if(v.length === 6 && !verifyBtn.disabled && v !== lastTried){
+    submitCode();
+  }
 });
 
-cf.addEventListener('submit', function(e){
-  e.preventDefault();
+/* The last code that was actually sent, so typing the sixth digit twice — a
+   correction, a paste over a paste — does not fire the same request again. */
+var lastTried = null;
+
+cf.addEventListener('submit', function(e){ e.preventDefault(); submitCode(); });
+
+function submitCode(){
   var v = codeEl.value.replace(/\D+/g, '');
   if(v.length !== 6){ setErr('e-code', t('code')); mark('f-code', true); return; }
   if(tripped_()) return;
   if(offline_()){ showQuiz(false); return; }
 
+  lastTried = v;
   verifyBtn.disabled = true; verifyBtn.textContent = t('sending');
 
   post_({ action:'verify-code', email: emailEl.value.trim(), code: v, lang: LANG })
@@ -1794,7 +1807,7 @@ cf.addEventListener('submit', function(e){
     setErr('e-code', t('fail'));
     verifyBtn.disabled = false; verifyBtn.textContent = t('start');
   });
-});
+}
 
 /* The resend link sits inside a translated paragraph, so it is replaced on
    every language switch. Delegation survives that; a listener would not. */
@@ -1804,6 +1817,7 @@ document.addEventListener('click', function(e){
   e.preventDefault();
   setErr('e-code',''); mark('f-code', false);
   codeEl.value = '';
+  lastTried = null;
   if(offline_()) return;
   post_({
     action: 'send-code',
