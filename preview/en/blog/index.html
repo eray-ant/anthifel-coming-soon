@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="The Journal · Anthifel" data-tr="The Journal · Anthifel">The Journal · Anthifel</title>
-<meta name="description" data-en="Notes on AI transformation, written for the people who have to decide." data-tr="AI dönüşümü üzerine notlar. Modelleri kuranlar için değil, karar vermek zorunda olanlar için yazıldı." content="Notes on AI transformation, written for the people who have to decide.">
+<meta name="description" data-en="Anthifel's writing on AI transformation: who owns it, what comes first, and how an organisation absorbs the result." data-tr="AI dönüşümü üzerine yazılar: kim sahipleniyor, ne önce geliyor, çıkan sonuç şirkete nasıl yerleşiyor." content="Anthifel's writing on AI transformation: who owns it, what comes first, and how an organisation absorbs the result.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Anthifel">
@@ -113,6 +113,27 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   :root{--pad:44px}
   .news{gap:44px;padding-top:64px;padding-bottom:64px}
 }
+/* ---- phone: things a finger has to hit ----
+   Measured on the rendered page, not guessed. The language switch was 14px
+   tall, the footer links 17 to 21, the wordmark's link 16 and the newsletter
+   tick 17. A 14px target is a target you miss. Nothing changes on a desktop. */
+@media (max-width:820px){
+  .lang button{padding:13px 8px}
+  .brandlink{padding:12px 0}
+  .burger{padding:11px 12px}
+  .soc a{padding:12px 4px}
+  /* Three short links read as a row, not as three rows. They keep their
+     thumb-sized height; only the stacking goes. */
+  .legal .lnks{display:flex;flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center}
+  .legal .lnks a{display:inline-block;padding:13px 0}
+  .ftr ul{gap:0}
+  .ftr ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(15,15,14,.07)}
+  .ftr ul li:last-child a{border-bottom:0}
+  .ftr-brand .info{gap:0}
+  .ftr-brand .info a{display:inline-block;padding:11px 0}
+  .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
+  .consent input[type=checkbox]{width:22px;height:22px}
+}
 @media (max-width:820px){
   .nav{display:none;order:3;width:100%;flex-direction:column;gap:0;align-items:stretch;border-top:1px solid rgba(15,15,14,.09);margin-top:16px;padding-top:8px}
   .nav.open{display:flex}
@@ -159,6 +180,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 .topics-in>span{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;flex:none}
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{font-size:13px;font-weight:500;letter-spacing:.02em;color:#0F0F0E;background:transparent;border:1px solid rgba(15,15,14,.22);padding:8px 16px;border-radius:2px;cursor:pointer;font-family:inherit;transition:background .18s,border-color .18s,color .18s}
+/* On a phone these are the only way to filter the list, so they get a
+   thumb-sized hit area rather than a 34px one. The base rule below is
+   later in the sheet, so this one needs the extra specificity to win. */
+@media (max-width:820px){.chips .chip{padding:12px 16px}}
 .chip:hover{background:#FCFAF5;border-color:#0F0F0E}
 .chip[aria-pressed="true"]{color:#F5F1EA;background:#0F0F0E;border-color:#0F0F0E}
 
@@ -263,7 +288,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
       <span class="eyebrow" data-en="Notes on AI transformation" data-tr="AI dönüşümü üzerine notlar">Notes on AI transformation</span>
       <h1 data-en="The Journal" data-tr="The Journal">The Journal</h1>
     </div>
-    <p data-en="What we learn inside companies that are trying to change, written for the people who have to decide." data-tr="Değişmeye çalışan şirketlerin içinde öğrendiklerimiz. Karar vermek zorunda olanlar için yazıldı.">What we learn inside companies that are trying to change, written for the people who have to decide.</p>
+    <p data-en="What we learn inside companies that are trying to change. Written for the people who have to decide." data-tr="Değişmeye çalışan şirketlerin içinde öğrendiklerimiz. Kararı verecek olanlar için yazılıyor.">What we learn inside companies that are trying to change. Written for the people who have to decide.</p>
   </div>
 </section>
 
@@ -303,7 +328,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   <div>
     <span class="eyebrow" data-en="The reading list" data-tr="Okuma listesi">The reading list</span>
     <h2 data-en="One piece a month. Nothing else." data-tr="Ayda bir yazı. Başka hiçbir şey.">One piece a month. Nothing else.</h2>
-    <p data-en="What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter." data-tr="Şirketlerin içinde gördüklerimizi, karar vermek zorunda olan insanlar için ayda bir yazıyoruz. Ürün duyurusu yok, bültenin kendisi hakkında bülten hiç yok.">What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter.</p>
+    <p data-en="What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter." data-tr="Şirketlerin içinde ne gördüğümüzü ayda bir yazıyoruz. Kararı verenler için. Ürün duyurusu yok, bültenin kendisi hakkında bülten hiç yok.">What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter.</p>
   </div>
   <form class="nform" id="nf" novalidate>
     <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -365,7 +390,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 <script>
 (function(){
 'use strict';
-var ENDPOINT  = '__APPS_SCRIPT_URL__';
+var ENDPOINT  = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';
 var FORM_LIVE = false;   // ← true only after the Privacy Policy is published
 
 var LANG='en';
