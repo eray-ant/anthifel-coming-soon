@@ -61,9 +61,15 @@ img{max-width:100%}
 @keyframes twblink{0%,100%{opacity:1}50%{opacity:0}}
 /* Someone who has asked for less movement gets the sentence, finished. */
 @media (prefers-reduced-motion:reduce){
-  .tw{padding-right:0}
   .tw .twghost{visibility:visible}
   .tw .twlive{display:none}
+  /* The caret stays, and stops blinking. It is not decoration here: without it
+     "reduced motion is on" and "the script never ran" look identical on screen,
+     and today that cost us an afternoon. A still caret says the code is alive
+     and has chosen not to move. */
+  .tw::after{content:'';display:inline-block;width:0;height:1.05em;
+    border-left:2px solid #B84C2E;vertical-align:-.18em;margin-left:.16em}
+  .twcaret{animation:none}
 }
 
 /* ---- header ---- */
@@ -603,6 +609,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
           <input type="text" id="code" name="code" class="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" placeholder="000000" required>
         </div>
         <div class="emsg" id="e-code"></div>
+        <div class="devnote" id="devnote2" hidden></div>
 
         <div class="actions">
           <button type="submit" class="btn btn-p" id="verify" data-en="Verify and start →" data-tr="Doğrula ve başla →">Verify and start →</button>
@@ -1133,7 +1140,8 @@ var Typer = (function(){
 
     /* Reduced motion: the CSS shows the ghost and hides the live layer, so the
        visitor gets the finished sentence and nothing ever moves. */
-    if(reduce){ live = null; return; }
+    if(reduce){ el.setAttribute('data-tw', 'reduced'); live = null; return; }
+    el.setAttribute('data-tw', 'typing');
 
     caret = document.createElement('i');
     caret.className = 'twcaret';
@@ -1761,6 +1769,14 @@ f.addEventListener('submit', function(e){
   .then(function(d){
     nextBtn.disabled = false;
     sending(false);
+    /* On the preview, say what the endpoint actually did. `ok:true` covers two
+       very different outcomes — a mail was sent, or the hourly limit was hit
+       and we deliberately said nothing. On the live site those look the same
+       on purpose; here they must not, or a test that sent no mail reads as a
+       delivery problem. */
+    if(TEST_MODE && d){ note(d.sent === false
+        ? 'ENDPOINT: no mail sent — ' + (d.why || 'refused') + '. This is the hourly limit for this address; wait an hour or use another address.'
+        : 'ENDPOINT: mail sent from ' + (d.from || '?') + ' — ' + (d.quota != null ? d.quota + ' left in today\'s quota' : 'ok')); }
     if(d && d.ok) return;
     throw new Error(d && d.error ? d.error : 'failed');
   })
@@ -1771,6 +1787,15 @@ f.addEventListener('submit', function(e){
     setErr('e-code', t('fail'));
   });
 });
+
+/* A line under the code field that only the preview ever shows. It carries no
+   personal data — what the endpoint did, not who asked. */
+function note(text){
+  var el = document.getElementById('devnote2');
+  if(!el) return;
+  el.hidden = false;
+  el.textContent = text;
+}
 
 /* One line on the code screen while the request is in the air. It is not a
    spinner for its own sake: without it, a visitor whose mail is slow has no
