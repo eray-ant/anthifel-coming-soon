@@ -394,39 +394,41 @@ window.dashDB = (function(){
 
          One row of departments, each opening its own sections. The panel is
          not one person's tool, so the first question the menu answers is whose
-         work this is. A department with one section still gets a menu, so the
-         shape never changes under you — and clicking a department goes to its
-         first section straight away, so the extra click only exists where
-         there is actually a choice to make. -->
+         work this is.
+
+         A department with one section no longer carries a menu. It used to, on
+         the argument that a constant shape is easier to learn — but a chevron
+         that opens a list of one teaches the opposite: that the chevron means
+         nothing. Marketing and Developer have a real choice and keep theirs.
+         The rest are buttons that go straight there. -->
     <span class="vsep" aria-hidden="true"></span>
     <nav class="dnav" id="dnav">
       <div class="dept" data-dept="ozet">
-        <button type="button" aria-haspopup="true" aria-expanded="false">Genel Bakış<span class="cv">▼</span></button>
-        <div class="dmenu"><a href="#ozet">Panel</a></div>
+        <button type="button" aria-haspopup="false" aria-expanded="false" data-goes="#ozet">Summary</button>
       </div>
       <div class="dept" data-dept="sales">
-        <button type="button" aria-haspopup="true" aria-expanded="false">Sales<span class="cv">▼</span></button>
-        <div class="dmenu"><a href="#crm">CRM</a></div>
+        <button type="button" aria-haspopup="false" aria-expanded="false" data-goes="#crm">Sales</button>
       </div>
       <div class="dept" data-dept="marketing">
         <button type="button" aria-haspopup="true" aria-expanded="false">Marketing<span class="cv">▼</span></button>
-        <div class="dmenu"><a href="#icerik">İçerik</a><a href="#blog">Blog</a></div>
+        <div class="dmenu"><a href="#icerik">Content</a><a href="#blog">Blog</a></div>
       </div>
       <div class="dept" data-dept="finance">
-        <button type="button" aria-haspopup="true" aria-expanded="false">Finance<span class="cv">▼</span></button>
-        <div class="dmenu"><a href="#finans">Finans</a></div>
+        <button type="button" aria-haspopup="false" aria-expanded="false" data-goes="#finans">Finance</button>
       </div>
       <div class="dept" data-dept="developer">
         <button type="button" aria-haspopup="true" aria-expanded="false">Developer<span class="cv">▼</span></button>
-        <div class="dmenu"><a href="#site">Site</a><a href="#seo">SEO</a><a href="#analitik">Analitik</a></div>
+        <div class="dmenu"><a href="#site">Site</a><a href="#seo">SEO</a><a href="#analitik">Analytics</a></div>
       </div>
     </nav>
     <div class="dutil">
       <!-- Up and to the right: this one leaves the panel for another tab.
-           Straight right: this one ends the session and comes back here. -->
+           Straight right: these two stay in it. -->
       <a href="../" target="_blank" rel="noopener">Site
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 10l5-5M6.5 4.6H11.4V9.5"/></svg></a>
-      <button type="button" id="logoutBtn">Çıkış
+      <button type="button" id="settingsBtn">Settings
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.1"/><path d="M8 1.8v1.6M8 12.6v1.6M14.2 8h-1.6M3.4 8H1.8M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1M12.4 12.4l-1.1-1.1M4.7 4.7L3.6 3.6"/></svg></button>
+      <button type="button" id="logoutBtn">Sign out
         <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4.5L12 8l-3.5 3.5"/></svg></button>
     </div>
     <button class="dburger" id="dburger" aria-label="Menü" aria-expanded="false" aria-controls="dnav">
@@ -437,14 +439,10 @@ window.dashDB = (function(){
 
 <div class="wrap">
   <section class="sec" id="sec-ozet" hidden><style>
-/* Genel Bakış — what is live, what is not, and what you owe the launch. */
-#sec-ozet .mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:14px}
-#sec-ozet a.mod{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);
-  border-radius:3px;padding:18px 19px;min-width:0;transition:border-color .14s,box-shadow .14s}
-#sec-ozet a.mod:hover{border-color:rgba(26,24,21,.26);box-shadow:0 4px 16px rgba(26,24,21,.07)}
-#sec-ozet .mod h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:20px;color:var(--ink)}
-#sec-ozet .mod p{margin-top:7px;font-size:12.5px;line-height:1.55;color:var(--soft);flex:1}
-#sec-ozet .mod .go{margin-top:14px;font-size:12px;font-weight:500;color:var(--accent)}
+/* Summary — what is live, what is not, and what you owe the launch.
+   The tile grid that used to sit at the bottom is gone: it repeated the menu
+   directly under the menu, and a second way to reach the same seven places is
+   not a shortcut, it is a thing to keep in step. */
 #sec-ozet .todo li{display:flex;align-items:flex-start;gap:11px;padding:11px 18px;border-bottom:1px solid var(--line-soft);font-size:13px}
 #sec-ozet .todo li:last-child{border-bottom:0}
 #sec-ozet .todo input{accent-color:var(--accent);width:15px;height:15px;margin:2px 0 0;flex:none;cursor:pointer}
@@ -544,43 +542,6 @@ window.dashDB = (function(){
   </p>
 </section>
 
-<div class="mods">
-  <a class="mod" href="#crm">
-    <h3>CRM</h3>
-    <p>LinkedIn havuzu, triyaj, dört çalışma listesi ve lansman DM turları.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#blog">
-    <h3>Blog</h3>
-    <p>Yazıyı yaz, görseli kütüphaneden seç, tarihe göre planla, siteye yayımla.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#icerik">
-    <h3>İçerik</h3>
-    <p>Sütunlar, içerik türleri, yayın öncesi kontrol listeleri ve kaynaklar.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#site">
-    <h3>Site</h3>
-    <p>Yayın öncesi kontrol listesi, içerik haritası ve sayfa envanteri.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#seo">
-    <h3>SEO</h3>
-    <p>Sayfa ve yazı kuralları, anahtar ifadeler, site geneli teknik işler.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#analitik">
-    <h3>Analitik</h3>
-    <p>GA4 kurulum akışı, ölçüm kodu üretici, hedefler ve panel bağlantıları.</p>
-    <span class="go">Aç →</span>
-  </a>
-  <a class="mod" href="#finans">
-    <h3>Finans</h3>
-    <p>Basit gelir/gider takibi, kategori dağılımı ve CSV çıktısı.</p>
-    <span class="go">Aç →</span>
-  </a>
-</div>
 
 <script>
 /* Genel Bakış — the countdown, and a to-do list kept in this browser. */
@@ -6361,6 +6322,122 @@ window.dashLedger = function(){
 };
 window.dashLedger();
 </script></section>
+  <section class="sec" id="sec-settings" hidden><style>
+#sec-settings .krow{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+#sec-settings .krow .f{flex:1;min-width:220px;margin:0}
+#sec-settings .state{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--soft)}
+#sec-settings .state i{width:7px;height:7px;border-radius:50%;background:var(--soft);flex:none}
+#sec-settings .state.ok i{background:#2F6B3F}
+#sec-settings .state.no i{background:var(--neg)}
+#sec-settings .keys{width:100%;font-size:13px}
+#sec-settings .keys th,#sec-settings .keys td{text-align:left;padding:11px 18px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+#sec-settings .keys th{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+#sec-settings .keys tr:last-child td{border-bottom:0}
+#sec-settings .keys .h{display:block;margin-top:4px;font-size:11.5px;line-height:1.5;color:var(--soft)}
+#sec-settings .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+@media (max-width:700px){
+  #sec-settings .keys th,#sec-settings .keys td{padding:10px 12px}
+}
+</style>
+
+<div class="phead">
+  <div>
+    <h1>Settings</h1>
+    <p>Keys this browser holds, and where the ones it does not hold actually live.</p>
+  </div>
+</div>
+
+<p class="lede">
+  This page is served from a public address. Nothing secret is written into it,
+  which is why there is no field here for the API keys the server uses — those
+  live in Apps Script and never travel to a browser. The one key below is the
+  exception, because it is the key that proves this browser is allowed to ask.
+</p>
+
+<div class="stack">
+
+<section class="panel">
+  <h2>Panel key <span class="n" id="setKeyState"></span></h2>
+  <div class="pad">
+    <p style="font-size:12.5px;line-height:1.6;color:var(--muted);margin-bottom:14px">
+      The shared secret the blog editor sends with every request — the same string as
+      <code class="mono">DASH_TOKEN</code> in Apps Script → Project Settings → Script Properties.
+      It is kept in this browser only. Entering it on another machine is one paste;
+      publishing it would hand over write access to the repository.
+    </p>
+    <div class="krow">
+      <div class="f">
+        <label for="setKey">Key</label>
+        <input type="password" id="setKey" autocomplete="off" spellcheck="false" placeholder="DASH_TOKEN">
+      </div>
+      <button class="btn btn-p" type="button" id="setKeySave">Save</button>
+      <button class="btn btn-s" type="button" id="setKeyClear">Forget</button>
+    </div>
+    <div class="f" style="margin:14px 0 0"><div class="hint" id="setKeyMsg"></div></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Server-side keys</h2>
+  <table class="keys">
+    <thead><tr><th>Property</th><th>What it is for</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">RESEND_KEY</td><td>Sends every email that leaves us: the sign-in code, the result, our own copy.<span class="h">Unset it and everything falls back to Gmail, in both directions, with nothing else changing.</span></td></tr>
+      <tr><td class="mono">GH_TOKEN</td><td>Writes published posts into the repository.<span class="h">Fine-grained, Contents read and write, this repository only.</span></td></tr>
+      <tr><td class="mono">SHEET_ID</td><td>The spreadsheet behind the form and the posts list.</td></tr>
+      <tr><td class="mono">DASH_TOKEN</td><td>The other half of the key above.</td></tr>
+      <tr><td class="mono">BLOG_PREFIX</td><td>Where posts are written in the repository. <code class="mono">preview/</code> until launch, empty after.<span class="h">It has to match SITE_PREFIX in the blog editor.</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+
+<script>
+/* Settings — what this browser holds. Built on first open like every other
+   section. There is deliberately no field here for a server-side key: a form
+   that collects one would have to send it somewhere, and every somewhere a
+   static page can reach is a place a secret should not go. */
+window.dashInit.settings = function(){
+'use strict';
+var KEY = 'anthifel_dash_token';
+var $ = function(id){ return document.getElementById(id); };
+
+function read(){
+  try { return localStorage.getItem(KEY) || ''; } catch(e){ return ''; }
+}
+function paint(){
+  var v = read();
+  var st = $('setKeyState');
+  st.className = 'n state ' + (v ? 'ok' : 'no');
+  st.innerHTML = '<i></i>' + (v ? 'held in this browser' : 'not set');
+  $('setKey').value = '';
+  $('setKey').placeholder = v ? '•••••••• — saved' : 'DASH_TOKEN';
+}
+function say(m){ $('setKeyMsg').textContent = m || ''; }
+
+$('setKeySave').addEventListener('click', function(){
+  var v = $('setKey').value.trim();
+  if(!v){ $('setKey').focus(); return; }
+  try { localStorage.setItem(KEY, v); }
+  catch(e){ say('This browser will not store it. Private windows do not work.'); return; }
+  paint();
+  say('Saved. The blog editor picks it up when you open it.');
+});
+
+$('setKeyClear').addEventListener('click', function(){
+  try { localStorage.removeItem(KEY); } catch(e){}
+  paint();
+  say('Forgotten on this browser. Apps Script is untouched.');
+});
+
+$('setKey').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); $('setKeySave').click(); }
+});
+
+paint();
+};
+</script></section>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -6426,6 +6503,12 @@ window.dashLedger();
       document.getElementById('pw').focus();
     }
   });
+  /* Settings is a pane like any other, not a dialog. It belongs to nobody's
+     department, so it hangs off the bar instead of the menu — but it opens the
+     same way everything else does, which is why it is a hash and not a modal. */
+  document.getElementById('settingsBtn').addEventListener('click', function(){
+    location.hash = '#settings';
+  });
   document.getElementById('logoutBtn').addEventListener('click', function(){
     if(useDB) DB.signOut();
     try{ ses().removeItem(KEY); }catch(e){}
@@ -6463,16 +6546,26 @@ window.dashLedger();
     d.querySelector('button').setAttribute('aria-expanded', yes ? 'true' : 'false');
   }
   var leave = null;
+  /* Where a department goes when its header is pressed. With a list, that is
+     the first item; without one, the button carries the address itself in
+     data-goes. Everything below asks this rather than reaching for `.dmenu a`,
+     which is null for the four departments that no longer have a list. */
+  function goes(d){
+    var a = d.querySelector('.dmenu a');
+    if(a) return a.getAttribute('href');
+    return d.querySelector('button').getAttribute('data-goes') || '';
+  }
+
   depts.forEach(function(d){
     var btn = d.querySelector('button');
-    var first = d.querySelector('.dmenu a');
+    var first = goes(d);
     var many = d.querySelectorAll('.dmenu a').length > 1;
     btn.addEventListener('click', function(){
       /* On a phone every list is already open under its department, so the
          button is just a link to the first section — and, like every other
          link in this menu, it closes the burger behind it. */
       if(phone()){
-        if(first) location.hash = first.getAttribute('href');
+        if(first) location.hash = first;
         nv.classList.remove('open'); bg.setAttribute('aria-expanded','false');
         return;
       }
@@ -6483,12 +6576,12 @@ window.dashLedger();
          Without hover it has to do both jobs: open the list, and go. */
       if(!many || hoverable()){
         show(d, false);
-        if(first) location.hash = first.getAttribute('href');
+        if(first) location.hash = first;
         return;
       }
       show(d, !wasOpen);
       if(!wasOpen && first && !d.querySelector('.dmenu a[aria-current="page"]')){
-        location.hash = first.getAttribute('href');
+        location.hash = first;
       }
     });
     d.addEventListener('keydown', function(e){
@@ -6586,27 +6679,44 @@ window.dashLedger();
   var OWNER = {}, TITLES = {};
   groups.forEach(function(box){
     var dept = box.getAttribute('data-dept');
-    [].slice.call(box.querySelectorAll('.dmenu a')).forEach(function(a){
-      var name = a.getAttribute('href').slice(1);
-      OWNER[name] = dept;
-      TITLES[name] = a.textContent.trim();
-    });
+    var links = [].slice.call(box.querySelectorAll('.dmenu a'));
+    if(links.length){
+      links.forEach(function(a){
+        var name = a.getAttribute('href').slice(1);
+        OWNER[name] = dept;
+        TITLES[name] = a.textContent.trim();
+      });
+      return;
+    }
+    /* A department with no list still owns its one section, and the title bar
+       still needs a name for it. Both come off the button. */
+    var btn = box.querySelector('button');
+    var goesTo = (btn.getAttribute('data-goes') || '').slice(1);
+    if(!goesTo) return;
+    OWNER[goesTo] = dept;
+    TITLES[goesTo] = btn.textContent.trim();
   });
 
   function open(name){
     if(!document.getElementById('sec-' + name)) name = 'ozet';
     panes.forEach(function(p){ p.hidden = (p.id !== 'sec-' + name); });
-    var dept = OWNER[name] || 'ozet';
+    /* Settings belongs to no department, so nothing in the menu is marked while
+       it is open. Falling back to Summary here would light up a department the
+       reader is not in, which is worse than lighting up nothing. */
+    var dept = OWNER[name];
     groups.forEach(function(box){
       var btn = box.querySelector('button');
-      if(box.getAttribute('data-dept') === dept) btn.setAttribute('aria-current', 'true');
+      if(dept && box.getAttribute('data-dept') === dept) btn.setAttribute('aria-current', 'true');
       else btn.removeAttribute('aria-current');
     });
     [].slice.call(nv.querySelectorAll('.dmenu a')).forEach(function(a){
       if(a.getAttribute('href') === '#' + name) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
-    document.title = TITLES[name] + ' · Anthifel Dashboard';
+    /* A pane outside the menu still needs a name in the tab, and its own
+       heading is the honest source — nothing to keep in step. */
+    var h1 = document.querySelector('#sec-' + name + ' .phead h1');
+    document.title = (TITLES[name] || (h1 ? h1.textContent.trim() : name)) + ' · Anthifel Dashboard';
     if(!built[name] && typeof window.dashInit[name] === 'function'){
       built[name] = true;
       try{ window.dashInit[name](); }
