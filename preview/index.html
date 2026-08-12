@@ -60,20 +60,23 @@ img{max-width:100%}
 .twcaret{display:inline-block;width:0;height:1.05em;border-left:2px solid #B84C2E;vertical-align:-.18em;margin-left:.16em;animation:twblink 1.05s step-end infinite}
 @keyframes twblink{0%,100%{opacity:1}50%{opacity:0}}
 /* Someone who has asked for less movement gets the sentence, finished. */
-/* Reduced motion does not switch the line off — it stops it repeating.
+/* The line writes itself for everyone, including under reduced motion.
 
-   The first version hid the animation entirely for anyone whose system asked
-   for less motion. Correct by the letter of the rule, and wrong here: what the
-   preference exists to prevent is movement that keeps happening in someone's
-   peripheral vision — parallax, drifting backgrounds, things that loop forever.
-   One short line writing itself out once, in a corner of the hero, is not that.
-   And the failure mode was invisible: the line looked identical whether the
-   preference was on or the script had never run at all.
+   This went through three positions in one day and the third is a decision,
+   not a default. First it was hidden entirely for anyone whose system asked
+   for less motion — correct by the letter of the rule, and invisible in the
+   worst way: a line that does not move looks exactly like a script that never
+   ran. Then it typed once and stopped. Now it loops for everyone, at the CEO's
+   instruction, because it is the one moving thing on the site and its job is
+   to be noticed.
 
-   So the preference now changes what happens after the sentence finishes,
-   which is where the repetition is: it types once, holds, and stops. The caret
-   stops blinking with it. Everyone sees the line write itself; nobody gets a
-   loop they asked not to have. */
+   What reduced motion still gets is the caret held still. The letters are the
+   line; a bar blinking once a second next to them, forever, is the part that
+   sits in the corner of someone's eye — and it is the part nobody would miss.
+
+   The protections that actually matter are not preferences and never were:
+   nothing on the page moves when it types, it stops when it scrolls out of
+   sight, and it stops when the tab is in the background. */
 @media (prefers-reduced-motion:reduce){
   .twcaret{animation:none}
 }
@@ -1090,15 +1093,10 @@ var Typer = (function(){
         i++; draw();
         var ch = full.charAt(i - 1);
         timer = setTimeout(step, ch === '·' ? BEAT : TYPE);
-      } else if(reduce){
-        /* Written out once, and left there. This is the whole concession. */
-        phase = 'done';
       } else {
         phase = 'wipe';
         timer = setTimeout(step, HOLD);
       }
-    } else if(phase === 'done'){
-      return;
     } else {
       if(i > 0){ i--; draw(); timer = setTimeout(step, WIPE); }
       else { phase = 'type'; timer = setTimeout(step, GAP); }
@@ -1149,7 +1147,7 @@ var Typer = (function(){
     el.appendChild(ghost);
     el.appendChild(live);
 
-    el.setAttribute('data-tw', reduce ? 'once' : 'looping');
+    el.setAttribute('data-tw', 'looping');
 
     caret = document.createElement('i');
     caret.className = 'twcaret';
@@ -1306,7 +1304,31 @@ function post_(payload){
     method:'POST',
     body: JSON.stringify(payload),
     headers:{'Content-Type':'text/plain;charset=utf-8'} // avoids CORS preflight on Apps Script
-  }).then(function(r){ return r.json(); });
+  }).then(function(r){
+    /* Read it as text first, then try to parse.
+
+       Apps Script answers a POST with a redirect to googleusercontent.com, and
+       there are several ways to end up with an HTML page instead of the JSON
+       we asked for: a deployment that is not public, a script that will not
+       compile, a browser extension that blocks the redirect. `r.json()` turns
+       all of them into the same six words — "is not valid JSON" — which is
+       exactly as much as we knew for an afternoon.
+
+       So the failure now carries the status, where the request actually ended
+       up, and the first line of what came back. Three facts, three different
+       diagnoses, one attempt. */
+    return r.text().then(function(body){
+      try { return JSON.parse(body); }
+      catch(e){
+        var head = body.replace(/\s+/g, ' ').slice(0, 120);
+        var err = new Error('HTTP ' + r.status + ' · ended at ' +
+          (r.url || '?').replace(/^https?:\/\//, '').split('/')[0] +
+          ' · body starts: ' + head);
+        err.notJson = true;
+        throw err;
+      }
+    });
+  });
 }
 
 /* The endpoint is not wired, or the notice is not published: the flow can be
