@@ -102,6 +102,9 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .svc-days{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 26px;font-size:16px;line-height:1.68}
 .svc-days dt{font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;color:#B84C2E;padding:7px 0;white-space:nowrap}
 .svc-days dd{margin:0;padding:7px 0;color:#3A3733}
+/* The sentence under the day list. It explains why the number went down,
+   which is the question a shorter timetable raises on its own. */
+.svc-after{margin-top:26px;padding-top:22px;border-top:1px solid rgba(15,15,14,.09);font-size:16px;line-height:1.68;color:#3A3733;text-wrap:pretty}
 
 /* ---- the quote form ---- */
 .svc-form{margin-top:76px;background:#FCFAF5;border:1px solid rgba(15,15,14,.14);border-top:2px solid #B84C2E;padding:48px 56px;scroll-margin-top:24px}
@@ -263,7 +266,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
       <h1>AI Readiness Audit</h1>
       <p class="svc-sub" data-en="&quot;Where are we?&quot;" data-tr="AI hazırlık denetimi · &quot;Neredeyiz?&quot;">&quot;Where are we?&quot;</p>
       <p class="lede" data-en="An honest picture of where you stand, and the first three things to fix." data-tr="Nerede durduğunuzun dürüst bir fotoğrafı ve önce düzeltilecek üç şey.">An honest picture of where you stand, and the first three things to fix.</p>
-      <p class="svc-meta" data-en="7 working days · Fixed-fee project" data-tr="7 iş günü · Sabit fiyatlı proje">7 working days · Fixed-fee project</p>
+      <p class="svc-meta" data-en="4 working days · Fixed-fee project" data-tr="4 iş günü · Sabit fiyatlı proje">4 working days · Fixed-fee project</p>
 
       <div class="svc-cta">
         <a class="btn btn-p" href="#teklif" data-en="Request a quote" data-tr="Teklif alın">Request a quote</a>
@@ -283,22 +286,23 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
         </section>
 
         <section class="svc-sec">
-          <h2 data-en="Seven days" data-tr="Yedi gün">Seven days</h2>
+          <h2 data-en="Four days" data-tr="Dört gün">Four days</h2>
           <div class="svc-bd">
             <dl class="svc-days">
+              <dt data-en="Pre-work" data-tr="Ön çalışma">Pre-work</dt>
+              <dd data-en="The pack is completed three working days before kick-off" data-tr="Paket kick-off'tan üç iş günü önce doldurulur">The pack is completed three working days before kick-off</dd>
               <dt data-en="Day 1" data-tr="Gün 1">Day 1</dt>
-              <dd data-en="Kick-off and scope" data-tr="Kick-off ve kapsam">Kick-off and scope</dd>
-              <dt data-en="Day 2-3" data-tr="Gün 2-3">Day 2-3</dt>
+              <dd data-en="Kick-off, scope, data and document handover" data-tr="Kick-off, kapsam, veri ve doküman teslimi">Kick-off, scope, data and document handover</dd>
+              <dt data-en="Day 2" data-tr="Gün 2">Day 2</dt>
               <dd data-en="Time and capacity measurement, tool inventory" data-tr="Zaman ve kapasite ölçümü, araç envanteri">Time and capacity measurement, tool inventory</dd>
+              <dt data-en="Day 3" data-tr="Gün 3">Day 3</dt>
+              <dd data-en="Department interviews, cost reading, scoring" data-tr="Departman görüşmeleri, gider okuması, skorlama">Department interviews, cost reading, scoring</dd>
               <dt data-en="Day 4" data-tr="Gün 4">Day 4</dt>
-              <dd data-en="Department interviews" data-tr="Departman görüşmeleri">Department interviews</dd>
-              <dt data-en="Day 5" data-tr="Gün 5">Day 5</dt>
-              <dd data-en="Cost structure reading and scoring" data-tr="Gider yapısı okuması ve skorlama">Cost structure reading and scoring</dd>
-              <dt data-en="Day 6" data-tr="Gün 6">Day 6</dt>
-              <dd data-en="Report" data-tr="Rapor yazımı">Report</dd>
-              <dt data-en="Day 7" data-tr="Gün 7">Day 7</dt>
-              <dd data-en="Presentation" data-tr="Sunum">Presentation</dd>
+              <dd data-en="Report and delivery" data-tr="Rapor yazımı ve teslim">Report and delivery</dd>
+              <dt data-en="Presentation" data-tr="Sunum">Presentation</dt>
+              <dd data-en="Within two working days of delivery, 60 minutes" data-tr="Teslimden sonraki iki iş günü içinde, 60 dakika">Within two working days of delivery, 60 minutes</dd>
             </dl>
+            <p class="svc-after" data-en="The time came down, the scope did not. What came down was the waiting. The pre-work pack handles upfront the data gathering that used to take the first three days. No calendar is opened until the pack is complete." data-tr="Süre kısaldı, kapsam küçülmedi. Kısalan şey bekleme süresiydi. Ön çalışma paketi, eskiden ilk üç günü yiyen veri toplama işini kick-off'tan önce hallediyor. Paket doldurulmadan takvim açılmaz.">The time came down, the scope did not. What came down was the waiting. The pre-work pack handles upfront the data gathering that used to take the first three days. No calendar is opened until the pack is complete.</p>
           </div>
         </section>
 
@@ -306,7 +310,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
           <h2 data-en="What you receive" data-tr="Ne teslim edilir">What you receive</h2>
           <div class="svc-bd">
             <ul>
-              <li data-en="A 15 to 25 page AI Readiness report" data-tr="15 ile 25 sayfalık AI Readiness raporu">A 15 to 25 page AI Readiness report</li>
+              <li data-en="A 12 to 18 page AI Readiness report" data-tr="12 ile 18 sayfalık AI Readiness raporu">A 12 to 18 page AI Readiness report</li>
               <li data-en="The score, broken down by dimension, with the evidence behind each criterion" data-tr="Readiness skoru, beş boyut kırılımı, her kriterin dayandığı kanıt">The score, broken down by dimension, with the evidence behind each criterion</li>
               <li data-en="A capacity map: where your capacity goes and what it costs" data-tr="Kapasite haritası: kapasitenin nereye gittiği ve maliyeti">A capacity map: where your capacity goes and what it costs</li>
               <li data-en="Three to five quick wins" data-tr="Üç ile beş quick win önerisi">Three to five quick wins</li>
@@ -332,7 +336,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
            the price is in the quote, which goes by email. -->
       <section class="svc-form" id="teklif">
         <h2 data-en="Request a quote" data-tr="Teklif alın">Request a quote</h2>
-        <p class="lede" data-en="We send the quote by email within one working day." data-tr="Teklifi bir iş günü içinde e-posta ile gönderiyoruz.">We send the quote by email within one working day.</p>
+        <p class="lede" data-en="We send the proposal in writing, with its scope, by email within one working day." data-tr="Teklifi kapsamıyla birlikte yazılı olarak, bir iş günü içinde e-posta ile gönderiyoruz.">We send the proposal in writing, with its scope, by email within one working day.</p>
         <form id="qf" class="frm" novalidate>
           <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 
@@ -708,7 +712,12 @@ if(f){
     sending:{en:'One moment…', tr:'Bir saniye…'},
     send:{en:'Request a quote →', tr:'Teklif alın →'},
     fail:{en:'Something did not go through. Please email hello@anthifel.com directly.', tr:'Bir şeyler ters gitti. Lütfen doğrudan hello@anthifel.com adresine yazın.'},
-    done:{en:'Thank you. We will send the quote by email within one working day.', tr:'Teşekkürler. Teklifi bir iş günü içinde e-posta ile göndereceğiz.'},
+    /* Business, 12 August: the price is no longer said out loud in the
+       discovery call either — it goes in writing, with its scope. So the
+       thank-you says so, and nobody leaves this form wondering when they
+       will see a number. */
+    done:{en:'Thank you. We will send the proposal in writing, with its scope, by email within one working day.',
+          tr:'Teşekkürler. Teklifi kapsamıyla birlikte yazılı olarak, bir iş günü içinde e-posta ile göndereceğiz.'},
     dev:{en:'PREVIEW — nothing was recorded. The quote form stays switched off until the Privacy Policy is published (FORM_LIVE = false).',
          tr:'ÖNİZLEME — hiçbir şey kaydedilmedi. Gizlilik Politikası yayımlanana kadar teklif formu kapalı kalır (FORM_LIVE = false).'}
   };
