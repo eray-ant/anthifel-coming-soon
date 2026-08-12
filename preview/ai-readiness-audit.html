@@ -439,36 +439,33 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .meetx{flex:0 0 auto;background:none;border:1px solid rgba(15,15,14,.24);padding:9px 18px;font-family:inherit;font-size:13px;color:#0F0F0E;cursor:pointer;transition:border-color .18s,color .18s}
 .meetx:hover{border-color:#B84C2E;color:#B84C2E}
 
-/* The frame is cropped, and this time the numbers are measured rather than
-   guessed — read off a screenshot of the live page, where 1136 CSS pixels of
-   our own column were 1514 pixels wide, so everything below is that scale
-   divided out.
+/* The frame shows Google's page whole. No crop.
 
-   What comes off the top is Google's own header: the organiser's photo and
-   name, the meeting title, the duration, the Meet line and the description we
-   already print above this box in both languages. 205px puts the top edge of
-   the frame exactly on the date picker.
+   This is the third time this box has been rewritten and the third answer is
+   the one that stops changing.
 
-   What comes off the bottom is nothing of Google's — it is the empty space
-   under their page. The frame has to be told a height, and a frame taller than
-   the page it holds shows the difference as a blank band. Google's page runs
-   756px; 205 of that is cropped away, so 555px is what is left, and the box is
-   555px.
+   First the frame was uncropped and showed Google's organiser block — our name,
+   the meeting title, the duration — which we already say above it in our own
+   words, twice over.
 
-   The crop lands on the top edge of Google's own rounded card, which put it
-   hard against our square border while the bottom had room. --gtop is that
-   room, given back: our own background above the frame so the two edges are
-   spaced the way the bottom is.
+   Then it was cropped: the iframe pulled up 205px so the frame opened on the
+   date picker. That looked right, and it worked, until someone picked a date.
+   Google's booking dialog is positioned inside its own page, and 205px of that
+   page was above our visible box — so the dialog opened with its top cut off.
+   A cropped organiser header is a cosmetic cost. A cropped booking dialog is a
+   booking nobody completes.
 
-   Three numbers, and they are the only ones to touch if Google changes the
-   page:
-     --gcrop  what comes off the top
-     --gtop   the breathing space above the frame
-     height   how much of the picker shows
-   The frame is deliberately taller than the box so a slightly longer page is
-   clipped rather than leaving a gap. */
-.mmcal{--gcrop:205px;--gtop:16px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;padding-top:var(--gtop);height:calc(555px + var(--gtop))}
-.mmcal iframe{display:block;border:0;width:100%;height:calc(555px + var(--gcrop) + 60px);margin-top:calc(-1 * var(--gcrop))}
+   So: no crop. The frame is tall enough for the picker and the dialog that
+   follows it, and Google's page sits in it whole. What we lose is a header we
+   have already said better; what we gain is that nothing here depends on
+   Google's layout staying where it was the day we measured it.
+
+   Two numbers now, and only one of them is Google's:
+     --gtop   our own breathing space above the frame
+     height   tall enough for the picker and the booking dialog
+*/
+.mmcal{--gtop:16px;position:relative;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;padding:var(--gtop) 0}
+.mmcal iframe{display:block;border:0;width:100%;height:760px}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 
 .mmintro{margin-top:0;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:3;column-gap:38px}
@@ -495,8 +492,8 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
      phone the top had almost nothing and the bottom had about 45px of Google's
      empty page under its own footer. --gtop goes up, the box comes down by
      what the bottom was wasting, and the frame stays taller than the box. */
-  .mmcal{--gcrop:340px;--gtop:26px;margin-top:20px;height:calc(995px + var(--gtop))}
-  .mmcal iframe{height:calc(995px + var(--gcrop) + 140px)}
+  .mmcal{--gtop:20px;margin-top:20px}
+  .mmcal iframe{height:1180px}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }

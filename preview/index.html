@@ -702,36 +702,33 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .meetx{flex:0 0 auto;background:none;border:1px solid rgba(15,15,14,.24);padding:9px 18px;font-family:inherit;font-size:13px;color:#0F0F0E;cursor:pointer;transition:border-color .18s,color .18s}
 .meetx:hover{border-color:#B84C2E;color:#B84C2E}
 
-/* The frame is cropped, and this time the numbers are measured rather than
-   guessed — read off a screenshot of the live page, where 1136 CSS pixels of
-   our own column were 1514 pixels wide, so everything below is that scale
-   divided out.
+/* The frame shows Google's page whole. No crop.
 
-   What comes off the top is Google's own header: the organiser's photo and
-   name, the meeting title, the duration, the Meet line and the description we
-   already print above this box in both languages. 205px puts the top edge of
-   the frame exactly on the date picker.
+   This is the third time this box has been rewritten and the third answer is
+   the one that stops changing.
 
-   What comes off the bottom is nothing of Google's — it is the empty space
-   under their page. The frame has to be told a height, and a frame taller than
-   the page it holds shows the difference as a blank band. Google's page runs
-   756px; 205 of that is cropped away, so 555px is what is left, and the box is
-   555px.
+   First the frame was uncropped and showed Google's organiser block — our name,
+   the meeting title, the duration — which we already say above it in our own
+   words, twice over.
 
-   The crop lands on the top edge of Google's own rounded card, which put it
-   hard against our square border while the bottom had room. --gtop is that
-   room, given back: our own background above the frame so the two edges are
-   spaced the way the bottom is.
+   Then it was cropped: the iframe pulled up 205px so the frame opened on the
+   date picker. That looked right, and it worked, until someone picked a date.
+   Google's booking dialog is positioned inside its own page, and 205px of that
+   page was above our visible box — so the dialog opened with its top cut off.
+   A cropped organiser header is a cosmetic cost. A cropped booking dialog is a
+   booking nobody completes.
 
-   Three numbers, and they are the only ones to touch if Google changes the
-   page:
-     --gcrop  what comes off the top
-     --gtop   the breathing space above the frame
-     height   how much of the picker shows
-   The frame is deliberately taller than the box so a slightly longer page is
-   clipped rather than leaving a gap. */
-.mmcal{--gcrop:205px;--gtop:16px;position:relative;overflow:hidden;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;padding-top:var(--gtop);height:calc(555px + var(--gtop))}
-.mmcal iframe{display:block;border:0;width:100%;height:calc(555px + var(--gcrop) + 60px);margin-top:calc(-1 * var(--gcrop))}
+   So: no crop. The frame is tall enough for the picker and the dialog that
+   follows it, and Google's page sits in it whole. What we lose is a header we
+   have already said better; what we gain is that nothing here depends on
+   Google's layout staying where it was the day we measured it.
+
+   Two numbers now, and only one of them is Google's:
+     --gtop   our own breathing space above the frame
+     height   tall enough for the picker and the booking dialog
+*/
+.mmcal{--gtop:16px;position:relative;background:#FFFDF8;border:1px solid rgba(15,15,14,.14);margin-top:26px;padding:var(--gtop) 0}
+.mmcal iframe{display:block;border:0;width:100%;height:760px}
 .mmload{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#7A756C;text-align:center;padding:20px}
 
 .mmintro{margin-top:0;font-size:14.5px;line-height:1.62;color:#3A3733;column-count:3;column-gap:38px}
@@ -758,8 +755,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      phone the top had almost nothing and the bottom had about 45px of Google's
      empty page under its own footer. --gtop goes up, the box comes down by
      what the bottom was wasting, and the frame stays taller than the box. */
-  .mmcal{--gcrop:340px;--gtop:26px;margin-top:20px;height:calc(995px + var(--gtop))}
-  .mmcal iframe{height:calc(995px + var(--gcrop) + 140px)}
+  .mmcal{--gtop:20px;margin-top:20px}
+  .mmcal iframe{height:1180px}
   .mmintro{column-count:1}
   .mmnote a{display:block;margin:6px 0 0}
 }
@@ -928,7 +925,7 @@ if(location.hash === '#meet') open_();
 <p>Where we ever hold information about you that did not come from you directly, we will tell you at the first point we contact you — what we hold, where it came from, and how to object.</p>
 <h3>Who we share it with</h3>
 <p>We use service providers who process personal data on our behalf, under contract, and only on our instructions:</p>
-<table><thead><tr><th>Service provider</th><th>What it does</th><th>What personal data reaches it</th><th>Where it is hosted</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Website hosting. Serves every page</td><td>IP address and browser user agent, in server access logs</td><td>United Kingdom (London region)</td></tr><tr><td>Domain registrar</td><td>The anthifel.com registration</td><td>Registrant contact details in the WHOIS record</td><td>To be confirmed with the registrar</td></tr><tr><td>Google (Apps Script and Workspace)</td><td>Receives the assessment form and sends the result by email</td><td>Name, email address, company and the message you send</td><td>Google</td></tr><tr><td>Google (Calendar appointment schedule)</td><td>The booking window behind every call button</td><td>IP address, browser user agent and Google cookies, only once you open the booking window; then whatever you enter into Google’s booking form</td><td>Google. No region choice is offered</td></tr><tr><td>Supabase</td><td>The database behind our internal dashboard. No visitor data reaches it</td><td>Staff account email addresses only</td><td>United Kingdom (London region)</td></tr></tbody></table>
+<table><thead><tr><th>Service provider</th><th>What it does</th><th>What personal data reaches it</th><th>Where it is hosted</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Website hosting. Serves every page</td><td>IP address and browser user agent, in server access logs</td><td>United Kingdom (London region)</td></tr><tr><td>Squarespace Domains</td><td>The anthifel.com registration</td><td>Registrant contact details. WHOIS privacy is on, so they are not public</td><td>Squarespace, Inc. — United States</td></tr><tr><td>Resend</td><td>Sends every email we send you: your code, your assessment result, and our own copy</td><td>Your email address, and in the result email your score, your band and your five dimension scores</td><td>Resend, Inc. — a United States company. Our sending domain is configured in their Ireland region</td></tr><tr><td>Google (Apps Script and Sheets)</td><td>Receives the assessment form and holds the record behind it</td><td>Your email address, your consent record, and the score and band of a completed assessment. Never your individual answers</td><td>Google. Which region depends on the Workspace edition; ours does not offer the setting</td></tr><tr><td>Google (Workspace)</td><td>Our own mailboxes, including the privacy inbox</td><td>Whatever you write to us</td><td>Google, as above</td></tr><tr><td>Google (Calendar appointment schedule)</td><td>The booking window behind every call button</td><td>IP address, browser user agent and Google cookies, only once you open the booking window; then whatever you enter into Google’s booking form</td><td>Google. No region choice is offered</td></tr><tr><td>Supabase</td><td>The database behind our internal dashboard. No visitor data reaches it</td><td>Staff account email addresses only</td><td>United Kingdom (London region)</td></tr></tbody></table>
 <p>We also share personal data where we are required to by law, or with our professional advisers where necessary.</p>
 <h3>Sending data outside the UK</h3>
 <p>Where a service provider is located outside the United Kingdom, we put in place a transfer mechanism recognised under UK data protection law before any personal data is transferred. You can ask us which mechanism applies to a particular transfer.</p>
@@ -962,7 +959,7 @@ if(location.hash === '#meet') open_();
 <p>Hakkınızda doğrudan sizden gelmeyen bir bilgiyi elimizde tuttuğumuz durumlarda, sizinle kurduğumuz <strong>ilk temasta</strong> size söyleriz: neyi tuttuğumuzu, nereden geldiğini ve nasıl itiraz edebileceğinizi.</p>
 <h3>Kimlerle paylaşıyoruz</h3>
 <p>Bizim adımıza, sözleşmeye bağlı olarak ve yalnızca talimatlarımızla kişisel veri işleyen hizmet sağlayıcılar kullanıyoruz:</p>
-<table><thead><tr><th>Hizmet sağlayıcı</th><th>Ne yapar</th><th>Hangi kişisel veri ulaşır</th><th>Nerede barındırılır</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Web sitesi barındırma. Bütün sayfaları sunar</td><td>Sunucu erişim kayıtlarında IP adresi ve tarayıcı bilgisi</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Alan adı kayıt kuruluşu</td><td>anthifel.com tescili</td><td>WHOIS kaydındaki tescil sahibi iletişim bilgileri</td><td>Kayıt kuruluşuyla teyit edilecek</td></tr><tr><td>Google (Apps Script ve Workspace)</td><td>Test formunu alır ve sonucu e-posta ile gönderir</td><td>Ad, e-posta adresi, şirket ve gönderdiğiniz mesaj</td><td>Google</td></tr><tr><td>Google (Takvim randevu takvimi)</td><td>Her görüşme butonunun arkasındaki randevu penceresi</td><td>Randevu penceresini açtığınız anda IP adresi, tarayıcı bilgisi ve Google çerezleri; sonrasında Google’ın kendi randevu formuna girdikleriniz</td><td>Google. Bölge seçimi sunulmuyor</td></tr><tr><td>Supabase</td><td>İç panelimizin veritabanı. Ziyaretçi verisi buraya ulaşmaz</td><td>Yalnızca çalışan hesaplarının e-posta adresleri</td><td>Birleşik Krallık (Londra bölgesi)</td></tr></tbody></table>
+<table><thead><tr><th>Hizmet sağlayıcı</th><th>Ne yapar</th><th>Hangi kişisel veri ulaşır</th><th>Nerede barındırılır</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Web sitesi barındırma. Bütün sayfaları sunar</td><td>Sunucu erişim kayıtlarında IP adresi ve tarayıcı bilgisi</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Squarespace Domains</td><td>anthifel.com tescili</td><td>Tescil sahibi iletişim bilgileri. WHOIS gizliliği açık, yani herkese açık değil</td><td>Squarespace, Inc. — Amerika Birleşik Devletleri</td></tr><tr><td>Resend</td><td>Size gönderdiğimiz her e-postayı gönderir: giriş kodunuz, test sonucunuz ve bizim kendi kopyamız</td><td>E-posta adresiniz; sonuç e-postasında ayrıca test sonucunuz, bandınız ve beş boyut puanınız</td><td>Resend, Inc. — Amerika Birleşik Devletleri şirketi. Gönderim alan adımız İrlanda bölgesinde tanımlı</td></tr><tr><td>Google (Apps Script ve E-Tablolar)</td><td>Test formunu alır ve arkasındaki kaydı tutar</td><td>E-posta adresiniz, rıza kaydınız, ve tamamlanmış bir testin sonucu ile bandı. Tek tek cevaplarınız asla</td><td>Google. Bölge, Workspace sürümüne bağlı; bizimki bu ayarı sunmuyor</td></tr><tr><td>Google (Workspace)</td><td>Kendi posta kutularımız, gizlilik kutusu dahil</td><td>Bize yazdığınız her şey</td><td>Google, yukarıdaki gibi</td></tr><tr><td>Google (Takvim randevu takvimi)</td><td>Her görüşme butonunun arkasındaki randevu penceresi</td><td>Randevu penceresini açtığınız anda IP adresi, tarayıcı bilgisi ve Google çerezleri; sonrasında Google’ın kendi randevu formuna girdikleriniz</td><td>Google. Bölge seçimi sunulmuyor</td></tr><tr><td>Supabase</td><td>İç panelimizin veritabanı. Ziyaretçi verisi buraya ulaşmaz</td><td>Yalnızca çalışan hesaplarının e-posta adresleri</td><td>Birleşik Krallık (Londra bölgesi)</td></tr></tbody></table>
 <p>Ayrıca hukuken zorunlu olduğumuz hâllerde ve gerektiğinde profesyonel danışmanlarımızla paylaşırız.</p>
 <h3>Verinin Birleşik Krallık dışına gönderilmesi</h3>
 <p>Bir hizmet sağlayıcı Birleşik Krallık dışındaysa, herhangi bir kişisel veri aktarılmadan önce Birleşik Krallık veri koruma hukukunun tanıdığı bir aktarım mekanizması kurarız. Belirli bir aktarım için hangi mekanizmanın geçerli olduğunu bize sorabilirsiniz.</p>
