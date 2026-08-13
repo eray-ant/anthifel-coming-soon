@@ -116,14 +116,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero h1{font-weight:300;font-size:88px;line-height:1.05;letter-spacing:.005em;max-width:880px}
 .hero p{margin-top:30px;font-size:19px;line-height:1.6;max-width:560px;color:#3A3733;text-wrap:pretty}
 .hero-cta{display:flex;gap:22px;margin-top:42px;align-items:center;flex-wrap:wrap}
-/* §9a: the strapline, as a band rather than a heading. Rules above and below, a
-   background one step darker than the limestone, display face. It sits between
-   the promise the headline makes and the scope sentence that qualifies it, and
-   joins the two.
-   It is not translated — §9a. On the Turkish page it reads in English, for the
-   same reason the tagline used to: it is a brand element, not a sentence. */
-.strap{margin-top:34px;padding:16px 0;border-top:1px solid rgba(15,15,14,.12);border-bottom:1px solid rgba(15,15,14,.12);background:#EFEAE0;max-width:880px}
-.strap span{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:23px;line-height:1.35;color:#1A1815;padding:0 20px;text-wrap:pretty}
 
 /* ---- quote ---- */
 /* §10a: the Turkish line under a service name. English pages do not show it —
@@ -475,14 +467,16 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   <div style="position:relative">
     <span class="eyebrow tw" id="heroEyebrow" style="margin-bottom:32px" data-en="AI transformation advisory · London" data-tr="AI dönüşüm danışmanlığı · Londra">AI transformation advisory · London</span>
     <h1 class="serif" data-en="AI needs a guide,&lt;br&gt;not just tools." data-tr="AI araçla başlar,&lt;br&gt;rehberle ilerler.">AI needs a guide,<br>not just tools.</h1>
-    <!-- §9c is the reason this sentence left the paragraph rather than being
-         added above it: the strapline's opening line and the paragraph's
-         opening line were the same words, and putting the band in without
-         taking it out would have printed one sentence twice, forty pixels
-         apart. The hero keeps the scope sentence; the band carries the line
-         the brand actually leads with. -->
-    <div class="strap"><span>We organise the human side of AI transformation.</span></div>
-    <p data-en="It is new for everyone. We stand with you while every part of your company adapts to AI." data-tr="Dönüşüm herkes için yeni. Şirketinizin bütün birimleri AI’a uyum sağlarken yanınızdayız.">It is new for everyone. We stand with you while every part of your company adapts to AI.</p>
+    <!-- §9a asked for the strapline as its own band. It was built that way on
+         13 August and taken out the same day: set apart in a tinted box under a
+         88px headline it read as a caption bolted on, not as the line the brand
+         leads with. It goes back to opening the hero sentence, which is the
+         CEO's 9 August amendment and where it had been since.
+         Two consequences worth keeping in view. It translates here, so the
+         Turkish page has no English sentence stranded in the middle of it. And
+         because the sentence is inside the paragraph, §9c holds by
+         construction: there is only one copy of it to keep. -->
+    <p data-en="We organise the human side of AI transformation. It is new for everyone. We stand with you while every part of your company adapts to AI." data-tr="AI dönüşümünün insan tarafını biz düzenliyoruz. Dönüşüm herkes için yeni. Şirketinizin bütün birimleri AI’a uyum sağlarken yanınızdayız.">We organise the human side of AI transformation. It is new for everyone. We stand with you while every part of your company adapts to AI.</p>
     <div class="hero-cta">
       <a href="#assessment" class="btn btn-p" data-start data-en="Readiness assessment →" data-tr="AI Hazırlık Testi →">Readiness assessment →</a>
       <a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" class="btn btn-s" data-meet data-en="Book a 30-minute call" data-tr="Görüşme Ayarla">Book a 30-minute call</a>
@@ -521,16 +515,14 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
       <span class="rn">III</span>
       <div class="step-b">
         <h4 data-en="Audit" data-tr="Denetim">Audit</h4>
-        <!-- §12c. Marketing's three sentences, run together and never broken
-             up: four days on its own reads as a smaller job, the second
-             sentence closes that reading, and the third says why it is
-             possible. This block carried the old duration spelled out as a
-             word for a day after every numeric one had been replaced, which is
-             how it survived the sweep. The duration test reads the word as
-             well as the digit now — and deliberately does not quote the old
-             wording here, because a comment naming a banned string puts that
-             string back in the file. -->
-        <p data-en="Four working days, and an evidence-based read of where you stand. The time came down, the scope did not. What we removed was the waiting: our pre-work package does upfront what other firms spend a fortnight asking you for." data-tr="Dört iş günü ve nerede durduğunuzun kanıta dayalı fotoğrafı. Süre kısaldı, kapsam küçülmedi. Kısalan şey bekleme süresiydi: ön çalışma paketimiz, başkalarının sizden haftalarca istediği verinin çoğunu baştan hazırlıyor.">Four working days, and an evidence-based read of where you stand. The time came down, the scope did not. What we removed was the waiting: our pre-work package does upfront what other firms spend a fortnight asking you for.</p>
+        <!-- §12c names two places for its three sentences, and putting them
+             in both printed the same paragraph twice on one page. They live
+             on the service card, where the duration stands alone as a figure
+             and most needs the qualifier. Here the line is Marketing's own,
+             with only the duration clause removed — the number in it changed,
+             the rest did not, and the service card two screens down states
+             the new one. No new copy was written for this block. -->
+        <p data-en="The cheapest way to find out where you stand." data-tr="Nerede durduğunuzu görmenin en kısa yolu.">The cheapest way to find out where you stand.</p>
       </div>
     </div>
     <div class="step">
