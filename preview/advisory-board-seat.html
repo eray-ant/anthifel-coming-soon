@@ -93,6 +93,14 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .ab{margin-top:64px}
 .ab-sec{padding:34px 0;border-top:1px solid rgba(15,15,14,.12);max-width:1000px}
 .ab-sec h2{margin:0 0 16px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;line-height:1.5}
+/* The wordmark under "The name": small, at full strength, never below the
+   15px floor the brand sets. 220px wide puts it at 22px tall. */
+.ab-mark{display:block;width:220px;height:auto;margin:0 0 20px}
+/* The monogram under "What we do". Set beside the text rather than above it, so
+   it reads as a mark in the margin and not as a picture the paragraph is
+   about. */
+.ab-do .ab-bd{padding-left:0}
+.ab-mono{float:left;width:46px;height:auto;margin:4px 20px 8px 0;opacity:.9}
 .ab-bd{max-width:660px}
 .ab-bd p{margin:0 0 16px;font-size:17px;line-height:1.68;color:#26241F;text-wrap:pretty}
 .ab-bd p:last-child{margin-bottom:0}
@@ -172,6 +180,8 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   h1{font-size:46px}
   .ab{margin-top:44px}
   .ab-sec{padding:28px 0}
+  .ab-mark{width:180px}
+  .ab-mono{width:38px;margin-right:14px}
   .ab-who .ab-bd{gap:22px}
   .ab-portrait{width:100%}
   .ab-cta .btn{width:100%}
@@ -310,7 +320,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
             <ul>
               <li data-en="Sitting on your advisory board" data-tr="Advisory board&#x27;da oturmak">Sitting on your advisory board</li>
               <li data-en="A low-intensity monthly contribution" data-tr="Aylık düşük yoğunluklu katkı">A low-intensity monthly contribution</li>
-              <li data-en="Access to Eray on critical decisions" data-tr="Kritik kararlarda CEO&#x27;ya erişim">Access to Eray on critical decisions</li>
+              <li data-en="Access to us on critical decisions" data-tr="Kritik kararlarda bize erişim">Access to us on critical decisions</li>
               <li data-en="A quarterly strategic review" data-tr="Üç aylık stratejik gözden geçirme">A quarterly strategic review</li>
               <li data-en="Introductions across the ecosystem" data-tr="Ekosistem tanıştırmaları">Introductions across the ecosystem</li>
             </ul>
