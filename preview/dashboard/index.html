@@ -2828,6 +2828,16 @@ render();
 /* gate */
 
 #sec-blog .note{margin:0 18px 18px;padding:12px 14px;border:1px dashed rgba(184,76,46,.45);background:#FDF6F3;font-size:12px;line-height:1.55;color:#8A3D22;border-radius:2px}
+#sec-blog .planpick{border-bottom:1px solid rgba(26,24,21,.08);background:#FAF9F6}
+#sec-blog .planhd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+#sec-blog .planhd b{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#57534C}
+#sec-blog .planlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:250px;overflow:auto}
+#sec-blog .planlist button{display:block;width:100%;text-align:left;background:#FFFFFF;border:1px solid rgba(26,24,21,.14);
+  border-radius:2px;padding:10px 12px;cursor:pointer;font-family:inherit;transition:border-color .14s,background .14s}
+#sec-blog .planlist button:hover{border-color:#B84C2E;background:#FDFBF8}
+#sec-blog .planlist .pd{display:block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#7A756C}
+#sec-blog .planlist .pt{display:block;margin-top:3px;font-size:13.5px;line-height:1.45;color:#1A1815;overflow-wrap:anywhere}
+#sec-blog .planlist .pn{display:block;margin-top:3px;font-size:11.5px;line-height:1.45;color:#7A756C}
 #sec-blog .keyrow{display:flex;flex-wrap:wrap;gap:10px;margin:0 18px 18px}
 #sec-blog .keyrow input{flex:1;min-width:180px;font-family:inherit;font-size:14px;color:#1A1815;background:#FFFFFF;border:1px solid rgba(26,24,21,.22);border-radius:2px;padding:10px 12px;transition:border-color .16s}
 #sec-blog .keyrow input:focus{border-color:#B84C2E;outline:none}
@@ -2911,6 +2921,7 @@ render();
        Yayımla dediğinde sayfa siteye statik olarak yazılır.</p>
   </div>
   <div class="acts">
+    <button type="button" class="btn btn-p" id="addBtn">+ Blog Ekle</button>
     <a class="btn btn-s" href="../blog/" target="_blank" rel="noopener">Blogu aç</a>
   </div>
 </div>
@@ -2947,6 +2958,18 @@ render();
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
       <span id="edTitle">Yeni yazı</span>
     </h2>
+
+    <!-- The plan chooser. Content decides what gets written and when; this
+         editor only writes it. So a new post starts from the calendar rather
+         than from an empty form, and the fields it can fill it fills. -->
+    <div class="pad planpick" id="planPick" hidden>
+      <div class="planhd">
+        <b>Plandan seç</b>
+        <button type="button" class="btn btn-q" id="planSkip">Boş yazı aç</button>
+      </div>
+      <ul class="planlist" id="planList"></ul>
+      <div class="hint" id="planNote"></div>
+    </div>
 
     <div class="pad">
       <div class="row">
@@ -3057,6 +3080,11 @@ render();
     <div class="bar">
       <button class="btn btn-s" id="saveBtn">Taslağı kaydet</button>
       <button class="btn btn-p" id="pubBtn">Yayımla</button>
+      <!-- Both draft, neither publishes. The model writes into the form and a
+           person still presses Yayımla. Disabled until the server says a key
+           exists, with the reason on the button rather than in a manual. -->
+      <button class="btn btn-s" id="aiTrBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Çevir</button>
+      <button class="btn btn-s" id="aiImgBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Görsel üret</button>
       <span class="sp"></span>
       <button class="btn btn-s" id="unpubBtn" hidden>Yayından kaldır</button>
       <button class="btn btn-d" id="delBtn" hidden>Sil</button>
@@ -3130,6 +3158,11 @@ var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLzi
 var TOKEN_KEY = 'anthifel_dash_token';
 var TOKEN = '';
 try { TOKEN = localStorage.getItem(TOKEN_KEY) || ''; } catch(e){}
+
+/* The blog rows of the content calendar, lifted from the İçerik section at
+   build time by build.py. One source: Content owns what gets written and when,
+   and this editor reads that rather than keeping a second copy. */
+var PLAN = [{"date": "2026-08-12", "pillar": "cerceve", "lang": "tr", "title": "AI Dönüşümü Neden Teknoloji Değil, Organizasyon Problemidir?", "note": "Manifesto. Lansmandan 8 gün önce yayında olmalı. Salı kuralının tek istisnası.", "enDate": ""}, {"date": "2026-08-25", "pillar": "cerceve", "lang": "tr", "title": "Bir Şirketin AI'ya Hazır Olduğunu Nasıl Anlarsın? 12 Sinyal", "note": "Assessment formunun 12 sorusuyla birebir eşleşiyor. Form canlı olmalı — karar 21 Ağustos.", "enDate": ""}, {"date": "2026-09-01", "pillar": "marka", "lang": "tr", "title": "Anthropos: Bir AI Danışmanlığının Adı Neden “İnsan” Anlamına Geliyor", "note": "Tek kök. Coğrafi referans yok. CTA Hakkımda, assessment değil.", "enDate": ""}, {"date": "2026-09-08", "pillar": "cerceve", "lang": "tr", "title": "Pilot Mezarlığı: Şirketler AI Projelerini Neden Gömüyor?", "note": "Dört ölüm nedeni: sahipsizlik, ölçek planı yokluğu, başarı tanımının değişmesi, ekibin dağıtılması.", "enDate": ""}, {"date": "2026-09-15", "pillar": "vaka", "lang": "tr", "title": "Bir Markayı Sıfırdan Kurup Satmak: 6 Yılda Öğrendiğim 5 Şey", "note": "Anonim anlatım. Sektör ve ölçek verilir, isim verilmez.", "enDate": ""}, {"date": "2026-09-22", "pillar": "vaka", "lang": "tr", "title": "“AI'dan Kim Sorumlu?” Sorusunun Cevabı Yoksa Dönüşüm Başlamamıştır", "note": "Üç şirket, üç cevap: CTO'da, CMO'da, hiç kimsede.", "enDate": ""}, {"date": "2026-09-29", "pillar": "cerceve", "lang": "tr", "title": "Yönetim Kurulunda AI: Sorulması Gereken 7 Soru", "note": "Yazdırılıp toplantıya götürülebilir formatta.", "enDate": ""}, {"date": "2026-10-06", "pillar": "vaka", "lang": "tr", "title": "Bir Birleşmenin İlk 90 Günü: Teknoloji 3 Haftada Bitti, İnsan 9 Ay Sürdü", "note": "İzin bağımlılığı kalktı — anonim anlatım.", "enDate": ""}, {"date": "2026-10-13", "pillar": "sektor", "lang": "tr", "title": "AI Ajansı mı, İç Ekip mi, Danışman mı? Hangisi Neyi Çözer", "note": "Rakip kötüleme yasak. Kategori kurma yazısı.", "enDate": ""}, {"date": "2026-10-20", "pillar": "cerceve", "lang": "tr", "title": "Veri Hazır Değilse AI Hazır Değildir — ama bu bir IT problemi değil", "note": "Veri probleminin kendisi organizasyoneldir.", "enDate": ""}, {"date": "2026-10-27", "pillar": "sektor", "lang": "tr", "title": "Türkiye'de Şirketlerin AI Bütçesi Nereye Gidiyor?", "note": "Veri bağımlı — karar 13 Ekim. Kanıtlanamayan rakam yazılmaz.", "enDate": ""}, {"date": "2026-11-03", "pillar": "vaka", "lang": "tr", "title": "Çalışanlar AI'dan Korkmuyor, Belirsizlikten Korkuyor", "note": "Direnç bir tutum değil, bilgi eksikliğinin rasyonel sonucu.", "enDate": ""}, {"date": "2026-11-10", "pillar": "vaka", "lang": "tr", "title": "Ajans Dünyasından AI Dönüşümüne Taşınan 3 Şey", "note": "10 Kasım anma günü — kasten kısa. Sosyal türetme Çarşamba'ya kayar.", "enDate": ""}, {"date": "2026-11-17", "pillar": "vaka", "lang": "tr", "title": "İlk 90 Gün: Anthifel'i Kurarken Ne Öğrendim", "note": "90 gün metrikleri 13 Kasım'da toplanmalı. Yetişmezse 24 Kasım'a kayar.", "enDate": ""}, {"date": "2026-11-24", "pillar": "cerceve", "lang": "tr", "title": "Şirket İçi AI Eğitimleri Neden İşe Yaramıyor", "note": "Workshop CTA'sı olan tek yazı.", "enDate": ""}, {"date": "2026-12-01", "pillar": "sektor", "lang": "tr", "title": "Bir AI Duyurusu Nasıl Okunur — [güncel örnek]", "note": "Esnek slot. Konu 24 Kasım'da seçilir.", "enDate": ""}, {"date": "2026-12-08", "pillar": "cerceve", "lang": "tr", "title": "Dönüşüm Danışmanlığı Nasıl Satın Alınır? Sprint, Retainer, Advisory", "note": "“Hiçbiri” seçeneğinin dürüstçe yazılması bu yazının gücü.", "enDate": ""}, {"date": "2026-12-15", "pillar": "sektor", "lang": "tr", "title": "2026'da Türkiye'de AI: Ne Konuşuldu, Ne Yapıldı", "note": "En yüksek arama trafiği potansiyeli. Çerçeve 1 Aralık'ta netleşir.", "enDate": ""}, {"date": "2026-12-22", "pillar": "kisisel", "lang": "tr", "title": "Uzaktan Danışmanlık Gerçekten Nasıl İşliyor?", "note": "Yılın en hafif yazısı. Konum belirtilmez. CTA yok.", "enDate": ""}, {"date": "2026-12-29", "pillar": "cerceve", "lang": "tr", "title": "2027'de Şirketleri Bekleyen 5 Organizasyon Sorusu", "note": "Ocak 2027'nin ilk yazısına köprü.", "enDate": ""}];
 
 var VARIANTS = [
   {key:'16x9', w:1600, h:900},
@@ -3521,12 +3554,183 @@ $('heroClear').addEventListener('click', function(){
   $('hero').value = ''; heroPreview(); dirty = true;
 });
 
+/* ---------- Gemini ---------- */
+/* Whether a key exists is the only thing this browser learns about it. The key
+   itself lives in Script Properties and is never sent here — the same rule as
+   the panel key, for the same reason. */
+var AI_ON = false;
+
+function aiReady(on){
+  AI_ON = !!on;
+  ['aiTrBtn', 'aiImgBtn'].forEach(function(id){
+    var b = $(id); if(!b) return;
+    b.disabled = !AI_ON;
+    b.title = AI_ON ? '' : 'Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY';
+  });
+}
+
+function aiBusy(btn, on, label){
+  btn.disabled = on || !AI_ON;
+  btn.textContent = on ? '…' : label;
+}
+
+/* Translation opens a new post rather than overwriting this one. The pair is
+   two articles at two addresses, and a translation that replaced its source
+   would lose the one it came from. */
+function aiTranslate(){
+  var btn = $('aiTrBtn');
+  var p = fromForm();
+  if(!p.title || !p.body){ say('Çevirmek için önce başlık ve metin gerekiyor.', false); return; }
+  aiBusy(btn, true, 'Çevir');
+  api('translate', { lang: p.lang, title: p.title, excerpt: p.excerpt, body: p.body })
+    .then(function(d){
+      var t = d.post || {};
+      var n = blank();
+      n.lang = t.lang; n.title = t.title || ''; n.excerpt = t.excerpt || '';
+      n.body = t.body || ''; n.category = p.category; n.date = p.date;
+      n.slug = slugify(n.title);
+      n.pair = current && current.id ? current.id : '';
+      toForm(n);
+      $('slug').dataset.touched = '';
+      dirty = true;
+      say('Çeviri taslak olarak açıldı. Okuyup kaydedin — kaydedilmedi.', true);
+    })
+    .catch(function(e){ say('Çevrilemedi: ' + e.message, false); })
+    .then(function(){ aiBusy(btn, false, 'Çevir'); });
+}
+
+/* The picture comes back whole and goes through the same crop the uploader
+   uses, so a generated cover lands in the library as an ordinary image. */
+function aiIllustrate(){
+  var btn = $('aiImgBtn');
+  var p = fromForm();
+  if(!p.title){ say('Görsel için önce bir başlık gerekiyor.', false); return; }
+  aiBusy(btn, true, 'Görsel üret');
+  say('Görsel üretiliyor, bu yarım dakika sürebilir…', true);
+  api('illustrate', { title: p.title, excerpt: p.excerpt, slug: p.slug })
+    .then(function(d){
+      return new Promise(function(res, rej){
+        var im = new Image();
+        im.onload = function(){ res(im); };
+        im.onerror = function(){ rej(new Error('görsel okunamadı')); };
+        im.src = 'data:image/png;base64,' + d.b64;
+      }).then(function(im){
+        srcImg = im; focal = { x:0.5, y:0.5 };
+        var files = {};
+        VARIANTS.forEach(function(v){
+          paint($('c' + v.key), v.w, v.h);
+          files[v.key] = $('c' + v.key).toDataURL('image/jpeg', 0.82).split(',')[1];
+        });
+        return api('upload', { name: d.name || p.slug || 'kapak', files: files });
+      });
+    })
+    .then(function(d){
+      images = d.images || [];
+      $('hero').value = d.base; heroPreview(); dirty = true;
+      say('Görsel üretildi ve kütüphaneye eklendi. Beğenmediyseniz tekrar üretin.', true);
+    })
+    .catch(function(e){ say('Görsel üretilemedi: ' + e.message, false); })
+    .then(function(){ aiBusy(btn, false, 'Görsel üret'); });
+}
+
+/* ---------- the plan ---------- */
+/* A pillar is Content's word for what a piece is doing; a category is the
+   blog's. They are not the same vocabulary, so the mapping is written out
+   rather than guessed at, and the two categories no pillar reaches are found
+   from the title instead. Whatever is chosen, it is only a starting point:
+   the field stays editable and says where its value came from. */
+var PILLAR_CAT = { cerceve:'Strategy', marka:'Strategy', vaka:'Field notes', kisisel:'People' };
+var CAT_HINTS = [
+  { cat:'Organisation', re:/organizasyon|organisation|ekip|takım|departman|kültür|kurul|yönetim|team|culture|board/i },
+  { cat:'Technology',   re:/teknoloji|technology|araç|tool|model|veri|data|entegrasyon|stack|pilot/i }
+];
+function guessCategory(pillar, title){
+  var t = String(title || '');
+  for(var i = 0; i < CAT_HINTS.length; i++) if(CAT_HINTS[i].re.test(t)) return CAT_HINTS[i].cat;
+  return PILLAR_CAT[pillar] || 'Strategy';
+}
+
+/* Rows still ahead of the posts that already exist. A plan row is spent once a
+   post carries its title, so the list shrinks as the blog fills rather than
+   offering the same piece twice. */
+function planOpen(){
+  var taken = {};
+  posts.forEach(function(p){ taken[String(p.title).trim().toLowerCase()] = 1; });
+  return PLAN.filter(function(r){ return !taken[String(r.title).trim().toLowerCase()]; });
+}
+
+function planFill(row){
+  var p = blank();
+  p.title    = row.title;
+  p.slug     = slugify(row.title);
+  p.lang     = row.lang === 'en' ? 'en' : 'tr';
+  p.date     = row.date;
+  p.excerpt  = row.note || '';
+  p.category = guessCategory(row.pillar, row.title);
+  toForm(p);
+  $('slug').dataset.touched = '';
+  $('planPick').hidden = true;
+  // Two things the plan knows and the form has no field for. Said once, here,
+  // rather than left for the writer to remember.
+  var note = 'Kategori plandaki "' + row.pillar + '" sütunundan seçildi — değiştirebilirsiniz.';
+  if(row.enDate) note += ' İngilizcesi plana göre ' + row.enDate + ' tarihinde.';
+  say(note, true);
+  $('title').focus();
+}
+
+function openPlan(){
+  var rows = planOpen();
+  var ul = $('planList');
+  ul.innerHTML = '';
+  if(!rows.length){
+    $('planPick').hidden = true;
+    toForm(blank());
+    say('Planda yazılmamış blog kalmadı. Boş yazı açıldı.', true);
+    $('title').focus();
+    return;
+  }
+  rows.slice(0, 12).forEach(function(r){
+    var li = document.createElement('li');
+    var b  = document.createElement('button');
+    b.type = 'button';
+    var d  = document.createElement('span'); d.className = 'pd';
+    d.textContent = trDate(r.date) + ' · ' + (r.lang === 'en' ? 'English' : 'Türkçe');
+    var t  = document.createElement('span'); t.className = 'pt'; t.textContent = r.title;
+    b.appendChild(d); b.appendChild(t);
+    if(r.note){
+      var n = document.createElement('span'); n.className = 'pn'; n.textContent = r.note;
+      b.appendChild(n);
+    }
+    b.addEventListener('click', function(){ planFill(r); });
+    li.appendChild(b); ul.appendChild(li);
+  });
+  $('planNote').textContent = rows.length > 12
+    ? 'Plandaki ilk 12 yazı. Kalan ' + (rows.length - 12) + ' tanesi İçerik bölümündeki takvimde.'
+    : 'Başlık, tarih ve dil plandan gelir. URL başlıktan üretilir.';
+  $('planPick').hidden = false;
+  $('planPick').scrollIntoView({ block:'nearest' });
+}
+
 /* ---------- wiring ---------- */
-$('newBtn').addEventListener('click', function(){
+$('addBtn').addEventListener('click', function(){
   if(dirty && !confirm('Kaydedilmemiş değişiklikler var. Yine de yeni yazı açılsın mı?')) return;
+  openPlan();
+});
+$('planSkip').addEventListener('click', function(){
+  $('planPick').hidden = true;
   toForm(blank());
   $('title').focus();
 });
+/* Two doors, one behaviour. The button over the list and the button in the
+   page header both start a post the same way — from the plan, with an escape
+   hatch to a blank one. Two entry points that behaved differently would be a
+   thing to learn for no reason. */
+$('newBtn').addEventListener('click', function(){
+  if(dirty && !confirm('Kaydedilmemiş değişiklikler var. Yine de yeni yazı açılsın mı?')) return;
+  openPlan();
+});
+$('aiTrBtn').addEventListener('click', aiTranslate);
+$('aiImgBtn').addEventListener('click', aiIllustrate);
 $('saveBtn').addEventListener('click', function(){ save('draft'); });
 $('pubBtn').addEventListener('click', function(){ save(isFuture($('date').value) ? 'scheduled' : 'published'); });
 $('unpubBtn').addEventListener('click', function(){
@@ -3571,6 +3775,7 @@ if(live()){
   $('postCount').textContent = 'yükleniyor…';
   api('list').then(function(d){
     posts = d.posts || []; images = d.images || []; renderList(); refreshPairs();
+    aiReady(d.ai);
     $('postCount').textContent = posts.length + ' yazı';
   }).catch(function(e){
     $('postCount').textContent = '';
