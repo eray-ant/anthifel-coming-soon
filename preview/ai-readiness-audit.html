@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="AI Readiness Audit · Anthifel" data-tr="AI Readiness Audit · Anthifel">AI Readiness Audit · Anthifel</title>
-<meta name="description" content="An honest picture of where your company stands on AI, and the first three things to fix. A fixed-fee, four working day audit.">
+<meta name="description" content="An honest picture of where your company stands on AI, and the first three things to fix. A fixed-fee, four working day audit." data-en="An honest picture of where your company stands on AI, and the first three things to fix. A fixed-fee, four working day audit." data-tr="An honest picture of where your company stands on AI, and the first three things to fix. A fixed-fee, four working day audit.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAECklEQVR42u2aW4hNYRTHf+eM0ZCESY0RuSa3kol4oTzwILdIotx51CBPE6ak5EUkPJInHlwehUhRptzKlEsu455rcglzztke9los2+6Yyzl79t6+Vbszc853zrf+a/2/9a21vg+cOHHixIkTJ06c/J9S0YVz9wO2AV+B56KLl2ZjZ4AsUA1sAR4I4OMxcEYk4DNAT6BZgHtAK5ADxhoDpXYJVAA/gNFAHZAX0N2AXsBJMYCX9nhTBxQCzzdgeFexICpRYLXAFwO+Vby+P+2xQA0wysQAy4JPYpxIWRB1DCgAq4FBQAswwBiiSthwzoxN5U7wGJgNLBDwOcOCd7JN6thUBcAMMF88nxGPPxbgeRMLGuQ73dK4/q8BG8z7Gw0L8mKMl0DvNLFAvT8NeAH0MOB6C2BlQU4MUp8mFmigvQg0GmAKrsFkhcqCFskaE8+CrACYALwB+hhQ+lQDb00gVBasSwML1Pungb0hgPTvnSEsuANUJpkF6v0RwHvZ84NJjo6pAT6GsGBJklmg3j8KHC6SeCm4PYEKsQDcECNlk+r9WvF+sUJHxw4O1AjKgjlJrBHUq/uAU20AoJ8dDLDAAy4HconEpLx9JLpPaEOBoywYLqVxweQGHjAjSSxQ7++Qvb+tiuuYIyEsOJsUFtjW12tguvxf0Y64MSawHSoLpiSBBer9zcD1DnhNwR0LYcHJuBtAvV8JPAPmdkDhCpM55gMsyAHjiXHbTL2/BrjXiTVrs0etFLVUPhpnFugafgis6EQGp+AmG+/HvnmqSi8GngrwTCeNCXAmhAUH4sgCVbhZmhydzd8V3HQBbVnwGRgYJxZo4JqF39MrVR2fNX2EIAt2x6lIUkWbpKwtlWLKgpkhLHgP9I9DqazenyrU7FdipTSwXjUFkrJgaxxYoF46Dxwqg0L6+/P4u3n6ii5unqp3xgHf8Q87yhGYsmKIm8SseWoTlhNl3JoU3NIQFjzCP1+InAW23eUBE9tR9HQ0xe4O3A1hwaquYIECPQHcN4qWO81eH8KC5hIkXh0CP16U2cXviw5RlNktZltUFiyMkgU6yVnxwLKIJtff3xJSKjdFlRmqEiv5fca/KCIDKLga/LsEHn82T2eWu0ZQgMOADyYhqTd9gKiyzksmFmgLvcnomSn1+lNwfYFbMvkPeb1ilCtnMLJ6XDAGsK87SqlL8MtDxMoK3t7vaYxwB6rDPz/Ima5R3jikpLpU4t/p2S6TekWey8ByYKRE61JKleQcm8z6L/bcxL+KM+RfS7MYRZZIV2YS/qnNZ7FyWJDJ458DADyR3KAF/xboXaFkoZ3s8/BPjtcCQ/G7xYPxr9a2FtE9LzVCFv826m38I7YjOHHixIkTJ06cOHHyS34C+Y8+ijRZ1DMAAAAASUVORK5CYII=">
 <style>/* latin-ext */
@@ -86,6 +86,23 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .svc-meta{margin:18px 0 0;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B84C2E}
 .svc-cta{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
 
+/* ---- About. One column, three sections, about two screens (§13a). ----
+   The measure is set on the prose rather than on the section, because the
+   section that holds the portrait has to be wider than a comfortable line of
+   text and the other two must not be. */
+.ab{margin-top:64px}
+.ab-sec{padding:34px 0;border-top:1px solid rgba(15,15,14,.12);max-width:1000px}
+.ab-sec h2{margin:0 0 16px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;line-height:1.5}
+.ab-bd{max-width:660px}
+.ab-bd p{margin:0 0 16px;font-size:17px;line-height:1.68;color:#26241F;text-wrap:pretty}
+.ab-bd p:last-child{margin-bottom:0}
+.ab-bd i{font-style:italic}
+/* The portrait sits to the left of the text it belongs to (§13a-2), and drops
+   above it on a narrow screen rather than shrinking to a stamp. */
+.ab-who .ab-bd{max-width:none;display:flex;gap:38px;align-items:flex-start;flex-wrap:wrap}
+.ab-who .ab-bd>div{flex:1 1 320px;min-width:0;max-width:560px}
+.ab-portrait{flex:none;width:clamp(260px,36vw,460px);aspect-ratio:1/1;height:auto;display:block;object-fit:cover;background:#EFEAE0}
+.ab-cta{margin-top:44px;padding-top:34px;border-top:1px solid rgba(15,15,14,.12);max-width:1000px}
 .svc-secs{margin-top:76px;display:grid;gap:0}
 .svc-sec{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;padding:38px 0;border-top:1px solid rgba(15,15,14,.12);align-items:start}
 .svc-sec h2{margin:0;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;line-height:1.5}
@@ -153,6 +170,11 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 @media (max-width:1024px){
   :root{--pad:44px}
   h1{font-size:46px}
+  .ab{margin-top:44px}
+  .ab-sec{padding:28px 0}
+  .ab-who .ab-bd{gap:22px}
+  .ab-portrait{width:100%}
+  .ab-cta .btn{width:100%}
   .svc-sec{grid-template-columns:1fr;gap:14px;padding:30px 0}
   .svc-form{padding:38px 34px}
 }
@@ -605,6 +627,10 @@ if(location.hash === '#meet') open_();
         <li><a href="index.html#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a></li>
         <li><a href="index.html#services" data-en="Services" data-tr="Hizmetler">Services</a></li>
         <li><a href="index.html#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a></li>
+        <!-- §13a: About is reached from here and nowhere else. The top menu
+             stays at four headings, because a company page is something a
+             reader goes looking for, not something the site pushes at them. -->
+        <li><a href="about.html" data-en="About" data-tr="Hakkımızda">About</a></li>
         <li><a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
@@ -655,7 +681,19 @@ function apply(l){
     var v=n[i].getAttribute('data-'+l);
     if(v===null) continue;
     if(n[i].tagName==='TITLE'){document.title=v;continue;}
+    /* A meta description carries its text in an attribute, not in a node. It
+       used to fall through to innerHTML here, which put the Turkish sentence
+       inside an empty tag and left the English one in the head. */
+    if(n[i].tagName==='META'){n[i].setAttribute('content',v);continue;}
     n[i].innerHTML=v;
+  }
+  /* Alt text is a sentence a reader hears rather than sees, so it translates
+     like any other. It is carried separately because innerHTML is meaningless
+     on an image. */
+  var a=document.querySelectorAll('[data-alt-en]');
+  for(var m=0;m<a.length;m++){
+    var av=a[m].getAttribute('data-alt-'+l);
+    if(av!==null) a[m].setAttribute('alt',av);
   }
   var b=document.querySelectorAll('.lang button');
   for(var j=0;j<b.length;j++) b[j].setAttribute('aria-current', b[j].getAttribute('data-lang')===l?'true':'false');

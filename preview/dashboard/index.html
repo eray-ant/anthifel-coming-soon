@@ -3982,17 +3982,29 @@ if(live()){
 /* ---------- housing ---------- */
 #cos{font-size:14px;line-height:1.55;color:var(--basalt)}
 #cos button,#cos input,#cos select,#cos textarea{font-family:inherit}
-#cos .pnav{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:#FFFFFF;
-  border:1px solid rgba(26,24,21,.10);border-radius:3px;padding:7px 9px;margin-bottom:14px}
+/* Four groups, one per row: the group's name on the left, its sections beside
+   it. They used to run together in a single wrapping strip with hairlines
+   between, and where the strip wrapped decided which group a section looked
+   like it belonged to — at some widths "Blog" sat under "Yönetim". A row per
+   group cannot wrap into the wrong one. */
+#cos .pnav{background:#FFFFFF;border:1px solid rgba(26,24,21,.10);border-radius:3px;
+  padding:4px 9px;margin-bottom:14px;display:flex;flex-direction:column}
+#cos .pnav .navrow{display:flex;align-items:center;gap:3px;flex-wrap:wrap;padding:6px 0;
+  border-top:1px solid rgba(26,24,21,.07)}
+#cos .pnav .navrow:first-child{border-top:0}
 #cos .pnav a{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:2px;
   font-size:12.5px;font-weight:500;color:#57534C;white-space:nowrap;cursor:pointer;
   border:1px solid transparent;transition:background .14s,color .14s}
 #cos .pnav a:hover{background:#FAF9F6;color:#1A1815}
 #cos .pnav a.on{background:#FAF7F4;color:#1A1815;font-weight:600;box-shadow:inset 0 -2px 0 #B84C2E}
 #cos .pnav .cnt{font-size:11px;color:#7A756C;font-variant-numeric:tabular-nums}
-#cos .pnav .navcap{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:#7A756C;padding:0 7px 0 3px}
-#cos .pnav .navsep{width:1px;height:20px;background:rgba(26,24,21,.12);margin:0 7px}
+/* The caption holds a column of its own so the four groups line up down the
+   left edge and the eye can run past them. */
+#cos .pnav .navcap{flex:none;width:86px;font-size:9.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:#7A756C;padding:0 8px 0 3px}
+@media (max-width:620px){
+  #cos .pnav .navcap{width:100%;padding:2px 3px 4px}
+}
 #cos .cost{display:flex;align-items:center;gap:12px;padding:15px 18px;flex-wrap:wrap;background:#FFFFFF;
   border:1px solid rgba(26,24,21,.10);border-bottom:0;border-radius:3px 3px 0 0}
 #cos .cost h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:24px;
@@ -4023,26 +4035,31 @@ if(live()){
 
 <div id="cos">
   <nav class="pnav" id="cosNav">
+    <div class="navrow">
       <span class="navcap">Yönetim</span>
       <a data-v="dash"><span class="lbl">Panel</span></a>
       <a data-v="cal"><span class="lbl">Takvim</span><span class="cnt" id="cosCal"></span></a>
       <a data-v="board"><span class="lbl">Akış</span><span class="cnt" id="cosBrd"></span></a>
       <a data-v="list"><span class="lbl">Tüm içerik</span><span class="cnt" id="cosAll"></span></a>
-      <span class="navsep"></span>
+    </div>
+    <div class="navrow">
       <span class="navcap">Kanallar</span>
       <a data-v="blog"><span class="lbl">Blog</span><span class="cnt" id="cosBlog"></span></a>
       <a data-v="social"><span class="lbl">Sosyal</span><span class="cnt" id="cosSoc"></span></a>
       <a data-v="accounts"><span class="lbl">Hesaplar</span></a>
-      <span class="navsep"></span>
+    </div>
+    <div class="navrow">
       <span class="navcap">Plan</span>
       <a data-v="plans"><span class="lbl">Aylık ve yıllık</span></a>
       <a data-v="analytics"><span class="lbl">Hedefler</span></a>
-      <span class="navsep"></span>
+    </div>
+    <div class="navrow">
       <span class="navcap">Kütüphane</span>
       <a data-v="rules"><span class="lbl">Kurallar ve ses</span></a>
       <a data-v="types"><span class="lbl">İçerik tipleri</span></a>
       <a data-v="src"><span class="lbl">Kaynaklar</span></a>
       <a data-v="data"><span class="lbl">Veri</span></a>
+    </div>
   </nav>
   <div class="cost"><h1 id="cosTtl">Panel</h1></div>
   <div class="page"><div class="inner" id="cosMain"></div></div>
