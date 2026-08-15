@@ -12,6 +12,15 @@
 <meta property="og:title" content="{{TITLE}}">
 <meta property="og:description" content="{{SEO_DESC}}">
 <meta property="og:url" content="{{CANONICAL}}">
+<!-- Without this, a share on LinkedIn or X is a grey rectangle with our
+     headline under it: twitter:card is summary_large_image and both platforms
+     read the picture off the page rather than being handed one. Absolute,
+     because a crawler does not resolve a relative path. -->
+<meta property="og:image" content="{{OG_IMAGE}}">
+<meta property="og:image:alt" content="{{TITLE}}">
+<meta name="twitter:image" content="{{OG_IMAGE}}">
+<meta name="twitter:title" content="{{TITLE}}">
+<meta name="twitter:description" content="{{SEO_DESC}}">
 <meta property="article:published_time" content="{{ISO_DATE}}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F5F1EA">
@@ -340,16 +349,22 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a class="back" href="../../../blog/" data-en="← All writing" data-tr="← Tüm yazılar">← All writing</a>
     <div class="share">
       <span data-en="Share" data-tr="Paylaş">Share</span>
+      <!-- LinkedIn takes the URL only and reads the rest off the page, which is
+           why og:image and og:description above are the whole story there. X
+           takes the text as well, so it is given the headline rather than
+           leaving the sharer with a bare link to describe themselves. -->
       <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URLENC}}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 448 512" style="width:16px;height:16px;fill:currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 155.6z"></path></svg></a>
-      <a href="https://x.com/intent/tweet?url={{URLENC}}" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
+      <a href="https://x.com/intent/tweet?text={{TITLEENC}}&url={{URLENC}}" target="_blank" rel="noopener noreferrer" aria-label="X"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
     </div>
   </div>
 </article>
 
+<!-- REL:START -->
 <section class="rel">
   <h3 data-en="Keep reading" data-tr="Okumaya devam">Keep reading</h3>
   <div class="rel-g">{{RELATED}}</div>
 </section>
+<!-- REL:END -->
 
 <!-- The reading list. One band, on every page, above the footer.
      `../../../privacy.html` is the only thing that changes with depth: '' at the root,

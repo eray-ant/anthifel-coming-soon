@@ -714,6 +714,31 @@ for(var t=0;t<tbl.length;t++){
 </div>
 
 <script>
+/* The Journal is two indexes at two addresses, one per language. Pressing EN on
+   the Turkish index used to translate the furniture and leave the Turkish
+   articles where they were, which reads as "there is no English writing" — the
+   English pieces were there the whole time, at /en/blog/, with nothing on the
+   page pointing at them. It navigates now, the way the language switch on an
+   article already did. */
+(function(){
+'use strict';
+var PAGE_LANG = 'en';
+var OTHER = '../../blog/';
+var btns = document.querySelectorAll('.lang button');
+Array.prototype.forEach.call(btns, function(b){
+  var l = b.getAttribute('data-lang');
+  b.setAttribute('aria-current', l === PAGE_LANG ? 'true' : 'false');
+  if(l === PAGE_LANG) return;
+  b.addEventListener('click', function(e){
+    e.stopImmediatePropagation();
+    try{ localStorage.setItem('anthifel_lang', l); }catch(err){}
+    window.location.href = OTHER;
+  }, true);
+});
+})();
+</script>
+
+<script>
 (function(){
 'use strict';
 var ENDPOINT  = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';
