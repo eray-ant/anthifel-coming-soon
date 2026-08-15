@@ -1,15 +1,5 @@
 [
   {
-    "id": "p1786819817463940",
-    "pair": "p1786819862020728",
-    "slug": "why-ai-is-an-organizational-problem-not-a-technological-one",
-    "lang": "en",
-    "title": "Why AI is an organizational problem, not a technological one",
-    "date": "2026-08-11",
-    "category": "Organisation",
-    "url": "https://anthifel.com/en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/"
-  },
-  {
     "id": "p1786819862020728",
     "pair": "p1786819817463940",
     "slug": "yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri",
@@ -18,5 +8,15 @@
     "date": "2026-08-11",
     "category": "Organisation",
     "url": "https://anthifel.com/blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/"
+  },
+  {
+    "id": "p1786819817463940",
+    "pair": "p1786819862020728",
+    "slug": "why-ai-is-an-organizational-problem-not-a-technological-one",
+    "lang": "en",
+    "title": "Why AI is an organizational problem, not a technological one",
+    "date": "2026-08-10",
+    "category": "Organisation",
+    "url": "https://anthifel.com/en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/"
   }
 ]
