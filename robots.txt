@@ -1,3 +1,10 @@
+# anthifel.com
+#
+# The staging build is a copy of the live site at a second address. Left open it
+# would be indexed as duplicate content and compete with the pages it is a copy
+# of, so it is closed here and carries noindex on every page as well: robots.txt
+# asks a crawler not to read, the meta tag tells it not to keep. Neither alone
+# is enough.
 User-agent: *
 Disallow: /preview/
 Disallow: /dashboard/
