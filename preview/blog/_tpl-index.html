@@ -268,7 +268,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a href="../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="../#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="../blog/" aria-current="page" data-en="Blog" data-tr="Blog">Blog</a>
+    <a href="../blog/" aria-current="page" data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="../#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -324,6 +324,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   </div>
 </div>
 
+<!-- The reading list. One band, on every page, above the footer.
+     `../privacy.html` is the only thing that changes with depth: '' at the root,
+     '../' or '../../' inside the Journal.
+     The form does nothing until FORM_LIVE is true — it says so rather than
+     failing quietly, and the consent box is the same three conditions the
+     assessment gate uses. -->
 <section class="news">
   <div>
     <span class="eyebrow" data-en="The reading list" data-tr="Okuma listesi">The reading list</span>
@@ -345,6 +351,18 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   </form>
 </section>
 
+<!-- The site footer. One copy, on every page including the Journal's.
+     Until 13 August the blog carried its own near-identical copy and the two
+     had already drifted: the blog's had no About link and an empty Journal
+     list, because each was maintained where it was noticed. That is the same
+     failure the shared footer was created to end, one level down.
+
+     Two prefixes make one file work everywhere:
+       ../  what to put before "#approach" — '' on index.html,
+                 'index.html' on another root page, '../' inside blog/
+       ../    what to put before a root-level file — '' at the root,
+                 '../' or '../../' inside the Journal
+-->
 <footer class="ftr" id="contact">
   <div class="ftr-g">
     <div class="ftr-brand">
@@ -360,12 +378,23 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
         <li><a href="../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a></li>
         <li><a href="../#services" data-en="Services" data-tr="Hizmetler">Services</a></li>
         <li><a href="../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a></li>
-        <li><a href="../#meet" data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
+        <!-- §13a: About is reached from here and nowhere else. The top menu
+             stays at four headings, because a company page is something a
+             reader goes looking for, not something the site pushes at them. -->
+        <li><a href="../about.html" data-en="About" data-tr="Hakkımızda">About</a></li>
+        <li><a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
     <div>
-      <h4>Blog</h4>
-      <ul id="ftrPosts"></ul>
+      <h4>The Journal</h4>
+      <!-- build.py resolves this slot on every page it writes, and leaves the
+           token in the two Journal templates so the publisher can put the real
+           posts there. Until the first piece goes out, both show the same four
+           planned titles.
+           The wording here avoids the phrase "F i l l e d  b y" on purpose:
+           check-legal.js bans it from any served page, because it is one of the
+           markers in Legal's handover note, and an HTML comment is served. -->
+      <ul id="ftrPosts">__FOOTER_POSTS__</ul>
     </div>
     <div>
       <h4 data-en="Social media" data-tr="Sosyal medya">Social media</h4>
@@ -437,7 +466,17 @@ if(burger){
   });
 }
 
-/* newsletter — same three consent conditions as the assessment gate */
+/* The reading list's form. Injected into every shell that carries the band.
+   It was inside the blog's script and nowhere else, which is why the band could
+   not travel: markup, styles and behaviour have to move together or the part
+   arrives half-alive.
+
+   It asks the page for nothing. The three shells name their language variable
+   three different ways — `LANG`, `window.__LANG`, and nothing at all on the
+   legal pages — so this reads the language off <html> instead, which every one
+   of them sets. `ENDPOINT` and `FORM_LIVE` are read defensively for the same
+   reason: a page without them is a page where the form says so and sends
+   nothing, which is the correct behaviour anyway. */
 var nf=document.getElementById('nf');
 if(nf){
   var nemail=document.getElementById('nemail'),ncons=document.getElementById('ncons'),
@@ -452,7 +491,8 @@ if(nf){
     sending:{en:'…',tr:'…'},
     sub:{en:'Subscribe',tr:'Abone ol'}
   };
-  function nt(k){return NT[k][LANG]||NT[k].en;}
+  function nlang(){return document.documentElement.lang==='tr'?'tr':'en';}
+  function nt(k){return NT[k][nlang()]||NT[k].en;}
   function say(msg,good){nmsg.textContent=msg;nmsg.className='nmsg '+(good?'good':'bad');}
   ncons.addEventListener('change',function(){consentAt=this.checked?new Date().toISOString():null;});
   nf.addEventListener('submit',function(e){
@@ -460,12 +500,14 @@ if(nf){
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(nemail.value.trim())){say(nt('email'),false);return;}
     if(!ncons.checked){say(nt('cons'),false);return;}
     if(nf.querySelector('[name=website]').value) return;
-    if(!FORM_LIVE||!ENDPOINT||ENDPOINT.charAt(0)==='_'){say(nt('off'),true);return;}
+    var ep=(typeof ENDPOINT!=='undefined')?ENDPOINT:'';
+    var live=(typeof FORM_LIVE!=='undefined')?FORM_LIVE:false;
+    if(!live||!ep||ep.charAt(0)==='_'){say(nt('off'),true);return;}
     nbtn.disabled=true;nbtn.textContent=nt('sending');
-    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify({email:nemail.value.trim(),consent:true,consentAt:consentAt,
         consentText:nf.querySelector('.ncons label').textContent.trim(),
-        source:'reading-list',lang:LANG,
+        source:'reading-list',lang:nlang(),
         tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),
         page:location.href,referrer:document.referrer||'',captcha:'NO_CAPTCHA'})})
       .then(function(r){return r.json();})

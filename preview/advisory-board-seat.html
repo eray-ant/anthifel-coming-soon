@@ -93,14 +93,15 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .ab{margin-top:64px}
 .ab-sec{padding:34px 0;border-top:1px solid rgba(15,15,14,.12);max-width:1000px}
 .ab-sec h2{margin:0 0 16px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;line-height:1.5}
-/* The wordmark under "The name": small, at full strength, never below the
-   15px floor the brand sets. 220px wide puts it at 22px tall. */
-.ab-mark{display:block;width:220px;height:auto;margin:0 0 20px}
-/* The monogram under "What we do". Set beside the text rather than above it, so
-   it reads as a mark in the margin and not as a picture the paragraph is
-   about. */
-.ab-do .ab-bd{padding-left:0}
-.ab-mono{float:left;width:46px;height:auto;margin:4px 20px 8px 0;opacity:.9}
+/* Prose left, mark right. The paragraph stops at a readable measure and the
+   rest of the column was blank; the two marks now hold that side without the
+   text having to stretch across it. They drop under the prose below 820px. */
+.ab-row{display:flex;gap:56px;align-items:flex-start;justify-content:space-between}
+.ab-row .ab-bd{flex:1 1 420px}
+/* The wordmark, at full strength and never below the 15px floor the brand
+   sets: 240px wide puts it at 24px tall. */
+.ab-mark{flex:none;width:240px;height:auto;margin-top:6px}
+.ab-mono{flex:none;width:96px;height:auto;opacity:.9}
 .ab-bd{max-width:660px}
 .ab-bd p{margin:0 0 16px;font-size:17px;line-height:1.68;color:#26241F;text-wrap:pretty}
 .ab-bd p:last-child{margin-bottom:0}
@@ -180,8 +181,9 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   h1{font-size:46px}
   .ab{margin-top:44px}
   .ab-sec{padding:28px 0}
+  .ab-row{flex-direction:column;gap:26px}
   .ab-mark{width:180px}
-  .ab-mono{width:38px;margin-right:14px}
+  .ab-mono{width:64px}
   .ab-who .ab-bd{gap:22px}
   .ab-portrait{width:100%}
   .ab-cta .btn{width:100%}
@@ -252,6 +254,64 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .legal .lnks{display:flex;flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center}
   .legal .lnks a{display:inline-block;padding:13px 0}
 }
+/* The reading list — the black band above the footer.
+   It lived in the blog's stylesheet and only the blog had it. It is a part of
+   its own now, dropped on every page: it is the one thing on this site that
+   asks for an address without asking for anything else, and it was on exactly
+   the pages the fewest people reach. */
+.news{background:#0F0F0E;color:#F5F1EA;margin-top:88px;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.news .eyebrow{color:rgba(245,241,234,.55);margin-bottom:18px}
+.news h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42px;line-height:1.16;text-wrap:pretty}
+.news>div>p{margin-top:16px;font-size:16px;line-height:1.65;color:rgba(245,241,234,.78);max-width:460px;text-wrap:pretty}
+.nform{display:flex;flex-direction:column;gap:14px;align-items:stretch;padding-top:38px}
+.nrow{display:flex;gap:12px;width:100%}
+.nform input[type=email]{flex:1;min-width:0;background:transparent;border:1px solid rgba(245,241,234,.35);color:#F5F1EA;font-family:inherit;font-size:14.5px;padding:15px 18px;border-radius:2px;outline:none}
+.nform input[type=email]:focus{border-color:#F5F1EA}
+.nform input::placeholder{color:rgba(245,241,234,.45)}
+.nform .btn{flex:none}
+/* The band brings its own button. It borrowed `.btn` from whichever page it
+   landed on, and the legal pages style theirs 21px tall — under the 44px touch
+   floor, on the one control in the band a thumb has to hit. A part that depends
+   on the page it lands in is not a part; this is the second time that sentence
+   has been earned. */
+.news .nform .btn{display:inline-flex;align-items:center;justify-content:center;
+  font-family:inherit;font-size:14.5px;font-weight:500;line-height:1.2;
+  padding:15px 26px;border:1px solid #B84C2E;border-radius:2px;
+  background:#B84C2E;color:#F5F1EA;cursor:pointer;white-space:nowrap;
+  transition:background .18s,border-color .18s}
+.news .nform .btn:hover{background:#A03F24;border-color:#A03F24}
+.news .nform .btn[disabled]{opacity:.45;cursor:not-allowed}
+.ncons{display:flex;gap:11px;align-items:flex-start}
+.ncons input[type=checkbox]{flex:none;width:17px;height:17px;margin:2px 0 0;accent-color:#B84C2E;cursor:pointer}
+.ncons label{font-size:13px;line-height:1.55;color:rgba(245,241,234,.78);cursor:pointer;text-wrap:pretty}
+.ncons a{color:#F5F1EA;text-decoration:underline;text-underline-offset:2px}
+.ncons a:hover{color:#B84C2E}
+.nmsg{font-size:13px;line-height:1.5;min-height:0}
+.nmsg:empty{display:none}
+.nmsg.bad{color:#E8A08A}
+.nmsg.good{color:rgba(245,241,234,.8)}
+.nfine{font-size:13px;color:rgba(245,241,234,.55)}
+.hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+
+@media (max-width:1024px){
+  .news{gap:44px;padding-top:64px;padding-bottom:64px}
+}
+@media (max-width:820px){
+  .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
+}
+@media (max-width:820px){
+  .news{grid-template-columns:1fr;margin-top:64px}
+  .nform{padding-top:0}
+  .news h2{font-size:34px}
+}
+@media (max-width:640px){
+  .news h2{font-size:29px}
+  .nrow{flex-direction:column}
+  .nform .btn{width:100%}
+}
+@media (max-width:400px){
+  .news h2{font-size:25px}
+}
 </style>
 </head>
 <body>
@@ -269,7 +329,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
       <a href="index.html#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
       <a href="index.html#services" data-en="Services" data-tr="Hizmetler">Services</a>
       <a href="index.html#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-      <a href="blog/" data-en="Blog" data-tr="Blog">Blog</a>
+      <a href="blog/" data-en="The Journal" data-tr="The Journal">The Journal</a>
       <a href="index.html#contact" data-en="Contact" data-tr="İletişim">Contact</a>
     </nav>
     <div class="lang">
@@ -610,6 +670,45 @@ if(location.hash === '#meet') open_();
 </script>
 <!-- ==== /MEET ==== -->
 
+<!-- The reading list. One band, on every page, above the footer.
+     `privacy.html` is the only thing that changes with depth: '' at the root,
+     '../' or '../../' inside the Journal.
+     The form does nothing until FORM_LIVE is true — it says so rather than
+     failing quietly, and the consent box is the same three conditions the
+     assessment gate uses. -->
+<section class="news">
+  <div>
+    <span class="eyebrow" data-en="The reading list" data-tr="Okuma listesi">The reading list</span>
+    <h2 data-en="One piece a month. Nothing else." data-tr="Ayda bir yazı. Başka hiçbir şey.">One piece a month. Nothing else.</h2>
+    <p data-en="What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter." data-tr="Şirketlerin içinde ne gördüğümüzü ayda bir yazıyoruz. Kararı verenler için. Ürün duyurusu yok, bültenin kendisi hakkında bülten hiç yok.">What we are seeing inside companies, written up once a month for people who have to make the decisions. No product news, no newsletter about the newsletter.</p>
+  </div>
+  <form class="nform" id="nf" novalidate>
+    <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="nrow">
+      <input type="email" id="nemail" placeholder="you@company.com" autocomplete="email" inputmode="email" aria-label="Email address" required>
+      <button type="submit" class="btn btn-p" id="nbtn" data-en="Subscribe" data-tr="Abone ol">Subscribe</button>
+    </div>
+    <div class="ncons">
+      <input type="checkbox" id="ncons">
+      <label for="ncons" data-en="I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href='privacy.html'>Privacy Policy</a>." data-tr="Anthifel'in e-posta adresimi saklamasını ve bana aylık okuma listesini göndermesini kabul ediyorum. <a href='privacy.html'>Gizlilik Politikası</a>'nı okudum.">I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href="privacy.html">Privacy Policy</a>.</label>
+    </div>
+    <div class="nmsg" id="nmsg"></div>
+    <span class="nfine" data-en="Unsubscribe in one click. We never share the list." data-tr="Tek tıkla çıkabilirsiniz. Listeyi kimseyle paylaşmayız.">Unsubscribe in one click. We never share the list.</span>
+  </form>
+</section>
+
+<!-- The site footer. One copy, on every page including the Journal's.
+     Until 13 August the blog carried its own near-identical copy and the two
+     had already drifted: the blog's had no About link and an empty Journal
+     list, because each was maintained where it was noticed. That is the same
+     failure the shared footer was created to end, one level down.
+
+     Two prefixes make one file work everywhere:
+       index.html  what to put before "#approach" — '' on index.html,
+                 'index.html' on another root page, '../' inside blog/
+           what to put before a root-level file — '' at the root,
+                 '../' or '../../' inside the Journal
+-->
 <footer class="ftr" id="contact">
   <div class="ftr-g">
     <div class="ftr-brand">
@@ -633,8 +732,15 @@ if(location.hash === '#meet') open_();
       </ul>
     </div>
     <div>
-      <h4>Blog</h4>
-      <ul>
+      <h4>The Journal</h4>
+      <!-- build.py resolves this slot on every page it writes, and leaves the
+           token in the two Journal templates so the publisher can put the real
+           posts there. Until the first piece goes out, both show the same four
+           planned titles.
+           The wording here avoids the phrase "F i l l e d  b y" on purpose:
+           check-legal.js bans it from any served page, because it is one of the
+           markers in Legal's handover note, and an HTML comment is served. -->
+      <ul id="ftrPosts">
         <li><a href="blog/ai-transformation-people-problem/" data-en="Why AI transformation is a people problem" data-tr="AI Dönüşümü Neden Teknoloji Değil, Organizasyon Problemidir?">Why AI transformation is a people problem</a></li>
         <li><a href="blog/twelve-signals-ready-for-ai/" data-en="Twelve signals your company is ready for AI" data-tr="Bir Şirketin AI’a Hazır Olduğunu Nasıl Anlarsın? 12 Sinyal">Twelve signals your company is ready for AI</a></li>
         <li><a href="blog/who-should-own-ai/" data-en="Who should own AI in your organisation?" data-tr="“AI’dan Kim Sorumlu?” Sorusunun Cevabı Yoksa Dönüşüm Başlamamıştır">Who should own AI in your organisation?</a></li>
@@ -801,6 +907,60 @@ if(f){
     });
   });
 }
+
+/* The reading list's form. Injected into every shell that carries the band.
+   It was inside the blog's script and nowhere else, which is why the band could
+   not travel: markup, styles and behaviour have to move together or the part
+   arrives half-alive.
+
+   It asks the page for nothing. The three shells name their language variable
+   three different ways — `LANG`, `window.__LANG`, and nothing at all on the
+   legal pages — so this reads the language off <html> instead, which every one
+   of them sets. `ENDPOINT` and `FORM_LIVE` are read defensively for the same
+   reason: a page without them is a page where the form says so and sends
+   nothing, which is the correct behaviour anyway. */
+var nf=document.getElementById('nf');
+if(nf){
+  var nemail=document.getElementById('nemail'),ncons=document.getElementById('ncons'),
+      nmsg=document.getElementById('nmsg'),nbtn=document.getElementById('nbtn');
+  var consentAt=null;
+  var NT={
+    email:{en:'Please enter a valid email address.',tr:'Lütfen geçerli bir e-posta adresi girin.'},
+    cons:{en:'Please tick the box so we may write to you.',tr:'Size yazabilmemiz için kutuyu işaretleyin.'},
+    off:{en:'The list opens shortly. Nothing was recorded.',tr:'Liste çok yakında açılıyor. Hiçbir şey kaydedilmedi.'},
+    good:{en:'Thank you, you are on the list.',tr:'Teşekkürler, listeye alındınız.'},
+    fail:{en:'Something did not go through. Please email hello@anthifel.com.',tr:'Bir şeyler ters gitti. Lütfen hello@anthifel.com adresine yazın.'},
+    sending:{en:'…',tr:'…'},
+    sub:{en:'Subscribe',tr:'Abone ol'}
+  };
+  function nlang(){return document.documentElement.lang==='tr'?'tr':'en';}
+  function nt(k){return NT[k][nlang()]||NT[k].en;}
+  function say(msg,good){nmsg.textContent=msg;nmsg.className='nmsg '+(good?'good':'bad');}
+  ncons.addEventListener('change',function(){consentAt=this.checked?new Date().toISOString():null;});
+  nf.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(nemail.value.trim())){say(nt('email'),false);return;}
+    if(!ncons.checked){say(nt('cons'),false);return;}
+    if(nf.querySelector('[name=website]').value) return;
+    var ep=(typeof ENDPOINT!=='undefined')?ENDPOINT:'';
+    var live=(typeof FORM_LIVE!=='undefined')?FORM_LIVE:false;
+    if(!live||!ep||ep.charAt(0)==='_'){say(nt('off'),true);return;}
+    nbtn.disabled=true;nbtn.textContent=nt('sending');
+    fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({email:nemail.value.trim(),consent:true,consentAt:consentAt,
+        consentText:nf.querySelector('.ncons label').textContent.trim(),
+        source:'reading-list',lang:nlang(),
+        tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),
+        page:location.href,referrer:document.referrer||'',captcha:'NO_CAPTCHA'})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d&&d.ok){say(nt('good'),true);nf.querySelector('.nrow').hidden=true;nf.querySelector('.ncons').hidden=true;}
+        else throw new Error('x');
+      })
+      .catch(function(){say(nt('fail'),false);nbtn.disabled=false;nbtn.textContent=nt('sub');});
+  });
+}
+
 })();
 </script>
 </body>
