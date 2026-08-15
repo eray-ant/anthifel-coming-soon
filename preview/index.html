@@ -142,9 +142,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    Shrinking the heading was the other way out and it is not available — the
    two sections share a scale, and a test holds them to it. So the row is the
    answer rather than the type size. */
-.steps{border-top:1px solid rgba(15,15,14,.14)}
+/* Two columns, three rows — Guidelines 14e. Six stages in one column left a
+   column of empty page to the right of every line; the same six in pairs fill
+   the block and read in the order they are numbered, left to right.
+   The dividers are drawn per cell rather than per row: a border on the row
+   would need a wrapper element, and the two cells in a row always sit on the
+   same baseline grid, so the two half-borders meet as one line. */
+.steps{border-top:1px solid rgba(15,15,14,.14);display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
 .step{display:flex;align-items:baseline;gap:0;padding:22px 0 20px;border-bottom:1px solid rgba(15,15,14,.09);min-width:0}
-.step:last-child{border-bottom-color:rgba(15,15,14,.14)}
+/* The single vertical rule between the columns. On the right-hand cell so it
+   stops with the block rather than running past the last row. */
+.step:nth-child(even){padding-left:56px;border-left:1px solid rgba(15,15,14,.09);margin-left:-56px}
+.step:nth-last-child(-n+2){border-bottom-color:rgba(15,15,14,.14)}
 .step .rn{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:22px;color:#7A756C;width:52px;flex:none}
 .step-b{flex:1;min-width:0}
 .step h4{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:var(--h-card);line-height:1.2;overflow-wrap:anywhere}
@@ -351,7 +360,9 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   .hero-cta{gap:12px}
   .hero-cta .btn{width:100%}
   .quote blockquote{font-size:24px}
-  .step,.step:nth-child(even),.step:nth-child(odd){padding:20px 0;border-left:0;border-right:0;border-bottom:1px solid rgba(15,15,14,.09)}
+  /* One column on a narrow screen, in the numbered order — 14e. */
+  .steps{grid-template-columns:1fr;column-gap:0}
+  .step,.step:nth-child(even),.step:nth-child(odd){padding:20px 0;margin-left:0;border-left:0;border-right:0;border-bottom:1px solid rgba(15,15,14,.09)}
   .step:last-child{border-bottom:0}
   .row{flex-wrap:wrap;gap:8px 0}
   .row .rn{width:38px}
@@ -516,7 +527,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
 <section class="sec" id="approach">
   <div class="sec-l">
     <span class="k" data-en="Approach" data-tr="Yaklaşım">Approach</span>
-    <p data-en="Five stages, in order. You can stop after any one of them." data-tr="Sırayla beş aşama. İstediğiniz aşamada durabilirsiniz.">Five stages, in order. You can stop after any one of them.</p>
+    <p data-en="Six stages, in order. You can stop after any one of them." data-tr="Sırayla altı aşama. İstediğiniz aşamada durabilirsiniz.">Six stages, in order. You can stop after any one of them.</p>
   </div>
   <div class="steps">
     <div class="step">
@@ -560,6 +571,18 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
       <div class="step-b">
         <h4 data-en="Transformation" data-tr="Dönüşüm">Transformation</h4>
         <p data-en="Roles settled, the team connected. A rhythm that holds." data-tr="Roller yerine oturmuş, ekip birbirine bağlı. Tutan bir ritim.">Roles settled, the team connected. A rhythm that holds.</p>
+      </div>
+    </div>
+    <!-- The sixth stage was not invented for the layout. Guidelines item 7g
+         recorded the gap: Approach counted five stages, Services counted four
+         services, and Advisory Board Seat sat in neither list. It is the last
+         rung of the ladder here, not the centre of anything, which is what
+         keeps it inside K53's rule that Advisory is never pushed forward. -->
+    <div class="step">
+      <span class="rn">VI</span>
+      <div class="step-b">
+        <h4 data-en="Advisory" data-tr="Advisory">Advisory</h4>
+        <p data-en="A seat at your table. A few hours a month, and a call when it matters." data-tr="Masanızda bir sandalye. Ayda birkaç saat, önemli anlarda telefon.">A seat at your table. A few hours a month, and a call when it matters.</p>
       </div>
     </div>
   </div>

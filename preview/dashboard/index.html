@@ -2848,6 +2848,9 @@ render();
 #sec-blog .sched svg{width:15px;height:15px;stroke:#B84C2E;stroke-width:1.6;fill:none;flex:none}
 #sec-blog .tag.sch{background:#F5E9DF;color:#8A3D22}
 
+#sec-blog .wc{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--soft)}
+#sec-blog .wc input{width:74px;padding:9px 10px;font-family:inherit;font-size:13px;border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--ink)}
+
 /* hero picker */
 #sec-blog .hero-pick{display:flex;gap:16px;align-items:flex-start}
 #sec-blog .hero-thumb{flex:none;width:150px;aspect-ratio:3/2;border:1px solid rgba(26,24,21,.18);border-radius:2px;background:repeating-linear-gradient(135deg,#E6E0D5 0 10px,#EFEAE1 10px 20px);display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -3083,6 +3086,11 @@ render();
       <!-- Both draft, neither publishes. The model writes into the form and a
            person still presses Yayımla. Disabled until the server says a key
            exists, with the reason on the button rather than in a manual. -->
+      <!-- Length belongs next to the button that spends it, not inside the
+           brief in Settings: it is the one thing that changes piece to piece. -->
+      <label class="wc" for="aiWords">Kelime
+        <input id="aiWords" type="number" min="250" max="2500" step="50" value="900">
+      </label>
       <button class="btn btn-s" id="aiAllBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Oluştur</button>
       <button class="btn btn-s" id="aiTrBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Çevir</button>
       <button class="btn btn-s" id="aiImgBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Görsel üret</button>
@@ -3662,7 +3670,7 @@ function aiWrite(){
   var p = fromForm();
   if(!p.title){ say('Yazmak için önce bir başlık gerekiyor. Plandan bir satır seçin.', false); return; }
   return api('write', { title: p.title, pillar: seedPillar, notes: p.excerpt || seedNote,
-                        category: p.category })
+                        category: p.category, words: ($('aiWords') || {}).value })
     .then(function(d){
       var t = d.post || {};
       /* Written into the form, not saved. Nothing this model produces reaches

@@ -105,7 +105,21 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .ab-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
 .ab-pair .ab-sec{max-width:none}
 .ab-name .ab-bd,.ab-comp .ab-bd{max-width:none}
-.ab-mark{display:block;width:200px;height:auto;margin-top:26px}
+/* The wordmark and the monogram, side by side and the same height. They are
+   the two halves of one identity and this is the only page that shows them
+   together; matched on height rather than width, because the wordmark is ten
+   times as wide as it is tall and the monogram is nearly square. */
+/* The lockup has to fit a half-column, and the wordmark is ten times as wide as
+   it is tall: at 42px it filled 525px of a 540px column and would have run out
+   of it on the way down to the breakpoint. Height scales with the viewport
+   instead, so the pair keeps its proportions and never touches the edge. */
+.ab-marks{display:flex;align-items:center;gap:clamp(16px,2vw,26px);margin-top:26px;max-width:100%}
+.ab-marks img{height:clamp(26px,3.2vw,40px);width:auto;display:block;min-width:0}
+/* A thin rule between them. Without it the monogram sits at the end of the
+   wordmark and reads as a ninth letter, which is the one thing a monogram
+   beside its own wordmark must not do. */
+.ab-marks::before{content:none}
+.ab-mono{opacity:.9;padding-left:clamp(16px,2vw,26px);border-left:1px solid rgba(15,15,14,.16)}
 /* What we do runs the whole measure, in two columns. One 1000px line is not a
    line anyone reads. */
 .ab-do .ab-bd{max-width:none;column-count:2;column-gap:56px}
@@ -118,6 +132,18 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .ab-bd p{margin:0 0 16px;font-size:17px;line-height:1.68;color:#26241F;text-wrap:pretty}
 .ab-bd p:last-child{margin-bottom:0}
 .ab-bd i{font-style:italic}
+/* The phrases the page is actually about. Weight, not colour: this is prose,
+   and a coloured word in a paragraph reads as a link that does not work. */
+.ab-bd b{font-weight:600;color:#0F0F0E}
+/* The four services are named here and each one has a page. A reader who wants
+   the detail should not have to go back to the menu to find it. */
+/* :not(.btn) is doing real work. The two buttons sit inside this column, so
+   the plain-link rule was overriding their padding-bottom to 1px and taking
+   them from 48px tall to 35 — under the touch floor, on the page's only two
+   controls. A rule written for prose has to say it is for prose. */
+.ab-bd a:not(.btn){color:#0F0F0E;text-decoration:none;border-bottom:1px solid rgba(15,15,14,.3);
+  padding-bottom:1px;transition:color .18s,border-color .18s}
+.ab-bd a:not(.btn):hover{color:#B84C2E;border-color:#B84C2E}
 /* The portrait sits to the left of the text it belongs to (§13a-2), and drops
    above it on a narrow screen rather than shrinking to a stamp. */
 .ab-who .ab-bd{max-width:none;display:flex;gap:38px;align-items:flex-start;flex-wrap:wrap}
@@ -130,9 +156,13 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 .ab-li{flex:none}
 /* The steps photograph, full width under "What we do". No frame, no rounding,
    no shadow — the same rule the portrait follows, for the same reason. */
-/* Full column, like the rules above and below it. */
-.ab-steps{margin:34px 0 0}
-.ab-steps img{display:block;width:100%;height:auto;background:#EFEAE0}
+/* The picture opens the page, so it is a band rather than a full frame: at its
+   own proportions it filled the first two thirds of the screen and the reader
+   met a photograph before a sentence. Cropped, not scaled — the steps stay the
+   size they are and the frame shows less of them. */
+.ab-steps{margin:0 0 4px}
+.ab-steps img{display:block;width:100%;height:clamp(200px,26vw,330px);
+  object-fit:cover;object-position:center 62%;background:#EFEAE0}
 .svc-secs{margin-top:76px;display:grid;gap:0}
 .svc-sec{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;padding:38px 0;border-top:1px solid rgba(15,15,14,.12);align-items:start}
 .svc-sec h2{margin:0;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#625D55;line-height:1.5}
@@ -205,7 +235,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .ab-row{flex-direction:column;gap:26px}
   .ab-pair{grid-template-columns:1fr;gap:0}
   .ab-do .ab-bd{column-count:1}
-  .ab-mark{width:170px;margin-top:20px}
+  .ab-marks{margin-top:20px}
   .ab-who .ab-bd{gap:22px}
   .ab-portrait{width:100%}
   .ab-acts{flex-direction:column;align-items:stretch}
