@@ -537,14 +537,15 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
       <span class="rn">III</span>
       <div class="step-b">
         <h4 data-en="Audit" data-tr="Denetim">Audit</h4>
-        <!-- §12c names two places for its three sentences, and putting them
-             in both printed the same paragraph twice on one page. They live
-             on the service card, where the duration stands alone as a figure
-             and most needs the qualifier. Here the line is Marketing's own,
-             with only the duration clause removed — the number in it changed,
-             the rest did not, and the service card two screens down states
-             the new one. No new copy was written for this block. -->
-        <p data-en="The cheapest way to find out where you stand." data-tr="Nerede durduğunuzu görmenin en kısa yolu.">The cheapest way to find out where you stand.</p>
+        <!-- Guidelines 14d, and it did not wait for the rest of turn 14.
+             The line here said "the cheapest way to find out where you stand",
+             which defends the work on price: Section 1 says the brand is not
+             cheap, fast, off-the-shelf, and K53 bans price language outright.
+             The Turkish was fixed on 3 August and the English was missed, so
+             the two sides of the same card disagreed for twelve days.
+             This is 14d's interim wording, without the duration. The full line
+             with "Four working days." goes in when BUS-034 lifts the lock. -->
+        <p data-en="An evidence-based read of where you stand." data-tr="Nerede durduğunuzu görmenin en kısa yolu.">An evidence-based read of where you stand.</p>
       </div>
     </div>
     <div class="step">
@@ -558,7 +559,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
       <span class="rn">V</span>
       <div class="step-b">
         <h4 data-en="Transformation" data-tr="Dönüşüm">Transformation</h4>
-        <p data-en="The right people, connected. A steady rhythm." data-tr="Roller yerine oturmuş, ekip birbirine bağlı. Tutan bir ritim.">The right people, connected. A steady rhythm.</p>
+        <p data-en="Roles settled, the team connected. A rhythm that holds." data-tr="Roller yerine oturmuş, ekip birbirine bağlı. Tutan bir ritim.">Roles settled, the team connected. A rhythm that holds.</p>
       </div>
     </div>
   </div>
@@ -970,7 +971,7 @@ if(location.hash === '#meet') open_();
         <!-- §13a: About is reached from here and nowhere else. The top menu
              stays at four headings, because a company page is something a
              reader goes looking for, not something the site pushes at them. -->
-        <li><a href="about.html" data-en="About" data-tr="Hakkımızda">About</a></li>
+        <li><a href="about.html" data-href-tr="hakkimizda.html" data-en="About" data-tr="Hakkımızda">About</a></li>
         <li><a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
@@ -1008,6 +1009,38 @@ if(location.hash === '#meet') open_();
     </span>
   </div>
 </footer>
+
+<script>
+/* The About page has two addresses (Guidelines 13a): /about, and /hakkimizda
+   for the Turkish page. The footer link is one link in the markup and follows
+   the language the way its label does, so a Turkish reader lands on the Turkish
+   address and can send it to someone as it stands.
+
+   It travels with the footer rather than living in a page's own language code.
+   Four shells apply the language four different ways and only two of them fire
+   an event, so this watches <html lang> instead — every one of them sets that.
+   A part that depends on the page it lands in is not a part; that has been
+   earned often enough. */
+(function(){
+'use strict';
+var swap = document.querySelectorAll('.ftr [data-href-tr]');
+if(!swap.length) return;
+for(var i=0;i<swap.length;i++) swap[i].setAttribute('data-href-en', swap[i].getAttribute('href'));
+function aim(){
+  var tr = document.documentElement.lang === 'tr';
+  for(var i=0;i<swap.length;i++){
+    var v = swap[i].getAttribute(tr ? 'data-href-tr' : 'data-href-en');
+    if(v) swap[i].setAttribute('href', v);
+  }
+}
+aim();
+document.addEventListener('langchange', aim);
+try{
+  new MutationObserver(aim).observe(document.documentElement,
+    {attributes:true, attributeFilter:['lang']});
+}catch(e){}
+})();
+</script>
 
 <style>
 /* The privacy modal — the notice shown in place, on every page.

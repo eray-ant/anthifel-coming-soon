@@ -381,7 +381,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
         <!-- §13a: About is reached from here and nowhere else. The top menu
              stays at four headings, because a company page is something a
              reader goes looking for, not something the site pushes at them. -->
-        <li><a href="../../about.html" data-en="About" data-tr="Hakkımızda">About</a></li>
+        <li><a href="../../about.html" data-href-tr="../../hakkimizda.html" data-en="About" data-tr="Hakkımızda">About</a></li>
         <li><a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
@@ -419,6 +419,38 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     </span>
   </div>
 </footer>
+
+<script>
+/* The About page has two addresses (Guidelines 13a): /about, and /hakkimizda
+   for the Turkish page. The footer link is one link in the markup and follows
+   the language the way its label does, so a Turkish reader lands on the Turkish
+   address and can send it to someone as it stands.
+
+   It travels with the footer rather than living in a page's own language code.
+   Four shells apply the language four different ways and only two of them fire
+   an event, so this watches <html lang> instead — every one of them sets that.
+   A part that depends on the page it lands in is not a part; that has been
+   earned often enough. */
+(function(){
+'use strict';
+var swap = document.querySelectorAll('.ftr [data-href-tr]');
+if(!swap.length) return;
+for(var i=0;i<swap.length;i++) swap[i].setAttribute('data-href-en', swap[i].getAttribute('href'));
+function aim(){
+  var tr = document.documentElement.lang === 'tr';
+  for(var i=0;i<swap.length;i++){
+    var v = swap[i].getAttribute(tr ? 'data-href-tr' : 'data-href-en');
+    if(v) swap[i].setAttribute('href', v);
+  }
+}
+aim();
+document.addEventListener('langchange', aim);
+try{
+  new MutationObserver(aim).observe(document.documentElement,
+    {attributes:true, attributeFilter:['lang']});
+}catch(e){}
+})();
+</script>
 
 <style>
 /* The privacy modal — the notice shown in place, on every page.

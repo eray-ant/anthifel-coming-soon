@@ -3083,8 +3083,14 @@ render();
       <!-- Both draft, neither publishes. The model writes into the form and a
            person still presses Yayımla. Disabled until the server says a key
            exists, with the reason on the button rather than in a manual. -->
+      <button class="btn btn-s" id="aiAllBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Oluştur</button>
       <button class="btn btn-s" id="aiTrBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Çevir</button>
       <button class="btn btn-s" id="aiImgBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">Görsel üret</button>
+      <!-- The one that finishes the job: the English piece and its Turkish
+           translation, both live, in one press. Two posts at two addresses
+           pointing at each other is what hreflang needs, and doing it by hand
+           is four steps in which the pairing is the one people forget. -->
+      <button class="btn btn-p" id="pubPairBtn" disabled title="Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY">EN + TR yayımla</button>
       <span class="sp"></span>
       <button class="btn btn-s" id="unpubBtn" hidden>Yayından kaldır</button>
       <button class="btn btn-d" id="delBtn" hidden>Sil</button>
@@ -3305,6 +3311,26 @@ function schedule(){
   $('pubBtn').textContent = future
     ? 'Zamanla'
     : ((current && (current.status==='published'||current.status==='scheduled')) ? 'Güncelle ve yayımla' : 'Yayımla');
+}
+
+/* ---------- the two prefixes (DEV-041) ----------
+   BLOG_PREFIX is where the server writes a file in the repository. SITE_PREFIX
+   is where this page asks the browser for it. They are the same folder seen
+   from two sides, they are set in two different places, and when they disagree
+   nothing fails: the upload succeeds, the library lists the picture, and the
+   thumbnail is blank because it is being fetched from a path that does not
+   exist. So they are compared out loud, once, when the editor opens. */
+function prefixCheck(serverPrefix){
+  var want = '/' + String(serverPrefix || '');          // 'preview/' → '/preview/'
+  if(want === '/') want = '/';
+  var el = $('offNote');
+  if(want === SITE_PREFIX) return;
+  el.hidden = false;
+  el.textContent = 'DİKKAT — iki önek birbirini tutmuyor. Sunucu yazarken "' +
+    (serverPrefix || '(boş)') + '", bu sayfa okurken "' + SITE_PREFIX + '" kullanıyor. ' +
+    'Yüklenen görseller kaydedilir ama gösterilemez. Apps Script → Proje Ayarları → ' +
+    'BLOG_PREFIX değerini "' + SITE_PREFIX.replace(/^\//, '') + '" yapın, ya da siteyi ' +
+    'yeni önekle yeniden derleyin.';
 }
 
 /* ---------- hero ---------- */
@@ -3530,6 +3556,28 @@ function paint(canvas, w, h){
   ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(srcImg, dx, dy, dw, dh);
 }
+/**
+ * One canvas to one base64 picture, in the format the site actually serves.
+ *
+ * WebP at 0.78 is roughly a third of the JPEG that used to go up, at a quality
+ * nobody can tell apart on a cover photograph, and the whole point of cropping
+ * in the browser is that what is previewed here is what ships. The fallback is
+ * not decoration: a browser that cannot encode WebP returns a PNG data URL from
+ * toDataURL and says nothing about it, and a PNG photograph is several times the
+ * JPEG. So the format is checked rather than assumed, and the extension the
+ * server writes follows what was actually produced.
+ */
+function encode(canvas){
+  var url = canvas.toDataURL('image/webp', 0.78);
+  if(url.indexOf('data:image/webp') !== 0) url = canvas.toDataURL('image/jpeg', 0.82);
+  return url.split(',')[1];
+}
+
+function canWebp(){
+  var c = document.createElement('canvas'); c.width = c.height = 1;
+  return c.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+}
+
 function paintAll(){
   if(!srcImg) return;
   VARIANTS.forEach(function(v){ paint($('c'+v.key), v.w, v.h); });
@@ -3545,7 +3593,7 @@ $('upDo').addEventListener('click', function(){
   var files = {};
   VARIANTS.forEach(function(v){
     paint($('c'+v.key), v.w, v.h);
-    files[v.key] = $('c'+v.key).toDataURL('image/jpeg', 0.82).split(',')[1];
+    files[v.key] = encode($('c'+v.key));
   });
   api('upload', { name: srcName, files: files }).then(function(d){
     images = d.images || [];
@@ -3568,7 +3616,7 @@ var AI_ON = false;
 
 function aiReady(on){
   AI_ON = !!on;
-  ['aiTrBtn', 'aiImgBtn'].forEach(function(id){
+  ['aiAllBtn', 'aiTrBtn', 'aiImgBtn', 'pubPairBtn'].forEach(function(id){
     var b = $(id); if(!b) return;
     b.disabled = !AI_ON;
     b.title = AI_ON ? '' : 'Gemini anahtarı yok — Apps Script → Proje Ayarları → GEMINI_KEY';
@@ -3605,15 +3653,70 @@ function aiTranslate(){
     .then(function(){ aiBusy(btn, false, 'Çevir'); });
 }
 
+/* Write the piece from the plan row that opened this form.
+   English first, always: the Turkish is a translation of a finished English
+   article, not a second draft written beside it, which is the only way the two
+   say the same thing and hreflang is telling the truth. */
+function aiWrite(){
+  var btn = $('aiWriteBtn') || $('aiAllBtn');
+  var p = fromForm();
+  if(!p.title){ say('Yazmak için önce bir başlık gerekiyor. Plandan bir satır seçin.', false); return; }
+  return api('write', { title: p.title, pillar: seedPillar, notes: p.excerpt || seedNote,
+                        category: p.category })
+    .then(function(d){
+      var t = d.post || {};
+      /* Written into the form, not saved. Nothing this model produces reaches
+         the site without someone reading it and pressing a button. */
+      $('lang').value = 'en';
+      $('title').value = t.title || p.title;
+      $('excerpt').value = t.excerpt || '';
+      $('seo').value = t.seo || '';
+      $('body').value = t.body || '';
+      if(!$('slug').dataset.touched) $('slug').value = slugify(t.title || p.title);
+      counts(); prefix(); schedule(); dirty = true;
+      return d;
+    });
+}
+
+/* One press, the whole draft: the article and its cover. They are two calls to
+   two models and either can fail on its own, so the text is kept when the
+   picture does not arrive. A draft with no image is publishable; a page with a
+   broken image is not. */
+function aiAll(){
+  var btn = $('aiAllBtn');
+  if(!fromForm().title){ say('Önce plandan bir başlık seçin.', false); return; }
+  aiBusy(btn, true, 'Oluştur');
+  say('Yazı yazılıyor…', true);
+  aiWrite()
+    .then(function(){
+      say('Yazı geldi. Şimdi kapak görseli üretiliyor, bu yarım dakika sürebilir…', true);
+      return illustrate().catch(function(e){
+        say('Yazı hazır, görsel üretilemedi: ' + e.message + ' — "Görsel üret" ile tekrar deneyebilirsiniz.', false);
+      });
+    })
+    .then(function(){ if(!$('body').value) return; say('Taslak hazır. Okuyup düzeltin, sonra yayımlayın.', true); })
+    .catch(function(e){ say('Oluşturulamadı: ' + e.message, false); })
+    .then(function(){ aiBusy(btn, false, 'Oluştur'); });
+}
+
 /* The picture comes back whole and goes through the same crop the uploader
    uses, so a generated cover lands in the library as an ordinary image. */
 function aiIllustrate(){
   var btn = $('aiImgBtn');
-  var p = fromForm();
-  if(!p.title){ say('Görsel için önce bir başlık gerekiyor.', false); return; }
+  if(!fromForm().title){ say('Görsel için önce bir başlık gerekiyor.', false); return; }
   aiBusy(btn, true, 'Görsel üret');
   say('Görsel üretiliyor, bu yarım dakika sürebilir…', true);
-  api('illustrate', { title: p.title, excerpt: p.excerpt, slug: p.slug })
+  illustrate()
+    .then(function(){ say('Görsel üretildi ve kütüphaneye eklendi. Beğenmediyseniz tekrar üretin.', true); })
+    .catch(function(e){ say('Görsel üretilemedi: ' + e.message, false); })
+    .then(function(){ aiBusy(btn, false, 'Görsel üret'); });
+}
+
+/* The part that does the work, without the button. `aiAll` needs to wait for it
+   and report its own way; a function that owns a button cannot be reused. */
+function illustrate(){
+  var p = fromForm();
+  return api('illustrate', { title: p.title, excerpt: p.excerpt, slug: p.slug })
     .then(function(d){
       return new Promise(function(res, rej){
         var im = new Image();
@@ -3625,7 +3728,7 @@ function aiIllustrate(){
         var files = {};
         VARIANTS.forEach(function(v){
           paint($('c' + v.key), v.w, v.h);
-          files[v.key] = $('c' + v.key).toDataURL('image/jpeg', 0.82).split(',')[1];
+          files[v.key] = encode($('c' + v.key));
         });
         return api('upload', { name: d.name || p.slug || 'kapak', files: files });
       });
@@ -3633,10 +3736,58 @@ function aiIllustrate(){
     .then(function(d){
       images = d.images || [];
       $('hero').value = d.base; heroPreview(); dirty = true;
-      say('Görsel üretildi ve kütüphaneye eklendi. Beğenmediyseniz tekrar üretin.', true);
+      return d;
+    });
+}
+
+/* Publish the pair. English goes live, then its translation, pointed at each
+   other so hreflang is true from the first minute.
+   The order matters and it is not arbitrary: the English post has to be saved
+   before the Turkish one exists, because the Turkish row carries the English
+   id in `pair` and a pairing written against an id that does not exist yet is
+   a pairing that silently stays empty. */
+function publishPair(){
+  var btn = $('pubPairBtn');
+  var p = fromForm();
+  if(!validate(p)) return;
+  if(p.lang !== 'en'){
+    say('Bu akış İngilizceden başlar: dil alanını English yapın, Türkçesini bu buton üretir.', false);
+    return;
+  }
+  aiBusy(btn, true, 'EN + TR yayımla');
+  say('İngilizce yazı yayımlanıyor…', true);
+
+  var en = null;
+  api('save', withStatus(p))
+    .then(function(d){
+      en = d.post; posts = d.posts || posts; renderList();
+      say('İngilizcesi yayında. Türkçesi çevriliyor…', true);
+      return api('translate', { lang: 'en', title: p.title, excerpt: p.excerpt, body: p.body });
     })
-    .catch(function(e){ say('Görsel üretilemedi: ' + e.message, false); })
-    .then(function(){ aiBusy(btn, false, 'Görsel üret'); });
+    .then(function(d){
+      var t = d.post || {};
+      var tr = blank();
+      tr.lang = 'tr';
+      tr.title = t.title || ''; tr.excerpt = t.excerpt || ''; tr.body = t.body || '';
+      tr.slug = slugify(tr.title);
+      tr.category = p.category; tr.author = p.author; tr.date = p.date;
+      tr.hero = p.hero; tr.seo = t.excerpt || '';
+      tr.pair = en && en.id ? en.id : '';
+      return api('save', withStatus(tr));
+    })
+    .then(function(d){
+      posts = d.posts || posts;
+      current = null; toForm(blank()); renderList(); dirty = false;
+      say('İkisi de yayında. Türkçesini okuyup düzeltmek için listeden açın.', true);
+    })
+    .catch(function(e){ say('Yayımlanamadı: ' + e.message, false); })
+    .then(function(){ aiBusy(btn, false, 'EN + TR yayımla'); });
+}
+
+/* Both halves of a pair go live on the same day or wait together. */
+function withStatus(p){
+  p.status = isFuture(p.date) ? 'scheduled' : 'published';
+  return p;
 }
 
 /* ---------- the plan ---------- */
@@ -3665,7 +3816,14 @@ function planOpen(){
   return PLAN.filter(function(r){ return !taken[String(r.title).trim().toLowerCase()]; });
 }
 
+/* What the plan knows and the form has no field for. The writing prompt is
+   given both, so the model is briefed with the same thing Content wrote rather
+   than with a bare title. */
+var seedPillar = '', seedNote = '';
+
 function planFill(row){
+  seedPillar = row.pillar || '';
+  seedNote   = row.note || '';
   var p = blank();
   p.title    = row.title;
   p.slug     = slugify(row.title);
@@ -3735,8 +3893,20 @@ $('newBtn').addEventListener('click', function(){
   if(dirty && !confirm('Kaydedilmemiş değişiklikler var. Yine de yeni yazı açılsın mı?')) return;
   openPlan();
 });
+$('aiAllBtn').addEventListener('click', aiAll);
 $('aiTrBtn').addEventListener('click', aiTranslate);
 $('aiImgBtn').addEventListener('click', aiIllustrate);
+$('pubPairBtn').addEventListener('click', publishPair);
+
+/* The Content section hands a plan row over here rather than making anyone
+   retype it. It may arrive before this section has ever been opened, so both
+   directions are covered: a row waiting in __blogSeed is picked up on build,
+   and one arriving later is delivered through this. */
+window.blogFromPlan = function(row){
+  if(!row) return;
+  planFill(row);
+  window.__blogSeed = null;
+};
 $('saveBtn').addEventListener('click', function(){ save('draft'); });
 $('pubBtn').addEventListener('click', function(){ save(isFuture($('date').value) ? 'scheduled' : 'published'); });
 $('unpubBtn').addEventListener('click', function(){
@@ -3777,11 +3947,17 @@ window.addEventListener('beforeunload', function(e){ if(dirty){ e.preventDefault
 
 /* ---------- boot ---------- */
 toForm(blank());
+/* A plan row that arrived from the Content section before this one had ever
+   been opened. It is consumed here rather than in the click handler, because
+   the section builds itself the first time it is shown and until then there is
+   nothing here to hand it to. */
+if(window.__blogSeed){ planFill(window.__blogSeed); window.__blogSeed = null; }
 if(live()){
   $('postCount').textContent = 'yükleniyor…';
   api('list').then(function(d){
     posts = d.posts || []; images = d.images || []; renderList(); refreshPairs();
     aiReady(d.ai);
+    prefixCheck(d.prefix);
     $('postCount').textContent = posts.length + ' yazı';
   }).catch(function(e){
     $('postCount').textContent = '';
@@ -4836,6 +5012,23 @@ function closeC(){
   render();
 }
 function cur(){return P.find(x=>x.id===editId)}
+
+/* Hand this plan row to the blog editor. The two sections keep their own state
+   and the row is the only thing that crosses: title, date, language, pillar and
+   whatever was written in the note, which is exactly what the writing prompt is
+   briefed with. Nothing is saved here — the row stays in the plan until a post
+   carries its title, which is how the picker knows it is spent. */
+function toBlog(){
+  const p=cur(); if(!p) return;
+  window.__blogSeed={title:p.title,note:p.note||'',pillar:p.pillar||'',
+                     lang:p.lang||'tr',date:p.date,enDate:p.enDate||''};
+  closeC();
+  location.hash='#blog';
+  /* If the blog section has been opened before, it is already built and will
+     not run its boot again, so the row is delivered to it directly. If it has
+     not, it picks the row up out of __blogSeed while building. */
+  setTimeout(function(){ if(window.blogFromPlan) window.blogFromPlan(window.__blogSeed); }, 80);
+}
 function setF(k,v){const p=cur();if(!p)return;p[k]=v;if(k==='body'||k==='ch')drawC(true);mark()}
 function drawC(soft){
   const p=cur();if(!p)return;
@@ -4849,6 +5042,7 @@ function drawC(soft){
   const selS=document.activeElement&&document.activeElement.selectionStart;
 
   d.innerHTML=`<div class="dh"><h2>${isNew?'Yeni içerik':'İçeriği düzenle'}</h2>
+    ${isBlog&&!isNew?`<button class="gh" onclick="toBlog()" title="Bu satırı blog editöründe aç">Blog editörüne aktar</button>`:''}
     ${!isNew?`<button class="gh" onclick="delP()" title="Sil">Sil</button>`:''}
     <button class="gh" onclick="closeC()">✕</button></div>
    <div class="dbody">
@@ -6606,6 +6800,36 @@ window.dashLedger();
 </section>
 
 <section class="panel">
+  <h2>What we ask the model <span class="n" id="setAiState"></span></h2>
+  <div class="pad">
+    <p style="font-size:12.5px;line-height:1.6;color:var(--muted);margin-bottom:14px">
+      The two briefs the blog editor sends to Gemini: one to write the piece, one to draw
+      its cover. They are stored next to the key they are spent with, in Apps Script, not
+      in this page. Leave a field empty and the built-in brief comes back.
+      <br><br>
+      House style is not a field. No em dash, no emoji, no invented client, no price, and
+      the four service names left in English: those are appended to whatever is written
+      here, so an edited brief cannot drop the rules the rest of the site follows.
+    </p>
+    <div class="f">
+      <label for="setWrite">Writing brief</label>
+      <textarea id="setWrite" rows="12" spellcheck="false"></textarea>
+      <div class="hint">Who the reader is and what a piece is for. The title, the pillar and the plan note are added underneath it.</div>
+    </div>
+    <div class="f" style="margin-top:16px">
+      <label for="setImage">Cover brief</label>
+      <textarea id="setImage" rows="8" spellcheck="false"></textarea>
+      <div class="hint">The look. The title and standfirst are added as the subject. Covers are written as WebP in four crops.</div>
+    </div>
+    <div class="krow" style="margin-top:16px">
+      <button class="btn btn-p" type="button" id="setPromptSave">Save</button>
+      <button class="btn btn-s" type="button" id="setPromptReset">Restore the built-in briefs</button>
+      <span class="hint" id="setPromptMsg"></span>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
   <h2>Server-side keys</h2>
   <table class="keys">
     <thead><tr><th>Property</th><th>What it is for</th></tr></thead>
@@ -6614,6 +6838,8 @@ window.dashLedger();
       <tr><td class="mono">GH_TOKEN</td><td>Writes published posts into the repository.<span class="h">Fine-grained, Contents read and write, this repository only.</span></td></tr>
       <tr><td class="mono">SHEET_ID</td><td>The spreadsheet behind the form and the posts list.</td></tr>
       <tr><td class="mono">DASH_TOKEN</td><td>The other half of the key above.</td></tr>
+      <tr><td class="mono">GEMINI_KEY</td><td>Writes the drafts and draws the covers.<span class="h">Unset it and the four buttons in the editor stay disabled and say why. Nothing else changes.</span></td></tr>
+      <tr><td class="mono">PROMPT_WRITE · PROMPT_IMAGE</td><td>The two briefs above.<span class="h">Written from this page. Absent means the built-in brief is in use.</span></td></tr>
       <tr><td class="mono">BLOG_PREFIX</td><td>Where posts are written in the repository. <code class="mono">preview/</code> until launch, empty after.<span class="h">It has to match SITE_PREFIX in the blog editor.</span></td></tr>
     </tbody>
   </table>
@@ -6629,6 +6855,7 @@ window.dashLedger();
 window.dashInit.settings = function(){
 'use strict';
 var KEY = 'anthifel_dash_token';
+var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';
 var $ = function(id){ return document.getElementById(id); };
 
 function read(){
@@ -6664,6 +6891,76 @@ $('setKey').addEventListener('keydown', function(e){
 });
 
 paint();
+
+/* ---------- the two briefs ----------
+   They live in Script Properties and are read and written through the same
+   door the blog editor uses, with the same key. This page holds no secret of
+   its own: without the panel key the fields say so and stay closed. */
+var defaults = { write:'', image:'' };
+
+function api(action, data){
+  if(!read()) return Promise.reject(new Error('panel anahtarı yok'));
+  if(ENDPOINT.charAt(0) === '_') return Promise.reject(new Error('Apps Script adresi girilmedi'));
+  return fetch(ENDPOINT, {
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ kind:'blog', action:action, token:read(), data:data||{} })
+  }).then(function(r){ return r.json(); })
+    .then(function(d){ if(!d || !d.ok) throw new Error((d&&d.error)||'failed'); return d; });
+}
+
+function pmsg(m){ $('setPromptMsg').textContent = m || ''; }
+
+function aiState(on, note){
+  var st = $('setAiState');
+  st.className = 'n state ' + (on ? 'ok' : 'no');
+  st.innerHTML = '<i></i>' + note;
+}
+
+function loadPrompts(){
+  aiState(false, 'reading…');
+  api('settings').then(function(d){
+    var st = d.settings || {};
+    defaults = { write: st.writeDefault || '', image: st.imageDefault || '' };
+    $('setWrite').value = st.write || '';
+    $('setImage').value = st.image || '';
+    aiState(!!st.ai, st.ai ? 'Gemini key is set' : 'no Gemini key — the editor buttons stay off');
+  }).catch(function(e){
+    aiState(false, 'not read: ' + e.message);
+    $('setWrite').placeholder = $('setImage').placeholder =
+      'Enter the panel key above, then reopen this page.';
+  });
+}
+
+$('setPromptSave').addEventListener('click', function(){
+  pmsg('saving…');
+  api('setsettings', { write: $('setWrite').value, image: $('setImage').value })
+    .then(function(d){
+      var st = d.settings || {};
+      $('setWrite').value = st.write || '';
+      $('setImage').value = st.image || '';
+      pmsg('Saved. The editor uses them on its next request.');
+    })
+    .catch(function(e){ pmsg('Not saved: ' + e.message); });
+});
+
+$('setPromptReset').addEventListener('click', function(){
+  /* Emptying the field is what restores the default, on the server. Filling the
+     boxes with the built-in text here would save a copy of it and freeze it:
+     the next time the brief improves in the code, this project would keep the
+     old words and nobody would know why. */
+  if(!confirm('Kendi metinleriniz silinsin ve gömülü brief\'ler geri gelsin mi?')) return;
+  pmsg('restoring…');
+  api('setsettings', { write:'', image:'' })
+    .then(function(d){
+      var st = d.settings || {};
+      $('setWrite').value = st.write || '';
+      $('setImage').value = st.image || '';
+      pmsg('The built-in briefs are back.');
+    })
+    .catch(function(e){ pmsg('Not restored: ' + e.message); });
+});
+
+loadPrompts();
 };
 </script></section>
 </div>
