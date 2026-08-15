@@ -271,46 +271,6 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
 .devnote{margin-top:22px;padding:12px 16px;border:1px dashed rgba(184,76,46,.5);background:#FDF6F3;font-size:12.5px;line-height:1.5;color:#8A3D22;text-align:left}
 [hidden]{display:none!important}
 
-/* ---- privacy modal ---- */
-.povl{position:fixed;inset:0;background:rgba(15,15,14,.5);display:flex;align-items:center;justify-content:center;padding:24px;z-index:90}
-.pmodal{background:#FCFAF5;border-top:2px solid #B84C2E;width:100%;max-width:600px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(15,15,14,.28)}
-.pmhd{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:22px 28px 16px;border-bottom:1px solid rgba(15,15,14,.12)}
-.pmhd h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2}
-.pmhd button{background:none;border:0;font-size:26px;line-height:1;color:#7A756C;cursor:pointer;padding:0 2px}
-.pmhd button:hover{color:#0F0F0E}
-.pmbody{padding:22px 28px;overflow:auto;font-size:15px;line-height:1.68;color:#3A3733;text-align:left}
-.pmbody p+p{margin-top:14px}
-.pmbody a{color:#B84C2E;text-decoration:underline;text-underline-offset:2px}
-/* The modal now carries Legal's whole notice rather than a summary of it, so it
-   needs the same shapes the page version has: headings, lists and the three
-   tables that hold the substance. */
-.pmbody h3{margin:26px 0 10px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:21px;line-height:1.25;color:#0F0F0E}
-.pmbody h3:first-child{margin-top:0}
-.pmbody strong{font-weight:600;color:#1A1815}
-.pmbody ul{margin:0 0 15px;padding-left:20px}
-.pmbody li{margin-bottom:7px}
-.pmbody blockquote{margin:0 0 15px;padding:12px 15px;background:#F5F1EA;border-left:2px solid #B84C2E;font-size:14px}
-.pmbody table{width:100%;border-collapse:collapse;margin:4px 0 18px;font-size:13px;line-height:1.5}
-.pmbody thead th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#625D55;padding:0 12px 8px 0;border-bottom:1px solid rgba(15,15,14,.2);vertical-align:bottom}
-.pmbody tbody td{padding:10px 12px 10px 0;border-bottom:1px solid rgba(15,15,14,.09);vertical-align:top}
-.pmbody th:last-child,.pmbody td:last-child{padding-right:0}
-.pmbody .tw{overflow-x:auto}
-.pmbody .tw table{min-width:520px}
-/* Legal has not filled these yet; the marker is the same one the page uses. */
-.pmbody .lgap{display:inline-block;background:#FDF0EB;border:1px dashed #B84C2E;color:#8A3D22;font-size:11.5px;font-weight:600;padding:1px 6px;white-space:nowrap}
-.pmft{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 28px 22px;border-top:1px solid rgba(15,15,14,.12)}
-.pmft a{font-size:13.5px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
-.pmft a:hover{color:#B84C2E}
-.pmft .btn{padding:11px 24px;font-size:13.5px}
-@media (max-width:640px){
-  .povl{padding:14px}
-  .pmhd,.pmft{padding-left:20px;padding-right:20px}
-  .pmbody{padding:18px 20px}
-  .pmft{flex-direction:column-reverse;align-items:stretch}
-  .pmft .btn{width:100%}
-  .pmft a{text-align:center}
-}
-
 /* ---- footer ---- */
 .ftr{border-top:1px solid rgba(15,15,14,.14);padding:64px var(--pad) 40px;scroll-margin-top:90px}
 .ftr-g{display:grid;grid-template-columns:1.9fr .8fr 1.5fr .8fr;gap:56px}
@@ -433,7 +393,12 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
    its own now, dropped on every page: it is the one thing on this site that
    asks for an address without asking for anything else, and it was on exactly
    the pages the fewest people reach. */
-.news{background:#0F0F0E;color:#F5F1EA;margin-top:88px;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+/* 56px above the band, not 88px. The band always sits between the last thing on
+   the page and the footer, and the two gaps should read as a pair: the footer
+   opens 64px below the band, so the band opening 88px below the page — on top
+   of the page's own bottom padding — left the black block adrift. The pages
+   that carry a `main` had their bottom padding cut to match. */
+.news{background:#0F0F0E;color:#F5F1EA;margin-top:56px;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .news .eyebrow{color:rgba(245,241,234,.55);margin-bottom:18px}
 .news h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42px;line-height:1.16;text-wrap:pretty}
 .news>div>p{margin-top:16px;font-size:16px;line-height:1.65;color:rgba(245,241,234,.78);max-width:460px;text-wrap:pretty}
@@ -474,7 +439,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
 }
 @media (max-width:820px){
-  .news{grid-template-columns:1fr;margin-top:64px}
+  .news{grid-template-columns:1fr;margin-top:44px}
   .nform{padding-top:0}
   .news h2{font-size:34px}
 }
@@ -1044,8 +1009,71 @@ if(location.hash === '#meet') open_();
   </div>
 </footer>
 
-<!-- Privacy shown in place, so the consent tick is never lost to a navigation.
-     Copy comes from build.py, the same source privacy.html is generated from. -->
+<style>
+/* The privacy modal — the notice shown in place, on every page.
+   It lived inside index.html and only index.html had it, so a consent tick on
+   any other page still cost the visitor a navigation. It is a part now.
+
+   `.povl[hidden]` is not decoration: `.povl` sets display:flex, which beats the
+   browser's own rule for the hidden attribute, so without this line the modal
+   would be open on every page the moment it loads. On index.html a global
+   `[hidden]{display:none!important}` happened to cover it. A part cannot lean
+   on a rule the host page happens to carry — that sentence has been earned
+   three times now, and this is the fourth. */
+.povl{position:fixed;inset:0;background:rgba(15,15,14,.5);display:flex;align-items:center;justify-content:center;padding:24px;z-index:90}
+.povl[hidden]{display:none!important}
+.pmodal{background:#FCFAF5;border-top:2px solid #B84C2E;width:100%;max-width:600px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(15,15,14,.28);text-align:left}
+.pmhd{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:22px 28px 16px;border-bottom:1px solid rgba(15,15,14,.12)}
+.pmhd h3{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:26px;line-height:1.2;color:#0F0F0E}
+.pmhd button{background:none;border:0;font-size:26px;line-height:1;color:#7A756C;cursor:pointer;padding:0 2px}
+.pmhd button:hover{color:#0F0F0E}
+.pmbody{padding:22px 28px;overflow:auto;font-size:15px;line-height:1.68;color:#3A3733;text-align:left}
+.pmbody p+p{margin-top:14px}
+.pmbody a{color:#B84C2E;text-decoration:underline;text-underline-offset:2px}
+/* The modal carries Legal's whole notice rather than a summary of it, so it
+   needs the same shapes the page version has: headings, lists and the three
+   tables that hold the substance. */
+.pmbody h3{margin:26px 0 10px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:21px;line-height:1.25;color:#0F0F0E}
+.pmbody h3:first-child{margin-top:0}
+.pmbody strong{font-weight:600;color:#1A1815}
+.pmbody ul{margin:0 0 15px;padding-left:20px}
+.pmbody li{margin-bottom:7px}
+.pmbody blockquote{margin:0 0 15px;padding:12px 15px;background:#F5F1EA;border-left:2px solid #B84C2E;font-size:14px}
+.pmbody table{width:100%;border-collapse:collapse;margin:4px 0 18px;font-size:13px;line-height:1.5}
+.pmbody thead th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#625D55;padding:0 12px 8px 0;border-bottom:1px solid rgba(15,15,14,.2);vertical-align:bottom}
+.pmbody tbody td{padding:10px 12px 10px 0;border-bottom:1px solid rgba(15,15,14,.09);vertical-align:top}
+.pmbody th:last-child,.pmbody td:last-child{padding-right:0}
+.pmbody .tw{overflow-x:auto}
+.pmbody .tw table{min-width:520px}
+/* Legal has not filled these yet; the marker is the same one the page uses. */
+.pmbody .lgap{display:inline-block;background:#FDF0EB;border:1px dashed #B84C2E;color:#8A3D22;font-size:11.5px;font-weight:600;padding:1px 6px;white-space:nowrap}
+.pmft{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 28px 22px;border-top:1px solid rgba(15,15,14,.12)}
+.pmft a{font-size:13.5px;color:#0F0F0E;text-decoration:underline;text-underline-offset:3px}
+.pmft a:hover{color:#B84C2E}
+/* The close button is written out in full for the same reason the reading
+   list's Subscribe button is: on the legal pages `.btn` is 21px tall, under the
+   44px touch floor, and this is the control that dismisses the dialog. */
+.pmft .btn{display:inline-flex;align-items:center;justify-content:center;
+  font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
+  padding:13px 24px;border:1px solid #B84C2E;border-radius:2px;
+  background:#B84C2E;color:#F5F1EA;cursor:pointer;white-space:nowrap;
+  transition:background .18s,border-color .18s}
+.pmft .btn:hover{background:#A03F24;border-color:#A03F24}
+@media (max-width:640px){
+  .povl{padding:14px}
+  .pmhd,.pmft{padding-left:20px;padding-right:20px}
+  .pmbody{padding:18px 20px}
+  .pmft{flex-direction:column-reverse;align-items:stretch}
+  .pmft .btn{width:100%}
+  .pmft a{text-align:center}
+}
+</style>
+<!-- The privacy notice, shown in place, so a ticked consent box is never lost
+     to a navigation. Copy comes from legal.py — the same source privacy.html
+     is generated from, not a summary of it, because a consent box that links
+     to a summary is a consent box that was not read.
+     `privacy.html` is the only depth-dependent thing here: '' at the root,
+     '../' or '../../' inside the Journal. -->
 <div class="povl" id="povl" hidden>
   <div class="pmodal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
     <div class="pmhd">
@@ -1126,6 +1154,89 @@ if(location.hash === '#meet') open_();
     </div>
   </div>
 </div>
+<script>
+/* The privacy modal's behaviour. Travels with its markup and its stylesheet;
+   the three of them are one part, injected by build.py as a single block.
+
+   It asks the page for nothing, on purpose. The four shells name their language
+   variable four different ways and only two of them switch `[data-pane]` at
+   all, so this reads the language off <html> — which every one of them sets —
+   and watches that attribute for changes rather than waiting to be told. */
+(function(){
+'use strict';
+var ovl = document.getElementById('povl');
+if(!ovl) return;
+
+/* ---- language ---- */
+function lang(){ return document.documentElement.lang === 'tr' ? 'tr' : 'en'; }
+function panes(){
+  var l = lang(), p = ovl.querySelectorAll('.pmpane');
+  for(var i=0;i<p.length;i++) p[i].hidden = (p[i].getAttribute('data-pane') !== l);
+}
+panes();
+document.addEventListener('langchange', panes);
+/* index.html dispatches that event; the service, legal and Journal shells do
+   not. All four write the language onto <html>, so this is the one signal that
+   reaches every page. */
+try{
+  new MutationObserver(panes).observe(document.documentElement,
+    {attributes:true, attributeFilter:['lang']});
+}catch(e){}
+
+/* ---- open and close ---- */
+var last = null;
+function open_(){
+  last = document.activeElement;
+  panes();
+  ovl.hidden = false;
+  document.body.style.overflow = 'hidden';
+  var c = document.getElementById('pmClose');
+  if(c) c.focus();
+}
+function close_(){
+  ovl.hidden = true;
+  document.body.style.overflow = '';
+  if(last){ try{ last.focus(); }catch(err){} }
+}
+
+/* Any link to the privacy policy opens it here instead of navigating —
+   Eray, 13 August. The exceptions are deliberate: a link that already opens in
+   a new tab is left alone (the modal's own footer link is one), and so is the
+   legal pages' own document switcher, where the visitor is choosing which
+   document to read rather than checking one line before ticking a box. */
+document.addEventListener('click', function(e){
+  var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+  if(!a) return;
+  var href = a.getAttribute('href') || '';
+  if(!/(^|\/)privacy\.html([?#].*)?$/.test(href)) return;
+  if(a.target === '_blank') return;
+  if(a.closest('.lgnav')) return;
+  e.preventDefault();
+  /* On the privacy page itself there is nothing to open. Send the reader to the
+     text they asked for rather than reloading the page under them and losing
+     whatever they had ticked. */
+  if(/(^|\/)privacy\.html$/.test(location.pathname)){
+    var doc = document.querySelector('main .doc:not([hidden])') || document.querySelector('main');
+    if(doc && doc.scrollIntoView) doc.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+  open_();
+});
+
+var cl = document.getElementById('pmClose'); if(cl) cl.addEventListener('click', close_);
+var dn = document.getElementById('pmDone');  if(dn) dn.addEventListener('click', close_);
+ovl.addEventListener('click', function(e){ if(e.target === ovl) close_(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ovl.hidden) close_(); });
+
+/* Wide tables get a scroller of their own rather than pushing the modal
+   sideways. Legal's notice carries three of them. */
+var tbl = ovl.querySelectorAll('.pmbody table');
+for(var t=0;t<tbl.length;t++){
+  var w = document.createElement('div'); w.className = 'tw';
+  tbl[t].parentNode.insertBefore(w, tbl[t]); w.appendChild(tbl[t]);
+}
+})();
+</script>
 
 </div>
 
@@ -1877,44 +1988,6 @@ var Q = (function(){
   };
 })();
 
-/* ---------- privacy, shown without leaving the form ---------- */
-(function(){
-  var ovl = document.getElementById('povl');
-  if(!ovl) return;
-  var last = null;
-  function open_(e){
-    e.preventDefault();
-    last = document.activeElement;
-    ovl.hidden = false;
-    document.body.style.overflow = 'hidden';
-    document.getElementById('pmClose').focus();
-  }
-  function close_(){
-    ovl.hidden = true;
-    document.body.style.overflow = '';
-    if(last){ try{ last.focus(); }catch(err){} }
-  }
-  /* Any privacy link inside a consent box opens here instead of navigating.
-     Losing a ticked box to a page load is the fastest way to lose the visitor. */
-  document.addEventListener('click', function(e){
-    var a = e.target.closest ? e.target.closest('a[href$="privacy.html"]') : null;
-    if(!a) return;
-    if(!a.closest('.consent') && !a.closest('.ncons')) return;
-    if(a.target === '_blank') return;
-    open_(e);
-  });
-  document.getElementById('pmClose').addEventListener('click', close_);
-  document.getElementById('pmDone').addEventListener('click', close_);
-  ovl.addEventListener('click', function(e){ if(e.target === ovl) close_(); });
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ovl.hidden) close_(); });
-  /* Wide tables get a scroller of their own rather than pushing the modal
-     sideways. Legal's notice carries three of them. */
-  var tbl = ovl.querySelectorAll('.pmbody table');
-  for(var t=0;t<tbl.length;t++){
-    var w = document.createElement('div'); w.className = 'tw';
-    tbl[t].parentNode.insertBefore(w, tbl[t]); w.appendChild(tbl[t]);
-  }
-})();
 /* ---- step 1: ask for the code ---- */
 f.addEventListener('submit', function(e){
   e.preventDefault();
