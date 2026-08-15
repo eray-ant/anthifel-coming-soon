@@ -58,7 +58,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #B84C2E;outline-offset:2p
   .nav.open{display:flex}
 }
 
-main{flex:1;padding:80px var(--pad) 24px}
+main{flex:1;padding:80px var(--pad) 64px}
 /* The gutter already places the column; this is the ceiling, not the
    positioner, and it matches the 1136px the rest of the site uses. */
 .wrap{max-width:1136px;margin:0 auto;width:100%}
@@ -130,7 +130,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 }
 @media (max-width:640px){
   :root{--pad:24px}
-  main{padding-top:52px;padding-bottom:20px}
+  main{padding-top:52px;padding-bottom:48px}
   h1{font-size:32px}
   .doc{font-size:15.5px;margin-top:34px}
   .doc h3{font-size:22px;margin-top:34px}
@@ -183,12 +183,11 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
    its own now, dropped on every page: it is the one thing on this site that
    asks for an address without asking for anything else, and it was on exactly
    the pages the fewest people reach. */
-/* 56px above the band, not 88px. The band always sits between the last thing on
-   the page and the footer, and the two gaps should read as a pair: the footer
-   opens 64px below the band, so the band opening 88px below the page — on top
-   of the page's own bottom padding — left the black block adrift. The pages
-   that carry a `main` had their bottom padding cut to match. */
-.news{background:#0F0F0E;color:#F5F1EA;margin-top:56px;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+/* No margin of its own. The gap above the band belongs to the page above it —
+   every one of them ends in a block with bottom padding, and adding a margin
+   here made that padding count twice. Each page sets its own to 64px, which is
+   what the footer opens with on the other side of the band. */
+.news{background:#0F0F0E;color:#F5F1EA;margin-top:0;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
 .news .eyebrow{color:rgba(245,241,234,.55);margin-bottom:18px}
 .news h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42px;line-height:1.16;text-wrap:pretty}
 .news>div>p{margin-top:16px;font-size:16px;line-height:1.65;color:rgba(245,241,234,.78);max-width:460px;text-wrap:pretty}
@@ -229,7 +228,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
 }
 @media (max-width:820px){
-  .news{grid-template-columns:1fr;margin-top:44px}
+  .news{grid-template-columns:1fr}
   .nform{padding-top:0}
   .news h2{font-size:34px}
 }

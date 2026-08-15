@@ -77,29 +77,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 .btn-p:hover{background:#A03F24;border-color:#A03F24;color:#F5F1EA}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 
-/* newsletter */
-.news{background:#0F0F0E;color:#F5F1EA;margin-top:88px;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-.news .eyebrow{color:rgba(245,241,234,.55);margin-bottom:18px}
-.news h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42px;line-height:1.16;text-wrap:pretty}
-.news>div>p{margin-top:16px;font-size:16px;line-height:1.65;color:rgba(245,241,234,.78);max-width:460px;text-wrap:pretty}
-.nform{display:flex;flex-direction:column;gap:14px;align-items:stretch;padding-top:38px}
-.nrow{display:flex;gap:12px;width:100%}
-.nform input[type=email]{flex:1;min-width:0;background:transparent;border:1px solid rgba(245,241,234,.35);color:#F5F1EA;font-family:inherit;font-size:14.5px;padding:15px 18px;border-radius:2px;outline:none}
-.nform input[type=email]:focus{border-color:#F5F1EA}
-.nform input::placeholder{color:rgba(245,241,234,.45)}
-.nform .btn{flex:none}
-.ncons{display:flex;gap:11px;align-items:flex-start}
-.ncons input[type=checkbox]{flex:none;width:17px;height:17px;margin:2px 0 0;accent-color:#B84C2E;cursor:pointer}
-.ncons label{font-size:13px;line-height:1.55;color:rgba(245,241,234,.78);cursor:pointer;text-wrap:pretty}
-.ncons a{color:#F5F1EA;text-decoration:underline;text-underline-offset:2px}
-.ncons a:hover{color:#B84C2E}
-.nmsg{font-size:13px;line-height:1.5;min-height:0}
-.nmsg:empty{display:none}
-.nmsg.bad{color:#E8A08A}
-.nmsg.good{color:rgba(245,241,234,.8)}
-.nfine{font-size:13px;color:rgba(245,241,234,.55)}
-.hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
-
 /* footer */
 .ftr{border-top:1px solid rgba(15,15,14,.14);padding:64px var(--pad) 40px;scroll-margin-top:90px}
 .ftr-g{display:grid;grid-template-columns:1.9fr .8fr 1.5fr .8fr;gap:56px}
@@ -117,9 +94,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 
 @media (max-width:1024px){
   :root{--pad:44px}
-  .news{gap:44px;padding-top:64px;padding-bottom:64px}
 }
-/* ---- phone: things a finger has to hit ----
+/* The reading list's own rules are not here. They were, until 13 August, and
+   they stayed here after the band became a part of its own — so the Journal
+   kept its old spacing while every other page followed the part, and nobody
+   could see why. `newsletter.css` travels with the band now, into this file's
+   place in the head. check-blog fails if a `.news` rule reappears here.
+
+   ---- phone: things a finger has to hit ----
    Measured on the rendered page, not guessed. The language switch was 14px
    tall, the footer links 17 to 21, the wordmark's link 16 and the newsletter
    tick 17. A 14px target is a target you miss. Nothing changes on a desktop. */
@@ -137,7 +119,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   .ftr ul li:last-child a{border-bottom:0}
   .ftr-brand .info{gap:0}
   .ftr-brand .info a{display:inline-block;padding:11px 0}
-  .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
   .consent input[type=checkbox]{width:22px;height:22px}
 }
 @media (max-width:820px){
@@ -149,28 +130,83 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   .hdr{flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
   .burger{display:inline-block;order:2}
   .lang{order:1;margin-left:auto;margin-right:14px}
-  .news{grid-template-columns:1fr;margin-top:64px}
-  .nform{padding-top:0}
-  .news h2{font-size:34px}
   .ftr-g{grid-template-columns:1fr 1fr;gap:40px}
   .ftr-brand{grid-column:1/-1}
 }
 @media (max-width:640px){
   :root{--pad:24px;--t-card:14.5px}
-  .news h2{font-size:29px}
-  .nrow{flex-direction:column}
-  .nform .btn{width:100%}
   .ftr{padding-top:52px}
   .ftr-g{grid-template-columns:1fr;gap:34px}
   .legal{flex-direction:column;gap:12px}
 }
 @media (max-width:400px){
   :root{--pad:18px}
-  .news h2{font-size:25px}
   .hdr{gap:10px}
   .lang{margin-right:8px}
 }
 
+/* The reading list — the black band above the footer.
+   It lived in the blog's stylesheet and only the blog had it. It is a part of
+   its own now, dropped on every page: it is the one thing on this site that
+   asks for an address without asking for anything else, and it was on exactly
+   the pages the fewest people reach. */
+/* No margin of its own. The gap above the band belongs to the page above it —
+   every one of them ends in a block with bottom padding, and adding a margin
+   here made that padding count twice. Each page sets its own to 64px, which is
+   what the footer opens with on the other side of the band. */
+.news{background:#0F0F0E;color:#F5F1EA;margin-top:0;padding:80px var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.news .eyebrow{color:rgba(245,241,234,.55);margin-bottom:18px}
+.news h2{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:42px;line-height:1.16;text-wrap:pretty}
+.news>div>p{margin-top:16px;font-size:16px;line-height:1.65;color:rgba(245,241,234,.78);max-width:460px;text-wrap:pretty}
+.nform{display:flex;flex-direction:column;gap:14px;align-items:stretch;padding-top:38px}
+.nrow{display:flex;gap:12px;width:100%}
+.nform input[type=email]{flex:1;min-width:0;background:transparent;border:1px solid rgba(245,241,234,.35);color:#F5F1EA;font-family:inherit;font-size:14.5px;padding:15px 18px;border-radius:2px;outline:none}
+.nform input[type=email]:focus{border-color:#F5F1EA}
+.nform input::placeholder{color:rgba(245,241,234,.45)}
+.nform .btn{flex:none}
+/* The band brings its own button. It borrowed `.btn` from whichever page it
+   landed on, and the legal pages style theirs 21px tall — under the 44px touch
+   floor, on the one control in the band a thumb has to hit. A part that depends
+   on the page it lands in is not a part; this is the second time that sentence
+   has been earned. */
+.news .nform .btn{display:inline-flex;align-items:center;justify-content:center;
+  font-family:inherit;font-size:14.5px;font-weight:500;line-height:1.2;
+  padding:15px 26px;border:1px solid #B84C2E;border-radius:2px;
+  background:#B84C2E;color:#F5F1EA;cursor:pointer;white-space:nowrap;
+  transition:background .18s,border-color .18s}
+.news .nform .btn:hover{background:#A03F24;border-color:#A03F24}
+.news .nform .btn[disabled]{opacity:.45;cursor:not-allowed}
+.ncons{display:flex;gap:11px;align-items:flex-start}
+.ncons input[type=checkbox]{flex:none;width:17px;height:17px;margin:2px 0 0;accent-color:#B84C2E;cursor:pointer}
+.ncons label{font-size:13px;line-height:1.55;color:rgba(245,241,234,.78);cursor:pointer;text-wrap:pretty}
+.ncons a{color:#F5F1EA;text-decoration:underline;text-underline-offset:2px}
+.ncons a:hover{color:#B84C2E}
+.nmsg{font-size:13px;line-height:1.5;min-height:0}
+.nmsg:empty{display:none}
+.nmsg.bad{color:#E8A08A}
+.nmsg.good{color:rgba(245,241,234,.8)}
+.nfine{font-size:13px;color:rgba(245,241,234,.55)}
+.hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+
+@media (max-width:1024px){
+  .news{gap:44px;padding-top:64px;padding-bottom:64px}
+}
+@media (max-width:820px){
+  .ncons input[type=checkbox]{width:22px;height:22px;margin-top:0}
+}
+@media (max-width:820px){
+  .news{grid-template-columns:1fr}
+  .nform{padding-top:0}
+  .news h2{font-size:34px}
+}
+@media (max-width:640px){
+  .news h2{font-size:29px}
+  .nrow{flex-direction:column}
+  .nform .btn{width:100%}
+}
+@media (max-width:400px){
+  .news h2{font-size:25px}
+}
 
 /* ---- article ---- */
 .art{padding:72px 72px 0;max-width:840px;margin:0 auto}
@@ -216,7 +252,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 .share span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#625D55}
 .share a{display:inline-flex;color:#0F0F0E}
 
-.rel{padding:80px var(--pad) 0}
+.rel{padding:80px var(--pad) 64px}
 .rel h3{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#0F0F0E;margin-bottom:30px}
 .rel-g{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
 .card{display:flex;flex-direction:column;gap:14px;color:#0F0F0E}
