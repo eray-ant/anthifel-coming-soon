@@ -342,8 +342,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   </div>
 </div>
 
-<!-- FEATURED:START -->
-<a class="feat" href="why-ai-is-an-organizational-problem-not-a-technological-one/"><div class="feat-in"><div class="ph" style="aspect-ratio:4/3"><span>LEAD IMAGE — 1200×900</span></div><div><div class="kicker"><b>Latest</b><i></i><s>Organisation</s></div><h2>Why AI is an organizational problem, not a technological one</h2><p>AI transformation in companies fails not because of technical shortcomings, but because existing processes and human behaviour are ignored.</p><div class="byl"><span>Eray Dengiz</span><s>·</s><span>10 August 2026</span><s>·</s><span>6 min read</span></div></div></div></a>
+<!-- FEATURED:START — replaced on publish -->
+<div id="featured"></div>
 <!-- FEATURED:END -->
 
 <div class="all">
@@ -351,11 +351,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <h3 data-en="All writing" data-tr="Tüm yazılar">All writing</h3>
     <span id="count"></span>
   </div>
-  <!-- GRID:START -->
-<div class="grid" id="grid">
-
-</div>
-<!-- GRID:END -->
+  <!-- GRID:START — replaced on publish -->
+  <div class="grid" id="grid"></div>
+  <!-- GRID:END -->
   <div class="empty" id="empty" hidden data-en="Nothing under this topic yet." data-tr="Bu konuda henüz yazı yok.">Nothing under this topic yet.</div>
   <div class="more" id="more" hidden>
     <button type="button" class="btn btn-s" id="moreBtn" data-en="Older writing" data-tr="Daha eski yazılar">Older writing</button>
@@ -432,7 +430,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
            The wording here avoids the phrase "F i l l e d  b y" on purpose:
            check-legal.js bans it from any served page, because it is one of the
            markers in Legal's handover note, and an HTML comment is served. -->
-      <ul id="ftrPosts"><li><a href="why-ai-is-an-organizational-problem-not-a-technological-one/">Why AI is an organizational problem, not a technological one</a></li></ul>
+      <ul id="ftrPosts">
+        <li><a href="../../blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/" data-en="Why AI is an organizational problem, not a technological one" data-tr="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri">Why AI is an organizational problem, not a technological one</a></li>
+      </ul>
     </div>
     <div>
       <h4 data-en="Social media" data-tr="Sosyal medya">Social media</h4>
@@ -573,7 +573,7 @@ try{
 <p>Where we ever hold information about you that did not come from you directly, we will tell you at the first point we contact you — what we hold, where it came from, and how to object.</p>
 <h3>Who we share it with</h3>
 <p>We use service providers who process personal data on our behalf, under contract, and only on our instructions:</p>
-<table><thead><tr><th>Service provider</th><th>What it does</th><th>What personal data reaches it</th><th>Where it is hosted</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Website hosting. Serves every page</td><td>IP address and browser user agent, in server access logs</td><td>United Kingdom (London region)</td></tr><tr><td>Squarespace Domains</td><td>The anthifel.com registration</td><td>Registrant contact details. WHOIS privacy is on, so they are not public</td><td>Squarespace, Inc. — United States</td></tr><tr><td>Resend</td><td>Sends every email we send you: your code, your assessment result, and our own copy</td><td>Your email address, and in the result email your score, your band and your five dimension scores</td><td>Resend, Inc. — a United States company. Our sending domain is configured in their Ireland region</td></tr><tr><td>Google (Apps Script and Sheets)</td><td>Receives the assessment form and holds the record behind it</td><td>Your email address, your consent record, and the score and band of a completed assessment. Never your individual answers</td><td>Google. Which region depends on the Workspace edition; ours does not offer the setting</td></tr><tr><td>Google (Workspace)</td><td>Our own mailboxes, including the privacy inbox</td><td>Whatever you write to us</td><td>Google, as above</td></tr><tr><td>Google (Calendar appointment schedule)</td><td>The booking window behind every call button</td><td>IP address, browser user agent and Google cookies, only once you open the booking window; then whatever you enter into Google’s booking form</td><td>Google. No region choice is offered</td></tr><tr><td>Supabase</td><td>The database behind our internal dashboard. No visitor data reaches it</td><td>Staff account email addresses only</td><td>United Kingdom (London region)</td></tr></tbody></table>
+<table><thead><tr><th>Service provider</th><th>What it does</th><th>What personal data reaches it</th><th>Where it is hosted</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Website hosting. Serves every page</td><td>IP address and browser user agent, in server access logs</td><td>United Kingdom (London region)</td></tr><tr><td>Squarespace Domains</td><td>The anthifel.com registration</td><td>Registrant contact details. WHOIS privacy is on, so they are not public</td><td>Squarespace, Inc. — United States</td></tr><tr><td>Resend</td><td>Sends every email we send you: your code, your assessment result, and our own copy</td><td>Your email address, and in the result email your score, your band and your five dimension scores</td><td>Resend, Inc. — a United States company. Our sending domain is configured in their Ireland region</td></tr><tr><td>Google (Apps Script and Sheets)</td><td>Receives the assessment form and holds the record behind it</td><td>Your email address, your consent record, and the score and band of a completed assessment. Never your individual answers</td><td>Google. Which region depends on the Workspace edition; ours does not offer the setting</td></tr><tr><td>Google (Workspace)</td><td>Our own mailboxes, including the privacy inbox</td><td>Whatever you write to us</td><td>Google, as above</td></tr><tr><td>Google (Calendar appointment schedule)</td><td>The booking window behind every call button</td><td>IP address, browser user agent and Google cookies, only once you open the booking window; then whatever you enter into Google’s booking form</td><td>Google. No region choice is offered</td></tr><tr><td>Supabase</td><td>The database behind our internal dashboard. No visitor data reaches it</td><td>Staff account email addresses only</td><td>United Kingdom (London region)</td></tr><tr><td>Google Analytics 4</td><td>Counts visits and tells us which pages are read. Loaded only after you accept it, and not at all if you decline</td><td>IP address, which Google truncates before storing, browser and device information, the pages you open and a random identifier held in a cookie on your device. Never your name or your email address</td><td>Google. Collected in the region nearest you, processed in the United States</td></tr></tbody></table>
 <p>We also share personal data where we are required to by law, or with our professional advisers where necessary.</p>
 <h3>Sending data outside the UK</h3>
 <p>Where a service provider is located outside the United Kingdom, we put in place a transfer mechanism recognised under UK data protection law before any personal data is transferred. You can ask us which mechanism applies to a particular transfer.</p>
@@ -607,7 +607,7 @@ try{
 <p>Hakkınızda doğrudan sizden gelmeyen bir bilgiyi elimizde tuttuğumuz durumlarda, sizinle kurduğumuz <strong>ilk temasta</strong> size söyleriz: neyi tuttuğumuzu, nereden geldiğini ve nasıl itiraz edebileceğinizi.</p>
 <h3>Kimlerle paylaşıyoruz</h3>
 <p>Bizim adımıza, sözleşmeye bağlı olarak ve yalnızca talimatlarımızla kişisel veri işleyen hizmet sağlayıcılar kullanıyoruz:</p>
-<table><thead><tr><th>Hizmet sağlayıcı</th><th>Ne yapar</th><th>Hangi kişisel veri ulaşır</th><th>Nerede barındırılır</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Web sitesi barındırma. Bütün sayfaları sunar</td><td>Sunucu erişim kayıtlarında IP adresi ve tarayıcı bilgisi</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Squarespace Domains</td><td>anthifel.com tescili</td><td>Tescil sahibi iletişim bilgileri. WHOIS gizliliği açık, yani herkese açık değil</td><td>Squarespace, Inc. — Amerika Birleşik Devletleri</td></tr><tr><td>Resend</td><td>Size gönderdiğimiz her e-postayı gönderir: giriş kodunuz, test sonucunuz ve bizim kendi kopyamız</td><td>E-posta adresiniz; sonuç e-postasında ayrıca test sonucunuz, bandınız ve beş boyut puanınız</td><td>Resend, Inc. — Amerika Birleşik Devletleri şirketi. Gönderim alan adımız İrlanda bölgesinde tanımlı</td></tr><tr><td>Google (Apps Script ve E-Tablolar)</td><td>Test formunu alır ve arkasındaki kaydı tutar</td><td>E-posta adresiniz, rıza kaydınız, ve tamamlanmış bir testin sonucu ile bandı. Tek tek cevaplarınız asla</td><td>Google. Bölge, Workspace sürümüne bağlı; bizimki bu ayarı sunmuyor</td></tr><tr><td>Google (Workspace)</td><td>Kendi posta kutularımız, gizlilik kutusu dahil</td><td>Bize yazdığınız her şey</td><td>Google, yukarıdaki gibi</td></tr><tr><td>Google (Takvim randevu takvimi)</td><td>Her görüşme butonunun arkasındaki randevu penceresi</td><td>Randevu penceresini açtığınız anda IP adresi, tarayıcı bilgisi ve Google çerezleri; sonrasında Google’ın kendi randevu formuna girdikleriniz</td><td>Google. Bölge seçimi sunulmuyor</td></tr><tr><td>Supabase</td><td>İç panelimizin veritabanı. Ziyaretçi verisi buraya ulaşmaz</td><td>Yalnızca çalışan hesaplarının e-posta adresleri</td><td>Birleşik Krallık (Londra bölgesi)</td></tr></tbody></table>
+<table><thead><tr><th>Hizmet sağlayıcı</th><th>Ne yapar</th><th>Hangi kişisel veri ulaşır</th><th>Nerede barındırılır</th></tr></thead><tbody><tr><td>DigitalOcean App Platform</td><td>Web sitesi barındırma. Bütün sayfaları sunar</td><td>Sunucu erişim kayıtlarında IP adresi ve tarayıcı bilgisi</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Squarespace Domains</td><td>anthifel.com tescili</td><td>Tescil sahibi iletişim bilgileri. WHOIS gizliliği açık, yani herkese açık değil</td><td>Squarespace, Inc. — Amerika Birleşik Devletleri</td></tr><tr><td>Resend</td><td>Size gönderdiğimiz her e-postayı gönderir: giriş kodunuz, test sonucunuz ve bizim kendi kopyamız</td><td>E-posta adresiniz; sonuç e-postasında ayrıca test sonucunuz, bandınız ve beş boyut puanınız</td><td>Resend, Inc. — Amerika Birleşik Devletleri şirketi. Gönderim alan adımız İrlanda bölgesinde tanımlı</td></tr><tr><td>Google (Apps Script ve E-Tablolar)</td><td>Test formunu alır ve arkasındaki kaydı tutar</td><td>E-posta adresiniz, rıza kaydınız, ve tamamlanmış bir testin sonucu ile bandı. Tek tek cevaplarınız asla</td><td>Google. Bölge, Workspace sürümüne bağlı; bizimki bu ayarı sunmuyor</td></tr><tr><td>Google (Workspace)</td><td>Kendi posta kutularımız, gizlilik kutusu dahil</td><td>Bize yazdığınız her şey</td><td>Google, yukarıdaki gibi</td></tr><tr><td>Google (Takvim randevu takvimi)</td><td>Her görüşme butonunun arkasındaki randevu penceresi</td><td>Randevu penceresini açtığınız anda IP adresi, tarayıcı bilgisi ve Google çerezleri; sonrasında Google’ın kendi randevu formuna girdikleriniz</td><td>Google. Bölge seçimi sunulmuyor</td></tr><tr><td>Supabase</td><td>İç panelimizin veritabanı. Ziyaretçi verisi buraya ulaşmaz</td><td>Yalnızca çalışan hesaplarının e-posta adresleri</td><td>Birleşik Krallık (Londra bölgesi)</td></tr><tr><td>Google Analytics 4</td><td>Ziyaret sayısını sayar ve hangi sayfaların okunduğunu söyler. Yalnızca siz kabul ettikten sonra yüklenir, reddederseniz hiç yüklenmez</td><td>IP adresiniz — Google saklamadan önce kısaltır —, tarayıcı ve cihaz bilgisi, açtığınız sayfalar ve cihazınızdaki bir çerezde duran rastgele bir tanımlayıcı. Adınız ve e-posta adresiniz asla</td><td>Google. Veri size en yakın bölgedeki sunucularda toplanır, ABD’de işlenir</td></tr></tbody></table>
 <p>Ayrıca hukuken zorunlu olduğumuz hâllerde ve gerektiğinde profesyonel danışmanlarımızla paylaşırız.</p>
 <h3>Verinin Birleşik Krallık dışına gönderilmesi</h3>
 <p>Bir hizmet sağlayıcı Birleşik Krallık dışındaysa, herhangi bir kişisel veri aktarılmadan önce Birleşik Krallık veri koruma hukukunun tanıdığı bir aktarım mekanizması kurarız. Belirli bir aktarım için hangi mekanizmanın geçerli olduğunu bize sorabilirsiniz.</p>
@@ -711,6 +711,195 @@ for(var t=0;t<tbl.length;t++){
   var w = document.createElement('div'); w.className = 'tw';
   tbl[t].parentNode.insertBefore(w, tbl[t]); w.appendChild(tbl[t]);
 }
+})();
+</script>
+
+<style>
+/* The cookie question. A band at the foot of the window, not a sheet over the
+   page: the visitor came to read something and the question is ours, not
+   theirs. It never blocks the page and it never returns once answered.
+
+   `.cbar[hidden]` is written out for the same reason the privacy modal's is —
+   the band sets display:flex, which beats the browser's own rule for the hidden
+   attribute, and a part cannot lean on a rule the host page happens to carry. */
+.cbar{position:fixed;left:0;right:0;bottom:0;z-index:80;background:#0F0F0E;color:#F5F1EA;
+  padding:18px var(--pad);display:flex;justify-content:center;
+  box-shadow:0 -10px 30px rgba(15,15,14,.18)}
+.cbar[hidden]{display:none!important}
+.cbar-in{width:100%;max-width:1136px;display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+.cbar p{margin:0;flex:1 1 420px;min-width:0;font-size:13.5px;line-height:1.6;
+  color:rgba(245,241,234,.82);text-wrap:pretty}
+.cbar-act{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* The two answers are the same size, the same weight and the same colour. A
+   large accept beside a small grey decline is not a choice, and in the UK and
+   the EU it is not valid consent either. */
+.cbtn{display:inline-flex;align-items:center;justify-content:center;
+  font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
+  padding:13px 24px;min-width:150px;border:1px solid rgba(245,241,234,.5);border-radius:2px;
+  background:transparent;color:#F5F1EA;cursor:pointer;white-space:nowrap;
+  transition:background .18s,border-color .18s,color .18s}
+.cbtn:hover{background:#F5F1EA;border-color:#F5F1EA;color:#0F0F0E}
+/* The third option is a link, not a button, because reading the policy is not
+   answering the question. It still has to be hittable: a 16px line of text
+   standing on its own in a band is a control, whatever element it is made of. */
+.cbar a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;
+  font-size:13px;color:rgba(245,241,234,.7);text-decoration:underline;
+  text-underline-offset:3px;white-space:nowrap}
+.cbar a:hover{color:#F5F1EA}
+
+/* The way back. Consent has to be as easy to withdraw as it was to give, so the
+   footer's cookie link reopens the question instead of only explaining it.
+   It sits among the footer's legal links and takes their size and colour from
+   the class its neighbour carries; what it adds here is the touch height,
+   because the links around it are inside a row that gives them one and a
+   button inserted by script is not. */
+.cbar-again{display:inline-flex;align-items:center;min-height:44px;
+  background:none;border:0;padding:0;font:inherit;color:inherit;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+@media (max-width:820px){
+  .cbar{padding-top:16px;padding-bottom:16px}
+  .cbar-in{gap:16px}
+  .cbar-act{width:100%}
+  .cbtn{flex:1 1 auto}
+}
+@media (max-width:520px){
+  .cbar-act{flex-direction:column;align-items:stretch}
+  .cbtn{width:100%}
+  .cbar a{text-align:center}
+}
+</style>
+<!-- The cookie question. It exists because GA4 sets cookies, and for no other
+     reason: everything else this site does works without asking.
+
+     Two buttons, the same size, the same weight. A large accept beside a small
+     grey decline is not consent under UK or EU rules, and it is not our tone
+     either. `../../cookies.html` is the only depth-dependent thing here. -->
+<div class="cbar" id="cbar" hidden role="dialog" aria-live="polite" aria-labelledby="cbarT">
+  <div class="cbar-in">
+    <p id="cbarT" data-en="We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer." data-tr="Ziyaretleri saymak istiyoruz, hangi yazıların okunduğunu bilmek için. Bunu Google Analytics yapıyor, çerez yerleştiriyor ve tamamen sizin kararınız. Siz cevaplayana kadar hiçbir şey yüklenmiyor.">We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer.</p>
+    <div class="cbar-act">
+      <button type="button" class="cbtn" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
+      <button type="button" class="cbtn" id="cYes" data-en="That is fine" data-tr="Kabul ediyorum">That is fine</button>
+      <a href="../../cookies.html" data-en="What we would set" data-tr="Ne yerleştireceğimiz">What we would set</a>
+    </div>
+  </div>
+</div>
+<script>
+/* The cookie question, and the only thing on this site that loads Google.
+   Markup, stylesheet and behaviour travel together, like the reading list and
+   the privacy notice.
+
+   The rule the whole file exists to keep: nothing Google-owned is fetched, and
+   no cookie is set, until somebody has said yes. Not "loaded with consent mode
+   set to denied" — not loaded. A tag that is on the page in a denied state is
+   still a request to Google carrying an IP address, and explaining that to a
+   visitor who declined is not a conversation worth having.
+
+   The answer is kept in localStorage rather than a cookie, because asking for
+   permission to set a cookie by setting a cookie is the kind of thing that
+   makes people distrust the rest of the page. It is stored either way: a no is
+   a decision and it deserves to be remembered as much as a yes. */
+(function(){
+'use strict';
+var KEY = 'anthifel_consent';
+var MEASUREMENT = '';          // empty in preview; nothing loads there
+var SIX_MONTHS = 1000 * 60 * 60 * 24 * 182;
+
+var bar = document.getElementById('cbar');
+if(!bar) return;
+
+function stored(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(!raw) return null;
+    var v = JSON.parse(raw);
+    /* An answer expires. Six months on, the question is asked again, because a
+       decision made about a site you visited once in February is not consent in
+       August. An expired answer is treated as no answer, not as a no. */
+    if(!v || !v.at || (Date.now() - v.at) > SIX_MONTHS) return null;
+    return v.ok === true ? 'yes' : 'no';
+  }catch(e){ return null; }
+}
+
+function remember(ok){
+  try{ localStorage.setItem(KEY, JSON.stringify({ ok: !!ok, at: Date.now() })); }catch(e){}
+}
+
+var loaded = false;
+function loadGA(){
+  if(loaded || !MEASUREMENT || MEASUREMENT.charAt(0) === '_') return;
+  loaded = true;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  /* IP anonymisation is Google's default in GA4 and stating it here changes
+     nothing technically. It is written down because the privacy notice says we
+     do it, and a claim in a notice should be findable in the code. */
+  gtag('config', MEASUREMENT, { anonymize_ip: true });
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(MEASUREMENT);
+  document.head.appendChild(s);
+}
+
+/* Withdrawing has to actually withdraw. GA4's cookies are set on this host, so
+   they can be expired from here; what is already at Google is a deletion
+   request, and the notice says where to send one. */
+function dropCookies(){
+  var names = document.cookie.split(';').map(function(c){ return c.split('=')[0].trim(); })
+    .filter(function(n){ return n.indexOf('_ga') === 0; });
+  var host = location.hostname, bits = host.split('.');
+  names.forEach(function(n){
+    for(var i = 0; i < bits.length - 1; i++){
+      var d = bits.slice(i).join('.');
+      document.cookie = n + '=; Max-Age=0; path=/; domain=' + d;
+      document.cookie = n + '=; Max-Age=0; path=/; domain=.' + d;
+    }
+    document.cookie = n + '=; Max-Age=0; path=/';
+  });
+}
+
+function show(){ bar.hidden = false; }
+function hide(){ bar.hidden = true; }
+
+function answer(ok){
+  remember(ok);
+  hide();
+  if(ok) loadGA(); else dropCookies();
+}
+
+document.getElementById('cYes').addEventListener('click', function(){ answer(true); });
+document.getElementById('cNo').addEventListener('click', function(){ answer(false); });
+
+/* The footer's cookie link reopens the question rather than only explaining it.
+   Consent has to be as easy to take back as it was to give, and a policy page
+   with no button on it is not that. The link still works as a link: this only
+   adds a way back beside it. */
+(function(){
+  var links = document.querySelectorAll('.ftr a[href$="cookies.html"]');
+  for(var i = 0; i < links.length; i++){
+    var a = links[i];
+    var again = document.createElement('button');
+    again.type = 'button';
+    /* It takes the class of the link it stands next to, so it inherits whatever
+       the footer gives its own links and does not need a second copy of those
+       rules here. `cbar-again` only adds what a script-inserted button lacks. */
+    again.className = (a.className ? a.className + ' ' : '') + 'cbar-again';
+    again.textContent = document.documentElement.lang === 'tr' ? 'Çerez tercihi' : 'Cookie choice';
+    again.setAttribute('data-en', 'Cookie choice');
+    again.setAttribute('data-tr', 'Çerez tercihi');
+    again.addEventListener('click', function(){
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      show();
+    });
+    a.parentNode.insertBefore(again, a.nextSibling);
+  }
+})();
+
+var was = stored();
+if(was === 'yes') loadGA();
+else if(was === null) show();
 })();
 </script>
 </div>
