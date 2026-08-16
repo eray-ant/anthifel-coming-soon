@@ -404,7 +404,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
       <a href="index.html#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
       <a href="index.html#services" data-en="Services" data-tr="Hizmetler">Services</a>
       <a href="index.html#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-      <a href="blog/" data-en="The Journal" data-tr="The Journal">The Journal</a>
+      <a href="en/blog/" data-href-tr="blog/" data-en="The Journal" data-tr="The Journal">The Journal</a>
       <a href="index.html#contact" data-en="Contact" data-tr="İletişim">Contact</a>
     </nav>
     <div class="lang">
@@ -863,7 +863,13 @@ if(location.hash === '#meet') open_();
    earned often enough. */
 (function(){
 'use strict';
-var swap = document.querySelectorAll('.ftr [data-href-tr]');
+/* The whole document, not just this footer. It began as the About link's own
+   arrangement and is now how every link that exists at two addresses works:
+   the Journal in the top menu, the way back from an article, the reading list
+   rows. The attribute is the contract — carry data-href-tr and the link
+   follows the reader — and a contract that holds inside one element only is
+   not a contract. */
+var swap = document.querySelectorAll('[data-href-tr]');
 if(!swap.length) return;
 for(var i=0;i<swap.length;i++) swap[i].setAttribute('data-href-en', swap[i].getAttribute('href'));
 function aim(){
