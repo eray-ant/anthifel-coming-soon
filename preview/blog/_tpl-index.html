@@ -304,7 +304,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a href="../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="../#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="../en/blog/" data-href-tr="../blog/" aria-current="page" data-en="The Journal" data-tr="The Journal">The Journal</a>
+    <a href="../en/blog/" data-href-tr="../blog/?lang=tr" aria-current="page" data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="../#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -989,6 +989,28 @@ else if(was === null) show();
 'use strict';
 var PAGE_LANG = 'tr';
 var OTHER = '../en/blog/';
+
+/* Arriving, not switching.
+   Pressing EN here navigates, and has since 14 August. Opening /blog/ with EN
+   already chosen did not: the furniture came up in English, the articles under
+   it were Turkish, and the page read as though there were no English writing.
+   The menu aims at the right index now, but a bookmark, a link in an email and
+   the back button do not go through the menu.
+   So the index reads the reader's language on arrival and, if it is not this
+   page's, sends them to the one that is — but only on an explicit preference:
+   a ?lang= in the address, or a choice they have made before. A browser's own
+   locale is not explicit, and acting on it would bounce a crawler off the
+   canonical page, which is this one. */
+var explicit = null;
+try{ explicit = new URL(window.location.href).searchParams.get('lang'); }catch(e){}
+if(!explicit){ try{ explicit = localStorage.getItem('anthifel_lang'); }catch(e){} }
+if(explicit && explicit !== PAGE_LANG){ window.location.replace(OTHER); return; }
+/* No preference at all: this page's language becomes the site's, so the
+   furniture agrees with the writing under it. Arriving on one of the two
+   Journals is the clearest signal a first visit gives us. The shell's own
+   language bootstrap runs after this script and reads exactly this key. */
+if(!explicit){ try{ localStorage.setItem('anthifel_lang', PAGE_LANG); }catch(e){} }
+
 var btns = document.querySelectorAll('.lang button');
 Array.prototype.forEach.call(btns, function(b){
   var l = b.getAttribute('data-lang');

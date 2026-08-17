@@ -312,7 +312,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a href="../../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="../../#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="../../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="../../en/blog/" data-href-tr="../../blog/"  data-en="The Journal" data-tr="The Journal">The Journal</a>
+    <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr"  data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="../../#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -328,7 +328,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 <article class="art">
   <nav class="crumb">
     <a href="../../" data-en="Anthifel" data-tr="Anthifel">Anthifel</a><s>·</s>
-    <a href="../../en/blog/" data-href-tr="../../blog/" data-en="The Journal" data-tr="The Journal">The Journal</a><s>·</s>
+    <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr" data-en="The Journal" data-tr="The Journal">The Journal</a><s>·</s>
     <span>{{CATEGORY}}</span>
   </nav>
 
@@ -346,7 +346,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   </div>
 
   <div class="artend">
-    <a class="back" href="../../en/blog/" data-href-tr="../../blog/" data-en="← All writing" data-tr="← Tüm yazılar">← All writing</a>
+    <a class="back" href="../../en/blog/" data-href-tr="../../blog/?lang=tr" data-en="← All writing" data-tr="← Tüm yazılar">← All writing</a>
     <div class="share">
       <span data-en="Share" data-tr="Paylaş">Share</span>
       <!-- LinkedIn takes the URL only and reads the rest off the page, which is
@@ -1145,6 +1145,19 @@ document.addEventListener('click', function(e){
 'use strict';
 var PAGE_LANG = '{{LANG}}';
 var OTHER_URL = '{{TRANSLATION_URL}}';   // empty when the pair does not exist
+
+/* An article's address is its language, so the furniture takes the article's
+   language rather than the reader's last choice. Opening a Turkish piece with
+   EN remembered gave an English menu over Turkish paragraphs — the one page on
+   the site where the two could not both be right.
+   It is not a redirect: the reader asked for this piece, and sending them to
+   the translation of something they clicked is not our decision to make. The
+   EN/TR buttons below still navigate, which is where that decision belongs.
+   applyLang is the shell's, and the shell's script runs above this one. */
+if(typeof applyLang === 'function' && window.__lang && window.__lang() !== PAGE_LANG){
+  applyLang(PAGE_LANG);
+}
+
 var btns = document.querySelectorAll('.lang button');
 Array.prototype.forEach.call(btns, function(b){
   var l = b.getAttribute('data-lang');
