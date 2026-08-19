@@ -1814,6 +1814,16 @@ var aIntro = document.getElementById('aIntro'),
     consentEl = document.getElementById('consent');
 
 var consentAt = null;   // ISO timestamp of the moment consent was ticked
+/* The consent record's five fields — Anthifel_Legal_DataProcessing.md §3.
+   The reading list has carried them since 19 August; this gate is the other
+   form on the site and the same rule applies to it: a consent that cannot be
+   shown is the same as no consent.
+   The identifier is this gate's own, not the reading list's. The sentences are
+   different — one asks to send a result, the other asks to send a newsletter —
+   and pointing both at `consent-en-v1` would be a record that resolves to a
+   sentence the person never saw. */
+var GATE_CONSENT_VERSION = { en: 'assessment-en-v1', tr: 'assessment-tr-v1' };
+var PRIVACY_VERSION      = 'privacy-v1';
 var verified  = null;   // the address that passed the code, or null
 
 var T = {
@@ -2369,6 +2379,10 @@ f.addEventListener('submit', function(e){
     consent: true,
     consentAt: consentAt,
     consentText: document.querySelector('#f-consent label').textContent.trim(),
+    consentVersion: GATE_CONSENT_VERSION[LANG] || GATE_CONSENT_VERSION.en,
+    channel: 'web-form',
+    affirmative: 'checkbox:true',
+    privacyVersion: PRIVACY_VERSION,
     source: 'assessment-gate',
     lang: LANG,
     tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || ''),
@@ -2490,6 +2504,10 @@ document.addEventListener('click', function(e){
     consent: true,
     consentAt: consentAt,
     consentText: document.querySelector('#f-consent label').textContent.trim(),
+    consentVersion: GATE_CONSENT_VERSION[LANG] || GATE_CONSENT_VERSION.en,
+    channel: 'web-form',
+    affirmative: 'checkbox:true',
+    privacyVersion: PRIVACY_VERSION,
     source: 'assessment-gate-resend',
     lang: LANG,
     tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || ''),
