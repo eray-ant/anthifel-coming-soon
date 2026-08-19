@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- journal-shell: 2a38c2ae5b -->
+<!-- journal-shell: d40e9d3d58 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="The Journal · Anthifel" data-tr="The Journal · Anthifel">The Journal · Anthifel</title>
@@ -1078,6 +1078,12 @@ function applyLang(l){
 var lb=document.querySelectorAll('.lang button');
 for(var k=0;k<lb.length;k++) lb[k].addEventListener('click',function(){applyLang(this.getAttribute('data-lang'));});
 window.__lang=function(){return LANG;};
+/* The whole of this shell is inside a closure, so anything a page needs from it
+   has to be handed out deliberately. An article sets the furniture to its own
+   language — its address is its language — and it was calling a function it
+   could not see: the call was guarded by a typeof, so it failed silently and
+   the fix looked like it had shipped. */
+window.applyLang=applyLang;
 
 var burger=document.getElementById('burger'),nav=document.getElementById('nav');
 if(burger){

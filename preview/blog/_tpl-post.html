@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{LANG}}">
 <head>
-<!-- journal-shell: 2a38c2ae5b -->
+<!-- journal-shell: d40e9d3d58 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{TITLE}} · Anthifel</title>
@@ -336,10 +336,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   <nav class="crumb">
     <a href="../../" data-en="Anthifel" data-tr="Anthifel">Anthifel</a><s>·</s>
     <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr" data-en="The Journal" data-tr="The Journal">The Journal</a><s>·</s>
-    <span>{{CATEGORY}}</span>
+    <span data-en="{{CATEGORY}}" data-tr="{{CATEGORY_TR}}">{{CATEGORY}}</span>
   </nav>
 
-  <span class="cat">{{CATEGORY}}</span>
+  <span class="cat" data-en="{{CATEGORY}}" data-tr="{{CATEGORY_TR}}">{{CATEGORY}}</span>
   <h1>{{TITLE}}</h1>
   <p class="stand">{{EXCERPT}}</p>
   <div class="byl">
@@ -1043,6 +1043,12 @@ function applyLang(l){
 var lb=document.querySelectorAll('.lang button');
 for(var k=0;k<lb.length;k++) lb[k].addEventListener('click',function(){applyLang(this.getAttribute('data-lang'));});
 window.__lang=function(){return LANG;};
+/* The whole of this shell is inside a closure, so anything a page needs from it
+   has to be handed out deliberately. An article sets the furniture to its own
+   language — its address is its language — and it was calling a function it
+   could not see: the call was guarded by a typeof, so it failed silently and
+   the fix looked like it had shipped. */
+window.applyLang=applyLang;
 
 var burger=document.getElementById('burger'),nav=document.getElementById('nav');
 if(burger){
@@ -1235,8 +1241,8 @@ var OTHER_URL = '{{TRANSLATION_URL}}';   // empty when the pair does not exist
    the translation of something they clicked is not our decision to make. The
    EN/TR buttons below still navigate, which is where that decision belongs.
    applyLang is the shell's, and the shell's script runs above this one. */
-if(typeof applyLang === 'function' && window.__lang && window.__lang() !== PAGE_LANG){
-  applyLang(PAGE_LANG);
+if(typeof window.applyLang === 'function' && window.__lang && window.__lang() !== PAGE_LANG){
+  window.applyLang(PAGE_LANG);
 }
 
 var btns = document.querySelectorAll('.lang button');
