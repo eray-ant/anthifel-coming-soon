@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+<!-- journal-shell: d40e9d3d58 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="The Journal · Anthifel" data-tr="The Journal · Anthifel">The Journal · Anthifel</title>
@@ -343,7 +344,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 </div>
 
 <!-- FEATURED:START -->
-<a class="feat" href="yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr"><div class="feat-in"><img class="lead" src="img/gemini-generated-image-gvgsiwgvgsiwgvgs-20260816-121012-4x3.webp" alt="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri"><div><div class="kicker"><b>Son yazı</b><i></i><s>Organisation</s></div><h2>Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri</h2><p>Şirketlerdeki yapay zeka dönüşümü teknik yetersizliklerden değil, mevcut süreçlerin ve insan davranışlarının göz ardı edilmesinden dolayı başarısız oluyor.</p><div class="byl"><span>Eray Dengiz</span><s>·</s><span>10 Ağustos 2026</span><s>·</s><span>4 dk okuma</span></div></div></div></a>
+<a class="feat" href="yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr"><div class="feat-in"><img class="lead" src="img/gemini-generated-image-gvgsiwgvgsiwgvgs-20260816-121012-4x3.webp" alt="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri"><div><div class="kicker"><b>Son yazı</b><i></i><s data-en="Organisation" data-tr="Organizasyon">Organisation</s></div><h2>Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri</h2><p>Şirketlerdeki yapay zeka dönüşümü teknik yetersizliklerden değil, mevcut süreçlerin ve insan davranışlarının göz ardı edilmesinden dolayı başarısız oluyor.</p><div class="byl"><span>Eray Dengiz</span><s>·</s><span>9 Ağustos 2026</span><s>·</s><span>4 dk okuma</span></div></div></div></a>
 <!-- FEATURED:END -->
 
 <div class="all">
@@ -365,9 +366,23 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 <!-- The reading list. One band, on every page, above the footer.
      `../privacy.html` is the only thing that changes with depth: '' at the root,
      '../' or '../../' inside the Journal.
+
+     Two questions, two answers. Until 19 August one box carried both — the
+     permission to send email and the acknowledgement that the notice had been
+     read — and a single tick could not show which of the two the person meant.
+     `Anthifel_Legal_DataProcessing.md` §3 forbids exactly that: a marketing
+     consent is never combined with a privacy acknowledgement, with terms, or
+     with the enquiry itself.
+
+     The first sentence is Legal's, word for word, and it is versioned. It says
+     what the person wants, in the first person, and nothing about how they are
+     saying it — so the same sentence works as a checkbox here and as a question
+     from a bot, and one consent record covers both routes. If the wording ever
+     changes, `consent-*-v1` changes with it, and old records keep pointing at
+     what was actually agreed to.
+
      The form does nothing until FORM_LIVE is true — it says so rather than
-     failing quietly, and the consent box is the same three conditions the
-     assessment gate uses. -->
+     failing quietly. -->
 <section class="news">
   <div>
     <span class="eyebrow" data-en="The reading list" data-tr="Okuma listesi">The reading list</span>
@@ -380,9 +395,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
       <input type="email" id="nemail" placeholder="you@company.com" autocomplete="email" inputmode="email" aria-label="Email address" required>
       <button type="submit" class="btn btn-p" id="nbtn" data-en="Subscribe" data-tr="Abone ol">Subscribe</button>
     </div>
+    <!-- Legal's sentence, verbatim. The version identifier travels with it into
+         the record, so the words and the identifier change together or not at
+         all. -->
     <div class="ncons">
       <input type="checkbox" id="ncons">
-      <label for="ncons" data-en="I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href='../privacy.html'>Privacy Policy</a>." data-tr="Anthifel'in e-posta adresimi saklamasını ve bana aylık okuma listesini göndermesini kabul ediyorum. <a href='../privacy.html'>Gizlilik Politikası</a>'nı okudum.">I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href="../privacy.html">Privacy Policy</a>.</label>
+      <label for="ncons" data-en="I would like to receive content and updates from Anthifel by email. I can unsubscribe at any time." data-tr="Anthifel'den e-posta ile içerik ve güncelleme almak istiyorum. İstediğim zaman aboneliği bırakabilirim.">I would like to receive content and updates from Anthifel by email. I can unsubscribe at any time.</label>
+    </div>
+    <div class="ncons">
+      <input type="checkbox" id="npriv">
+      <label for="npriv" data-en="I have read the <a href='../privacy.html'>Privacy Policy</a>." data-tr="<a href='../privacy.html'>Gizlilik Politikası</a>'nı okudum.">I have read the <a href="../privacy.html">Privacy Policy</a>.</label>
     </div>
     <div class="nmsg" id="nmsg"></div>
     <span class="nfine" data-en="Unsubscribe in one click. We never share the list." data-tr="Tek tıkla çıkabilirsiniz. Listeyi kimseyle paylaşmayız.">Unsubscribe in one click. We never share the list.</span>
@@ -444,7 +466,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     </div>
   </div>
   <div class="legal">
-    <span data-en="© 2026 Anthifel Ltd · Registered in England and Wales" data-tr="© 2026 Anthifel Ltd · İngiltere ve Galler'de tescillidir">© 2026 Anthifel Ltd · Registered in England and Wales</span>
+    <span data-en="© 2026 Anthifel Ltd · Registered in England and Wales" data-tr="© 2026 Anthifel Ltd · İngiltere ve Galler'de kayıtlı şirkettir">© 2026 Anthifel Ltd · Registered in England and Wales</span>
     <span class="lnks">
       <a href="../privacy.html" data-en="Privacy" data-tr="Gizlilik">Privacy</a>
       <a href="../terms.html" data-en="Terms" data-tr="Kullanım Şartları">Terms</a>
@@ -736,28 +758,20 @@ for(var t=0;t<tbl.length;t++){
 .cbar p{margin:0;flex:1 1 420px;min-width:0;font-size:13.5px;line-height:1.6;
   color:rgba(245,241,234,.82);text-wrap:pretty}
 .cbar-act{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-/* The two answers carry the same type and the same colour. Only the border is
-   different, and that difference is the whole argument: a decline in the same
-   size and the same white as the accept, one click away and on the same line,
-   is a decline somebody can find. A small grey one two clicks down is not, and
-   in the UK and the EU it is not valid consent either. check-consent.js
-   measures the colour and the size on every build so this cannot drift into
-   the dark pattern one value at a time. */
+/* The two answers are the same size, the same weight, the same colour and the
+   same frame. They differ in one thing only: which comes first.
+   This is Legal's ruling of 19 August (LGL-057) and it is a condition of
+   publishing the three legal pages. The 15 August version dressed the decline
+   as plain text beside the button; Legal accepted every other property and
+   objected to the border, because PECR s.6 asks that consent be freely given
+   and a border is weight rather than order. check-consent.js measures all of
+   it on every build, so it cannot drift back one value at a time. */
 .cbtn{display:inline-flex;align-items:center;justify-content:center;
   font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
   padding:13px 24px;min-width:150px;border:1px solid rgba(245,241,234,.5);border-radius:2px;
   background:transparent;color:#F5F1EA;cursor:pointer;white-space:nowrap;
   transition:background .18s,border-color .18s,color .18s}
 .cbtn:hover{background:#F5F1EA;border-color:#F5F1EA;color:#0F0F0E}
-/* The decline. A button, because it does something rather than going somewhere,
-   dressed as text. It keeps the accept's size and the accept's white — the two
-   answers differ by a border and by nothing else. */
-.ctxt{display:inline-flex;align-items:center;justify-content:center;
-  min-height:44px;padding:0 8px;border:0;background:none;cursor:pointer;
-  font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
-  color:#F5F1EA;text-decoration:underline;text-underline-offset:4px;
-  white-space:nowrap;transition:opacity .18s}
-.ctxt:hover{opacity:.72}
 /* The third option is a link, not a button, because reading the policy is not
    answering the question — and it is dimmer than the two answers on purpose,
    since it is not one of them. It still has to be hittable: a line of text
@@ -816,15 +830,15 @@ for(var t=0;t<tbl.length;t++){
 <!-- The cookie question. It exists because GA4 sets cookies, and for no other
      reason: everything else this site does works without asking.
 
-     Three things in a row, in the order the CEO set on 15 August: the accept as
-     a button, the decline as plain text beside it, then the link to what would
-     be set. The decline is text rather than a bordered button, and that is a
-     deliberate choice with a cost attached — the ICO's guidance is that accept
-     and reject should be equally prominent, and a button beside a text link is
-     the pattern it has criticised. What we hold to instead, and what
-     check-consent.js measures: the same font size, the same colour, the same
-     single click, both visible without scrolling, both above the 44px touch
-     floor. The difference between them is one border.
+     Two answers in the same frame, then the link to what would be set.
+     The order is the CEO's, set on 15 August: accept first, decline second.
+     The frame is Legal's, set on 19 August (LGL-057), and it overrides the
+     15 August version where the decline was plain text beside the button.
+     Legal accepted the five properties this file was measured on and objected
+     only to the border: PECR s.6 asks that consent be freely given, and a
+     bordered accept beside an unbordered decline is weight, not order. Visual
+     priority is allowed — but built from sequence and wording, not from
+     making one answer look like the answer.
 
      `../cookies.html` is the only depth-dependent thing here. -->
 <div class="cbar" id="cbar" hidden role="dialog" aria-live="polite" aria-labelledby="cbarT">
@@ -832,7 +846,7 @@ for(var t=0;t<tbl.length;t++){
     <p id="cbarT" data-en="We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer." data-tr="Ziyaretleri saymak istiyoruz, hangi yazıların okunduğunu bilmek için. Bunu Google Analytics yapıyor, çerez yerleştiriyor ve tamamen sizin kararınız. Siz cevaplayana kadar hiçbir şey yüklenmiyor.">We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer.</p>
     <div class="cbar-act">
       <button type="button" class="cbtn" id="cYes" data-en="That is fine" data-tr="Kabul ediyorum">That is fine</button>
-      <button type="button" class="ctxt" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
+      <button type="button" class="cbtn" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
       <a href="../cookies.html" data-en="What we would set" data-tr="Ne yerleştireceğimiz">What we would set</a>
     </div>
   </div>
@@ -1031,7 +1045,8 @@ Array.prototype.forEach.call(btns, function(b){
 (function(){
 'use strict';
 var ENDPOINT  = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';
-var FORM_LIVE = false;   // ← true only after the Privacy Policy is published
+var FORM_LIVE = false;   // ← DEV-032, stamped by build.py
+var FORM_TEST = true;
 
 var LANG='en';
 function applyLang(l){
@@ -1065,6 +1080,12 @@ function applyLang(l){
 var lb=document.querySelectorAll('.lang button');
 for(var k=0;k<lb.length;k++) lb[k].addEventListener('click',function(){applyLang(this.getAttribute('data-lang'));});
 window.__lang=function(){return LANG;};
+/* The whole of this shell is inside a closure, so anything a page needs from it
+   has to be handed out deliberately. An article sets the furniture to its own
+   language — its address is its language — and it was calling a function it
+   could not see: the call was guarded by a typeof, so it failed silently and
+   the fix looked like it had shipped. */
+window.applyLang=applyLang;
 
 var burger=document.getElementById('burger'),nav=document.getElementById('nav');
 if(burger){
@@ -1087,15 +1108,42 @@ if(burger){
    legal pages — so this reads the language off <html> instead, which every one
    of them sets. `ENDPOINT` and `FORM_LIVE` are read defensively for the same
    reason: a page without them is a page where the form says so and sends
-   nothing, which is the correct behaviour anyway. */
+   nothing, which is the correct behaviour anyway.
+
+   ---- the consent record, 19 August ----
+
+   Until today this form sent a packet the endpoint did not recognise and the
+   endpoint rejected it. The visitor saw a failure, so nobody was lost quietly,
+   but there was no reading list: not an empty one, none.
+
+   Rebuilt against `Anthifel_Legal_DataProcessing.md` §3, which asks for five
+   things to be recorded, because a consent that cannot be shown is the same as
+   no consent:
+
+     when            the moment the box was ticked, not the moment of sending
+     which wording   `consent-en-v1` / `consent-tr-v1`
+     which channel   `web-form`
+     what was given  the affirmative act itself, captured rather than inferred
+     which notice    the version of the privacy notice on the page at the time
+
+   The wording is Legal's and lives in the markup; this file records which
+   version of it the person actually saw, which is why the identifiers are here
+   and not invented at the far end. */
 var nf=document.getElementById('nf');
 if(nf){
   var nemail=document.getElementById('nemail'),ncons=document.getElementById('ncons'),
+      npriv=document.getElementById('npriv'),
       nmsg=document.getElementById('nmsg'),nbtn=document.getElementById('nbtn');
   var consentAt=null;
+  /* Versions travel with the words. Change one, change the other — the point of
+     a version is that an old record still resolves to the sentence that was on
+     the screen. */
+  var CONSENT_VERSION={en:'consent-en-v1',tr:'consent-tr-v1'};
+  var PRIVACY_VERSION='privacy-v1';
   var NT={
     email:{en:'Please enter a valid email address.',tr:'Lütfen geçerli bir e-posta adresi girin.'},
-    cons:{en:'Please tick the box so we may write to you.',tr:'Size yazabilmemiz için kutuyu işaretleyin.'},
+    cons:{en:'Please tick the first box so we may write to you.',tr:'Size yazabilmemiz için ilk kutuyu işaretleyin.'},
+    priv:{en:'Please confirm you have read the Privacy Policy.',tr:'Gizlilik Politikası\'nı okuduğunuzu onaylayın.'},
     off:{en:'The list opens shortly. Nothing was recorded.',tr:'Liste çok yakında açılıyor. Hiçbir şey kaydedilmedi.'},
     good:{en:'Thank you, you are on the list.',tr:'Teşekkürler, listeye alındınız.'},
     fail:{en:'Something did not go through. Please email hello@anthifel.com.',tr:'Bir şeyler ters gitti. Lütfen hello@anthifel.com adresine yazın.'},
@@ -1105,26 +1153,59 @@ if(nf){
   function nlang(){return document.documentElement.lang==='tr'?'tr':'en';}
   function nt(k){return NT[k][nlang()]||NT[k].en;}
   function say(msg,good){nmsg.textContent=msg;nmsg.className='nmsg '+(good?'good':'bad');}
+  /* The moment of the tick, not the moment of the send. Unticking clears it:
+     a timestamp for a box that is not ticked is a record of something that did
+     not happen. */
   ncons.addEventListener('change',function(){consentAt=this.checked?new Date().toISOString():null;});
   nf.addEventListener('submit',function(e){
     e.preventDefault();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(nemail.value.trim())){say(nt('email'),false);return;}
     if(!ncons.checked){say(nt('cons'),false);return;}
+    if(npriv&&!npriv.checked){say(nt('priv'),false);return;}
     if(nf.querySelector('[name=website]').value) return;
     var ep=(typeof ENDPOINT!=='undefined')?ENDPOINT:'';
     var live=(typeof FORM_LIVE!=='undefined')?FORM_LIVE:false;
+    /* One deliberate way past the switch, and only on the preview build:
+       `?form=live` runs the real thing — a real row in the sheet — so the chain
+       can be tested before the Privacy Policy is published, which is what
+       FORM_LIVE is actually waiting for. `FORM_TEST` is stamped false into
+       production, so on the live site this branch cannot be reached from any
+       address. The front page has had this since 11 August; the band is on
+       every page, so it needs it on every page too. */
+    if(!live && typeof FORM_TEST!=='undefined' && FORM_TEST &&
+       /[?&]form=live(?:&|$)/.test(window.location.search)) live=true;
     if(!live||!ep||ep.charAt(0)==='_'){say(nt('off'),true);return;}
     nbtn.disabled=true;nbtn.textContent=nt('sending');
+    var lang=nlang();
+    /* The sentence as it stood on the screen, read out of the label rather than
+       repeated here. Two copies of a legal sentence drift, and the copy that
+       drifts is always the one nobody is looking at. */
+    var wording=nf.querySelector('#ncons').parentNode.querySelector('label').textContent.trim();
     fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({email:nemail.value.trim(),consent:true,consentAt:consentAt,
-        consentText:nf.querySelector('.ncons label').textContent.trim(),
-        source:'reading-list',lang:nlang(),
+      body:JSON.stringify({
+        action:'reading-list',
+        source:'reading-list',
+        email:nemail.value.trim(),
+        consent:true,
+        consentAt:consentAt||new Date().toISOString(),
+        consentText:wording,
+        consentVersion:CONSENT_VERSION[lang]||CONSENT_VERSION.en,
+        channel:'web-form',
+        affirmative:'checkbox:true',
+        privacyVersion:PRIVACY_VERSION,
+        privacyAck:!!(npriv&&npriv.checked),
+        lang:lang,
         tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),
-        page:location.href,referrer:document.referrer||'',captcha:'NO_CAPTCHA'})})
+        page:location.href,referrer:document.referrer||''})})
       .then(function(r){return r.json();})
       .then(function(d){
-        if(d&&d.ok){say(nt('good'),true);nf.querySelector('.nrow').hidden=true;nf.querySelector('.ncons').hidden=true;}
-        else throw new Error('x');
+        if(d&&d.ok){
+          say(nt('good'),true);
+          nf.querySelector('.nrow').hidden=true;
+          var boxes=nf.querySelectorAll('.ncons');
+          for(var i=0;i<boxes.length;i++) boxes[i].hidden=true;
+        }
+        else throw new Error(d&&d.error?d.error:'x');
       })
       .catch(function(){say(nt('fail'),false);nbtn.disabled=false;nbtn.textContent=nt('sub');});
   });
