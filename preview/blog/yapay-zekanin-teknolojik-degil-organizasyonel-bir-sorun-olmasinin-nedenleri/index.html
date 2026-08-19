@@ -220,7 +220,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 }
 
 /* ---- article ---- */
-.art{padding:72px 72px 0;max-width:840px;margin:0 auto}
+/* The bottom padding is not decoration. "Keep reading" is removed on a post
+   with nothing to read next — the first piece, and any piece alone in its
+   language — and it was carrying the whole gap above the black band. Without
+   it "← All writing" sat on the fold between the two, touching both. The space
+   belongs to the end of the article, so it lives here and .rel takes what is
+   left. */
+.art{padding:72px 72px 64px;max-width:840px;margin:0 auto}
 .crumb{font-size:12.5px;color:#625D55;margin-bottom:30px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
 .crumb a{color:#625D55}
 .crumb a:hover{color:#0F0F0E}
@@ -263,7 +269,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 .share span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#625D55}
 .share a{display:inline-flex;color:#0F0F0E}
 
-.rel{padding:80px var(--pad) 64px}
+.rel{padding:24px var(--pad) 64px}
 .rel h3{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#0F0F0E;margin-bottom:30px}
 .rel-g{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
 .card{display:flex;flex-direction:column;gap:14px;color:#0F0F0E}
@@ -281,7 +287,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 }
 @media (max-width:640px){
   .art{padding-left:24px;padding-right:24px;padding-top:40px}
-  .rel{padding-top:60px}
+  .rel{padding-top:24px}
   .art h1{font-size:35px}
   .art .stand{font-size:18px}
   .prose{font-size:16.5px;padding-top:34px}
@@ -314,7 +320,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a href="../../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="../../#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="../../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="../../blog/"  data-en="The Journal" data-tr="The Journal">The Journal</a>
+    <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr"  data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="../../#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -330,7 +336,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 <article class="art">
   <nav class="crumb">
     <a href="../../" data-en="Anthifel" data-tr="Anthifel">Anthifel</a><s>·</s>
-    <a href="../../blog/" data-en="The Journal" data-tr="The Journal">The Journal</a><s>·</s>
+    <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr" data-en="The Journal" data-tr="The Journal">The Journal</a><s>·</s>
     <span>Organisation</span>
   </nav>
 
@@ -364,7 +370,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
   </div>
 
   <div class="artend">
-    <a class="back" href="../../blog/" data-en="← All writing" data-tr="← Tüm yazılar">← All writing</a>
+    <a class="back" href="../../en/blog/" data-href-tr="../../blog/?lang=tr" data-en="← All writing" data-tr="← Tüm yazılar">← All writing</a>
     <div class="share">
       <span data-en="Share" data-tr="Paylaş">Share</span>
       <!-- LinkedIn takes the URL only and reads the rest off the page, which is
@@ -451,7 +457,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
            The wording here avoids the phrase "F i l l e d  b y" on purpose:
            check-legal.js bans it from any served page, because it is one of the
            markers in Legal's handover note, and an HTML comment is served. -->
-      <ul id="ftrPosts"><li><a href="../yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/">Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri</a></li></ul>
+      <ul id="ftrPosts"><li><a href="../yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr">Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri</a></li></ul>
     </div>
     <div>
       <h4 data-en="Social media" data-tr="Sosyal medya">Social media</h4>
@@ -485,7 +491,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
    earned often enough. */
 (function(){
 'use strict';
-var swap = document.querySelectorAll('.ftr [data-href-tr]');
+/* The whole document, not just this footer. It began as the About link's own
+   arrangement and is now how every link that exists at two addresses works:
+   the Journal in the top menu, the way back from an article, the reading list
+   rows. The attribute is the contract — carry data-href-tr and the link
+   follows the reader — and a contract that holds inside one element only is
+   not a contract. */
+var swap = document.querySelectorAll('[data-href-tr]');
 if(!swap.length) return;
 for(var i=0;i<swap.length;i++) swap[i].setAttribute('data-href-en', swap[i].getAttribute('href'));
 function aim(){
@@ -1154,6 +1166,19 @@ document.addEventListener('click', function(e){
 'use strict';
 var PAGE_LANG = 'tr';
 var OTHER_URL = 'https://anthifel.com/preview/en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/';   // empty when the pair does not exist
+
+/* An article's address is its language, so the furniture takes the article's
+   language rather than the reader's last choice. Opening a Turkish piece with
+   EN remembered gave an English menu over Turkish paragraphs — the one page on
+   the site where the two could not both be right.
+   It is not a redirect: the reader asked for this piece, and sending them to
+   the translation of something they clicked is not our decision to make. The
+   EN/TR buttons below still navigate, which is where that decision belongs.
+   applyLang is the shell's, and the shell's script runs above this one. */
+if(typeof applyLang === 'function' && window.__lang && window.__lang() !== PAGE_LANG){
+  applyLang(PAGE_LANG);
+}
+
 var btns = document.querySelectorAll('.lang button');
 Array.prototype.forEach.call(btns, function(b){
   var l = b.getAttribute('data-lang');
