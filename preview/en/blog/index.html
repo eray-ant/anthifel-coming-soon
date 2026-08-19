@@ -304,7 +304,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     <a href="../../#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="../../#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="../../#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="../../blog/" aria-current="page" data-en="The Journal" data-tr="The Journal">The Journal</a>
+    <a href="../../en/blog/" data-href-tr="../../blog/?lang=tr" aria-current="page" data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="../../#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
   <div class="lang">
@@ -343,7 +343,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 </div>
 
 <!-- FEATURED:START -->
-<a class="feat" href="why-ai-is-an-organizational-problem-not-a-technological-one/"><div class="feat-in"><div class="ph" style="aspect-ratio:4/3"><span>LEAD IMAGE — 1200×900</span></div><div><div class="kicker"><b>Latest</b><i></i><s>Organisation</s></div><h2>Why AI is an organizational problem, not a technological one</h2><p>AI transformation in companies fails not because of technical shortcomings, but because existing processes and human behaviour are ignored.</p><div class="byl"><span>Eray Dengiz</span><s>·</s><span>10 August 2026</span><s>·</s><span>6 min read</span></div></div></div></a>
+<a class="feat" href="why-ai-is-an-organizational-problem-not-a-technological-one/"><div class="feat-in"><img class="lead" src="../../blog/img/gemini-generated-image-gvgsiwgvgsiwgvgs-20260816-121012-4x3.webp" alt="Why AI is an organizational problem, not a technological one"><div><div class="kicker"><b>Latest</b><i></i><s>Organisation</s></div><h2>Why AI is an organizational problem, not a technological one</h2><p>AI transformation in companies fails not because of technical shortcomings, but because existing processes and human behaviour are ignored.</p><div class="byl"><span>Eray Dengiz</span><s>·</s><span>8 August 2026</span><s>·</s><span>6 min read</span></div></div></div></a>
 <!-- FEATURED:END -->
 
 <div class="all">
@@ -466,7 +466,13 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
    earned often enough. */
 (function(){
 'use strict';
-var swap = document.querySelectorAll('.ftr [data-href-tr]');
+/* The whole document, not just this footer. It began as the About link's own
+   arrangement and is now how every link that exists at two addresses works:
+   the Journal in the top menu, the way back from an article, the reading list
+   rows. The attribute is the contract — carry data-href-tr and the link
+   follows the reader — and a contract that holds inside one element only is
+   not a contract. */
+var swap = document.querySelectorAll('[data-href-tr]');
 if(!swap.length) return;
 for(var i=0;i<swap.length;i++) swap[i].setAttribute('data-href-en', swap[i].getAttribute('href'));
 function aim(){
@@ -984,7 +990,29 @@ else if(was === null) show();
 (function(){
 'use strict';
 var PAGE_LANG = 'en';
-var OTHER = '../../blog/';
+var OTHER = '../../blog/?lang=tr';
+
+/* Arriving, not switching.
+   Pressing EN here navigates, and has since 14 August. Opening /blog/ with EN
+   already chosen did not: the furniture came up in English, the articles under
+   it were Turkish, and the page read as though there were no English writing.
+   The menu aims at the right index now, but a bookmark, a link in an email and
+   the back button do not go through the menu.
+   So the index reads the reader's language on arrival and, if it is not this
+   page's, sends them to the one that is — but only on an explicit preference:
+   a ?lang= in the address, or a choice they have made before. A browser's own
+   locale is not explicit, and acting on it would bounce a crawler off the
+   canonical page, which is this one. */
+var explicit = null;
+try{ explicit = new URL(window.location.href).searchParams.get('lang'); }catch(e){}
+if(!explicit){ try{ explicit = localStorage.getItem('anthifel_lang'); }catch(e){} }
+if(explicit && explicit !== PAGE_LANG){ window.location.replace(OTHER); return; }
+/* No preference at all: this page's language becomes the site's, so the
+   furniture agrees with the writing under it. Arriving on one of the two
+   Journals is the clearest signal a first visit gives us. The shell's own
+   language bootstrap runs after this script and reads exactly this key. */
+if(!explicit){ try{ localStorage.setItem('anthifel_lang', PAGE_LANG); }catch(e){} }
+
 var btns = document.querySelectorAll('.lang button');
 Array.prototype.forEach.call(btns, function(b){
   var l = b.getAttribute('data-lang');
