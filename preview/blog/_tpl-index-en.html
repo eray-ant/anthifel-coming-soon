@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- journal-shell: 76977e2251 -->
+<!-- journal-shell: 2a38c2ae5b -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="The Journal · Anthifel" data-tr="The Journal · Anthifel">The Journal · Anthifel</title>
@@ -364,9 +364,23 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
 <!-- The reading list. One band, on every page, above the footer.
      `../../privacy.html` is the only thing that changes with depth: '' at the root,
      '../' or '../../' inside the Journal.
+
+     Two questions, two answers. Until 19 August one box carried both — the
+     permission to send email and the acknowledgement that the notice had been
+     read — and a single tick could not show which of the two the person meant.
+     `Anthifel_Legal_DataProcessing.md` §3 forbids exactly that: a marketing
+     consent is never combined with a privacy acknowledgement, with terms, or
+     with the enquiry itself.
+
+     The first sentence is Legal's, word for word, and it is versioned. It says
+     what the person wants, in the first person, and nothing about how they are
+     saying it — so the same sentence works as a checkbox here and as a question
+     from a bot, and one consent record covers both routes. If the wording ever
+     changes, `consent-*-v1` changes with it, and old records keep pointing at
+     what was actually agreed to.
+
      The form does nothing until FORM_LIVE is true — it says so rather than
-     failing quietly, and the consent box is the same three conditions the
-     assessment gate uses. -->
+     failing quietly. -->
 <section class="news">
   <div>
     <span class="eyebrow" data-en="The reading list" data-tr="Okuma listesi">The reading list</span>
@@ -379,9 +393,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
       <input type="email" id="nemail" placeholder="you@company.com" autocomplete="email" inputmode="email" aria-label="Email address" required>
       <button type="submit" class="btn btn-p" id="nbtn" data-en="Subscribe" data-tr="Abone ol">Subscribe</button>
     </div>
+    <!-- Legal's sentence, verbatim. The version identifier travels with it into
+         the record, so the words and the identifier change together or not at
+         all. -->
     <div class="ncons">
       <input type="checkbox" id="ncons">
-      <label for="ncons" data-en="I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href='../../privacy.html'>Privacy Policy</a>." data-tr="Anthifel'in e-posta adresimi saklamasını ve bana aylık okuma listesini göndermesini kabul ediyorum. <a href='../../privacy.html'>Gizlilik Politikası</a>'nı okudum.">I agree that Anthifel may store my email address and send me the monthly reading list. I have read the <a href="../../privacy.html">Privacy Policy</a>.</label>
+      <label for="ncons" data-en="I would like to receive content and updates from Anthifel by email. I can unsubscribe at any time." data-tr="Anthifel'den e-posta ile içerik ve güncelleme almak istiyorum. İstediğim zaman aboneliği bırakabilirim.">I would like to receive content and updates from Anthifel by email. I can unsubscribe at any time.</label>
+    </div>
+    <div class="ncons">
+      <input type="checkbox" id="npriv">
+      <label for="npriv" data-en="I have read the <a href='../../privacy.html'>Privacy Policy</a>." data-tr="<a href='../../privacy.html'>Gizlilik Politikası</a>'nı okudum.">I have read the <a href="../../privacy.html">Privacy Policy</a>.</label>
     </div>
     <div class="nmsg" id="nmsg"></div>
     <span class="nfine" data-en="Unsubscribe in one click. We never share the list." data-tr="Tek tıkla çıkabilirsiniz. Listeyi kimseyle paylaşmayız.">Unsubscribe in one click. We never share the list.</span>
@@ -1022,7 +1043,8 @@ Array.prototype.forEach.call(btns, function(b){
 (function(){
 'use strict';
 var ENDPOINT  = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';
-var FORM_LIVE = false;   // ← true only after the Privacy Policy is published
+var FORM_LIVE = false;   // ← DEV-032, stamped by build.py
+var FORM_TEST = true;
 
 var LANG='en';
 function applyLang(l){
@@ -1078,15 +1100,42 @@ if(burger){
    legal pages — so this reads the language off <html> instead, which every one
    of them sets. `ENDPOINT` and `FORM_LIVE` are read defensively for the same
    reason: a page without them is a page where the form says so and sends
-   nothing, which is the correct behaviour anyway. */
+   nothing, which is the correct behaviour anyway.
+
+   ---- the consent record, 19 August ----
+
+   Until today this form sent a packet the endpoint did not recognise and the
+   endpoint rejected it. The visitor saw a failure, so nobody was lost quietly,
+   but there was no reading list: not an empty one, none.
+
+   Rebuilt against `Anthifel_Legal_DataProcessing.md` §3, which asks for five
+   things to be recorded, because a consent that cannot be shown is the same as
+   no consent:
+
+     when            the moment the box was ticked, not the moment of sending
+     which wording   `consent-en-v1` / `consent-tr-v1`
+     which channel   `web-form`
+     what was given  the affirmative act itself, captured rather than inferred
+     which notice    the version of the privacy notice on the page at the time
+
+   The wording is Legal's and lives in the markup; this file records which
+   version of it the person actually saw, which is why the identifiers are here
+   and not invented at the far end. */
 var nf=document.getElementById('nf');
 if(nf){
   var nemail=document.getElementById('nemail'),ncons=document.getElementById('ncons'),
+      npriv=document.getElementById('npriv'),
       nmsg=document.getElementById('nmsg'),nbtn=document.getElementById('nbtn');
   var consentAt=null;
+  /* Versions travel with the words. Change one, change the other — the point of
+     a version is that an old record still resolves to the sentence that was on
+     the screen. */
+  var CONSENT_VERSION={en:'consent-en-v1',tr:'consent-tr-v1'};
+  var PRIVACY_VERSION='privacy-v1';
   var NT={
     email:{en:'Please enter a valid email address.',tr:'Lütfen geçerli bir e-posta adresi girin.'},
-    cons:{en:'Please tick the box so we may write to you.',tr:'Size yazabilmemiz için kutuyu işaretleyin.'},
+    cons:{en:'Please tick the first box so we may write to you.',tr:'Size yazabilmemiz için ilk kutuyu işaretleyin.'},
+    priv:{en:'Please confirm you have read the Privacy Policy.',tr:'Gizlilik Politikası\'nı okuduğunuzu onaylayın.'},
     off:{en:'The list opens shortly. Nothing was recorded.',tr:'Liste çok yakında açılıyor. Hiçbir şey kaydedilmedi.'},
     good:{en:'Thank you, you are on the list.',tr:'Teşekkürler, listeye alındınız.'},
     fail:{en:'Something did not go through. Please email hello@anthifel.com.',tr:'Bir şeyler ters gitti. Lütfen hello@anthifel.com adresine yazın.'},
@@ -1096,26 +1145,59 @@ if(nf){
   function nlang(){return document.documentElement.lang==='tr'?'tr':'en';}
   function nt(k){return NT[k][nlang()]||NT[k].en;}
   function say(msg,good){nmsg.textContent=msg;nmsg.className='nmsg '+(good?'good':'bad');}
+  /* The moment of the tick, not the moment of the send. Unticking clears it:
+     a timestamp for a box that is not ticked is a record of something that did
+     not happen. */
   ncons.addEventListener('change',function(){consentAt=this.checked?new Date().toISOString():null;});
   nf.addEventListener('submit',function(e){
     e.preventDefault();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(nemail.value.trim())){say(nt('email'),false);return;}
     if(!ncons.checked){say(nt('cons'),false);return;}
+    if(npriv&&!npriv.checked){say(nt('priv'),false);return;}
     if(nf.querySelector('[name=website]').value) return;
     var ep=(typeof ENDPOINT!=='undefined')?ENDPOINT:'';
     var live=(typeof FORM_LIVE!=='undefined')?FORM_LIVE:false;
+    /* One deliberate way past the switch, and only on the preview build:
+       `?form=live` runs the real thing — a real row in the sheet — so the chain
+       can be tested before the Privacy Policy is published, which is what
+       FORM_LIVE is actually waiting for. `FORM_TEST` is stamped false into
+       production, so on the live site this branch cannot be reached from any
+       address. The front page has had this since 11 August; the band is on
+       every page, so it needs it on every page too. */
+    if(!live && typeof FORM_TEST!=='undefined' && FORM_TEST &&
+       /[?&]form=live(?:&|$)/.test(window.location.search)) live=true;
     if(!live||!ep||ep.charAt(0)==='_'){say(nt('off'),true);return;}
     nbtn.disabled=true;nbtn.textContent=nt('sending');
+    var lang=nlang();
+    /* The sentence as it stood on the screen, read out of the label rather than
+       repeated here. Two copies of a legal sentence drift, and the copy that
+       drifts is always the one nobody is looking at. */
+    var wording=nf.querySelector('#ncons').parentNode.querySelector('label').textContent.trim();
     fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({email:nemail.value.trim(),consent:true,consentAt:consentAt,
-        consentText:nf.querySelector('.ncons label').textContent.trim(),
-        source:'reading-list',lang:nlang(),
+      body:JSON.stringify({
+        action:'reading-list',
+        source:'reading-list',
+        email:nemail.value.trim(),
+        consent:true,
+        consentAt:consentAt||new Date().toISOString(),
+        consentText:wording,
+        consentVersion:CONSENT_VERSION[lang]||CONSENT_VERSION.en,
+        channel:'web-form',
+        affirmative:'checkbox:true',
+        privacyVersion:PRIVACY_VERSION,
+        privacyAck:!!(npriv&&npriv.checked),
+        lang:lang,
         tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),
-        page:location.href,referrer:document.referrer||'',captcha:'NO_CAPTCHA'})})
+        page:location.href,referrer:document.referrer||''})})
       .then(function(r){return r.json();})
       .then(function(d){
-        if(d&&d.ok){say(nt('good'),true);nf.querySelector('.nrow').hidden=true;nf.querySelector('.ncons').hidden=true;}
-        else throw new Error('x');
+        if(d&&d.ok){
+          say(nt('good'),true);
+          nf.querySelector('.nrow').hidden=true;
+          var boxes=nf.querySelectorAll('.ncons');
+          for(var i=0;i<boxes.length;i++) boxes[i].hidden=true;
+        }
+        else throw new Error(d&&d.error?d.error:'x');
       })
       .catch(function(){say(nt('fail'),false);nbtn.disabled=false;nbtn.textContent=nt('sub');});
   });
