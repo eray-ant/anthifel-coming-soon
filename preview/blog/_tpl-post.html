@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{LANG}}">
 <head>
+<!-- journal-shell: 76977e2251 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{TITLE}} · Anthifel</title>
@@ -454,7 +455,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
     </div>
   </div>
   <div class="legal">
-    <span data-en="© 2026 Anthifel Ltd · Registered in England and Wales" data-tr="© 2026 Anthifel Ltd · İngiltere ve Galler'de tescillidir">© 2026 Anthifel Ltd · Registered in England and Wales</span>
+    <span data-en="© 2026 Anthifel Ltd · Registered in England and Wales" data-tr="© 2026 Anthifel Ltd · İngiltere ve Galler'de kayıtlı şirkettir">© 2026 Anthifel Ltd · Registered in England and Wales</span>
     <span class="lnks">
       <a href="../../privacy.html" data-en="Privacy" data-tr="Gizlilik">Privacy</a>
       <a href="../../terms.html" data-en="Terms" data-tr="Kullanım Şartları">Terms</a>
@@ -746,28 +747,20 @@ for(var t=0;t<tbl.length;t++){
 .cbar p{margin:0;flex:1 1 420px;min-width:0;font-size:13.5px;line-height:1.6;
   color:rgba(245,241,234,.82);text-wrap:pretty}
 .cbar-act{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-/* The two answers carry the same type and the same colour. Only the border is
-   different, and that difference is the whole argument: a decline in the same
-   size and the same white as the accept, one click away and on the same line,
-   is a decline somebody can find. A small grey one two clicks down is not, and
-   in the UK and the EU it is not valid consent either. check-consent.js
-   measures the colour and the size on every build so this cannot drift into
-   the dark pattern one value at a time. */
+/* The two answers are the same size, the same weight, the same colour and the
+   same frame. They differ in one thing only: which comes first.
+   This is Legal's ruling of 19 August (LGL-057) and it is a condition of
+   publishing the three legal pages. The 15 August version dressed the decline
+   as plain text beside the button; Legal accepted every other property and
+   objected to the border, because PECR s.6 asks that consent be freely given
+   and a border is weight rather than order. check-consent.js measures all of
+   it on every build, so it cannot drift back one value at a time. */
 .cbtn{display:inline-flex;align-items:center;justify-content:center;
   font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
   padding:13px 24px;min-width:150px;border:1px solid rgba(245,241,234,.5);border-radius:2px;
   background:transparent;color:#F5F1EA;cursor:pointer;white-space:nowrap;
   transition:background .18s,border-color .18s,color .18s}
 .cbtn:hover{background:#F5F1EA;border-color:#F5F1EA;color:#0F0F0E}
-/* The decline. A button, because it does something rather than going somewhere,
-   dressed as text. It keeps the accept's size and the accept's white — the two
-   answers differ by a border and by nothing else. */
-.ctxt{display:inline-flex;align-items:center;justify-content:center;
-  min-height:44px;padding:0 8px;border:0;background:none;cursor:pointer;
-  font-family:inherit;font-size:13.5px;font-weight:500;line-height:1.2;
-  color:#F5F1EA;text-decoration:underline;text-underline-offset:4px;
-  white-space:nowrap;transition:opacity .18s}
-.ctxt:hover{opacity:.72}
 /* The third option is a link, not a button, because reading the policy is not
    answering the question — and it is dimmer than the two answers on purpose,
    since it is not one of them. It still has to be hittable: a line of text
@@ -826,15 +819,15 @@ for(var t=0;t<tbl.length;t++){
 <!-- The cookie question. It exists because GA4 sets cookies, and for no other
      reason: everything else this site does works without asking.
 
-     Three things in a row, in the order the CEO set on 15 August: the accept as
-     a button, the decline as plain text beside it, then the link to what would
-     be set. The decline is text rather than a bordered button, and that is a
-     deliberate choice with a cost attached — the ICO's guidance is that accept
-     and reject should be equally prominent, and a button beside a text link is
-     the pattern it has criticised. What we hold to instead, and what
-     check-consent.js measures: the same font size, the same colour, the same
-     single click, both visible without scrolling, both above the 44px touch
-     floor. The difference between them is one border.
+     Two answers in the same frame, then the link to what would be set.
+     The order is the CEO's, set on 15 August: accept first, decline second.
+     The frame is Legal's, set on 19 August (LGL-057), and it overrides the
+     15 August version where the decline was plain text beside the button.
+     Legal accepted the five properties this file was measured on and objected
+     only to the border: PECR s.6 asks that consent be freely given, and a
+     bordered accept beside an unbordered decline is weight, not order. Visual
+     priority is allowed — but built from sequence and wording, not from
+     making one answer look like the answer.
 
      `../../cookies.html` is the only depth-dependent thing here. -->
 <div class="cbar" id="cbar" hidden role="dialog" aria-live="polite" aria-labelledby="cbarT">
@@ -842,7 +835,7 @@ for(var t=0;t<tbl.length;t++){
     <p id="cbarT" data-en="We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer." data-tr="Ziyaretleri saymak istiyoruz, hangi yazıların okunduğunu bilmek için. Bunu Google Analytics yapıyor, çerez yerleştiriyor ve tamamen sizin kararınız. Siz cevaplayana kadar hiçbir şey yüklenmiyor.">We would like to count visits, so we know which pieces are read. It is Google Analytics, it sets cookies, and it is entirely your choice. Nothing is loaded until you answer.</p>
     <div class="cbar-act">
       <button type="button" class="cbtn" id="cYes" data-en="That is fine" data-tr="Kabul ediyorum">That is fine</button>
-      <button type="button" class="ctxt" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
+      <button type="button" class="cbtn" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
       <a href="../../cookies.html" data-en="What we would set" data-tr="Ne yerleştireceğimiz">What we would set</a>
     </div>
   </div>
