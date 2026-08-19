@@ -3342,7 +3342,15 @@ function prefixCheck(serverPrefix){
 }
 
 /* ---------- hero ---------- */
-function heroUrl(base, variant){ return SITE_PREFIX + base + '-' + variant + '.jpg'; }
+/* The extension has to match what the publisher writes, and on 15 August that
+   became WebP. The editor kept asking for .jpg, so every cover came back 404
+   and the thumbnail showed a broken picture next to a post that had one — the
+   editor telling you your image is missing while the site shows it.
+   IMG_EXT in BlogCode.gs is the other half of this pair. If it ever changes
+   again, both change: this line is the one that gets forgotten, which is why
+   it now says so. */
+var IMG_EXT = 'webp';
+function heroUrl(base, variant){ return SITE_PREFIX + base + '-' + variant + '.' + IMG_EXT; }
 function heroPreview(){
   var b = $('hero').value, t = $('heroThumb');
   if(b){
