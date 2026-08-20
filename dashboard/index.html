@@ -3194,6 +3194,7 @@ window.dashInit.blog = function(){
 'use strict';
 
 /* ---------- CONFIG ---------- */
+var loading = false;   // true from the moment the list is asked for until it lands
 var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxuom6kpN6JO5viTNS3mFLziB--lSKFPgfIYGr43Mk700esfA46BhgKuURpu6p2KTkuxw/exec';   // same Apps Script web app as the site forms
 
 /* The panel key — the shared secret this editor sends with every request, the
@@ -3449,9 +3450,17 @@ function renderList(){
     li.appendChild(b); ul.appendChild(li);
   });
   $('listEmpty').hidden = rows.length !== 0;
-  $('listEmpty').textContent = posts.length===0
-    ? 'Henüz yazı yok. “Yeni yazı” ile başlayın.'
-    : 'Bu filtreye uyan yazı yok.';
+  /* Three states, and until 20 August they all read as one.
+     An empty list said "Henüz yazı yok" whether the sheet was empty, the list
+     had not arrived yet, or the panel had no key and could not ask. The first
+     is true, the second is premature, and the third is false — there are
+     posts; this browser simply cannot see them. A panel that says the wrong
+     one of those sends somebody looking for a bug that is not there. */
+  $('listEmpty').textContent =
+      !live()      ? 'Yazılar panel anahtarı olmadan okunamıyor — aşağıya anahtarı girin.'
+    : loading       ? 'Yazılar yükleniyor…'
+    : posts.length===0 ? 'Henüz yazı yok. “Yeni yazı” ile başlayın.'
+    :                    'Bu filtreye uyan yazı yok.';
 }
 
 /* ---------- api ---------- */
@@ -4036,14 +4045,19 @@ toForm(blank());
    nothing here to hand it to. */
 if(window.__blogSeed){ planFill(window.__blogSeed); window.__blogSeed = null; }
 if(live()){
+  loading = true;
   $('postCount').textContent = 'yükleniyor…';
+  renderList();          // so the list says "yükleniyor…" rather than "henüz yazı yok"
   api('list').then(function(d){
+    loading = false;
     posts = d.posts || []; images = d.images || []; renderList(); refreshPairs();
     aiReady(d.ai);
     prefixCheck(d.prefix);
     $('postCount').textContent = posts.length + ' yazı';
   }).catch(function(e){
+    loading = false;
     $('postCount').textContent = '';
+    renderList();
     say('Yazılar alınamadı: '+e.message, false);
   });
 } else {

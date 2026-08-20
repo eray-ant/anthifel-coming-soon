@@ -95,6 +95,11 @@ main{flex:1;padding:88px var(--pad) 64px}
 h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:58px;line-height:1.08;text-wrap:pretty}
 .svc-sub{margin:10px 0 0;font-size:14px;line-height:1.5;color:#625D55}
 .lede{margin:26px 0 0;font-size:19px;line-height:1.6;color:#3A3733;max-width:660px;text-wrap:pretty}
+/* A link inside body copy. There was none on any service page, so a link
+   dropped into a lede came out as the browser's default blue — which is what
+   the 404 did the first time it was built on this shell. */
+.lede a{color:#B84C2E;text-decoration:none;border-bottom:1px solid rgba(184,76,46,.4);transition:border-color .18s}
+.lede a:hover,.lede a:focus-visible{border-color:#B84C2E}
 .svc-meta{margin:18px 0 0;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B84C2E}
 .svc-cta{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap}
 
@@ -304,7 +309,10 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
    The name is what a reader scans for, so it carries the weight and nothing
    else does. Four facts set as four facts rather than one long sentence,
    because the regulation asks for facts, not for a line of the page's voice. */
-.ftr-brand .imp-name{font-size:14px;font-weight:600;color:#1A1815;letter-spacing:.01em}
+/* 20 August, CEO: not bold. The name led the block in weight and it read as a
+   heading over an address; at this size, on this page, the line above the rest
+   is enough to say which one is the name. */
+.ftr-brand .imp-name{font-size:14px;font-weight:400;color:#3A3733;letter-spacing:.01em}
 .ftr-brand .imprint{font-size:13px;color:#625D55;line-height:1.6;max-width:44ch}
 /* The address is a separate fact from the registration, so it gets its own air.
    Without this the four lines set solid and read as one paragraph — which is
@@ -848,7 +856,7 @@ if(location.hash === '#meet') open_();
              office. The name is the heading of the block rather than the first
              clause of a sentence, because that is what a reader is scanning
              for — the rest is the disclosure the regulation asks for. -->
-        <strong class="imp-name">Anthifel Ltd</strong>
+        <span class="imp-name">Anthifel Ltd</span>
         <span class="imprint" data-en="This company is registered in England and Wales.&lt;br&gt;Company number: 17411895" data-tr="İngiltere ve Galler'de kayıtlı bir şirkettir.&lt;br&gt;Şirket Numarası: 17411895">This company is registered in England and Wales.<br>Company number: 17411895</span>
         <span class="imprint" data-en="Unit 501 Leroy House, 434-436 Essex Road,&lt;br&gt;London N1 3FY" data-tr="Unit 501 Leroy House, 434-436 Essex Road,&lt;br&gt;London N1 3FY">Unit 501 Leroy House, 434-436 Essex Road,<br>London N1 3FY</span>
         <a href="mailto:hello@anthifel.com">hello@anthifel.com</a>
