@@ -118,7 +118,36 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 /* The name and The company sit side by side: two short sections that answer
    the same question, so a full-width rule between them read as a change of
    subject that was not happening. */
+/* 21 August. The pair held two sections and split the row between them. When
+   "The company" came out — Marketing's §13b has three sections, not four — the
+   right half went empty and the marks dropped underneath a short paragraph
+   with a column of nothing beside them. So the split moved one level in: the
+   name's text on the left, the wordmark and monogram on the right, at the same
+   height as the words they are about. */
 .ab-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.ab-pair:has(> .ab-sec:only-child){grid-template-columns:1fr}
+.ab-name:only-child{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);
+                    gap:0 56px;align-items:start}
+.ab-name:only-child > h2{grid-column:1/-1}
+/* A grid, not a flex row. `flex:1 1 auto` with `width:100%` on the wordmark
+   made it claim the whole row and pushed the monogram off the edge — twice.
+   Two cells says the thing directly: the wordmark takes what is left, the
+   monogram takes what it needs. */
+.ab-name:only-child .ab-marks{display:grid;grid-template-columns:minmax(0,1fr) auto;
+                              align-items:center;margin-top:6px;width:100%}
+/* Sized by width here rather than by height. In the stacked layout the marks
+   had the whole measure and a height was the right control; in a column that
+   is 85% of half the page, a 900×89 wordmark set to 40px tall is 404px wide
+   and the monogram beside it falls off the edge. So the wordmark takes the
+   column and the monogram keeps its proportion to it. The 15px floor from the
+   Brand Guidelines is what the media query below protects. */
+.ab-name:only-child .ab-mark{height:auto;width:100%;max-width:none;min-width:0}
+/* Height-driven, like it always was. Sizing this one by width and letting the
+   height follow gave a 41×12 smear — the browser kept a height from somewhere
+   and `object-fit:fill` stretched the picture into it rather than complaining.
+   The wordmark is the one that needed a width cap; the monogram never did, and
+   the `auto` column beside it takes whatever width this height implies. */
+.ab-name:only-child .ab-mono{height:clamp(26px,3.2vw,40px);width:auto;align-self:center}
 /* No rule directly under the picture. The photograph is already an edge; a line
    drawn under it reads as a second one. The sections below keep theirs. */
 .ab-pair .ab-sec{border-top:0;padding-top:30px}
@@ -253,6 +282,10 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
   .ab-sec{padding:28px 0}
   .ab-row{flex-direction:column;gap:26px}
   .ab-pair{grid-template-columns:1fr;gap:0}
+  /* On a phone the two go back to stacked: side by side at this width the
+     wordmark shrinks below the 15px floor the Brand Guidelines set for it. */
+  .ab-name:only-child{grid-template-columns:1fr}
+  .ab-name:only-child .ab-marks{margin-top:20px}
   .ab-do .ab-bd{column-count:1}
   .ab-marks{margin-top:20px}
   .ab-who .ab-bd{gap:22px}
@@ -456,7 +489,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
       <span class="eyebrow" data-en="Service" data-tr="Hizmet">Service</span>
       <h1>Transformation Retainer</h1>
       <p class="svc-sub" data-en="&quot;How do we get there?&quot;" data-tr="Sürekli dönüşüm rehberliği · &quot;Nasıl gideceğiz?&quot;">&quot;How do we get there?&quot;</p>
-      <p class="lede" data-en="The right people, hired and connected. A rhythm that holds." data-tr="Doğru insanlar, işe alınmış ve birbirine bağlanmış. Tutan bir ritim.">The right people, hired and connected. A rhythm that holds.</p>
+      <p class="lede" data-en="The right people, hired and connected. A rhythm that holds." data-tr="İşe alımlar yapılmış, roller birbirine bağlanmış. Tutan bir ritim.">The right people, hired and connected. A rhythm that holds.</p>
       <p class="svc-meta" data-en="Monthly · Minimum 6 months" data-tr="Aylık · Minimum 6 ay">Monthly · Minimum 6 months</p>
 
       <div class="svc-cta">
@@ -468,7 +501,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 
         <section class="svc-sec">
           <h2 data-en="Who it is for" data-tr="Kimin için">Who it is for</h2>
-          <div class="svc-bd" data-en="&lt;p&gt;A company with a roadmap in hand that wants guidance through the implementation. Either nobody inside owns AI, or someone does and is doing it alone.&lt;/p&gt;" data-tr="&lt;p&gt;Yol haritası hazır, uygulamada rehberlik isteyen şirket. İçeride AI&#x27;yı sahiplenecek kimse yok, ya da var ama yalnız.&lt;/p&gt;"><p>A company with a roadmap in hand that wants guidance through the implementation. Either nobody inside owns AI, or someone does and is doing it alone.</p></div>
+          <div class="svc-bd" data-en="&lt;p&gt;A company with a roadmap in hand that wants guidance through the implementation. Either nobody inside owns AI, or someone does and is doing it alone.&lt;/p&gt;" data-tr="&lt;p&gt;Yol haritası hazır, uygulamada rehberlik isteyen şirket. İçeride AI&#x27;ı sahiplenecek kimse yok, ya da var ama yalnız.&lt;/p&gt;"><p>A company with a roadmap in hand that wants guidance through the implementation. Either nobody inside owns AI, or someone does and is doing it alone.</p></div>
         </section>
 
         <section class="svc-sec">
@@ -506,7 +539,7 @@ h1{margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:30
 
         <section class="svc-sec">
           <h2 data-en="Access" data-tr="Erişim">Access</h2>
-          <div class="svc-bd" data-en="&lt;p&gt;Email is the primary channel. WhatsApp is for short coordination. Working days, 10:00 to 18:00, answered the same working day. Four hours a month outside the rhythm.&lt;/p&gt;&lt;p&gt;There is no emergency channel, and that is deliberate. A promise of unlimited access holds for three months and fails in the fourth, and at that point the client reads it as the relationship breaking down. We would rather the promise be true from the start.&lt;/p&gt;" data-tr="&lt;p&gt;E-posta birincil kanaldır. WhatsApp kısa koordinasyon içindir. İş günü 10:00 ile 18:00 arası, aynı iş günü içinde yanıt. Ritim dışı erişim ayda dört saat.&lt;/p&gt;&lt;p&gt;Acil kanal yoktur ve bu bilinçlidir. Sınırsız erişim sözü ilk üç ay tutulur, dördüncü ayda tutulamaz ve o noktada müşteri bunu ilişkinin bozulması olarak okur. Sözü baştan gerçek tutmayı tercih ediyoruz.&lt;/p&gt;"><p>Email is the primary channel. WhatsApp is for short coordination. Working days, 10:00 to 18:00, answered the same working day. Four hours a month outside the rhythm.</p><p>There is no emergency channel, and that is deliberate. A promise of unlimited access holds for three months and fails in the fourth, and at that point the client reads it as the relationship breaking down. We would rather the promise be true from the start.</p></div>
+          <div class="svc-bd" data-en="&lt;p&gt;Email is the primary channel. WhatsApp is for short coordination. Working days, 10:00 to 18:00, answered the same working day. Four hours a month outside the rhythm.&lt;/p&gt;&lt;p&gt;There is no emergency channel, and that is deliberate. A promise of unlimited access holds for three months and fails in the fourth, and at that point the client reads it as the relationship breaking down. We would rather the promise be true from the start.&lt;/p&gt;" data-tr="&lt;p&gt;E-posta birincil kanaldır. WhatsApp kısa koordinasyon içindir. İş günü 10:00 ile 18:00 arası, aynı iş günü içinde yanıt. Ritim dışı erişim ayda dört saat.&lt;/p&gt;&lt;p&gt;Acil kanal yoktur ve bu bilinçlidir. Sınırsız erişim sözü ilk üç ay tutulur, dördüncü ayda tutulamaz ve o noktada dördüncü ayda sürdürülemez. Sınırı baştan söylemeyi tercih ediyoruz.&lt;/p&gt;"><p>Email is the primary channel. WhatsApp is for short coordination. Working days, 10:00 to 18:00, answered the same working day. Four hours a month outside the rhythm.</p><p>There is no emergency channel, and that is deliberate. A promise of unlimited access holds for three months and fails in the fourth, and at that point the client reads it as the relationship breaking down. We would rather the promise be true from the start.</p></div>
         </section>
 
         <section class="svc-sec">
@@ -914,7 +947,7 @@ if(document.getElementById('meetHere')){
            check-legal.js bans it from any served page, because it is one of the
            markers in Legal's handover note, and an HTML comment is served. -->
       <ul id="ftrPosts">
-        <li><a href="en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/" data-href-tr="blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr" data-en="Why AI is an organizational problem, not a technological one" data-tr="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri">Why AI is an organizational problem, not a technological one</a></li>
+        <li><a href="en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/" data-href-tr="blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr" data-en="Why AI is an organisational problem, not a technological one" data-tr="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri">Why AI is an organisational problem, not a technological one</a></li>
       </ul>
     </div>
     <div>
