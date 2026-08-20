@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://anthifel.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/ai-readiness-audit.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/discovery-sprint.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/transformation-retainer.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/advisory-board-seat.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about.html"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/hakkimizda.html"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/hakkimizda.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about.html"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/hakkimizda.html"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/en/blog/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/en/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/en/blog/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/privacy.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/terms.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/cookies.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
