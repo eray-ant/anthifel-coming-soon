@@ -467,7 +467,7 @@ window.dashDB = (function(){
   <div class="stat accent">
     <div class="l">Lansmana</div>
     <div class="v" id="ozGun">—</div>
-    <div class="s">20 Ağustos 2026, Perşembe</div>
+    <div class="s" id="ozGunAlt">20 Ağustos 2026, Perşembe</div>
   </div>
   <div class="stat">
     <div class="l">Site</div>
@@ -493,26 +493,35 @@ window.dashDB = (function(){
       <tbody>
         <tr><td>anthifel.com</td><td class="num"><span class="state ok"><i class="dot"></i>Çalışıyor</span></td></tr>
         <tr><td>www.anthifel.com</td><td class="num"><span class="state ok"><i class="dot"></i>Çalışıyor</span></td></tr>
-        <tr><td>E-posta · Google Workspace</td><td class="num"><span class="state ok"><i class="dot"></i>Çalışıyor</span></td></tr>
+        <tr><td>E-posta · Google Workspace</td><td class="num"><span class="state ok"><i class="dot"></i>SPF · DKIM · DMARC geçti</span></td></tr>
         <tr><td>Coming-soon sayfası</td><td class="num"><span class="state ok"><i class="dot"></i>Kökte yayında</span></td></tr>
         <tr><td>Landing v2 · <code class="mono">/preview/</code></td><td class="num"><span class="state ok"><i class="dot"></i>Yayında, dizine kapalı</span></td></tr>
-        <tr><td>Blog · <code class="mono">/preview/blog/</code></td><td class="num"><span class="state ok"><i class="dot"></i>Yayında, yazı yok</span></td></tr>
+        <tr><td>Journal · <code class="mono">/preview/en/blog/</code></td><td class="num"><span class="state ok"><i class="dot"></i>Yayında, iki dilde</span></td></tr>
+        <tr><td>Apps Script · form + blog</td><td class="num"><span class="state ok"><i class="dot"></i>Çalışıyor</span></td></tr>
+        <tr><td>Okuma listesi formu</td><td class="num"><span class="state ok"><i class="dot"></i>Kayıt alıyor</span></td></tr>
         <tr><td>Bu panel</td><td class="num"><span class="state ok"><i class="dot"></i>Çalışıyor</span></td></tr>
       </tbody>
     </table>
   </section>
 
+  <!-- 20 August. Both tables had drifted, and a Summary that has drifted is
+       worse than no Summary: it is read for thirty seconds by someone who then
+       acts on it. Two rows named tools we abandoned on 10 August — reCAPTCHA,
+       which was never installed, and Calendly, which Google Calendar replaced —
+       so the panel was reporting as missing two things nobody was waiting for.
+       Two more named things that had since shipped. What is left is only what
+       is genuinely outstanding, and check-dash now fails if an abandoned name
+       comes back. -->
   <section class="panel">
     <h2>Henüz eksik</h2>
     <table class="tbl">
       <tbody>
-        <tr><td>Gizlilik politikası metni</td><td class="num"><span class="state wait"><i class="dot"></i>Legal'de</span></td></tr>
-        <tr><td>reCAPTCHA anahtarları</td><td class="num"><span class="state wait"><i class="dot"></i>Bekliyor</span></td></tr>
-        <tr><td>Apps Script yayını · form + blog</td><td class="num"><span class="state wait"><i class="dot"></i>Bekliyor</span></td></tr>
-        <tr><td>Calendly bağlantısı</td><td class="num"><span class="state wait"><i class="dot"></i>Bekliyor</span></td></tr>
-        <tr><td>Google Analytics</td><td class="num"><span class="state wait"><i class="dot"></i>Bekliyor</span></td></tr>
-        <tr><td>LinkedIn export → CRM</td><td class="num"><span class="state wait"><i class="dot"></i>Bekliyor</span></td></tr>
-        <tr><td>Künye: adres, şirket no, telefon</td><td class="num"><span class="state wait"><i class="dot"></i>Legal'de</span></td></tr>
+        <tr><td>Gizlilik politikası · üç değer</td><td class="num"><span class="state wait"><i class="dot"></i>Legal'de</span></td></tr>
+        <tr><td>Künye: kayıtlı adres, şirket no</td><td class="num"><span class="state wait"><i class="dot"></i>Legal'de</span></td></tr>
+        <tr><td>Assessment PDF'i · rıza metni</td><td class="num"><span class="state wait"><i class="dot"></i>Legal'de</span></td></tr>
+        <tr><td>Köke geçiş · <code class="mono">/preview/</code> kalkması</td><td class="num"><span class="state wait"><i class="dot"></i>Şirket kuruluşunda</span></td></tr>
+        <tr><td>Google Analytics · rıza sonrası</td><td class="num"><span class="state wait"><i class="dot"></i>Lansmanda açılır</span></td></tr>
+        <tr><td>LinkedIn export → CRM</td><td class="num"><span class="state wait"><i class="dot"></i>Sales'te</span></td></tr>
       </tbody>
     </table>
   </section>
@@ -555,8 +564,22 @@ window.dashInit.ozet = function(){
     return Math.round((new Date(iso + 'T00:00:00') - new Date(today() + 'T00:00:00')) / 86400000);
   }
   var g = days(LAUNCH);
-  $('ozGun').innerHTML = g > 0 ? g + ' <small>gün</small>'
-    : (g === 0 ? 'Bugün' : Math.abs(g) + ' <small>gün geçti</small>');
+  /* 20 August, and the launch did not happen: it waits on the incorporation,
+     which is not ours to schedule. The tile used to answer that with "1 gün
+     geçti", counting up from a date nobody is still aiming at — a number
+     presented as a fact about the company when it is only a fact about a
+     constant in this file. A panel that does that once is a panel you stop
+     reading. So a passed date stops being a countdown and says what is
+     actually true: the date is not known yet. */
+  if (g > 0) {
+    $('ozGun').innerHTML = g + ' <small>gün</small>';
+  } else if (g === 0) {
+    $('ozGun').innerHTML = 'Bugün';
+  } else {
+    $('ozGun').innerHTML = '<small>Tarih bekliyor</small>';
+    $('ozGunAlt').textContent = 'Şirket kuruluşuna bağlı. Tarih belli olunca ' +
+      'dash_sec_ozet.html içindeki LAUNCH satırı güncellenir.';
+  }
 
   function load(){
     try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; }
@@ -2925,6 +2948,17 @@ render();
   </div>
   <div class="acts">
     <button type="button" class="btn btn-p" id="addBtn">+ Blog Ekle</button>
+    <!-- DEV-090. The Journal's four index pages are written by the publisher,
+         and until today the only way to reach the publisher was to open a post
+         and press Yayımla. So a change to the shell — a fixed link, a corrected
+         category name, a new footer — sat in the repository looking finished
+         while the live pages still carried the old one, and the only signal was
+         a deploy warning nobody was watching for. This button makes the call
+         the publisher already answers, with no post in front of it. It
+         publishes nothing new: it rewrites what is already published, from what
+         is already in the sheet. -->
+    <button type="button" class="btn btn-s" id="rewriteBtn"
+            title="Yayındaki yazılardan Journal sayfalarını yeniden yazar. Yeni bir şey yayımlamaz.">Journal'ı yeniden yaz</button>
     <a class="btn btn-s" href="../blog/" target="_blank" rel="noopener">Blogu aç</a>
   </div>
 </div>
@@ -3895,6 +3929,39 @@ function openPlan(){
 $('addBtn').addEventListener('click', function(){
   if(dirty && !confirm('Kaydedilmemiş değişiklikler var. Yine de yeni yazı açılsın mı?')) return;
   openPlan();
+});
+/* DEV-090 — the Journal's shell, rewritten on demand.
+
+   `publish` is not a new route: it is the one the editor already calls after a
+   save, and it rewrites every published page from the sheet. What was missing
+   was a way to reach it without a post in hand. Three separate "still broken"
+   rounds on 19 August all had this one cause — the fix was in the repository,
+   the deploy had run, and the four Journal pages were still the ones the
+   publisher had written days earlier.
+
+   It is deliberately not a confirm(). There is nothing to lose: the call
+   rewrites published pages from published rows and touches no draft. A
+   confirmation would only teach the habit of dismissing one. */
+$('rewriteBtn').addEventListener('click', function(){
+  var b = this;
+  if(!live()){
+    say('Yeniden yazmak için panel anahtarı gerekiyor — bu ekran şu an önizlemede.', false);
+    return;
+  }
+  var label = b.textContent;
+  b.disabled = true; b.textContent = 'Yazılıyor…';
+  say('Journal sayfaları yeniden yazılıyor…', true);
+  api('publish')
+    .then(function(d){
+      /* The counts are the point. "Yeniden yazıldı" on its own is a claim; a
+         number of files is a receipt, and a zero here says the sheet has no
+         published post rather than that the button failed. */
+      say('Journal yeniden yazıldı: ' + (d.written || 0) + ' dosya, ' +
+          (d.published || 0) + ' yayında yazıdan. Değişikliği görmek için '
+          + 'sayfayı sert yenileyin.', true);
+    })
+    .catch(function(e){ say('Yeniden yazılamadı: ' + e.message, false); })
+    .then(function(){ b.disabled = false; b.textContent = label; });
 });
 $('planSkip').addEventListener('click', function(){
   $('planPick').hidden = true;
