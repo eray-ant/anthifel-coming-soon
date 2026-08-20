@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- journal-shell: daa44d17b8 -->
+<!-- journal-shell: 6b0697570a -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-en="The Journal · Anthifel" data-tr="The Journal · Anthifel">The Journal · Anthifel</title>
@@ -136,9 +136,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
      thumb-sized height; only the stacking goes. */
   .legal .lnks{display:flex;flex-direction:row;flex-wrap:wrap;gap:0 22px;align-items:center}
   .legal .lnks a{display:inline-block;padding:13px 0}
+  /* 20 August, CEO: on the phone this read as a table of contents rather than a
+     menu — a full-width rule between every entry and a tall cell around each
+     one. The rules are gone and the cells are tighter.
+
+     What did not change is the height, and that is deliberate: these stay a
+     thumb's target. DEV-059 put the 44px floor in for exactly this list, and
+     "make it look like the desktop" cannot mean "make it hard to hit". So the
+     space between the words came out and the space under the finger stayed. */
   .ftr ul{gap:0}
-  .ftr ul a{display:block;padding:12px 0;border-bottom:1px solid rgba(15,15,14,.07)}
-  .ftr ul li:last-child a{border-bottom:0}
+  .ftr ul a{display:block;padding:10px 0}
   .ftr-brand .info{gap:0}
   .ftr-brand .info a{display:inline-block;padding:11px 0}
   .consent input[type=checkbox]{width:22px;height:22px}
@@ -474,7 +481,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #B84C
              stays at four headings, because a company page is something a
              reader goes looking for, not something the site pushes at them. -->
         <li><a href="../about.html" data-href-tr="../hakkimizda.html" data-en="About" data-tr="Hakkımızda">About</a></li>
-        <li><a href="https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l" target="_blank" rel="noopener" data-meet data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
+        <!-- 20 August, CEO: this one goes to /meet/ rather than opening the
+             band in place. The footer is on every page including the Journal
+             and the legal pages, and "open a band somewhere further down this
+             page" is a different promise on each of them. A page is the same
+             promise everywhere. The href is the real calendar address so it
+             still works with JavaScript off, and the data-meet handler is gone
+             from this link only — the buttons in the page keep it. -->
+        <li><a href="../meet/" data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
     <div>
@@ -617,19 +631,32 @@ try{
   .pmft a{text-align:center}
 }
 </style>
-<!-- The privacy notice, shown in place, so a ticked consent box is never lost
-     to a navigation. Copy comes from legal.py — the same source privacy.html
-     is generated from, not a summary of it, because a consent box that links
-     to a summary is a consent box that was not read.
-     `../privacy.html` is the only depth-dependent thing here: '' at the root,
-     '../' or '../../' inside the Journal. -->
+<!-- The three legal documents, shown in place.
+
+     It began as the privacy notice alone, and for one reason: the consent tick
+     links to it, and navigating away to read it loses the tick and usually the
+     visitor. On 20 August the CEO asked for Terms and Cookies to behave the
+     same way, which is the right call for a different reason — a reader who
+     wants to check one line about cookies should not lose the page they were
+     on either.
+
+     One overlay, three bodies. Not three overlays: the escape key, the
+     scroll-lock, the focus return and the table wrapping are one behaviour, and
+     three copies of it would drift within a week. What changes when you open a
+     different document is the title, which body is shown, and where the "open
+     the full page" link points.
+
+     Copy comes from legal.py — the same source the three pages are generated
+     from, not a summary of it, because a consent box that links to a summary is
+     a consent box that was not read. -->
 <div class="povl" id="povl" hidden>
   <div class="pmodal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
     <div class="pmhd">
       <h3 id="pmTitle" data-en="Privacy Policy" data-tr="Gizlilik Politikası">Privacy Policy</h3>
       <button type="button" id="pmClose" aria-label="Close">&times;</button>
     </div>
-    <div class="pmbody"><div class="pmpane" data-pane="en"><p><strong>Last updated:</strong> 20 August 2026 <strong>Version:</strong> privacy-v3</p>
+    <div class="pmbody" id="pmBody">
+      <div class="pmdoc" data-doc="privacy"><div class="pmpane" data-pane="en"><p><strong>Last updated:</strong> 20 August 2026 <strong>Version:</strong> privacy-v3</p>
 <h3>Who we are</h3>
 <p>Anthifel Ltd is a company registered in England and Wales, company number 17411895, registered office Unit 501 Leroy House, 434-436 Essex Road, London N1 3FY, United Kingdom. We are the controller of the personal data described in this policy.</p>
 <p>For anything relating to your personal data, write to <strong><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a></strong>.</p>
@@ -707,8 +734,89 @@ try{
 <p>Bize başvurmadan da, Birleşik Krallık veri koruma düzenleyicisi olan Bilgi Komiserliği Ofisi'ne <strong><a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></strong> üzerinden şikâyet etme hakkınız var.</p>
 <h3>Bu politikadaki değişiklikler</h3>
 <p>Politikayı değiştirirsek yeni sürümü burada, yeni bir sürüm numarası ve tarihiyle yayımlarız. Bir değişiklik, bize daha önce verdiğiniz veriyi kullanma şeklimizi esaslı biçimde etkiliyorsa size doğrudan bildiririz.</p></div></div>
+      <div class="pmdoc" data-doc="terms" hidden><div class="pmpane" data-pane="en"><p><strong>Version:</strong> terms-v1 · <strong>Last updated:</strong> 20 August 2026</p>
+<h3>1. Who we are</h3>
+<p>This website is operated by Anthifel Ltd, registered in England and Wales, company number 17411895, registered office Unit 501 Leroy House, 434-436 Essex Road, London N1 3FY, United Kingdom. Contact: <a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a>.</p>
+<h3>2. These terms</h3>
+<p>By using this website you accept these terms. If you do not accept them, please do not use the site.</p>
+<h3>3. What this site is, and what it is not</h3>
+<p>This site describes our services and publishes material about artificial intelligence and organisational change.</p>
+<p><strong>Nothing on this site is advice, and nothing on it creates a client relationship.</strong> That includes our articles, our published frameworks, and the AI Readiness Assessment and any result it produces. The assessment is an indicative self-check. It does not take account of your circumstances, it is not a professional opinion, and it should not be relied on as a basis for a decision.</p>
+<p><strong>We advise clients under a written engagement contract, and only then.</strong> Reading this site, completing the assessment, or corresponding with us does not create one.</p>
+<h3>4. Our content</h3>
+<p>The content of this site — text, design, logos, graphics, frameworks and methodology — belongs to us or is used with permission. You may read it, and share or quote it with attribution and a link. You may not republish it as your own, sell it, or use it to build a competing service.</p>
+<p>The name <strong>Anthifel</strong>, our logo and our visual identity are our trade marks.</p>
+<h3>5. Using the site properly</h3>
+<p>Do not attempt to gain unauthorised access to the site or its infrastructure, introduce anything malicious, scrape it at a scale that affects its operation, or use it for anything unlawful.</p>
+<h3>6. Links to other sites</h3>
+<p>Where we link to another site, we do not control it and we are not responsible for its content.</p>
+<h3>7. Availability</h3>
+<p>We try to keep the site available, but we do not guarantee it. We may change, suspend or withdraw any part of it without notice.</p>
+<h3>8. Our liability</h3>
+<p>Nothing in these terms limits our liability for death or personal injury caused by our negligence, for fraud or fraudulent misrepresentation, or for anything else that cannot lawfully be limited.</p>
+<p>Subject to that: we provide this site as it is, and we are not liable for any loss arising from your use of it or your reliance on anything published on it. <strong>Liability under an engagement is governed by that engagement's contract, not by these terms.</strong></p>
+<h3>9. Personal data</h3>
+<p>How we handle personal data is set out in our Privacy Policy.</p>
+<h3>10. Changes</h3>
+<p>We may update these terms. The version and date at the top tell you which version applies.</p>
+<h3>11. Governing law</h3>
+<p>These terms are governed by the law of England and Wales, and the courts of England and Wales have exclusive jurisdiction.</p></div>
+<div class="pmpane" data-pane="tr" hidden><p><strong>Sürüm:</strong> terms-v1 · <strong>Son güncelleme:</strong> 20 Ağustos 2026</p>
+<h3>1. Biz kimiz</h3>
+<p>Bu web sitesi, İngiltere ve Galler'de kayıtlı Anthifel Ltd tarafından işletilir. Şirket numarası 17411895, kayıtlı adres Unit 501 Leroy House, 434-436 Essex Road, London N1 3FY, United Kingdom. İletişim: <a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a>.</p>
+<h3>2. Bu şartlar</h3>
+<p>Bu siteyi kullanarak bu şartları kabul etmiş olursunuz. Kabul etmiyorsanız lütfen siteyi kullanmayın.</p>
+<h3>3. Bu site nedir, ne değildir</h3>
+<p>Bu sitede hizmetlerimizi anlatıyor, yapay zekâ ve kurumsal dönüşüm üzerine içerik yayımlıyoruz.</p>
+<p><strong>Bu sitedeki hiçbir şey danışmanlık değildir ve hiçbiri müvekkil ilişkisi kurmaz.</strong> Buna yazılarımız, yayımladığımız çerçeveler ve <strong>AI Readiness Assessment ile ürettiği sonuç da dahildir.</strong> Değerlendirme, yol gösterici bir öz-kontroldür. Sizin koşullarınızı dikkate almaz, profesyonel bir görüş değildir ve bir kararın dayanağı olarak kullanılmamalıdır.</p>
+<p><strong>Müşterilerimize yalnızca yazılı bir hizmet sözleşmesi kapsamında danışmanlık veririz.</strong> Bu siteyi okumak, değerlendirmeyi doldurmak veya bizimle yazışmak böyle bir sözleşme kurmaz.</p>
+<h3>4. İçeriğimiz</h3>
+<p>Bu sitenin içeriği — metin, tasarım, logolar, görseller, çerçeveler ve metodoloji — bize aittir ya da izinle kullanılmaktadır. Okuyabilir, kaynak göstererek ve bağlantı vererek paylaşabilir veya alıntılayabilirsiniz. Kendinize aitmiş gibi yeniden yayımlayamaz, satamaz ya da rakip bir hizmet kurmak için kullanamazsınız.</p>
+<p><strong>Anthifel</strong> adı, logomuz ve görsel kimliğimiz markalarımızdır.</p>
+<h3>5. Siteyi düzgün kullanmak</h3>
+<p>Siteye veya altyapısına yetkisiz erişim denemeyin, zararlı yazılım bulaştırmayın, işleyişini etkileyecek ölçekte veri kazımayın ve hukuka aykırı hiçbir amaçla kullanmayın.</p>
+<h3>6. Diğer sitelere bağlantılar</h3>
+<p>Başka bir siteye bağlantı verdiğimizde o siteyi biz kontrol etmeyiz ve içeriğinden sorumlu değiliz.</p>
+<h3>7. Erişilebilirlik</h3>
+<p>Sitenin erişilebilir kalması için çalışırız ama bunu garanti etmeyiz. Sitenin herhangi bir bölümünü haber vermeden değiştirebilir, durdurabilir veya kaldırabiliriz.</p>
+<h3>8. Sorumluluğumuz</h3>
+<p>Bu şartlardaki hiçbir hüküm, ihmalimizden kaynaklanan ölüm veya bedensel zarar, hile veya hileli beyan ya da hukuken sınırlandırılamayacak başka bir husus bakımından sorumluluğumuzu sınırlamaz.</p>
+<p>Bunun dışında: bu siteyi olduğu gibi sunarız ve siteyi kullanmanızdan ya da burada yayımlanan bir şeye güvenmenizden doğan zararlardan sorumlu değiliz. <strong>Bir hizmet sözleşmesi kapsamındaki sorumluluk, bu şartlarla değil, o sözleşmeyle belirlenir.</strong></p>
+<h3>9. Kişisel veri</h3>
+<p>Kişisel veriyi nasıl işlediğimiz Gizlilik Politikası'nda yazılıdır.</p>
+<h3>10. Değişiklikler</h3>
+<p>Bu şartları güncelleyebiliriz. Hangi sürümün geçerli olduğunu baştaki sürüm ve tarih gösterir.</p>
+<h3>11. Uygulanacak hukuk</h3>
+<p>Bu şartlar İngiltere ve Galler hukukuna tabidir; İngiltere ve Galler mahkemeleri münhasır yetkilidir.</p></div></div>
+      <div class="pmdoc" data-doc="cookies" hidden><div class="pmpane" data-pane="en"><p><strong>Version:</strong> cookies-v1 · <strong>Last updated:</strong> 20 August 2026</p>
+<h3>What cookies are</h3>
+<p>Small files a website stores on your device. Some are needed for a site to work. Others measure how a site is used.</p>
+<h3>How we use them</h3>
+<p>We keep this to a minimum.</p>
+<p><strong>Strictly necessary cookies</strong> make the site work — security, and remembering your cookie choice. These do not need your consent, because without them the site cannot do what you came for.</p>
+<p><strong>All other cookies, including analytics, need your consent, and we ask before we set them.</strong> Not after. If you decline, the site works exactly as it does otherwise — you are simply not measured.</p>
+<h3>The cookies we set</h3>
+<table><thead><tr><th>Name</th><th>Set by</th><th>What it does</th><th>How long it lasts</th><th>Strictly necessary?</th></tr></thead><tbody><tr><td>anthifel_lang</td><td>Anthifel</td><td>Remembers whether you are reading in English or Turkish. Browser storage, not a cookie</td><td>Until you clear your browser storage</td><td>Strictly necessary</td></tr><tr><td>None for the bot check</td><td>Anthifel</td><td>The check in front of the assessment is a code we email you. It sets no cookie and stores nothing on your device; the code itself is held on our side for fifteen minutes and then deleted</td><td>Nothing is stored on your device</td><td>Not applicable</td></tr><tr><td>Google Calendar cookies</td><td>Google</td><td>Shows the booking calendar inside our page. Set only when you open the booking window</td><td>Set by Google; see Google’s cookie information</td><td>Not strictly necessary. Nothing is set unless you open the window</td></tr><tr><td>anth_sb_session</td><td>Anthifel</td><td>Keeps a member of staff signed in to our internal dashboard. Browser storage, not a cookie. Not set for visitors</td><td>Until sign-out</td><td>Strictly necessary</td></tr><tr><td>anthifel_consent</td><td>Anthifel</td><td>Remembers your answer to the cookie question, so we do not ask again. Browser storage, not a cookie. It is set whichever way you answer, including when you decline</td><td>Six months, then we ask again</td><td>Strictly necessary</td></tr><tr><td>_ga</td><td>Google</td><td>Tells Google Analytics one visit from another. Set only after you accept, and removed when you change your answer to no</td><td>Two years</td><td>Not strictly necessary. Nothing is set unless you accept</td></tr><tr><td>_ga_W376XEN94E</td><td>Google</td><td>The same, for this site specifically. Set only after you accept</td><td>Two years</td><td>Not strictly necessary. Nothing is set unless you accept</td></tr></tbody></table>
+<h3>Changing your mind</h3>
+<p>You can change your cookie choice at any time from the link in our site footer. You can also block or delete cookies in your browser settings, though blocking strictly necessary cookies may stop parts of the site working.</p>
+<h3>Questions</h3>
+<p>Write to <a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a>.</p></div>
+<div class="pmpane" data-pane="tr" hidden><p><strong>Sürüm:</strong> cookies-v1 · <strong>Son güncelleme:</strong> 20 Ağustos 2026</p>
+<h3>Çerez nedir</h3>
+<p>Bir web sitesinin cihazınızda sakladığı küçük dosyalar. Bir kısmı sitenin çalışması için gereklidir. Bir kısmı sitenin nasıl kullanıldığını ölçer.</p>
+<h3>Nasıl kullanıyoruz</h3>
+<p>Asgari düzeyde tutuyoruz.</p>
+<p><strong>Kesinlikle gerekli çerezler</strong> sitenin çalışmasını sağlar — güvenlik ve çerez tercihinizin hatırlanması. Bunlar rızanızı gerektirmez, çünkü onlar olmadan site zaten geldiğiniz işi yapamaz.</p>
+<p><strong>Analitik dahil diğer bütün çerezler rızanızı gerektirir ve biz yerleştirmeden önce sorarız.</strong> Sonra değil. Reddederseniz site tamamen normal çalışır — yalnızca ölçülmezsiniz.</p>
+<h3>Kullandığımız çerezler</h3>
+<table><thead><tr><th>Ad</th><th>Kim yerleştirir</th><th>Ne yapar</th><th>Ne kadar kalır</th><th>Zorunlu mu?</th></tr></thead><tbody><tr><td>anthifel_lang</td><td>Anthifel</td><td>İngilizce mi Türkçe mi okuduğunuzu hatırlar. Tarayıcı depolaması, çerez değil</td><td>Tarayıcı depolamasını temizleyene kadar</td><td>Zorunlu</td></tr><tr><td>Bot kontrolü için hiçbiri</td><td>Anthifel</td><td>Testin önündeki kontrol, size e-posta ile gönderdiğimiz bir koddur. Çerez yerleştirmez ve cihazınızda hiçbir şey saklamaz; kodun kendisi bizde on beş dakika durur ve silinir</td><td>Cihazınızda hiçbir şey saklanmaz</td><td>Uygulanmaz</td></tr><tr><td>Google Takvim çerezleri</td><td>Google</td><td>Randevu takvimini sayfamızın içinde gösterir. Yalnızca randevu penceresini açtığınızda yerleşir</td><td>Google tarafından belirlenir; Google’ın çerez bilgilerine bakın</td><td>Zorunlu değil. Pencereyi açmazsanız hiçbir şey yerleşmez</td></tr><tr><td>anth_sb_session</td><td>Anthifel</td><td>Bir çalışanın iç panelde oturumunu açık tutar. Tarayıcı depolaması, çerez değil. Ziyaretçilerde yerleşmez</td><td>Çıkış yapılana kadar</td><td>Zorunlu</td></tr><tr><td>anthifel_consent</td><td>Anthifel</td><td>Çerez sorusuna verdiğiniz cevabı hatırlar, tekrar sormayalım diye. Tarayıcı depolaması, çerez değil. Hangi cevabı verirseniz verin yerleşir, reddettiğinizde de</td><td>Altı ay, sonra yeniden sorulur</td><td>Zorunlu</td></tr><tr><td>_ga</td><td>Google</td><td>Google Analytics’in bir ziyareti diğerinden ayırmasını sağlar. Yalnızca kabul ettikten sonra yerleşir, cevabınızı hayıra çevirdiğinizde silinir</td><td>İki yıl</td><td>Zorunlu değil. Kabul etmezseniz hiçbir şey yerleşmez</td></tr><tr><td>_ga_W376XEN94E</td><td>Google</td><td>Aynısı, bu siteye özel. Yalnızca kabul ettikten sonra yerleşir</td><td>İki yıl</td><td>Zorunlu değil. Kabul etmezseniz hiçbir şey yerleşmez</td></tr></tbody></table>
+<h3>Fikrinizi değiştirirseniz</h3>
+<p>Çerez tercihinizi site altbilgisindeki bağlantıdan istediğiniz zaman değiştirebilirsiniz. Tarayıcı ayarlarınızdan da çerezleri engelleyebilir veya silebilirsiniz; ancak kesinlikle gerekli çerezleri engellemek sitenin bazı bölümlerinin çalışmamasına yol açabilir.</p>
+<h3>Sorular</h3>
+<p><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a> adresine yazın.</p></div></div>
+    </div>
     <div class="pmft">
-      <a href="../privacy.html" target="_blank" rel="noopener" data-en="Open the full page" data-tr="Sayfanın tamamını aç">Open the full page</a>
+      <a href="../privacy.html" id="pmFull" data-privacy="../privacy.html" data-terms="../terms.html" data-cookies="../cookies.html" target="_blank" rel="noopener" data-en="Open the full page" data-tr="Sayfanın tamamını aç">Open the full page</a>
       <button type="button" class="btn btn-s" id="pmDone" data-en="Close" data-tr="Kapat">Close</button>
     </div>
   </div>
@@ -728,9 +836,30 @@ if(!ovl) return;
 
 /* ---- language ---- */
 function lang(){ return document.documentElement.lang === 'tr' ? 'tr' : 'en'; }
+/* Which document is open. One overlay, three bodies — see the markup for why. */
+var DOCS = {
+  privacy: { en: 'Privacy Policy', tr: 'Gizlilik Politikası' },
+  terms:   { en: 'Terms of Use',   tr: 'Kullanım Şartları' },
+  cookies: { en: 'Cookie Policy',  tr: 'Çerez Politikası' }
+};
+var doc_ = 'privacy';
+
 function panes(){
   var l = lang(), p = ovl.querySelectorAll('.pmpane');
-  for(var i=0;i<p.length;i++) p[i].hidden = (p[i].getAttribute('data-pane') !== l);
+  for(var i=0;i<p.length;i++){
+    var inDoc = p[i].closest('.pmdoc');
+    /* A pane is shown when it is this language *and* in the document that is
+       open. Checking only the language left the other two documents' English
+       panes visible underneath, which is what the first version did. */
+    p[i].hidden = (p[i].getAttribute('data-pane') !== l) ||
+                  (inDoc && inDoc.getAttribute('data-doc') !== doc_);
+  }
+  var d = ovl.querySelectorAll('.pmdoc');
+  for(var j=0;j<d.length;j++) d[j].hidden = (d[j].getAttribute('data-doc') !== doc_);
+  var t = document.getElementById('pmTitle');
+  if(t && DOCS[doc_]) t.textContent = DOCS[doc_][l] || DOCS[doc_].en;
+  var f = document.getElementById('pmFull');
+  if(f) f.setAttribute('href', f.getAttribute('data-' + doc_) || f.getAttribute('href'));
 }
 panes();
 document.addEventListener('langchange', panes);
@@ -744,7 +873,8 @@ try{
 
 /* ---- open and close ---- */
 var last = null;
-function open_(){
+function open_(which){
+  doc_ = DOCS[which] ? which : 'privacy';
   last = document.activeElement;
   panes();
   ovl.hidden = false;
@@ -767,19 +897,21 @@ document.addEventListener('click', function(e){
   var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
   if(!a) return;
   var href = a.getAttribute('href') || '';
-  if(!/(^|\/)privacy\.html([?#].*)?$/.test(href)) return;
+  var m = /(^|\/)(privacy|terms|cookies)\.html([?#].*)?$/.exec(href);
+  if(!m) return;
+  var which = m[2];
   if(a.target === '_blank') return;
   if(a.closest('.lgnav')) return;
   e.preventDefault();
-  /* On the privacy page itself there is nothing to open. Send the reader to the
-     text they asked for rather than reloading the page under them and losing
-     whatever they had ticked. */
-  if(/(^|\/)privacy\.html$/.test(location.pathname)){
+  /* On that document's own page there is nothing to open. Send the reader to
+     the text they asked for rather than reloading the page under them and
+     losing whatever they had ticked. */
+  if(new RegExp('(^|/)' + which + '\\.html$').test(location.pathname)){
     var doc = document.querySelector('main .doc:not([hidden])') || document.querySelector('main');
     if(doc && doc.scrollIntoView) doc.scrollIntoView({behavior:'smooth', block:'start'});
     return;
   }
-  open_();
+  open_(which);
 });
 
 var cl = document.getElementById('pmClose'); if(cl) cl.addEventListener('click', close_);

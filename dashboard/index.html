@@ -3177,6 +3177,10 @@ render();
           <div class="cp"><b>Öne çıkan · 4:3</b><canvas id="c4x3"></canvas></div>
           <div class="cp"><b>Kart · 3:2</b><canvas id="c3x2"></canvas></div>
           <canvas id="cthumb" hidden></canvas>
+          <!-- The share card. Hidden like the thumbnail: it is cropped and
+               uploaded but there is nothing for the writer to decide about it,
+               and a fourth preview would only make the column longer. -->
+          <canvas id="cog" hidden></canvas>
         </div>
       </div>
     </div>
@@ -3217,7 +3221,14 @@ var VARIANTS = [
   {key:'16x9', w:1600, h:900},
   {key:'4x3',  w:1200, h:900},
   {key:'3x2',  w:1200, h:800},
-  {key:'thumb',w:320,  h:213}
+  {key:'thumb',w:320,  h:213},
+  /* The share card, and the only one encoded as JPEG. LinkedIn does not read
+     WebP for link previews and X will not put it in a large card, so the first
+     post shared as an empty box on one and a headline with a blank space on the
+     other. 1200×630 is the size both of them ask for. This list and
+     IMG_VARIANTS in BlogCode.gs are the same list in two places — if one grows
+     a variant the other has to, and check-blog says so. */
+  {key:'og',   w:1200, h:630, jpeg:true}
 ];
 /* Where the editor expects to find an image it has uploaded. It has to match
    BLOG_PREFIX in Script Properties, and it used to be a hand-typed '/preview/'
@@ -3225,7 +3236,7 @@ var VARIANTS = [
    build.py stamps it from PREVIEW_DIR now, so the one place the preview path is
    decided is the one place it can be got wrong. At launch, emptying it here is
    a build constant rather than a file to remember. */
-var SITE_PREFIX = '/preview/';
+var SITE_PREFIX = '/';
 
 var $ = function(id){ return document.getElementById(id); };
 var posts = [], images = [], current = null, dirty = false;
@@ -3626,7 +3637,11 @@ function paint(canvas, w, h){
  * JPEG. So the format is checked rather than assumed, and the extension the
  * server writes follows what was actually produced.
  */
-function encode(canvas){
+function encode(canvas, jpeg){
+  /* One variant asks for JPEG on purpose — the share card. The crawlers that
+     read og:image do not accept WebP, and a card nobody can render is the same
+     as no card. Everything a human sees stays WebP. */
+  if(jpeg) return canvas.toDataURL('image/jpeg', 0.82).split(',')[1];
   var url = canvas.toDataURL('image/webp', 0.78);
   if(url.indexOf('data:image/webp') !== 0) url = canvas.toDataURL('image/jpeg', 0.82);
   return url.split(',')[1];
@@ -3652,7 +3667,7 @@ $('upDo').addEventListener('click', function(){
   var files = {};
   VARIANTS.forEach(function(v){
     paint($('c'+v.key), v.w, v.h);
-    files[v.key] = encode($('c'+v.key));
+    files[v.key] = encode($('c'+v.key), v.jpeg);
   });
   api('upload', { name: srcName, files: files }).then(function(d){
     images = d.images || [];
@@ -3787,7 +3802,7 @@ function illustrate(){
         var files = {};
         VARIANTS.forEach(function(v){
           paint($('c' + v.key), v.w, v.h);
-          files[v.key] = encode($('c' + v.key));
+          files[v.key] = encode($('c' + v.key), v.jpeg);
         });
         return api('upload', { name: d.name || p.slug || 'kapak', files: files });
       });
