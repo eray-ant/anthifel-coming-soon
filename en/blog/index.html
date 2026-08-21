@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- journal-shell: 7800ee9176 -->
+<!-- journal-shell: 865b2905fd -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Business BUS-042 §2 wrote the Turkish row of this pair and left the English
@@ -1379,6 +1379,13 @@ if(nf){
     off:{en:'The list opens shortly. Nothing was recorded.',tr:'Liste çok yakında açılıyor. Hiçbir şey kaydedilmedi.'},
     good:{en:'Thank you, you are on the list.',tr:'Teşekkürler, listeye alındınız.'},
     fail:{en:'Something did not go through. Please email hello@anthifel.com.',tr:'Bir şeyler ters gitti. Lütfen hello@anthifel.com adresine yazın.'},
+    /* A second sentence, for the failure we now know happens. On 21 August a
+       subscription never arrived: the execution log has no doPost at that
+       minute at all, so it was stopped on the visitor's side — a network or a
+       browser extension that will not reach script.google.com. "Something did
+       not go through" left that person with nothing to do. This one names the
+       thing they can act on. Developer's draft; Marketing has not approved it. */
+    blocked:{en:'We could not reach the server. Your network or an extension may be blocking it — try another connection, or email hello@anthifel.com.',tr:'Sunucuya ulaşılamadı. Ağınız ya da bir tarayıcı eklentisi engelliyor olabilir — başka bir bağlantıyla deneyin ya da hello@anthifel.com adresine yazın.'},
     sending:{en:'…',tr:'…'},
     sub:{en:'Subscribe',tr:'Abone ol'}
   };
@@ -1413,8 +1420,24 @@ if(nf){
        repeated here. Two copies of a legal sentence drift, and the copy that
        drifts is always the one nobody is looking at. */
     var wording=nf.querySelector('#ncons').parentNode.querySelector('label').textContent.trim();
-    fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({
+    /* ---- one retry, then a failure that leaves a trace ------------------
+
+       21 August, 11:26. Somebody filled this in, was told "Something did not
+       go through", and no row reached the sheet. Nothing was written down
+       anywhere: we learned about it because he screenshotted his own screen
+       and sent it to the CEO. Both halves of that are worth fixing.
+
+       The retry is for the transport, not for a refusal. If the server
+       answered and said no — a malformed address, a missing consent field —
+       sending the identical packet a second time gets the identical no. But a
+       rejected fetch, a reply that is not JSON, a 5xx: those are a moment in
+       time, and a moment is worth waiting out once. The server keys the list
+       on the address, so a retry that lands twice cannot produce two rows.
+
+       And when it does finally fail, the page says so somewhere other than on
+       the visitor's screen. No address goes with it: they did not complete a
+       consented submission, so we have no basis to keep it and no use for it. */
+    var payload = {
         action:'reading-list',
         source:'reading-list',
         email:nemail.value.trim(),
@@ -1428,18 +1451,72 @@ if(nf){
         privacyAck:!!(npriv&&npriv.checked),
         lang:lang,
         tz:(Intl.DateTimeFormat().resolvedOptions().timeZone||''),
-        page:location.href,referrer:document.referrer||''})})
-      .then(function(r){return r.json();})
-      .then(function(d){
-        if(d&&d.ok){
-          say(nt('good'),true);
-          nf.querySelector('.nrow').hidden=true;
-          var boxes=nf.querySelectorAll('.ncons');
-          for(var i=0;i<boxes.length;i++) boxes[i].hidden=true;
-        }
-        else throw new Error(d&&d.error?d.error:'x');
-      })
-      .catch(function(){say(nt('fail'),false);nbtn.disabled=false;nbtn.textContent=nt('sub');});
+        page:location.href,referrer:document.referrer||''};
+
+    function post(){
+      return fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify(payload)})
+        .then(function(r){
+          return r.json().then(function(d){return {http:r.status,body:d};},
+                               function(){
+                                 var e=new Error('the answer was not JSON (http '+r.status+')');
+                                 e.retry=true; throw e;
+                               });
+        },function(){
+          /* Not "the server said no" — the request never got there. This is
+             the 21 August failure, and it is the one the visitor can act on. */
+          var e=new Error('the request never reached the server');
+          e.retry=true; e.blocked=true; throw e;
+        })
+        .then(function(res){
+          if(res.body&&res.body.ok) return res;
+          /* The server answered. A 5xx is the server having a bad second; a
+             reason in the body is the server having read the packet and
+             declined it, and that will not change on a second try. */
+          var e=new Error(res.body&&res.body.error
+            ? 'the server refused: '+res.body.error
+            : 'the server answered http '+res.http+' with no body');
+          e.retry=(res.http>=500);
+          throw e;
+        });
+    }
+
+    function done(res){
+      say(nt('good'),true);
+      nf.querySelector('.nrow').hidden=true;
+      var boxes=nf.querySelectorAll('.ncons');
+      for(var i=0;i<boxes.length;i++) boxes[i].hidden=true;
+      /* The row exists but the mail telling us about it did not go. The
+         visitor is on the list and is told so; this line is for us. */
+      if(res.body&&res.body.notified===false)
+        console.warn('[reading list] subscribed, but the notification mail failed');
+    }
+
+    /* Reported, not shown. The visitor can do nothing with "http 500" and
+       should not have to read it; the sentence they get names the one thing
+       they can act on. The beacon goes to the same host, so the blocked case
+       cannot record itself — every other failure can. */
+    function report(reason,blocked){
+      console.error('[reading list] '+reason);
+      try{
+        fetch(ep,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body:JSON.stringify({source:'client-error',where:'reading-list',
+            reason:String(reason).slice(0,200),lang:lang,
+            page:location.href.split('?')[0]})}).catch(function(){});
+      }catch(e){}
+      say(nt(blocked?'blocked':'fail'),false);
+      nbtn.disabled=false;nbtn.textContent=nt('sub');
+    }
+
+    post().then(done,function(err){
+      if(!err||!err.retry) return report(err&&err.message?err.message:err,false);
+      console.warn('[reading list] '+err.message+' — trying once more');
+      return new Promise(function(r){setTimeout(r,1200);})
+        .then(post).then(done,function(err2){
+          report((err2&&err2.message?err2.message:err2)+' (after one retry)',
+                 !!(err2&&err2.blocked));
+        });
+    });
   });
 }
 })();
