@@ -727,7 +727,12 @@ for(var j=0;j<links.length;j++){
     open_(this);
   });
 }
-document.getElementById('meetClose').addEventListener('click', close_);
+/* The booking page removes this button from its markup rather than hiding it
+   after load — a crawler stores the first 200 characters of the body and does
+   not run scripts, so "Close" was landing in the snippet for a button nobody
+   on that page ever sees. Every other shell still has it and needs it. */
+var mx = document.getElementById('meetClose');
+if(mx) mx.addEventListener('click', close_);
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !sec.hidden) close_(); });
 /* A link straight to #meet, from an email or a quote, opens it. */
 if(location.hash === '#meet') open_();
@@ -739,8 +744,7 @@ if(location.hash === '#meet') open_();
    condition on the address: this part travels to seven shells and must not
    start caring which one it is in. */
 if(document.getElementById('meetHere')){
-  var x = document.getElementById('meetClose');
-  if(x) x.hidden = true;
+  if(mx) mx.hidden = true;      /* belt and braces: usually it is not there at all */
   open_();
 }
 })();

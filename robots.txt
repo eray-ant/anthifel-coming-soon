@@ -4,6 +4,22 @@
 # asks a crawler not to read it; the pages carry noindex as well, because
 # robots.txt is a request and the tag is the instruction. Neither alone is
 # enough.
+#
+# Every AI crawler is welcome, and that is a decision rather than an oversight.
+# Marketing, 21 August: no Disallow is written for GPTBot, OAI-SearchBot,
+# ChatGPT-User, ClaudeBot, Claude-SearchBot, Claude-User, PerplexityBot,
+# Perplexity-User, CCBot, Amazonbot, meta-externalagent, Applebot,
+# Applebot-Extended, Google-Extended or Bytespider.
+#
+# Two of those names are usually misunderstood, so the reasoning is written
+# down here rather than remembered. Google-Extended and Applebot-Extended are
+# directives, not crawlers: blocking Google-Extended does not reduce visibility
+# in AI Overviews, it only withholds the site from Gemini training. And
+# Claude-SearchBot and OAI-SearchBot are the search crawlers — blocking either
+# removes this company from the answers entirely, which is the opposite of what
+# blocking them feels like it does.
+#
+# check-seo fails if a Disallow ever appears for any of these names.
 User-agent: *
 Disallow: /dashboard/
 
