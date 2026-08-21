@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title data-en="Anthifel · AI needs a guide, not just tools." data-tr="Anthifel · AI araçla başlar, rehberle ilerler.">Anthifel · AI needs a guide, not just tools.</title>
-<meta name="description" data-en="AI transformation advisory, London. AI transformation is not one department's job. It reaches the whole company at once." data-tr="Londra merkezli AI dönüşüm danışmanlığı. AI dönüşümü tek bir birimin işi değil. Şirketin tamamını aynı anda ilgilendiriyor." content="AI transformation advisory, London. AI transformation is not one department's job. It reaches the whole company at once.">
+<!-- Business BUS-042 §2, 21 August. The title used to be the tagline, which
+     is what a brand says and not what a person searches for. -->
+<title data-en="AI Transformation Advisory · Anthifel" data-tr="Yapay Zeka Dönüşüm Danışmanlığı · Anthifel">AI Transformation Advisory · Anthifel</title>
+<!-- Marketing's replacement for Business's §2 line, 21 August. Business
+     proposed "Yapay zeka bir araç sorunu değil, bir organizasyon sorunudur",
+     which is the "X değil, Y" shape K47 rule 3 forbids and takes a swing at
+     tools the brand does not take: the tagline says *not just* tools.
+     Both run past Business's own 155-character rule — 172 and 177 — and that
+     is on Business's desk rather than trimmed here, because a description
+     cut by a developer is a sentence nobody wrote. -->
+<meta name="description" data-en="AI transformation is not one department's job. It reaches the whole company at once. Anthifel measures how ready a company is on evidence, and organises the transformation." data-tr="Yapay zeka dönüşümü tek bir birimin işi değil; şirketin tamamını aynı anda ilgilendiriyor. Anthifel şirketlerin hazırlığını kanıta dayalı olarak ölçer ve dönüşümü organize eder." content="AI transformation is not one department's job. It reaches the whole company at once. Anthifel measures how ready a company is on evidence, and organises the transformation.">
 <link rel="canonical" href="https://anthifel.com/">
 <link rel="alternate" hreflang="en" href="https://anthifel.com/">
 <link rel="alternate" hreflang="tr" href="https://anthifel.com/?lang=tr">
@@ -89,13 +98,45 @@ img{max-width:100%}
   .arw{transition:none;transform:none}
 }
 
-/* ---- header ---- */
+/* ---- the site header ----------------------------------------------------
+   One part. Markup lives in build.py's header(); this is everything that
+   positions it.
+
+   It was written five times before: body.html, blog_common.css,
+   service_template.html, legal_template.html and stub_template.html each
+   carried their own copy, and the copies had drifted. The menu gap was 34px on
+   the home page and the Journal and 30px on the service and legal pages, so
+   the five labels sat 16px narrower on an inner page — the wordmark and the
+   language switch held still and the menu between them slid. The CEO saw it on
+   21 August without measuring anything, which is how a 4px difference gets
+   found: not as a number, as a page that will not sit still.
+
+   The burger breakpoint had drifted further. 820px here, 960px there: between
+   those two widths the home page showed five links and a service page showed a
+   hamburger, on the same laptop, one click apart. And the open menu itself was
+   two different objects — a bordered list on the home page, a 16px-gapped
+   column on the service pages.
+
+   None of it was a decision. It is what happens when a part is copied instead
+   of shared. The values below are the home page's, because that is the page
+   every other one is compared against.
+
+   check-header.js fails if a second file defines .hdr or .nav, and measures a
+   service page's header against the home page's at twelve widths. A comment
+   asking the next person not to copy this again would not have held — each of
+   the five copies already had one at the top. */
+
 .hdr{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px var(--pad);border-bottom:1px solid rgba(15,15,14,.09);background:rgba(245,241,234,.94);backdrop-filter:saturate(180%) blur(12px)}
 .hdr img{height:16px;width:auto;display:block}
 .brandlink{display:flex;align-items:flex-start;flex:none}
 .nav{display:flex;gap:34px;flex-wrap:wrap;justify-content:center}
-.nav a{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#0F0F0E;transition:color .18s}
+.nav a{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#0F0F0E;text-decoration:none;transition:color .18s}
 .nav a:hover,.nav a:focus-visible{color:#B84C2E}
+/* The marker on the current page hangs below its own line box. Without the
+   negative margin it makes the nav 4px taller than the home page's and lifts
+   every label 2px, which reads as the header shifting between pages. Only the
+   Journal sets aria-current today; the rule belongs to the part either way. */
+.nav a[aria-current="page"]{font-weight:600;border-bottom:1px solid #0F0F0E;padding-bottom:3px;margin-bottom:-4px}
 .lang{display:flex;gap:6px;align-items:center;flex:none}
 .lang button{background:none;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#7A756C;transition:color .18s}
 .lang button[aria-current="true"]{color:#0F0F0E}
@@ -103,6 +144,30 @@ img{max-width:100%}
 .lang span{color:#C4BDB0}
 .burger{display:none;background:none;border:1px solid rgba(15,15,14,.28);border-radius:2px;padding:8px 10px;cursor:pointer;line-height:0}
 .burger svg{width:18px;height:18px;stroke:#0F0F0E;stroke-width:1.6;fill:none}
+
+/* ---- phone and small laptop ----
+   820px, which is where the five labels stop fitting beside the wordmark. The
+   touch padding is measured off the rendered page rather than guessed: the
+   language switch was 14px tall and the wordmark's link 16px. A 14px target is
+   a target you miss. Nothing moves on a desktop. */
+@media (max-width:820px){
+  .hdr{flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
+  .burger{display:inline-block;order:2;padding:11px 12px}
+  .lang{order:1;margin-left:auto;margin-right:14px}
+  .lang button{padding:13px 8px}
+  .brandlink{padding:12px 0}
+  .nav{display:none;order:3;width:100%;flex-direction:column;gap:0;align-items:stretch;border-top:1px solid rgba(15,15,14,.09);margin-top:16px;padding-top:8px}
+  .nav.open{display:flex}
+  .nav a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.06);letter-spacing:.14em;text-align:left}
+  /* Stacked, every item already has a rule under it; the current page's darker
+     one would read as a divider rather than as a marker. */
+  .nav a[aria-current="page"]{border-bottom-color:rgba(15,15,14,.06)}
+  .nav a:last-child{border-bottom:0}
+}
+@media (max-width:400px){
+  .hdr{gap:10px}
+  .lang{margin-right:8px}
+}
 
 /* ---- buttons ---- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:14.5px;font-weight:500;letter-spacing:.04em;padding:16px 30px;border-radius:2px;border:1px solid;cursor:pointer;font-family:inherit;transition:background .18s,border-color .18s,color .18s;text-align:center}
@@ -357,9 +422,6 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
    tall, the footer links 17 to 21, the wordmark's link 16 and the newsletter
    tick 17. A 14px target is a target you miss. Nothing changes on a desktop. */
 @media (max-width:820px){
-  .lang button{padding:13px 8px}
-  .brandlink{padding:12px 0}
-  .burger{padding:11px 12px}
   .soc a{padding:12px 4px}
   /* Three short links read as a row, not as three rows. They keep their
      thumb-sized height; only the stacking goes. */
@@ -382,13 +444,6 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   .consent input[type=checkbox]{width:22px;height:22px}
 }
 @media (max-width:820px){
-  .nav{display:none;order:3;width:100%;flex-direction:column;gap:0;align-items:stretch;border-top:1px solid rgba(15,15,14,.09);margin-top:16px;padding-top:8px}
-  .nav.open{display:flex}
-  .nav a{padding:13px 0;border-bottom:1px solid rgba(15,15,14,.06);letter-spacing:.14em;text-align:left}
-  .nav a:last-child{border-bottom:0}
-  .hdr{flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
-  .burger{display:inline-block;order:2}
-  .lang{order:1;margin-left:auto;margin-right:14px}
   .hero h1{font-size:54px}
   .hero p{font-size:17px}
   .quote{padding-top:72px;padding-bottom:72px}
@@ -432,8 +487,6 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   .quote blockquote{font-size:21px}
   .assess-in h2{font-size:26px}
   .gate h3,.quizhold h3{font-size:22px}
-  .hdr{gap:10px}
-  .lang{margin-right:8px}
   .fld input.code{font-size:22px;letter-spacing:.26em;text-indent:.26em}
 }
 @media (max-width:340px){
@@ -658,7 +711,14 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
         <div class="row-b">
           <h3 class="serif">Transformation Retainer<span class="arw" aria-hidden="true">→</span></h3>
           <span class="svc-tr" data-en="" data-tr="Sürekli dönüşüm rehberliği · “Nasıl gideceğiz?”"></span>
-          <p data-en="The right people, hired and connected. A rhythm that holds." data-tr="İşe alımlar yapılmış, roller birbirine bağlanmış. Tutan bir ritim.">The right people, hired and connected. A rhythm that holds.</p>
+          <!-- Marketing, 21 August, §5: "the right people, connected" is the
+               K47 phrasing withdrawn on 3 August. The Turkish half of this card
+               was corrected and the English half was not, so the two sides of
+               one card disagreed again — the same failure as the Audit card
+               above, on a different row. Worded to mirror this card's own
+               Turkish, not the Approach card's, so the two sections stay
+               distinct. -->
+          <p data-en="Hiring done, roles connected. A rhythm that holds." data-tr="İşe alımlar yapılmış, roller birbirine bağlanmış. Tutan bir ritim.">Hiring done, roles connected. A rhythm that holds.</p>
         </div>
         <div class="meta"><span class="dur" data-en="6+ months" data-tr="6+ ay">6+ months</span></div>
       </a>
@@ -1935,6 +1995,14 @@ var Typer = (function(){
     var lang = document.documentElement.lang === 'tr' ? 'tr' : 'en';
     full = (el.getAttribute('data-' + lang) || el.textContent || '').trim();
 
+    /* role="img" is not decoration here, it is the accurate description: the
+       two children below are both aria-hidden (one reserves the layout, one
+       carries the half-typed text), so without a role and a name the sentence
+       is missing from the accessibility tree entirely. aria-label on a bare
+       span is prohibited by ARIA and the attribute is simply ignored — which
+       is worse than the warning: it reads as labelled and is not. A fixed
+       string drawn as an animation is an image of text. */
+    el.setAttribute('role', 'img');
     el.setAttribute('aria-label', full);
     el.innerHTML = '';
     ghost = document.createElement('span');

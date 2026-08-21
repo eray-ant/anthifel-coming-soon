@@ -34,6 +34,10 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://anthifel.com/meet/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://anthifel.com/blog/</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/blog/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/en/blog/"/>
