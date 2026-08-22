@@ -3,66 +3,164 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://anthifel.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/"/>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/ai-readiness-audit.html</loc>
-    <priority>0.9</priority>
+    <loc>https://anthifel.com/tr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/"/>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/discovery-sprint.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://anthifel.com/transformation-retainer.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://anthifel.com/advisory-board-seat.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://anthifel.com/about.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about.html"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/hakkimizda.html"/>
+    <loc>https://anthifel.com/about/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/hakkimizda/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/about/"/>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/hakkimizda.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about.html"/>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/hakkimizda.html"/>
+    <loc>https://anthifel.com/tr/hakkimizda/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/hakkimizda/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/about/"/>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/ai-readiness-audit/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/ai-readiness-audit/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/ai-readiness-audit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/ai-readiness-audit/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/ai-readiness-audit/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/ai-readiness-audit/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/ai-readiness-audit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/ai-readiness-audit/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/discovery-sprint/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/discovery-sprint/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/discovery-sprint/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/discovery-sprint/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/discovery-sprint/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/discovery-sprint/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/discovery-sprint/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/discovery-sprint/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/transformation-retainer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/transformation-retainer/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/transformation-retainer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/transformation-retainer/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/transformation-retainer/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/transformation-retainer/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/transformation-retainer/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/transformation-retainer/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/advisory-board-seat/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/advisory-board-seat/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/advisory-board-seat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/advisory-board-seat/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/advisory-board-seat/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/advisory-board-seat/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/advisory-board-seat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/advisory-board-seat/"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/gizlilik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/privacy/"/>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/gizlilik/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/gizlilik/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/privacy/"/>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/terms/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/sartlar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/terms/"/>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/sartlar/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/terms/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/sartlar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/terms/"/>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/cerezler/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/cookies/"/>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/cerezler/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/cerezler/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/cookies/"/>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://anthifel.com/meet/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/meet/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/gorusme/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/meet/"/>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://anthifel.com/tr/gorusme/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/meet/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/gorusme/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/meet/"/>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://anthifel.com/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/blog/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/en/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/blog/"/>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/en/blog/</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/blog/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/en/blog/"/>
+    <loc>https://anthifel.com/tr/blog/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://anthifel.com/blog/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://anthifel.com/blog/"/>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/privacy.html</loc>
-    <priority>0.3</priority>
+    <loc>https://anthifel.com/blog/why-ai-is-an-organizational-problem-not-a-technological-one/</loc>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://anthifel.com/terms.html</loc>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://anthifel.com/cookies.html</loc>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://anthifel.com/en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/</loc>
+    <loc>https://anthifel.com/tr/blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/</loc>
     <priority>0.8</priority>
   </url>
 </urlset>

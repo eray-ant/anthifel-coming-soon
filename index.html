@@ -16,6 +16,7 @@
 <meta name="description" data-en="AI transformation is not one department's job. It reaches the whole company. Anthifel measures readiness on evidence and organises the change." data-tr="Yapay zeka dönüşümü tek bir birimin işi değil, şirketin tamamını ilgilendiriyor. Anthifel hazırlığı kanıta dayalı ölçer ve dönüşümü organize eder." content="AI transformation is not one department's job. It reaches the whole company. Anthifel measures readiness on evidence and organises the change.">
 <link rel="canonical" href="https://anthifel.com/">
 <link rel="alternate" hreflang="en" href="https://anthifel.com/">
+<link rel="alternate" hreflang="tr" href="https://anthifel.com/tr/">
 <link rel="alternate" hreflang="x-default" href="https://anthifel.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Anthifel">
@@ -137,9 +138,12 @@ img{max-width:100%}
    Journal sets aria-current today; the rule belongs to the part either way. */
 .nav a[aria-current="page"]{font-weight:600;border-bottom:1px solid #0F0F0E;padding-bottom:3px;margin-bottom:-4px}
 .lang{display:flex;gap:6px;align-items:center;flex:none}
-.lang button{background:none;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#625D55;transition:color .18s}
-.lang button[aria-current="true"]{color:#0F0F0E}
-.lang button:hover{color:#B84C2E}
+/* The switch is two links, not two buttons: each language now has an
+   address of its own and pressing TR goes there. The button selectors stay
+   beside them so nothing that still renders a button loses its shape. */
+.lang a,.lang button{background:none;border:0;padding:0;cursor:pointer;text-decoration:none;font-family:inherit;font-size:11.5px;font-weight:600;letter-spacing:.08em;color:#625D55;transition:color .18s}
+.lang a[aria-current="true"],.lang button[aria-current="true"]{color:#0F0F0E}
+.lang a:hover,.lang button:hover{color:#B84C2E}
 .lang span{color:#C4BDB0}
 .burger{display:none;background:none;border:1px solid rgba(15,15,14,.28);border-radius:2px;padding:8px 10px;cursor:pointer;line-height:0}
 .burger svg{width:18px;height:18px;stroke:#0F0F0E;stroke-width:1.6;fill:none}
@@ -153,7 +157,7 @@ img{max-width:100%}
   .hdr{flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
   .burger{display:inline-block;order:2;padding:11px 12px}
   .lang{order:1;margin-left:auto;margin-right:14px}
-  .lang button{padding:13px 8px}
+  .lang a,.lang button{padding:13px 8px}
   .brandlink{padding:12px 0}
   .nav{display:none;order:3;width:100%;flex-direction:column;gap:0;align-items:stretch;border-top:1px solid rgba(15,15,14,.09);margin-top:16px;padding-top:8px}
   .nav.open{display:flex}
@@ -584,14 +588,10 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
     <a href="#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a>
     <a href="#services" data-en="Services" data-tr="Hizmetler">Services</a>
     <a href="#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a>
-    <a href="en/blog/" data-href-tr="blog/?lang=tr" data-en="The Journal" data-tr="The Journal">The Journal</a>
+    <a href="/blog/" data-href-tr="/tr/blog/" data-en="The Journal" data-tr="The Journal">The Journal</a>
     <a href="#contact" data-en="Contact" data-tr="İletişim">Contact</a>
   </nav>
-  <div class="lang">
-    <button type="button" data-lang="en" aria-current="true">EN</button>
-    <span>·</span>
-    <button type="button" data-lang="tr" aria-current="false">TR</button>
-  </div>
+  <div class="lang"><a href="/" data-lang="en" aria-current="true">EN</a><span>·</span><a href="/tr/" data-lang="tr" aria-current="false">TR</a></div>
   <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
     <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
   </button>
@@ -699,7 +699,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
   </div>
   <div>
     <div class="svc">
-      <a class="row row-go" href="ai-readiness-audit.html">
+      <a class="row row-go" href="/ai-readiness-audit/">
         <span class="rn">I</span>
         <div class="row-b">
           <h3 class="serif">AI Readiness Audit<span class="arw" aria-hidden="true">→</span></h3>
@@ -708,7 +708,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
         </div>
         <div class="meta"><span class="dur" data-en="4 working days" data-tr="4 iş günü">4 working days</span></div>
       </a>
-      <a class="row row-go" href="discovery-sprint.html">
+      <a class="row row-go" href="/discovery-sprint/">
         <span class="rn">II</span>
         <div class="row-b">
           <h3 class="serif">Discovery Sprint<span class="arw" aria-hidden="true">→</span></h3>
@@ -717,7 +717,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
         </div>
         <div class="meta"><span class="dur" data-en="7–12 working days" data-tr="7–12 iş günü">7–12 working days</span></div>
       </a>
-      <a class="row row-go" href="transformation-retainer.html">
+      <a class="row row-go" href="/transformation-retainer/">
         <span class="rn">III</span>
         <div class="row-b">
           <h3 class="serif">Transformation Retainer<span class="arw" aria-hidden="true">→</span></h3>
@@ -735,7 +735,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
         </div>
         <div class="meta"><span class="dur" data-en="6+ months" data-tr="6+ ay">6+ months</span></div>
       </a>
-      <a class="row row-go" href="advisory-board-seat.html">
+      <a class="row row-go" href="/advisory-board-seat/">
         <span class="rn">IV</span>
         <div class="row-b">
           <h3 class="serif">Advisory Board Seat<span class="arw" aria-hidden="true">→</span></h3>
@@ -784,7 +784,7 @@ a.row:hover .arw,a.row:focus-visible .arw{opacity:1;transform:translateX(0)}
 
         <div class="consent" id="f-consent">
           <input type="checkbox" id="consent" name="consent">
-          <label for="consent" data-en="I agree that Anthifel may store my email address and send me my assessment result. I have read the <a href='privacy.html'>Privacy Policy</a>." data-tr="Anthifel'in e-posta adresimi saklamasını ve test sonucumu bana göndermesini kabul ediyorum. <a href='privacy.html'>Gizlilik Politikası</a>'nı okudum.">I agree that Anthifel may store my email address and send me my assessment result. I have read the <a href="privacy.html">Privacy Policy</a>.</label>
+          <label for="consent" data-en="I agree that Anthifel may store my email address and send me my assessment result. I have read the <a href='/privacy/'>Privacy Policy</a>." data-tr="Anthifel'in e-posta adresimi saklamasını ve test sonucumu bana göndermesini kabul ediyorum. <a href='/privacy/'>Gizlilik Politikası</a>'nı okudum.">I agree that Anthifel may store my email address and send me my assessment result. I have read the <a href="/privacy/">Privacy Policy</a>.</label>
         </div>
         <div class="emsg" id="e-consent"></div>
 
@@ -1106,7 +1106,7 @@ if(document.getElementById('meetHere')){
     </div>
     <div class="ncons">
       <input type="checkbox" id="npriv">
-      <label for="npriv" data-en="I have read the <a href='privacy.html'>Privacy Policy</a>." data-tr="<a href='privacy.html'>Gizlilik Politikası</a>'nı okudum.">I have read the <a href="privacy.html">Privacy Policy</a>.</label>
+      <label for="npriv" data-en="I have read the <a href='/privacy/'>Privacy Policy</a>." data-tr="<a href='/privacy/'>Gizlilik Politikası</a>'nı okudum.">I have read the <a href="/privacy/">Privacy Policy</a>.</label>
     </div>
     <div class="nmsg" id="nmsg"></div>
     <span class="nfine" data-en="Unsubscribe in one click. We never share the list." data-tr="Tek tıkla çıkabilirsiniz. Listeyi kimseyle paylaşmayız.">Unsubscribe in one click. We never share the list.</span>
@@ -1120,9 +1120,9 @@ if(document.getElementById('meetHere')){
      failure the shared footer was created to end, one level down.
 
      Two prefixes make one file work everywhere:
-         what to put before "#approach" — '' on index.html,
+       /  what to put before "#approach" — '' on index.html,
                  'index.html' on another root page, '../' inside blog/
-           what to put before a root-level file — '' at the root,
+       /    what to put before a root-level file — '' at the root,
                  '../' or '../../' inside the Journal
 -->
 <footer class="ftr" id="contact">
@@ -1150,13 +1150,13 @@ if(document.getElementById('meetHere')){
     <div>
       <h3 data-en="Menu" data-tr="Menü">Menu</h3>
       <ul>
-        <li><a href="#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a></li>
-        <li><a href="#services" data-en="Services" data-tr="Hizmetler">Services</a></li>
-        <li><a href="#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a></li>
+        <li><a href="/#approach" data-en="Approach" data-tr="Yaklaşım">Approach</a></li>
+        <li><a href="/#services" data-en="Services" data-tr="Hizmetler">Services</a></li>
+        <li><a href="/#assessment" data-en="Assessment" data-tr="Hazırlık Testi">Assessment</a></li>
         <!-- §13a: About is reached from here and nowhere else. The top menu
              stays at four headings, because a company page is something a
              reader goes looking for, not something the site pushes at them. -->
-        <li><a href="about.html" data-href-tr="hakkimizda.html" data-en="About" data-tr="Hakkımızda">About</a></li>
+        <li><a href="/about/" data-href-tr="/tr/hakkimizda/" data-en="About" data-tr="Hakkımızda">About</a></li>
         <!-- 20 August, CEO: this one goes to /meet/ rather than opening the
              band in place. The footer is on every page including the Journal
              and the legal pages, and "open a band somewhere further down this
@@ -1164,7 +1164,7 @@ if(document.getElementById('meetHere')){
              promise everywhere. The href is the real calendar address so it
              still works with JavaScript off, and the data-meet handler is gone
              from this link only — the buttons in the page keep it. -->
-        <li><a href="meet/" data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
+        <li><a href="/meet/" data-en="Book a call" data-tr="Görüşme planla">Book a call</a></li>
       </ul>
     </div>
     <div>
@@ -1177,7 +1177,7 @@ if(document.getElementById('meetHere')){
            check-legal.js bans it from any served page, because it is one of the
            markers in Legal's handover note, and an HTML comment is served. -->
       <ul id="ftrPosts">
-        <li><a href="en/blog/why-ai-is-an-organizational-problem-not-a-technological-one/" data-href-tr="blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/?lang=tr" data-en="Why AI is an organisational problem, not a technological one" data-tr="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri">Why AI is an organisational problem, not a technological one</a></li>
+        <li><a href="/blog/why-ai-is-an-organizational-problem-not-a-technological-one/" data-href-tr="/tr/blog/yapay-zekanin-teknolojik-degil-organizasyonel-bir-sorun-olmasinin-nedenleri/" data-en="Why AI is an organisational problem, not a technological one" data-tr="Yapay zekanın teknolojik değil, organizasyonel bir sorun olmasının nedenleri">Why AI is an organisational problem, not a technological one</a></li>
       </ul>
     </div>
     <div>
@@ -1205,9 +1205,9 @@ if(document.getElementById('meetHere')){
          difference is on the CEO's desk. -->
     <span>© 2026 Anthifel Ltd</span>
     <span class="lnks">
-      <a href="privacy.html" data-en="Privacy" data-tr="Gizlilik">Privacy</a>
-      <a href="terms.html" data-en="Terms" data-tr="Kullanım Şartları">Terms</a>
-      <a href="cookies.html" data-en="Cookies" data-tr="Çerezler">Cookies</a>
+      <a href="/privacy/" data-en="Privacy" data-tr="Gizlilik">Privacy</a>
+      <a href="/terms/" data-en="Terms" data-tr="Kullanım Şartları">Terms</a>
+      <a href="/cookies/" data-en="Cookies" data-tr="Çerezler">Cookies</a>
     </span>
   </div>
 </footer>
@@ -1494,7 +1494,7 @@ try{
 <p><a href="mailto:privacy@anthifel.com">privacy@anthifel.com</a> adresine yazın.</p></div></div>
     </div>
     <div class="pmft">
-      <a href="privacy.html" id="pmFull" data-privacy="privacy.html" data-terms="terms.html" data-cookies="cookies.html" target="_blank" rel="noopener" data-en="Open the full page" data-tr="Sayfanın tamamını aç">Open the full page</a>
+      <a href="/privacy/" id="pmFull" data-privacy="/privacy/" data-terms="/terms/" data-cookies="/cookies/" target="_blank" rel="noopener" data-en="Open the full page" data-tr="Sayfanın tamamını aç">Open the full page</a>
       <button type="button" class="btn btn-s" id="pmDone" data-en="Close" data-tr="Kapat">Close</button>
     </div>
   </div>
@@ -1575,16 +1575,22 @@ document.addEventListener('click', function(e){
   var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
   if(!a) return;
   var href = a.getAttribute('href') || '';
-  var m = /(^|\/)(privacy|terms|cookies)\.html([?#].*)?$/.exec(href);
-  if(!m) return;
-  var which = m[2];
+  /* Which document an address is, from the build's own table.
+     This used to be a pattern - /(privacy|terms|cookies)\.html$/ - which was
+     the same guess written twice, here and in the sitemap, and both were wrong
+     the moment the addresses moved on 21 August. The table is stamped in, so
+     this part cannot disagree with where the pages actually are. */
+  var LEGAL = {"/cookies/": "cookies", "/privacy/": "privacy", "/terms/": "terms", "/tr/cerezler/": "cookies", "/tr/gizlilik/": "privacy", "/tr/sartlar/": "terms"};
+  var which = LEGAL[href.split('#')[0].split('?')[0]];
+  if(!which) return;
   if(a.target === '_blank') return;
   if(a.closest('.lgnav')) return;
   e.preventDefault();
   /* On that document's own page there is nothing to open. Send the reader to
      the text they asked for rather than reloading the page under them and
      losing whatever they had ticked. */
-  if(new RegExp('(^|/)' + which + '\\.html$').test(location.pathname)){
+  var here = location.pathname.replace(/index\.html$/, '');
+  if(LEGAL[here] === which){
     var doc = document.querySelector('main .doc:not([hidden])') || document.querySelector('main');
     if(doc && doc.scrollIntoView) doc.scrollIntoView({behavior:'smooth', block:'start'});
     return;
@@ -1712,7 +1718,7 @@ for(var t=0;t<tbl.length;t++){
     <div class="cbar-act">
       <button type="button" class="cbtn" id="cYes" data-en="That is fine" data-tr="Kabul ediyorum">That is fine</button>
       <button type="button" class="cbtn" id="cNo" data-en="No thank you" data-tr="Hayır, teşekkürler">No thank you</button>
-      <a href="cookies.html" data-en="What we would set" data-tr="Ne yerleştireceğimiz">What we would set</a>
+      <a href="/cookies/" data-en="What we would set" data-tr="Ne yerleştireceğimiz">What we would set</a>
     </div>
   </div>
 </div>
@@ -1819,7 +1825,10 @@ document.getElementById('cNo').addEventListener('click', function(){ answer(fals
     '<circle cx="10.4" cy="7.4" r=".9" fill="currentColor" stroke="none"/>' +
     '<circle cx="7.2" cy="10.6" r=".9" fill="currentColor" stroke="none"/></svg>';
   var made = [];
-  var links = document.querySelectorAll('.ftr a[href$="cookies.html"]');
+  /* The Cookie Policy has an address in each language and the build knows
+     both. Matching on a filename was the same guess three files were making
+     separately, and all three were wrong the day the addresses moved. */
+  var links = document.querySelectorAll(".ftr a[href=\"/cookies/\"], .ftr a[href=\"/tr/cerezler/\"]");
   for(var i = 0; i < links.length; i++){
     var a = links[i];
     var again = document.createElement('button');
@@ -1908,17 +1917,11 @@ function applyLang(l){
   for(var j=0;j<b.length;j++){
     b[j].setAttribute('aria-current', b[j].getAttribute('data-lang')===LANG ? 'true':'false');
   }
-  try{ localStorage.setItem('anthifel_lang', LANG); }catch(e){}
   /* The assessment is drawn in JS, so data-en/data-tr cannot reach it. */
   try{ if(typeof Q !== 'undefined' && Q.redraw) Q.redraw(); }catch(e){}
   /* The hero line was just overwritten with the plain sentence. Rebuild the
      two layers around the new one and start typing it. */
   try{ if(typeof Typer !== 'undefined') Typer.mount(); }catch(e){}
-  try{
-    var u = new URL(window.location.href);
-    if(LANG==='tr') u.searchParams.set('lang','tr'); else u.searchParams.delete('lang');
-    history.replaceState(null,'',u.toString());
-  }catch(e){}
 }
 /* ---------- the hero line types itself ----------
 
@@ -2045,17 +2048,30 @@ var Typer = (function(){
   return { mount: mount };
 })();
 
-(function initLang(){
-  var l = null;
-  try{ l = new URL(window.location.href).searchParams.get('lang'); }catch(e){}
-  if(!l){ try{ l = localStorage.getItem('anthifel_lang'); }catch(e){} }
-  if(!l && (navigator.language||'').toLowerCase().indexOf('tr')===0) l='tr';
-  applyLang(l||'en');
-})();
-var lb = document.querySelectorAll('.lang button');
-for(var k=0;k<lb.length;k++){
-  lb[k].addEventListener('click', function(){ applyLang(this.getAttribute('data-lang')); });
-}
+/* The address decides the language, and nothing else does.
+
+   This used to read `?lang=`, then localStorage, then the browser's own
+   language, and only then fall back to the page. Every one of those could put
+   Turkish words at an English address, which is the confusion /tr was chosen
+   to end: one address, one language, and a link between the two. The document
+   already carries its language in <html lang>, written into the file at build
+   time, so that is what is read here.
+
+   It still has to run. The assessment is drawn in JavaScript and cannot be
+   reached by the build's substitution, so it needs telling which language it
+   is in. */
+applyLang(document.documentElement.lang === 'tr' ? 'tr' : 'en');
+
+/* Exposed on purpose, and it is the only thing on window here.
+
+   `trlang.py` performs this substitution at build time so the Turkish page is
+   Turkish in the file. Two implementations of one rule is a fork unless
+   something proves they agree, and check-lang.js is that proof: it renders the
+   built Turkish page and compares it, word for word, with what this function
+   produces from the English one. The comparison used to be made by pressing
+   the TR button; the button is a link to another page now, so the reference
+   implementation has to be reachable by name. */
+window.applyLang = applyLang;
 
 /* ---------- mobile menu ---------- */
 var burger = document.getElementById('burger'), nav = document.getElementById('nav');
@@ -2403,10 +2419,17 @@ var Q = (function(){
      pages, so every band now names a service and goes to that service's page.
      The bottom band still goes to the call, and keeps one button: a score under
      30 is the one result where selling anything would be the wrong answer. */
-  var AUDIT    = 'ai-readiness-audit.html';
-  var SPRINT   = 'discovery-sprint.html';
-  var RETAINER = 'transformation-retainer.html';
-  var ADVISORY = 'advisory-board-seat.html';
+  /* The four service addresses, stamped in from the build's own table rather
+     than written out here. They used to be four string literals, which meant
+     they were invisible to the pass that rewrites links - so on the day the
+     addresses moved, the five result bands were the one place on the site
+     still pointing at pages that had gone. A literal in a script is not a
+     link as far as any tool is concerned. */
+  var SVC = {"advisory-board-seat": "/advisory-board-seat/", "ai-readiness-audit": "/ai-readiness-audit/", "discovery-sprint": "/discovery-sprint/", "transformation-retainer": "/transformation-retainer/"};
+  var AUDIT    = SVC['ai-readiness-audit'];
+  var SPRINT   = SVC['discovery-sprint'];
+  var RETAINER = SVC['transformation-retainer'];
+  var ADVISORY = SVC['advisory-board-seat'];
   var MEET  = 'https://calendar.google.com/appointments/schedules/AcZssZ0oNnk169UH0Bm1TaPvCd95JJe49zVy9szUUB2pzSe_SRZATmDOkQ4PHkdXMAhMcJokT0Sx-46l';
   var BANDS = [
     { max:29, key:'0-29',
